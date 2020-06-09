@@ -22,13 +22,14 @@ extern int	seek_y;
 extern void DoCameraTracking();
 */
 
-extern unsigned char	animate;
-extern unsigned char	cameratracking;
-extern unsigned char	tracker;
-extern unsigned char	showobs;
-extern unsigned char	showzone;
+extern unsigned char animate;
+extern unsigned char cameratracking;
+extern unsigned char tracker;
+extern unsigned char showobs;
+extern unsigned char showzone;
 
-// tSB - I don't like this, but it's gotta be here, since vdriver.cc needs it briefly
+// tSB - I don't like this, but it's gotta be here, since vdriver.cc needs it
+// briefly
 extern byte inside;
 
 extern void Render();
@@ -36,4 +37,4 @@ extern void BlitLayer(byte c);
 extern void CheckTileAnimation();
 extern int rnd(int min, int max);
 
-#endif // RENDER_INC
+#endif  // RENDER_INC

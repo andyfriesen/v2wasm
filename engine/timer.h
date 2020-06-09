@@ -15,24 +15,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef TIMER_H
 #define TIMER_H
-#include <windows.h>
 #include <mmsystem.h>
+#include <windows.h>
 
-class Timer
-{
- private:
- MMRESULT curtimer;
- public:
-// Timer(int Hz,LPTIMECALLBACK TimeProc);
- Timer();
- int Init(int Hz, LPTIMECALLBACK TimeProc);
- void ShutDown();
- ~Timer();
+class Timer {
+   private:
+    MMRESULT curtimer;
+
+   public:
+    // Timer(int Hz,LPTIMECALLBACK TimeProc);
+    Timer();
+    int Init(int Hz, LPTIMECALLBACK TimeProc);
+    void ShutDown();
+    ~Timer();
 };
 
 extern int InitTimer();
 extern void ShutdownTimer();
 
-extern unsigned int systemtime,timer_count,vctimer,hktimer;
+extern unsigned int systemtime, timer_count, vctimer, hktimer;
 
 #endif

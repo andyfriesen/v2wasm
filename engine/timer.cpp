@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
 // ChangeLog
-// <tSB>  Nov 4, '00 - rewritten to work in Win32.  Borrows heavily from vecna's winv1.
+// <tSB>  Nov 4, '00 - rewritten to work in Win32.  Borrows heavily from vecna's
+// winv1.
 
 #include "verge.h"
 
@@ -28,65 +29,55 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ================================= Data ====================================
 
-unsigned int systemtime=0, timer_count=0, hktimer=0, vctimer=0;
+unsigned int systemtime = 0, timer_count = 0, hktimer = 0, vctimer = 0;
 Timer timer;
 
 // ================================= Code ====================================
 
-Timer::Timer()
-{
- curtimer=0;
+Timer::Timer() { curtimer = 0; }
+
+int Timer::Init(int Hz, LPTIMECALLBACK TimeProc) {
+    if (curtimer) timeKillEvent(curtimer);
+    curtimer =
+        timeSetEvent(1000 / Hz, 0, (LPTIMECALLBACK)TimeProc, 0, TIME_PERIODIC);
+
+    if (curtimer == 0) return 0;
+
+    return 1;
 }
 
-int Timer::Init(int Hz,LPTIMECALLBACK TimeProc)
-{
- if (curtimer) timeKillEvent(curtimer);
- curtimer=timeSetEvent(1000/Hz,0,(LPTIMECALLBACK) TimeProc,0,TIME_PERIODIC);
-
- if (curtimer==0) return 0;
-
- return 1;
+void Timer::ShutDown() {
+    if (curtimer) timeKillEvent(curtimer);
+    curtimer = 0;
 }
 
-void Timer::ShutDown()
-{
- if (curtimer)
-  timeKillEvent(curtimer);
- curtimer=0;
-}
+Timer::~Timer() { ShutDown(); }
 
-Timer::~Timer()
-{
- ShutDown();
-}
-
-void CALLBACK TimeProc(UINT uID,UINT uMsg,DWORD dwUser,DWORD dw1,DWORD dw2)
-{  
-    if (!bActive) return; // bleh
+void CALLBACK TimeProc(
+    UINT uID, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2) {
+    if (!bActive) return;  // bleh
     systemtime++;
-	timer_count++;
-	hktimer++;
-	vctimer++;
+    timer_count++;
+    hktimer++;
+    vctimer++;
 
-	if (cpu_watch)	CPUTick();             
-	CheckTileAnimation();
-//    CheckHookTimer(); // is this the best spot for this?  I dunno.  Certainly better than in w_graph.cpp (where it hampers class containment)
-	//if (callback)	callback();           
-//	MD_Update();
+    if (cpu_watch) CPUTick();
+    CheckTileAnimation();
+    //    CheckHookTimer(); // is this the best spot for this?  I dunno.
+    //    Certainly better than in w_graph.cpp (where it hampers class
+    //    containment)
+    // if (callback)	callback();
+    //	MD_Update();
 
-//	outp(0x20,0x20);
+    //	outp(0x20,0x20);
 }
 
-int InitTimer()
-{
- systemtime=timer_count=hktimer=vctimer=0;
- if (timer.Init(100,(LPTIMECALLBACK)TimeProc))
-  return 1;
- else
-  return 0;
+int InitTimer() {
+    systemtime = timer_count = hktimer = vctimer = 0;
+    if (timer.Init(100, (LPTIMECALLBACK)TimeProc))
+        return 1;
+    else
+        return 0;
 }
 
-void ShutdownTimer()
-{
- timer.ShutDown();
-}
+void ShutdownTimer() { timer.ShutDown(); }

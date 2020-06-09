@@ -33,7 +33,7 @@
 #define PNG_ZBUF_SIZE 8192
 #endif
 
-#ifndef PNG_NO_FLOATING_POINT_SUPPORTED 
+#ifndef PNG_NO_FLOATING_POINT_SUPPORTED
 #define PNG_FLOATING_POINT_SUPPORTED
 #endif
 
@@ -53,7 +53,7 @@
  * 'Normal' png-on-win32 defines/defaults:
  *   PNG_BUILD_DLL -- building dll
  *   PNG_USE_DLL   -- building an application, linking to dll
- *   (no define)   -- building static library, or building an 
+ *   (no define)   -- building static library, or building an
  *                    application and linking to the static lib
  * 'Cygwin' defines/defaults:
  *   PNG_BUILD_DLL -- building the dll
@@ -67,41 +67,40 @@
  * unnecessary.
  */
 #if defined(__CYGWIN__)
-#  if defined(PNG_BUILD_DLL)
-#    if defined(PNG_USE_DLL)
-#      undef PNG_USE_DLL
-#    endif
-#    if !defined(PNG_DLL)
-#      define PNG_DLL
-#    endif
-#    if defined(PNG_STATIC)
-#      undef PNG_STATIC
-#    endif
-#  else
-#    if defined(PNG_STATIC)
-#      if defined(PNG_USE_DLL)
-#        undef PNG_USE_DLL
-#      endif
-#      if defined(PNG_DLL)
-#        undef PNG_DLL
-#      endif
-#    else
-#      if defined(PNG_USE_DLL)
-#        if !defined(PNG_DLL)
-#          define PNG_DLL
-#        endif
-#      else
-#        if defined(PNG_DLL)
-#           define PNG_USE_DLL
-#        else
-#           define PNG_USE_DLL
-#           define PNG_DLL
-#        endif
-#      endif
-#    endif
-#  endif
+#if defined(PNG_BUILD_DLL)
+#if defined(PNG_USE_DLL)
+#undef PNG_USE_DLL
 #endif
-
+#if !defined(PNG_DLL)
+#define PNG_DLL
+#endif
+#if defined(PNG_STATIC)
+#undef PNG_STATIC
+#endif
+#else
+#if defined(PNG_STATIC)
+#if defined(PNG_USE_DLL)
+#undef PNG_USE_DLL
+#endif
+#if defined(PNG_DLL)
+#undef PNG_DLL
+#endif
+#else
+#if defined(PNG_USE_DLL)
+#if !defined(PNG_DLL)
+#define PNG_DLL
+#endif
+#else
+#if defined(PNG_DLL)
+#define PNG_USE_DLL
+#else
+#define PNG_USE_DLL
+#define PNG_DLL
+#endif
+#endif
+#endif
+#endif
+#endif
 
 /* This protects us against compilers that run on a windowing system
  * and thus don't have or would rather us not use the stdio types:
@@ -121,33 +120,33 @@
 /* Console I/O functions are not supported on WindowsCE */
 #define PNG_NO_CONSOLE_IO
 #ifdef PNG_DEBUG
-#  undef PNG_DEBUG
+#undef PNG_DEBUG
 #endif
 #endif
 
 #ifdef PNG_BUILD_DLL
-#  ifndef PNG_CONSOLE_IO_SUPPORTED
-#    ifndef PNG_NO_CONSOLE_IO
-#      define PNG_NO_CONSOLE_IO
-#    endif
-#  endif
+#ifndef PNG_CONSOLE_IO_SUPPORTED
+#ifndef PNG_NO_CONSOLE_IO
+#define PNG_NO_CONSOLE_IO
+#endif
+#endif
 #endif
 
-#  ifdef PNG_NO_STDIO
-#    ifndef PNG_NO_CONSOLE_IO
-#      define PNG_NO_CONSOLE_IO
-#    endif
-#    ifdef PNG_DEBUG
-#      if (PNG_DEBUG > 0)
-#        include <stdio.h>
-#      endif
-#    endif
-#  else
-#    if !defined(_WIN32_WCE)
+#ifdef PNG_NO_STDIO
+#ifndef PNG_NO_CONSOLE_IO
+#define PNG_NO_CONSOLE_IO
+#endif
+#ifdef PNG_DEBUG
+#if (PNG_DEBUG > 0)
+#include <stdio.h>
+#endif
+#endif
+#else
+#if !defined(_WIN32_WCE)
 /* "stdio.h" functions are not supported on WindowsCE */
-#      include <stdio.h>
-#    endif
-#  endif
+#include <stdio.h>
+#endif
+#endif
 
 /* This macro protects us against machines that don't have function
  * prototypes (ie K&R style headers).  If your compiler does not handle
@@ -189,7 +188,7 @@
 #endif
 
 #ifndef PNG_SETJMP_NOT_SUPPORTED
-#  define PNG_SETJMP_SUPPORTED
+#define PNG_SETJMP_SUPPORTED
 #endif
 
 #ifdef PNG_SETJMP_SUPPORTED
@@ -197,26 +196,26 @@
  * the X config stuff didn't define _BSD_SOURCE we wouldn't need this.
  */
 
-#  ifdef __linux__
-#    ifdef _BSD_SOURCE
-#      define PNG_SAVE_BSD_SOURCE
-#      undef _BSD_SOURCE
-#    endif
-#    ifdef _SETJMP_H
-      __png.h__ already includes setjmp.h;
-      __dont__ include it again.;
-#    endif
+#ifdef __linux__
+#ifdef _BSD_SOURCE
+#define PNG_SAVE_BSD_SOURCE
+#undef _BSD_SOURCE
+#endif
+#ifdef _SETJMP_H
+__png.h__ already includes setjmp.h;
+__dont__ include it again.;
+#endif
 #endif /* __linux__ */
 
 /* include setjmp.h for error handling */
 #include <setjmp.h>
 
-#  ifdef __linux__
-#    ifdef PNG_SAVE_BSD_SOURCE
-#      define _BSD_SOURCE
-#      undef PNG_SAVE_BSD_SOURCE
-#    endif
-#  endif /* __linux__ */
+#ifdef __linux__
+#ifdef PNG_SAVE_BSD_SOURCE
+#define _BSD_SOURCE
+#undef PNG_SAVE_BSD_SOURCE
+#endif
+#endif /* __linux__ */
 #endif /* PNG_SETJMP_SUPPORTED */
 
 #if defined(_AIX) && defined(__xlC__)
@@ -326,9 +325,9 @@
  */
 
 #ifndef PNG_NO_CONST
-#  define PNG_CONST const
+#define PNG_CONST const
 #else
-#  define PNG_CONST
+#define PNG_CONST
 #endif
 
 /* The following defines give you the ability to remove code from the
@@ -365,12 +364,12 @@
  */
 
 #ifndef PNG_iTXt_SUPPORTED
-#  ifndef PNG_READ_iTXt_SUPPORTED
-#    define PNG_NO_READ_iTXt
-#  endif
-#  ifndef PNG_WRITE_iTXt_SUPPORTED
-#    define PNG_NO_WRITE_iTXt
-#  endif
+#ifndef PNG_READ_iTXt_SUPPORTED
+#define PNG_NO_READ_iTXt
+#endif
+#ifndef PNG_WRITE_iTXt_SUPPORTED
+#define PNG_NO_WRITE_iTXt
+#endif
 #endif
 
 /* The following support, added after version 1.0.0, can be turned off here en
@@ -403,7 +402,7 @@
 
 /* Ignore attempt to turn off both floating and fixed point support */
 #if !defined(PNG_FLOATING_POINT_SUPPORTED) || \
- !defined(PNG_NO_FIXED_POINT_SUPPORTED)
+    !defined(PNG_NO_FIXED_POINT_SUPPORTED)
 #define PNG_FIXED_POINT_SUPPORTED
 #endif
 
@@ -478,20 +477,25 @@
 #endif /* PNG_READ_TRANSFORMS_SUPPORTED */
 
 #if !defined(PNG_NO_PROGRESSIVE_READ) && \
- !defined(PNG_PROGRESSIVE_READ_NOT_SUPPORTED) /* if you don't do progressive   */
-#define PNG_PROGRESSIVE_READ_SUPPORTED       /* reading.  This is not talking */
-#endif                               /* about interlacing capability!  You'll */
-              /* still have interlacing unless you change the following line: */
-#define PNG_READ_INTERLACING_SUPPORTED /* required for PNG-compliant decoders */
+    !defined(                            \
+        PNG_PROGRESSIVE_READ_NOT_SUPPORTED) /* if you don't do progressive */
+#define PNG_PROGRESSIVE_READ_SUPPORTED      /* reading.  This is not talking */
+#endif /* about interlacing capability!  You'll */
+       /* still have interlacing unless you change the following line: */
+#define PNG_READ_INTERLACING_SUPPORTED /* required for PNG-compliant decoders \
+                                        * \                                   \
+                                        * \ \                                                                            \
+                                        * \ \ \                                                                            \
+                                          */
 
 #ifndef PNG_NO_READ_COMPOSITE_NODIV
-#ifndef PNG_NO_READ_COMPOSITED_NODIV  /* libpng-1.0.x misspelling */
-#define PNG_READ_COMPOSITE_NODIV_SUPPORTED    /* well tested on Intel and SGI */
+#ifndef PNG_NO_READ_COMPOSITED_NODIV       /* libpng-1.0.x misspelling */
+#define PNG_READ_COMPOSITE_NODIV_SUPPORTED /* well tested on Intel and SGI */
 #endif
 #endif
 
 #ifndef PNG_NO_READ_EMPTY_PLTE
-#define PNG_READ_EMPTY_PLTE_SUPPORTED  /* useful for MNG applications */
+#define PNG_READ_EMPTY_PLTE_SUPPORTED /* useful for MNG applications */
 #endif
 
 #ifdef PNG_WRITE_TRANSFORMS_SUPPORTED
@@ -514,7 +518,7 @@
 #define PNG_WRITE_INVERT_SUPPORTED
 #endif
 #ifndef PNG_NO_WRITE_FILLER
-#define PNG_WRITE_FILLER_SUPPORTED  /* This is the same as WRITE_STRIP_ALPHA */
+#define PNG_WRITE_FILLER_SUPPORTED /* This is the same as WRITE_STRIP_ALPHA */
 #endif
 #ifndef PNG_NO_WRITE_SWAP_ALPHA
 #define PNG_WRITE_SWAP_ALPHA_SUPPORTED
@@ -534,12 +538,14 @@ defined(PNG_WRITE_USER_TRANSFORM_SUPPORTED)
 #endif
 #endif
 
-#define PNG_WRITE_INTERLACING_SUPPORTED  /* not required for PNG-compliant
-                                            encoders, but can cause trouble
-                                            if left undefined */
+#define PNG_WRITE_INTERLACING_SUPPORTED /* not required for PNG-compliant \ \  \
+                                           \                                   \
+                                           encoders, but can cause trouble \ \ \
+                                           \                                   \
+                                           if left undefined */
 
 #if !defined(PNG_NO_WRITE_WEIGHTED_FILTER) && \
-     defined(PNG_FLOATING_POINT_SUPPORTED)
+    defined(PNG_FLOATING_POINT_SUPPORTED)
 #define PNG_WRITE_WEIGHTED_FILTER_SUPPORTED
 #endif
 
@@ -548,7 +554,7 @@ defined(PNG_WRITE_USER_TRANSFORM_SUPPORTED)
 #endif
 
 #ifndef PNG_NO_WRITE_EMPTY_PLTE
-#define PNG_WRITE_EMPTY_PLTE_SUPPORTED  /* useful for MNG applications */
+#define PNG_WRITE_EMPTY_PLTE_SUPPORTED /* useful for MNG applications */
 #endif
 
 #ifndef PNG_NO_STDIO
@@ -575,8 +581,8 @@ defined(PNG_WRITE_USER_TRANSFORM_SUPPORTED)
 #define PNG_EASY_ACCESS_SUPPORTED
 #endif
 
-#if defined(PNG_USE_PNGVCRD) || defined(PNG_USE_PNGGCCRD) && \
-  !defined(PNG_NO_ASSEMBLER_CODE)
+#if defined(PNG_USE_PNGVCRD) || \
+    defined(PNG_USE_PNGGCCRD) && !defined(PNG_NO_ASSEMBLER_CODE)
 #define PNG_ASSEMBLER_CODE_SUPPORTED
 #endif
 
@@ -628,233 +634,233 @@ defined(PNG_WRITE_USER_TRANSFORM_SUPPORTED)
 #ifdef PNG_READ_ANCILLARY_CHUNKS_SUPPORTED
 
 #ifdef PNG_NO_READ_TEXT
-#  define PNG_NO_READ_iTXt
-#  define PNG_NO_READ_tEXt
-#  define PNG_NO_READ_zTXt
+#define PNG_NO_READ_iTXt
+#define PNG_NO_READ_tEXt
+#define PNG_NO_READ_zTXt
 #endif
 #ifndef PNG_NO_READ_bKGD
-#  define PNG_READ_bKGD_SUPPORTED
-#  define PNG_bKGD_SUPPORTED
+#define PNG_READ_bKGD_SUPPORTED
+#define PNG_bKGD_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_cHRM
-#  define PNG_READ_cHRM_SUPPORTED
-#  define PNG_cHRM_SUPPORTED
+#define PNG_READ_cHRM_SUPPORTED
+#define PNG_cHRM_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_gAMA
-#  define PNG_READ_gAMA_SUPPORTED
-#  define PNG_gAMA_SUPPORTED
+#define PNG_READ_gAMA_SUPPORTED
+#define PNG_gAMA_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_hIST
-#  define PNG_READ_hIST_SUPPORTED
-#  define PNG_hIST_SUPPORTED
+#define PNG_READ_hIST_SUPPORTED
+#define PNG_hIST_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_iCCP
-#  define PNG_READ_iCCP_SUPPORTED
-#  define PNG_iCCP_SUPPORTED
+#define PNG_READ_iCCP_SUPPORTED
+#define PNG_iCCP_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_iTXt
-#  define PNG_READ_iTXt_SUPPORTED
-#  define PNG_iTXt_SUPPORTED
+#define PNG_READ_iTXt_SUPPORTED
+#define PNG_iTXt_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_oFFs
-#  define PNG_READ_oFFs_SUPPORTED
-#  define PNG_oFFs_SUPPORTED
+#define PNG_READ_oFFs_SUPPORTED
+#define PNG_oFFs_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_pCAL
-#  define PNG_READ_pCAL_SUPPORTED
-#  define PNG_pCAL_SUPPORTED
+#define PNG_READ_pCAL_SUPPORTED
+#define PNG_pCAL_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_sCAL
-#  define PNG_READ_sCAL_SUPPORTED
-#  define PNG_sCAL_SUPPORTED
+#define PNG_READ_sCAL_SUPPORTED
+#define PNG_sCAL_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_pHYs
-#  define PNG_READ_pHYs_SUPPORTED
-#  define PNG_pHYs_SUPPORTED
+#define PNG_READ_pHYs_SUPPORTED
+#define PNG_pHYs_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_sBIT
-#  define PNG_READ_sBIT_SUPPORTED
-#  define PNG_sBIT_SUPPORTED
+#define PNG_READ_sBIT_SUPPORTED
+#define PNG_sBIT_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_sPLT
-#  define PNG_READ_sPLT_SUPPORTED
-#  define PNG_sPLT_SUPPORTED
+#define PNG_READ_sPLT_SUPPORTED
+#define PNG_sPLT_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_sRGB
-#  define PNG_READ_sRGB_SUPPORTED
-#  define PNG_sRGB_SUPPORTED
+#define PNG_READ_sRGB_SUPPORTED
+#define PNG_sRGB_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_tEXt
-#  define PNG_READ_tEXt_SUPPORTED
-#  define PNG_tEXt_SUPPORTED
+#define PNG_READ_tEXt_SUPPORTED
+#define PNG_tEXt_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_tIME
-#  define PNG_READ_tIME_SUPPORTED
-#  define PNG_tIME_SUPPORTED
+#define PNG_READ_tIME_SUPPORTED
+#define PNG_tIME_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_tRNS
-#  define PNG_READ_tRNS_SUPPORTED
-#  define PNG_tRNS_SUPPORTED
+#define PNG_READ_tRNS_SUPPORTED
+#define PNG_tRNS_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_zTXt
-#  define PNG_READ_zTXt_SUPPORTED
-#  define PNG_zTXt_SUPPORTED
+#define PNG_READ_zTXt_SUPPORTED
+#define PNG_zTXt_SUPPORTED
 #endif
 #ifndef PNG_NO_READ_UNKNOWN_CHUNKS
-#  define PNG_READ_UNKNOWN_CHUNKS_SUPPORTED
-#  ifndef PNG_UNKNOWN_CHUNKS_SUPPORTED
-#    define PNG_UNKNOWN_CHUNKS_SUPPORTED
-#  endif
-#  ifndef PNG_NO_HANDLE_AS_UNKNOWN
-#    define PNG_HANDLE_AS_UNKNOWN_SUPPORTED
-#  endif
+#define PNG_READ_UNKNOWN_CHUNKS_SUPPORTED
+#ifndef PNG_UNKNOWN_CHUNKS_SUPPORTED
+#define PNG_UNKNOWN_CHUNKS_SUPPORTED
+#endif
+#ifndef PNG_NO_HANDLE_AS_UNKNOWN
+#define PNG_HANDLE_AS_UNKNOWN_SUPPORTED
+#endif
 #endif
 #if !defined(PNG_NO_READ_USER_CHUNKS) && \
-     defined(PNG_READ_UNKNOWN_CHUNKS_SUPPORTED)
-#  define PNG_READ_USER_CHUNKS_SUPPORTED
-#  define PNG_USER_CHUNKS_SUPPORTED
-#  ifdef PNG_NO_READ_UNKNOWN_CHUNKS
-#    undef PNG_NO_READ_UNKNOWN_CHUNKS
-#  endif
-#  ifdef PNG_NO_HANDLE_AS_UNKNOWN
-#    undef PNG_NO_HANDLE_AS_UNKNOWN
-#  endif
+    defined(PNG_READ_UNKNOWN_CHUNKS_SUPPORTED)
+#define PNG_READ_USER_CHUNKS_SUPPORTED
+#define PNG_USER_CHUNKS_SUPPORTED
+#ifdef PNG_NO_READ_UNKNOWN_CHUNKS
+#undef PNG_NO_READ_UNKNOWN_CHUNKS
+#endif
+#ifdef PNG_NO_HANDLE_AS_UNKNOWN
+#undef PNG_NO_HANDLE_AS_UNKNOWN
+#endif
 #endif
 #ifndef PNG_NO_READ_OPT_PLTE
-#  define PNG_READ_OPT_PLTE_SUPPORTED /* only affects support of the */
-#endif                      /* optional PLTE chunk in RGB and RGBA images */
+#define PNG_READ_OPT_PLTE_SUPPORTED /* only affects support of the */
+#endif /* optional PLTE chunk in RGB and RGBA images */
 #if defined(PNG_READ_iTXt_SUPPORTED) || defined(PNG_READ_tEXt_SUPPORTED) || \
-  defined(PNG_READ_zTXt_SUPPORTED)
-#  define PNG_READ_TEXT_SUPPORTED
-#  define PNG_TEXT_SUPPORTED
+    defined(PNG_READ_zTXt_SUPPORTED)
+#define PNG_READ_TEXT_SUPPORTED
+#define PNG_TEXT_SUPPORTED
 #endif
 #endif /* PNG_READ_ANCILLARY_CHUNKS_SUPPORTED */
 
 #ifdef PNG_WRITE_ANCILLARY_CHUNKS_SUPPORTED
 #ifdef PNG_NO_WRITE_TEXT
-#  define PNG_NO_WRITE_iTXt
-#  define PNG_NO_WRITE_tEXt
-#  define PNG_NO_WRITE_zTXt
+#define PNG_NO_WRITE_iTXt
+#define PNG_NO_WRITE_tEXt
+#define PNG_NO_WRITE_zTXt
 #endif
 #ifndef PNG_NO_WRITE_bKGD
-#  define PNG_WRITE_bKGD_SUPPORTED
-#  ifndef PNG_bKGD_SUPPORTED
-#    define PNG_bKGD_SUPPORTED
-#  endif
+#define PNG_WRITE_bKGD_SUPPORTED
+#ifndef PNG_bKGD_SUPPORTED
+#define PNG_bKGD_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_cHRM
-#  define PNG_WRITE_cHRM_SUPPORTED
-#  ifndef PNG_cHRM_SUPPORTED
-#    define PNG_cHRM_SUPPORTED
-#  endif
+#define PNG_WRITE_cHRM_SUPPORTED
+#ifndef PNG_cHRM_SUPPORTED
+#define PNG_cHRM_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_gAMA
-#  define PNG_WRITE_gAMA_SUPPORTED
-#  ifndef PNG_gAMA_SUPPORTED
-#    define PNG_gAMA_SUPPORTED
-#  endif
+#define PNG_WRITE_gAMA_SUPPORTED
+#ifndef PNG_gAMA_SUPPORTED
+#define PNG_gAMA_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_hIST
-#  define PNG_WRITE_hIST_SUPPORTED
-#  ifndef PNG_hIST_SUPPORTED
-#    define PNG_hIST_SUPPORTED
-#  endif
+#define PNG_WRITE_hIST_SUPPORTED
+#ifndef PNG_hIST_SUPPORTED
+#define PNG_hIST_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_iCCP
-#  define PNG_WRITE_iCCP_SUPPORTED
-#  ifndef PNG_iCCP_SUPPORTED
-#    define PNG_iCCP_SUPPORTED
-#  endif
+#define PNG_WRITE_iCCP_SUPPORTED
+#ifndef PNG_iCCP_SUPPORTED
+#define PNG_iCCP_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_iTXt
-#  define PNG_WRITE_iTXt_SUPPORTED
-#  ifndef PNG_iTXt_SUPPORTED
-#    define PNG_iTXt_SUPPORTED
-#  endif
+#define PNG_WRITE_iTXt_SUPPORTED
+#ifndef PNG_iTXt_SUPPORTED
+#define PNG_iTXt_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_oFFs
-#  define PNG_WRITE_oFFs_SUPPORTED
-#  ifndef PNG_oFFs_SUPPORTED
-#    define PNG_oFFs_SUPPORTED
-#  endif
+#define PNG_WRITE_oFFs_SUPPORTED
+#ifndef PNG_oFFs_SUPPORTED
+#define PNG_oFFs_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_pCAL
-#  define PNG_WRITE_pCAL_SUPPORTED
-#  ifndef PNG_pCAL_SUPPORTED
-#    define PNG_pCAL_SUPPORTED
-#  endif
+#define PNG_WRITE_pCAL_SUPPORTED
+#ifndef PNG_pCAL_SUPPORTED
+#define PNG_pCAL_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_sCAL
-#  define PNG_WRITE_sCAL_SUPPORTED
-#  ifndef PNG_sCAL_SUPPORTED
-#    define PNG_sCAL_SUPPORTED
-#  endif
+#define PNG_WRITE_sCAL_SUPPORTED
+#ifndef PNG_sCAL_SUPPORTED
+#define PNG_sCAL_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_pHYs
-#  define PNG_WRITE_pHYs_SUPPORTED
-#  ifndef PNG_pHYs_SUPPORTED
-#    define PNG_pHYs_SUPPORTED
-#  endif
+#define PNG_WRITE_pHYs_SUPPORTED
+#ifndef PNG_pHYs_SUPPORTED
+#define PNG_pHYs_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_sBIT
-#  define PNG_WRITE_sBIT_SUPPORTED
-#  ifndef PNG_sBIT_SUPPORTED
-#    define PNG_sBIT_SUPPORTED
-#  endif
+#define PNG_WRITE_sBIT_SUPPORTED
+#ifndef PNG_sBIT_SUPPORTED
+#define PNG_sBIT_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_sPLT
-#  define PNG_WRITE_sPLT_SUPPORTED
-#  ifndef PNG_sPLT_SUPPORTED
-#    define PNG_sPLT_SUPPORTED
-#  endif
+#define PNG_WRITE_sPLT_SUPPORTED
+#ifndef PNG_sPLT_SUPPORTED
+#define PNG_sPLT_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_sRGB
-#  define PNG_WRITE_sRGB_SUPPORTED
-#  ifndef PNG_sRGB_SUPPORTED
-#    define PNG_sRGB_SUPPORTED
-#  endif
+#define PNG_WRITE_sRGB_SUPPORTED
+#ifndef PNG_sRGB_SUPPORTED
+#define PNG_sRGB_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_tEXt
-#  define PNG_WRITE_tEXt_SUPPORTED
-#  ifndef PNG_tEXt_SUPPORTED
-#    define PNG_tEXt_SUPPORTED
-#  endif
+#define PNG_WRITE_tEXt_SUPPORTED
+#ifndef PNG_tEXt_SUPPORTED
+#define PNG_tEXt_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_tIME
-#  define PNG_WRITE_tIME_SUPPORTED
-#  ifndef PNG_tIME_SUPPORTED
-#    define PNG_tIME_SUPPORTED
-#  endif
+#define PNG_WRITE_tIME_SUPPORTED
+#ifndef PNG_tIME_SUPPORTED
+#define PNG_tIME_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_tRNS
-#  define PNG_WRITE_tRNS_SUPPORTED
-#  ifndef PNG_tRNS_SUPPORTED
-#    define PNG_tRNS_SUPPORTED
-#  endif
+#define PNG_WRITE_tRNS_SUPPORTED
+#ifndef PNG_tRNS_SUPPORTED
+#define PNG_tRNS_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_zTXt
-#  define PNG_WRITE_zTXt_SUPPORTED
-#  ifndef PNG_zTXt_SUPPORTED
-#    define PNG_zTXt_SUPPORTED
-#  endif
+#define PNG_WRITE_zTXt_SUPPORTED
+#ifndef PNG_zTXt_SUPPORTED
+#define PNG_zTXt_SUPPORTED
+#endif
 #endif
 #ifndef PNG_NO_WRITE_UNKNOWN_CHUNKS
-#  define PNG_WRITE_UNKNOWN_CHUNKS_SUPPORTED
-#  ifndef PNG_UNKNOWN_CHUNKS_SUPPORTED
-#    define PNG_UNKNOWN_CHUNKS_SUPPORTED
-#  endif
-#  ifndef PNG_NO_HANDLE_AS_UNKNOWN
-#     ifndef PNG_HANDLE_AS_UNKNOWN_SUPPORTED
-#       define PNG_HANDLE_AS_UNKNOWN_SUPPORTED
-#     endif
-#  endif
+#define PNG_WRITE_UNKNOWN_CHUNKS_SUPPORTED
+#ifndef PNG_UNKNOWN_CHUNKS_SUPPORTED
+#define PNG_UNKNOWN_CHUNKS_SUPPORTED
+#endif
+#ifndef PNG_NO_HANDLE_AS_UNKNOWN
+#ifndef PNG_HANDLE_AS_UNKNOWN_SUPPORTED
+#define PNG_HANDLE_AS_UNKNOWN_SUPPORTED
+#endif
+#endif
 #endif
 #if defined(PNG_WRITE_iTXt_SUPPORTED) || defined(PNG_WRITE_tEXt_SUPPORTED) || \
-  defined(PNG_WRITE_zTXt_SUPPORTED)
-#  define PNG_WRITE_TEXT_SUPPORTED
-#  ifndef PNG_TEXT_SUPPORTED
-#    define PNG_TEXT_SUPPORTED
-#  endif
+    defined(PNG_WRITE_zTXt_SUPPORTED)
+#define PNG_WRITE_TEXT_SUPPORTED
+#ifndef PNG_TEXT_SUPPORTED
+#define PNG_TEXT_SUPPORTED
+#endif
 #endif
 #endif /* PNG_WRITE_ANCILLARY_CHUNKS_SUPPORTED */
 
@@ -863,15 +869,15 @@ defined(PNG_WRITE_USER_TRANSFORM_SUPPORTED)
  * out of the info structure.
  */
 #ifndef PNG_NO_INFO_IMAGE
-#  define PNG_INFO_IMAGE_SUPPORTED
+#define PNG_INFO_IMAGE_SUPPORTED
 #endif
 
 /* need the time information for reading tIME chunks */
 #if defined(PNG_tIME_SUPPORTED)
-#  if !defined(_WIN32_WCE)
-     /* "time.h" functions are not supported on WindowsCE */
-#    include <time.h>
-#  endif
+#if !defined(_WIN32_WCE)
+/* "time.h" functions are not supported on WindowsCE */
+#include <time.h>
+#endif
 #endif
 
 /* Some typedefs to get us started.  These should be safe on most of the
@@ -918,17 +924,16 @@ typedef size_t png_size_t;
 #define FAR __far
 #endif
 #define USE_FAR_KEYWORD
-#endif   /* LDATA != 1 */
+#endif /* LDATA != 1 */
 
 /* Possibly useful for moving data out of default segment.
  * Uncomment it if you want. Could also define FARDATA as
  * const if your compiler supports it. (SJT)
 #  define FARDATA FAR
  */
-#endif  /* __WIN32__, __FLAT__, __CYGWIN__ */
+#endif /* __WIN32__, __FLAT__, __CYGWIN__ */
 
-#endif   /* __BORLANDC__ */
-
+#endif /* __BORLANDC__ */
 
 /* Suggest testing for specific compiler first before testing for
  * FAR.  The Watcom compiler defines both __MEDIUM__ and M_I86MM,
@@ -937,16 +942,16 @@ typedef size_t png_size_t;
 
 /* MSC Medium model */
 #if defined(FAR)
-#  if defined(M_I86MM)
-#     define USE_FAR_KEYWORD
-#     define FARDATA FAR
-#     include <dos.h>
-#  endif
+#if defined(M_I86MM)
+#define USE_FAR_KEYWORD
+#define FARDATA FAR
+#include <dos.h>
+#endif
 #endif
 
 /* SJT: default case */
 #ifndef FAR
-#   define FAR
+#define FAR
 #endif
 
 /* At this point FAR is always defined */
@@ -959,47 +964,47 @@ typedef size_t png_size_t;
 typedef png_int_32 png_fixed_point;
 
 /* Add typedefs for pointers */
-typedef void            FAR * png_voidp;
-typedef png_byte        FAR * png_bytep;
-typedef png_uint_32     FAR * png_uint_32p;
-typedef png_int_32      FAR * png_int_32p;
-typedef png_uint_16     FAR * png_uint_16p;
-typedef png_int_16      FAR * png_int_16p;
-typedef PNG_CONST char  FAR * png_const_charp;
-typedef char            FAR * png_charp;
-typedef png_fixed_point FAR * png_fixed_point_p;
+typedef void FAR *png_voidp;
+typedef png_byte FAR *png_bytep;
+typedef png_uint_32 FAR *png_uint_32p;
+typedef png_int_32 FAR *png_int_32p;
+typedef png_uint_16 FAR *png_uint_16p;
+typedef png_int_16 FAR *png_int_16p;
+typedef PNG_CONST char FAR *png_const_charp;
+typedef char FAR *png_charp;
+typedef png_fixed_point FAR *png_fixed_point_p;
 #if defined(_WIN32_WCE)
-typedef HANDLE                png_FILE_p;
+typedef HANDLE png_FILE_p;
 #else
-typedef FILE                * png_FILE_p;
+typedef FILE *png_FILE_p;
 #endif
 #ifdef PNG_FLOATING_POINT_SUPPORTED
-typedef double          FAR * png_doublep;
+typedef double FAR *png_doublep;
 #endif
 
 /* Pointers to pointers; i.e. arrays */
-typedef png_byte        FAR * FAR * png_bytepp;
-typedef png_uint_32     FAR * FAR * png_uint_32pp;
-typedef png_int_32      FAR * FAR * png_int_32pp;
-typedef png_uint_16     FAR * FAR * png_uint_16pp;
-typedef png_int_16      FAR * FAR * png_int_16pp;
-typedef PNG_CONST char  FAR * FAR * png_const_charpp;
-typedef char            FAR * FAR * png_charpp;
-typedef png_fixed_point FAR * FAR * png_fixed_point_pp;
+typedef png_byte FAR *FAR *png_bytepp;
+typedef png_uint_32 FAR *FAR *png_uint_32pp;
+typedef png_int_32 FAR *FAR *png_int_32pp;
+typedef png_uint_16 FAR *FAR *png_uint_16pp;
+typedef png_int_16 FAR *FAR *png_int_16pp;
+typedef PNG_CONST char FAR *FAR *png_const_charpp;
+typedef char FAR *FAR *png_charpp;
+typedef png_fixed_point FAR *FAR *png_fixed_point_pp;
 #ifdef PNG_FLOATING_POINT_SUPPORTED
-typedef double          FAR * FAR * png_doublepp;
+typedef double FAR *FAR *png_doublepp;
 #endif
 
 /* Pointers to pointers to pointers; i.e. pointer to array */
-typedef char            FAR * FAR * FAR * png_charppp;
+typedef char FAR *FAR *FAR *png_charppp;
 
 /* libpng typedefs for types in zlib. If zlib changes
  * or another compression library is used, then change these.
  * Eliminates need to change all the source files.
  */
-typedef charf *         png_zcharp;
-typedef charf * FAR *   png_zcharpp;
-typedef z_stream FAR *  png_zstreamp;
+typedef charf *png_zcharp;
+typedef charf *FAR *png_zcharpp;
+typedef z_stream FAR *png_zstreamp;
 
 /*
  * Define PNG_BUILD_DLL if the module being built is a Windows
@@ -1009,136 +1014,135 @@ typedef z_stream FAR *  png_zstreamp;
  * It is equivalent to Microsoft predefined macro _DLL which is
  * automatically defined when you compile using the share
  * version of the CRT (C Run-Time library)
- * 
- * The cygwin mods make this behavior a little different: 
+ *
+ * The cygwin mods make this behavior a little different:
  * Define PNG_BUILD_DLL if you are building a dll for use with cygwin
  * Define PNG_STATIC if you are building a static library for use with cygwin,
- *   -or- if you are building an application that you want to link to the 
+ *   -or- if you are building an application that you want to link to the
  *   static library.
  * PNG_USE_DLL is defined by default (no user action needed) unless one of
  *   the other flags is defined.
  */
 
 #if !defined(PNG_DLL) && (defined(PNG_BUILD_DLL) || defined(PNG_USE_DLL))
-#  define PNG_DLL
+#define PNG_DLL
 #endif
 /* If CYGWIN, then disallow GLOBAL ARRAYS unless building a static lib.
  * When building a static lib, default to no GLOBAL ARRAYS, but allow
  * command-line override
  */
 #if defined(__CYGWIN__)
-#  if !defined(PNG_STATIC)
-#    if defined(PNG_USE_GLOBAL_ARRAYS)
-#      undef PNG_USE_GLOBAL_ARRAYS
-#    endif
-#    if !defined(PNG_USE_LOCAL_ARRAYS)
-#      define PNG_USE_LOCAL_ARRAYS
-#    endif
-#  else
-#    if defined(PNG_USE_LOCAL_ARRAYS) || defined(PNG_NO_GLOBAL_ARRAYS)
-#      if defined(PNG_USE_GLOBAL_ARRAYS)
-#        undef PNG_USE_GLOBAL_ARRAYS
-#      endif
-#    endif
-#  endif
-#  if !defined(PNG_USE_LOCAL_ARRAYS) && !defined(PNG_USE_GLOBAL_ARRAYS)
-#    define PNG_USE_LOCAL_ARRAYS
-#  endif
+#if !defined(PNG_STATIC)
+#if defined(PNG_USE_GLOBAL_ARRAYS)
+#undef PNG_USE_GLOBAL_ARRAYS
 #endif
-    
+#if !defined(PNG_USE_LOCAL_ARRAYS)
+#define PNG_USE_LOCAL_ARRAYS
+#endif
+#else
+#if defined(PNG_USE_LOCAL_ARRAYS) || defined(PNG_NO_GLOBAL_ARRAYS)
+#if defined(PNG_USE_GLOBAL_ARRAYS)
+#undef PNG_USE_GLOBAL_ARRAYS
+#endif
+#endif
+#endif
+#if !defined(PNG_USE_LOCAL_ARRAYS) && !defined(PNG_USE_GLOBAL_ARRAYS)
+#define PNG_USE_LOCAL_ARRAYS
+#endif
+#endif
+
 /* Do not use global arrays (helps with building DLL's)
  * They are no longer used in libpng itself, since version 1.0.5c,
  * but might be required for some pre-1.0.5c applications.
  */
 #if !defined(PNG_USE_LOCAL_ARRAYS) && !defined(PNG_USE_GLOBAL_ARRAYS)
-#  if defined(PNG_NO_GLOBAL_ARRAYS) || (defined(__GNUC__) && defined(PNG_DLL))
-#    define PNG_USE_LOCAL_ARRAYS
-#  else
-#    define PNG_USE_GLOBAL_ARRAYS
-#  endif
+#if defined(PNG_NO_GLOBAL_ARRAYS) || (defined(__GNUC__) && defined(PNG_DLL))
+#define PNG_USE_LOCAL_ARRAYS
+#else
+#define PNG_USE_GLOBAL_ARRAYS
+#endif
 #endif
 
 #ifndef PNGAPI
 
-
 #if defined(__MINGW32__) || defined(__CYGWIN__) && !defined(PNG_MODULEDEF)
-#  ifndef PNG_NO_MODULEDEF
-#    define PNG_NO_MODULEDEF
-#  endif
-#endif 
- 
-#if !defined(PNG_IMPEXP) && defined(PNG_BUILD_DLL) && !defined(PNG_NO_MODULEDEF)
-#  define PNG_IMPEXP
+#ifndef PNG_NO_MODULEDEF
+#define PNG_NO_MODULEDEF
+#endif
 #endif
 
-#if defined(PNG_DLL) || defined(_DLL) || defined(__DLL__ ) || \
-    (( defined(_Windows) || defined(_WINDOWS) || \
-       defined(WIN32) || defined(_WIN32) || defined(__WIN32__) \
-	  ) && !defined(__CYGWIN__))
+#if !defined(PNG_IMPEXP) && defined(PNG_BUILD_DLL) && !defined(PNG_NO_MODULEDEF)
+#define PNG_IMPEXP
+#endif
 
-#  ifdef __GNUC__
-#    define PNGAPI __cdecl
-#  else
-#    define PNGAPI _cdecl
-#  endif
+#if defined(PNG_DLL) || defined(_DLL) || defined(__DLL__) ||      \
+    ((defined(_Windows) || defined(_WINDOWS) || defined(WIN32) || \
+         defined(_WIN32) || defined(__WIN32__)) &&                \
+        !defined(__CYGWIN__))
 
-#  if !defined(PNG_IMPEXP) && (!defined(PNG_DLL) || \
-       0 /* WINCOMPILER_WITH_NO_SUPPORT_FOR_DECLIMPEXP */)
-#     define PNG_IMPEXP
-#  endif
+#ifdef __GNUC__
+#define PNGAPI __cdecl
+#else
+#define PNGAPI _cdecl
+#endif
 
-#  if !defined(PNG_IMPEXP)
+#if !defined(PNG_IMPEXP) && \
+    (!defined(PNG_DLL) || 0 /* WINCOMPILER_WITH_NO_SUPPORT_FOR_DECLIMPEXP */)
+#define PNG_IMPEXP
+#endif
 
-#     define PNG_EXPORT_TYPE1(type,symbol)  PNG_IMPEXP type PNGAPI symbol
-#     define PNG_EXPORT_TYPE2(type,symbol)  type PNG_IMPEXP PNGAPI symbol
+#if !defined(PNG_IMPEXP)
 
-      /* Borland/Microsoft */
-#     if defined(_MSC_VER) || defined(__BORLANDC__)
-#        if (_MSC_VER >= 800) || (__BORLANDC__ >= 0x500)
-#           define PNG_EXPORT PNG_EXPORT_TYPE1
-#        else
-#           define PNG_EXPORT PNG_EXPORT_TYPE2
-#           if defined(PNG_BUILD_DLL)
-#              define PNG_IMPEXP __export
-#           else
-#              define PNG_IMPEXP /*__import*/ /* doesn't exist AFAIK in
-                                                 VC++*/
-#           endif                             /* Exists in Borland C++ for
-                                                 C++ classes (== huge) */
-#        endif
-#     endif
+#define PNG_EXPORT_TYPE1(type, symbol) PNG_IMPEXP type PNGAPI symbol
+#define PNG_EXPORT_TYPE2(type, symbol) type PNG_IMPEXP PNGAPI symbol
 
-#     if !defined(PNG_IMPEXP)
-#        if defined(PNG_BUILD_DLL)
-#           define PNG_IMPEXP __declspec(dllexport)
-#        else
-#           define PNG_IMPEXP __declspec(dllimport)
-#        endif
-#     endif
-#  endif  /* PNG_IMPEXP */
-#else /* !(DLL || non-cygwin WINDOWS) */
-#  if defined(__CYGWIN__) && !defined(PNG_DLL)
-#    if !defined(PNG_IMPEXP)
-#      define PNG_IMPEXP
-#    endif
-#    define PNGAPI __cdecl
-#  else
-#    if 0 /* ... other platforms, with other meanings */
-#    else
-#       define PNGAPI
-#       define PNG_IMPEXP
-#    endif
-#  endif
+/* Borland/Microsoft */
+#if defined(_MSC_VER) || defined(__BORLANDC__)
+#if (_MSC_VER >= 800) || (__BORLANDC__ >= 0x500)
+#define PNG_EXPORT PNG_EXPORT_TYPE1
+#else
+#define PNG_EXPORT PNG_EXPORT_TYPE2
+#if defined(PNG_BUILD_DLL)
+#define PNG_IMPEXP __export
+#else
+#define PNG_IMPEXP /*__import*/ /* doesn't exist AFAIK in \ \ \ \
+                                   VC++*/
+#endif /* Exists in Borland C++ for                   \ \ \ \
+          C++ classes (== huge) */
+#endif
+#endif
+
+#if !defined(PNG_IMPEXP)
+#if defined(PNG_BUILD_DLL)
+#define PNG_IMPEXP __declspec(dllexport)
+#else
+#define PNG_IMPEXP __declspec(dllimport)
+#endif
+#endif
+#endif /* PNG_IMPEXP */
+#else  /* !(DLL || non-cygwin WINDOWS) */
+#if defined(__CYGWIN__) && !defined(PNG_DLL)
+#if !defined(PNG_IMPEXP)
+#define PNG_IMPEXP
+#endif
+#define PNGAPI __cdecl
+#else
+#if 0 /* ... other platforms, with other meanings */
+#else
+#define PNGAPI
+#define PNG_IMPEXP
+#endif
+#endif
 #endif
 #endif
 
 #ifndef PNG_EXPORT
-#  define PNG_EXPORT(type,symbol) PNG_IMPEXP type PNGAPI symbol
+#define PNG_EXPORT(type, symbol) PNG_IMPEXP type PNGAPI symbol
 #endif
 
 #ifdef PNG_USE_GLOBAL_ARRAYS
 #ifndef PNG_EXPORT_VAR
-#  define PNG_EXPORT_VAR(type) extern PNG_IMPEXP type
+#define PNG_EXPORT_VAR(type) extern PNG_IMPEXP type
 #endif
 #endif
 
@@ -1147,35 +1151,34 @@ typedef z_stream FAR *  png_zstreamp;
  */
 
 #ifndef PNG_ABORT
-#   define PNG_ABORT() abort()
+#define PNG_ABORT() abort()
 #endif
 
 #ifdef PNG_SETJMP_SUPPORTED
-#   define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
+#define png_jmpbuf(png_ptr) ((png_ptr)->jmpbuf)
 #else
-#   define png_jmpbuf(png_ptr) \
-    (LIBPNG_WAS_COMPILED_WITH__PNG_SETJMP_NOT_SUPPORTED)
+#define png_jmpbuf(png_ptr) (LIBPNG_WAS_COMPILED_WITH__PNG_SETJMP_NOT_SUPPORTED)
 #endif
 
-#if defined(USE_FAR_KEYWORD)  /* memory model independent fns */
+#if defined(USE_FAR_KEYWORD) /* memory model independent fns */
 /* use this to make far-to-near assignments */
-#   define CHECK   1
-#   define NOCHECK 0
-#   define CVT_PTR(ptr) (png_far_to_near(png_ptr,ptr,CHECK))
-#   define CVT_PTR_NOCHECK(ptr) (png_far_to_near(png_ptr,ptr,NOCHECK))
-#   define png_strcpy _fstrcpy
-#   define png_strlen _fstrlen
-#   define png_memcmp _fmemcmp      /* SJT: added */
-#   define png_memcpy _fmemcpy
-#   define png_memset _fmemset
+#define CHECK 1
+#define NOCHECK 0
+#define CVT_PTR(ptr) (png_far_to_near(png_ptr, ptr, CHECK))
+#define CVT_PTR_NOCHECK(ptr) (png_far_to_near(png_ptr, ptr, NOCHECK))
+#define png_strcpy _fstrcpy
+#define png_strlen _fstrlen
+#define png_memcmp _fmemcmp /* SJT: added */
+#define png_memcpy _fmemcpy
+#define png_memset _fmemset
 #else /* use the usual functions */
-#   define CVT_PTR(ptr)         (ptr)
-#   define CVT_PTR_NOCHECK(ptr) (ptr)
-#   define png_strcpy strcpy
-#   define png_strlen strlen
-#   define png_memcmp memcmp     /* SJT: added */
-#   define png_memcpy memcpy
-#   define png_memset memset
+#define CVT_PTR(ptr) (ptr)
+#define CVT_PTR_NOCHECK(ptr) (ptr)
+#define png_strcpy strcpy
+#define png_strlen strlen
+#define png_memcmp memcmp /* SJT: added */
+#define png_memcpy memcpy
+#define png_memset memset
 #endif
 /* End of memory model independent support */
 
@@ -1188,4 +1191,3 @@ typedef z_stream FAR *  png_zstreamp;
 #endif
 
 #endif /* PNGCONF_H */
-

@@ -14,10 +14,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 /*
-	mouse.h
-	coded by aen
-	---
-	last updated: 30oct99
+        mouse.h
+        coded by aen
+        ---
+        last updated: 30oct99
 */
 
 #if !defined(MOUSE_INC)
@@ -25,11 +25,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern void Mouse_Init();
 extern void Mouse_Read();
-extern int  Mouse_X();
-extern int  Mouse_Y();
+extern int Mouse_X();
+extern int Mouse_Y();
 extern void Mouse_SetPosition(int x, int y);
-extern int  Mouse_Button(int button);
-extern int  Mouse_ButtonFlags();
+extern int Mouse_Button(int button);
+extern int Mouse_ButtonFlags();
 extern void Mouse_ButtonSetFlags(int flags);
 
-#endif // MOUSE_INC
+#endif  // MOUSE_INC

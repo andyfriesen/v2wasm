@@ -25,7 +25,7 @@ extern int sfx_safemode;
 void InitMusicSystem(unsigned int hWnd);
 void ShutdownMusicSystem();
 void PlayMusic(const char *);
-int  GetMusicVolume();
+int GetMusicVolume();
 void SetMusicVolume(int vol);
 void StopMusic();
 int CacheSound(const char *);

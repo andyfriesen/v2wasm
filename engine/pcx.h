@@ -3,7 +3,7 @@
 
 // -- globals --
 
-extern word width,depth;
+extern word width, depth;
 
 // -- prototypes --
 
@@ -13,4 +13,4 @@ extern void LoadPCXHeaderNP(char *fname);
 extern void LoadPCX(char *fname, byte *dest);
 extern byte *LoadPCXBuf(char *fname);
 
-#endif // PCX_H
+#endif  // PCX_H

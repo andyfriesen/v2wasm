@@ -16,14 +16,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef FONT_H
 #define FONT_H
 
-extern void Font_Print(int slot, const char* zstr);
-extern void Font_PrintImbed(int slot, const char* zstr);
-extern int  Font_GetWidth(int slot);
-extern int  Font_GetLength(int slot);
-extern int	Font_Load(const char* filename);
+extern void Font_Print(int slot, const char *zstr);
+extern void Font_PrintImbed(int slot, const char *zstr);
+extern int Font_GetWidth(int slot);
+extern int Font_GetLength(int slot);
+extern int Font_Load(const char *filename);
 
-extern void	Font_GotoXY(int x, int y);
-extern int	Font_GetX();
-extern int	Font_GetY();
+extern void Font_GotoXY(int x, int y);
+extern int Font_GetX();
+extern int Font_GetY();
 
-#endif // FONT_H
+#endif  // FONT_H

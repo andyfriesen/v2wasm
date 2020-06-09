@@ -27,7 +27,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // CHANGELOG:
 // <tSB, Nov 7>
-// + moved startup-ish stuff over to startup.cpp (might have been an icky thing to do, lots of externs! @_@)
+// + moved startup-ish stuff over to startup.cpp (might have been an icky thing
+// to do, lots of externs! @_@)
 // <tSB, Oct 30>
 // + started porting to Win32
 // <aen, apr 21>
@@ -37,162 +38,147 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 #define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-#include <stdarg.h> // va_*
 #include "verge.h"
+#include <stdarg.h>  // va_*
+#include <windows.h>
 
 // gah!
 extern void ParseAutoCFG();
 
 // ================================= Win32 stuff =============================
 
-GrDriver gfx; // DirectDraw
-Input input;  // DirectInput
+GrDriver gfx;  // DirectDraw
+Input input;   // DirectInput
 
 // ================================= Data ====================================
 
 // declared in VDRIVER.C
-char	logoutput	=1;		// Verbose debugging startup mode
+char logoutput = 1;  // Verbose debugging startup mode
 
 // ================================= Code ====================================
 
-void InitLog()
-{
-  if (logoutput)
-  {
-    remove("verge.log");
-  }
+void InitLog() {
+    if (logoutput) {
+        remove("verge.log");
+    }
 }
 
-static FILE* Log_OpenLog()
-{
-	FILE*	f;
+static FILE *Log_OpenLog() {
+    FILE *f;
 
-	f=fopen("VERGE.LOG", "aw");
-	if (!f)
-		Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
+    f = fopen("VERGE.LOG", "aw");
+    if (!f) Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
 
-	return	f;
+    return f;
 }
 
-void Log(const char* message)
-{
-	FILE*	f;
+void Log(const char *message) {
+    FILE *f;
 
-	if (!logoutput)
-		return;
+    if (!logoutput) return;
 
-	f=Log_OpenLog();
+    f = Log_OpenLog();
 
     if (!f) Sys_Error("Error logging!");
 
-	fprintf(f, "%s\n", message);
-	fflush(f);
+    fprintf(f, "%s\n", message);
+    fflush(f);
 
-	fclose(f);
+    fclose(f);
 }
 
 // used in conjunction with LogDone()
-void Logp(const char* message)
-{
-	FILE*	f;
+void Logp(const char *message) {
+    FILE *f;
 
-	if (!logoutput)
-		return;
+    if (!logoutput) return;
 
-	f=Log_OpenLog();
+    f = Log_OpenLog();
 
     if (!f) Sys_Error("Error logging!");
 
-	fprintf(f, "%s", message);
-	fflush(f);
+    fprintf(f, "%s", message);
+    fflush(f);
 
-	fclose(f);
+    fclose(f);
 }
 
-void LogDone()
-{
-	FILE*	f;
+void LogDone() {
+    FILE *f;
 
-	if (!logoutput)
-		return;
+    if (!logoutput) return;
 
-	f=Log_OpenLog();
+    f = Log_OpenLog();
 
-	fprintf(f, "... OK\n");
-	fflush(f);
+    fprintf(f, "... OK\n");
+    fflush(f);
 
-	fclose(f);
+    fclose(f);
 }
 
 // InitSystems moved to startup.cpp, where it can have access to Win32
 
-void LoadTransTable()
-{ 
-	VFILE*	vf;
-    byte*   translucency_table;
+void LoadTransTable() {
+    VFILE *vf;
+    byte *translucency_table;
 
-    if (gfx.bpp!=1) return; // why bother?
+    if (gfx.bpp != 1) return;  // why bother?
 
-/*    if (translucency_table)
-      Sys_Error("Foul things are afoot."); */
+    /*    if (translucency_table)
+          Sys_Error("Foul things are afoot."); */
 
-	vf = vopen("TRANS.TBL");
-	if (!vf && gfx.bpp==1)
-	{
+    vf = vopen("TRANS.TBL");
+    if (!vf && gfx.bpp == 1) {
         Sys_Error("trans.tbl not found");
-	}
+    }
 
-	translucency_table = (byte *) valloc(256*256, "translucency_table", OID_TEMP);
+    translucency_table =
+        (byte *)valloc(256 * 256, "translucency_table", OID_TEMP);
 
-	vread(translucency_table, 256*256, vf);
-	vclose(vf);
-    gfx.InitLucentLUT(translucency_table); // weird, I know. ;)
+    vread(translucency_table, 256 * 256, vf);
+    vclose(vf);
+    gfx.InitLucentLUT(translucency_table);  // weird, I know. ;)
     vfree(translucency_table);
 }
 
-void vmainloop()
-{
- CheckHookTimer();
- while (timer_count > 0)
-  {
-   timer_count--;
-//   Log(va("GameTick() %i",timer_count));
-   GameTick();
-  }
+void vmainloop() {
+    CheckHookTimer();
+    while (timer_count > 0) {
+        timer_count--;
+        //   Log(va("GameTick() %i",timer_count));
+        GameTick();
+    }
 
- if (kill)
-  {
-   FreeVSP();
-   FreeMAP();
-   FreeCHRList();
-   vcsp = vcstack;
-   kill = 0;
-   LoadMAP(startmap.c_str());
-  }
- Render();
- gfx.ShowPage();
+    if (kill) {
+        FreeVSP();
+        FreeMAP();
+        FreeCHRList();
+        vcsp = vcstack;
+        kill = 0;
+        LoadMAP(startmap.c_str());
+    }
+    Render();
+    gfx.ShowPage();
 }
 
-int VMain ()
-{
- // bleh, message pump
+int VMain() {
+    // bleh, message pump
 
-// note, the argument vector doesn't exist in WinMain apps.
-// TODO: Write a parser?
-/*	if (2 == argc)
-	{
-		startmap = argv[1];
-	}*/
+    // note, the argument vector doesn't exist in WinMain apps.
+    // TODO: Write a parser?
+    /*	if (2 == argc)
+            {
+                    startmap = argv[1];
+            }*/
 
-//	memcpy(game_palette, gfx.pal, 3*256);
+    //	memcpy(game_palette, gfx.pal, 3*256);
     Console_Init();
 
-	Console_Printf(va("VERGE System Version %s", VERSION));
-	Console_Printf("Copyright (C)1998 vecna");
-	Console_Printf("");
+    Console_Printf(va("VERGE System Version %s", VERSION));
+    Console_Printf("Copyright (C)1998 vecna");
+    Console_Printf("");
 
-	ParseAutoCFG();
+    ParseAutoCFG();
 
     Logp("Loading 8 bit translucency table");
     LoadTransTable();
@@ -201,38 +187,32 @@ int VMain ()
     Logp("Loading system VC");
     LoadSystemVC();
     LogDone();
-// startmap override?
-	if (startmap.length())
-    	LoadMAP(startmap.c_str());
-	else
-		RunSystemAutoexec();
+    // startmap override?
+    if (startmap.length())
+        LoadMAP(startmap.c_str());
+    else
+        RunSystemAutoexec();
 
-// if there is no starting map at this point, we're done.
-	if (startmap.length() < 1)
-		Sys_Error("");
+    // if there is no starting map at this point, we're done.
+    if (startmap.length() < 1) Sys_Error("");
 
-// don't forget to set input destination
-//	key_dest = key_game;
-// ---
+    // don't forget to set input destination
+    //	key_dest = key_game;
+    // ---
 
- int j=0;
+    int j = 0;
 
- while (TRUE)
-  {
-//   Log("CheckMessages()");
-   j=0-1;
-   if (!j)
-    {
-     int i=CheckMessages();
-     if (i)
-      return i;
+    while (TRUE) {
+        //   Log("CheckMessages()");
+        j = 0 - 1;
+        if (!j) {
+            int i = CheckMessages();
+            if (i) return i;
+        } else if (bActive) { /* Log("vmainloop()"); */
+            vmainloop();
+        } else
+            // Make sure we go to sleep if we have nothing else to do
+            WaitMessage();
     }
-   else if (bActive)
-    {/* Log("vmainloop()"); */ vmainloop();}
-   else
-   // Make sure we go to sleep if we have nothing else to do
-    WaitMessage();
-  }
- return 0;
+    return 0;
 }
-

@@ -14,11 +14,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 /*
-	Standard Types Header
-	coded by aen
+        Standard Types Header
+        coded by aen
 
-	mod log:
-	21	December	1999	Created.
+        mod log:
+        21	December	1999	Created.
 */
 
 #ifndef types_inc
@@ -31,36 +31,28 @@ typedef signed short s16;
 typedef unsigned long u32;
 typedef signed long s32;
 
-class rangenum
-{
-	s32 lo,hi;
-	s32 n;
+class rangenum {
+    s32 lo, hi;
+    s32 n;
 
-public:
-	rangenum(s32 l=0, s32 h=0)
-	{
-		set_limits(l,h);
-		set(0);
-	}
+   public:
+    rangenum(s32 l = 0, s32 h = 0) {
+        set_limits(l, h);
+        set(0);
+    }
 
-	void set_limits(s32 l, s32 h)
-	{
-		lo=l;
-		hi=h;
-	}
-	void set(s32 x)
-	{
-		if (x<lo || x>hi)
-			return;
-		n=x;
-	}
-	void inc(s32 x)
-	{
-		set(get()+x);
-	}
-	s32 get() const { return n; }
-	s32 get_lo() const { return lo; }
-	s32 get_hi() const { return hi; }
+    void set_limits(s32 l, s32 h) {
+        lo = l;
+        hi = h;
+    }
+    void set(s32 x) {
+        if (x < lo || x > hi) return;
+        n = x;
+    }
+    void inc(s32 x) { set(get() + x); }
+    s32 get() const { return n; }
+    s32 get_lo() const { return lo; }
+    s32 get_hi() const { return hi; }
 };
 
-#endif // types_inc
+#endif  // types_inc

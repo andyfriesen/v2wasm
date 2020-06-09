@@ -26,6 +26,6 @@ extern void Key_Game(int key);
 
 extern void UpdateControls();
 extern void UnPress(int);
-extern int  Calibrate(void);
+extern int Calibrate(void);
 
 #endif

@@ -19,23 +19,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern void *valloc(int amount, char *desc, int owner);
 extern void *qvalloc(int amount);
 extern void qvfree(void *ptr);
-extern int  TotalBytesAllocated(void);
-extern int  FindChunk(void *pointer);
+extern int TotalBytesAllocated(void);
+extern int FindChunk(void *pointer);
 extern void FreeChunk(int i);
-extern int  vfree(void *pointer);
+extern int vfree(void *pointer);
 extern void FreeByOwner(int owner);
 extern void MemReport(void);
-extern int  ChunkIntegrity(int i);
+extern int ChunkIntegrity(int i);
 extern void CheckCorruption(void);
-extern void FreeAllMemory(); // --tSB
+extern void FreeAllMemory();  // --tSB
 
 // Standardized OID (Owner ID) values
 
-#define OID_TEMP    0
-#define OID_VFILE   1
-#define OID_IMAGE   2
-#define OID_MISC    3
-#define OID_MAP     4
-#define OID_VC      5
+#define OID_TEMP 0
+#define OID_VFILE 1
+#define OID_IMAGE 2
+#define OID_MISC 3
+#define OID_MAP 4
+#define OID_VC 5
 
-#endif // MEMORY_H
+#endif  // MEMORY_H

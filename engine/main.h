@@ -16,16 +16,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef MAIN_H
 #define MAIN_H
 
-extern void* valloc(int amount, char* desc, int owner);
+extern void *valloc(int amount, char *desc, int owner);
 
-extern char* va(char* format, ...);
+extern char *va(char *format, ...);
 
-extern void err(char* message);
-extern int  sgn(int x);
+extern void err(char *message);
+extern int sgn(int x);
 extern void ver();
-extern int  CheckMessages();
-extern void Log(const char* message);
-extern void Logp(const char* message);
+extern int CheckMessages();
+extern void Log(const char *message);
+extern void Logp(const char *message);
 extern void LogDone();
 
 extern string_k startmap;

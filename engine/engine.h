@@ -22,75 +22,74 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef ENGINE_H
 #define ENGINE_H
 
-typedef struct
-{
-  word start;                        // strand start
-  word finish;                       // strand end
-  word delay;                        // tile-switch delay
-  word mode;                         // tile-animation mode
+typedef struct {
+    word start;   // strand start
+    word finish;  // strand end
+    word delay;   // tile-switch delay
+    word mode;    // tile-animation mode
 } vspanim_r;
 
-typedef struct
-{
-  char pmultx,pdivx;                 // parallax multiplier/divisor for X
-  char pmulty,pdivy;                 // parallax multiplier/divisor for Y
-  unsigned short sizex, sizey;       // layer dimensions.
-  unsigned char trans, hline;        // transparency flag | hline (raster fx)
+typedef struct {
+    char pmultx, pdivx;           // parallax multiplier/divisor for X
+    char pmulty, pdivy;           // parallax multiplier/divisor for Y
+    unsigned short sizex, sizey;  // layer dimensions.
+    unsigned char trans, hline;   // transparency flag | hline (raster fx)
 } layer_r;
 
-typedef struct
-{
-  char name[40];                     // zone name/desc
-  unsigned short script;             // script to call thingy
-  unsigned short percent;            // chance of executing
-  unsigned short delay;              // step-delay
-  unsigned short aaa;                // Accept Adjacent Activation
-  unsigned short entityscript;       // script to call for entities
+typedef struct {
+    char name[40];                // zone name/desc
+    unsigned short script;        // script to call thingy
+    unsigned short percent;       // chance of executing
+    unsigned short delay;         // step-delay
+    unsigned short aaa;           // Accept Adjacent Activation
+    unsigned short entityscript;  // script to call for entities
 } zoneinfo;
 
-extern zoneinfo zones[256];                 // zone data records
-extern layer_r layer[4];                    // Array of layer data
-extern vspanim_r vspanim[100];              // tile animation data
-extern unsigned short vadelay[100];         // Tile animation delay ctr
+extern zoneinfo zones[256];          // zone data records
+extern layer_r layer[4];             // Array of layer data
+extern vspanim_r vspanim[100];       // tile animation data
+extern unsigned short vadelay[100];  // Tile animation delay ctr
 
-extern char mapname[60];                    // MAP filename
-extern char vspname[60];                    // VSP filemap
+extern char mapname[60];  // MAP filename
+extern char vspname[60];  // VSP filemap
 
-//extern char rstring[20];                    // render-order string
+// extern char rstring[20];                    // render-order string
 extern string_k rstring;
 
-extern char numlayers;                      // number of layers in map
-extern byte *obstruct, *zone;               // obstruction and zone buffers
-extern int bufsize;                         // how many bytes need to be written
-extern char layertoggle[4];                 // layer visible toggles
+extern char numlayers;         // number of layers in map
+extern byte *obstruct, *zone;  // obstruction and zone buffers
+extern int bufsize;            // how many bytes need to be written
+extern char layertoggle[4];    // layer visible toggles
 
-extern word *layers[4];                     // Raw layer data
+extern word *layers[4];  // Raw layer data
 extern int xwin, ywin;
 
 // -- entity things --
 
-extern char *msbuf[100];                    // ptr-table to script offset
-extern char *ms;                            // script text buffer
-extern byte nms;                            // number of movescripts
+extern char *msbuf[100];  // ptr-table to script offset
+extern char *ms;          // script text buffer
+extern byte nms;          // number of movescripts
 
-extern char numfollowers;                   // number of party followers
-extern byte follower[10];                   // maximum of 10 followers.
-extern char laststeps[10];                  // record of last movements
+extern char numfollowers;   // number of party followers
+extern byte follower[10];   // maximum of 10 followers.
+extern char laststeps[10];  // record of last movements
 extern int lastent;
 
 extern int numzones;
 
 // -- vsp data --
 
-extern byte *vsp,*vspmask;                  // VSP data buffer.
-extern unsigned short numtiles;             // number of tiles in VSP.
-extern unsigned short *tileidx;             // tile index thingamajig
-extern char *flipped;                       // bi-direction looping flag
+extern byte *vsp, *vspmask;      // VSP data buffer.
+extern unsigned short numtiles;  // number of tiles in VSP.
+extern unsigned short *tileidx;  // tile index thingamajig
+extern char *flipped;            // bi-direction looping flag
 extern byte movegranularity, phantom, speeddemon, movectr;
 
 // <aen>
-// This *MUST* have 256 elements, because of the new input code. I generate my own
-// codes for control keys and others, such as ENTER, ESC, ALT, etc. And their codes are
+// This *MUST* have 256 elements, because of the new input code. I generate my
+// own
+// codes for control keys and others, such as ENTER, ESC, ALT, etc. And their
+// codes are
 // up in the 200's.
 // <tSB>
 // DirectInput uses the high 128 elements for extended keys and stuff, so it
@@ -109,13 +108,13 @@ extern void MAPstats(void);
 extern void ProcessControls(void);
 extern void GameTick(void);
 
-extern int ReadCompressedLayer1(byte*, int, char*);
-extern int ReadCompressedLayer2(word*, int, word*);
+extern int ReadCompressedLayer1(byte *, int, char *);
+extern int ReadCompressedLayer2(word *, int, word *);
 
 //--- zero 5.7.99
 #include <stdio.h>
 void WritePalette(FILE *f);
-void WritePCXLine(unsigned char *p,int len,FILE *pcxf);
+void WritePCXLine(unsigned char *p, int len, FILE *pcxf);
 void ScreenShot();
 //
-#endif // ENGINE_H
+#endif  // ENGINE_H
