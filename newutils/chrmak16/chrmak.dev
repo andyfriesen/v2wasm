@@ -1,0 +1,10 @@
+[Project]
+FileName=C:\v2\source\newutils\chrmak16\chrmak.dev
+Name=chrmak
+Use_gpp=1
+UnitCount=0
+ResFiles=C:\v2\source\newutils\chrmak16\rsrc.rc
+NoConsole=0
+IsDll=0
+Icon=C:\DEV-C_~1\BIN\Mainicon.ico
+

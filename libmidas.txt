@@ -1,0 +1,20 @@
+Here is how to make an import library for the MIDAS Digital Audio System
+for use with Mingw32-GCC or Cygwin32 (the Windows ports of GCC).
+
+* First create the import library with dlltool
+Use the following command:
+dlltool -U --output-lib libmidas.a --dllname midas11.dll --def midasdll.def
+
+* Midasdll.h must be changed.
+The following should be added to midasdll.h:
+    #if defined(__MINGW32__) || defined(__CYGWIN32__)
+       #define _FUNC(x) __attribute__ ((stdcall)) x
+       #define MIDAS_CALL
+
+* Ready to go!
+
+I haven't tried MIDAS with Cygwin32, but it should work the
+same way as with Mingw32. The binary included (libmidas.a)
+is made for for Mingw32 and midas11.dll (1.1.1).
+
+Anders Norlander (anorland@hem2.passagen.se)

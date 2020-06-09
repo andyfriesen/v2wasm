@@ -1,0 +1,21 @@
+[Project]
+FileName=C:\v2\source\NEWUTILS\CHRMAK16\blah.dev
+Name=blah
+Use_gpp=1
+UnitCount=2
+ResFiles=C:\v2\source\NEWUTILS\CHRMAK16\rsrc.rc
+NoConsole=0
+IsDll=0
+Icon=C:\DEV-C_~1\BIN\Mainicon.ico
+
+[Unit0]
+FileTime=696950068
+
+[Unit1]
+FileName=C:\My Documents\donotopenme.cpp
+FileTime=696951361
+
+[Unit2]
+FileName=C:\v2\source\NEWUTILS\CHRMAK16\chrmak16.c
+FileTime=696951227
+

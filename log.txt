@@ -1,0 +1,229 @@
+v2.6  Development history and notes
+-----------------------------------
+
+Oct 30
+ - began port to Win32.  Gutted all hardware IO routines in favour of
+   class-wrapped style. (gfx.ShowPage, etc...)
+
+Nov 2
+ - finished the gutting.
+
+Nov 3
+ - Installed the message pump
+
+Nov 6
+ - Got most of the DirectX stuff working.  All that's left is blits and
+   debugging.  Started inserting DirectInput code.
+
+Nov 12
+ - DirectInput code written, deleted, then rewritten twice. ;)
+   It's now heavily based on vecna's Winv1.
+ - More DirectDraw restructuring.  Should be sufficient now.
+   Still some blits and primatives remain unimplemented.
+ - Message pump rehashed.  Much better at maintaining co-operativity.
+
+Nov 18
+ - Most of the blits and primitaves are done.  Strange colour distortion
+   with the 16bit RotScale.
+ - Began mouse code.  Issues with keeping the cursor within the viewport in
+   fullscreen mode persist.  No such problem in windowed mode.  ReadMouse()
+   is now exactly the same as UpdateControls(). (it's kept for compatibility)
+
+Nov 19 - ultra-ultra early in the morning (or ultra-ultra late at night,
+                                           take your pick)
+ - Fixed palettemorph.
+
+Nov 21
+ - Fixed a (silly) bug in HLine.  It works now. (RectFill too)
+
+Nov 22
+ - Tweaking.
+   TODO: (as of the 22nd)
+   *  There's a random bug that occurs where v2.6 just freezes.  It also stops
+      processing messages, so, if it's fullscreen, you have to reset.  Stomp it.
+   *  It doesn't work under Win2k.  Find out why.
+   *  Write a custom blitter for when the screen and virtual screen pixel
+      formats don't match, so that windowed mode works regardless of
+      hardware.
+
+Nov  25
+ - More tweaking.
+ - Implemented the line() function. (lucent and opaque, 8 and 16bit)
+   Undertested, but apparently perfect.
+
+Nov 26
+ - Fixed the hicolour RotScale.
+ - Implemented fixed addition/subtraction.
+ - Implemented "vsync" in user.cfg.
+
+Dec 4&5
+ - Dumped MikMod for the time being.  GCC doesn't like it.  Imported MIDAS
+   instead.  Seems to work alright, cooperates with the OS properly thus far.
+ - Re-implemented the console commands, RV and SV.  No apparent problems yet.
+   Strings aren't implemented yet, though.
+ - Fixed my own unpress code. Oops!
+ - Re-implemented mapline and tmapline.  Absolutely untested, though.
+ - Started redoing the mouse code.  Again.
+
+Dec 6
+ - Finished mouse code.  Still some strangeness in windowed mode, but it
+   should be okay, as long as the use doesn't depend on the windows cursor.
+ - Co-operativity problems with MIDAS in DirectSound mode.  Added "safemode"
+   option to user.cfg, since DirectSound is better, but doesn't always
+   shut down properly when v2.6 is minimized.
+ - Reimplemented mapline, tmapline, mask, changeall, and silhouette.
+   Silhouette has been changed, however.  It's now:
+
+   Silhouette(width,height,sourceimage,destimage,colour);
+
+   Where width and height are the dimensions of the image, sourceimage
+   is a pointer to the existing image, destimage is a pointer to a chunk
+   of memory where the silhouette will go, and colour is the colour of the
+   silhouette.  After doing that, you can blit it with copysprite/etc...
+ - Added imagesize.  Returns the number of bytes for a specified image.
+   Syntax  int i=ImageSize(int x1,int y1,int x2,int y2);
+ - Re-implemented flatpoly and tmappoly.  Undertested, but tested nonetheless.
+   No apparent flaws.
+ - Re-implemented hicolour palettemorph emulation.  Slower than it could be
+   most likely, but not bad as it is.
+
+Dec 7
+ - Fixed a bug that caused the console to not work.
+ - Fixed Read/WriteVars, I think.
+ - Fixed CircleFill
+ - Corrected clipping in most blits.  It was one pixel short.
+ - Double checked read/writevars.  Everything's cool, I think.
+ - Fixed HookTimer
+
+Dec 9
+ **** RELEASE! MWAHAHAHAHAHA! ****
+
+Dec 10
+ - Removed a DirectDraw option in the ShowPage routine, since not all cards
+   support DDFLIP_DONOTWAIT.
+ - Fixed the fseekline bug. (again!)
+ - Double checked readvars and writevars.  No apparent problems.
+ - Fixed the user.cfg problems involving "sound_device" and other disabled
+   options.
+ - Rewrote part of CHRMAK16.  It should work better now.
+
+Dec 11
+ - Made b1, etc.. and up, down, etc... writable again.  Why not?
+ - Got my hands on some PNG code.  Thanks to Praetor, and indirectly,
+   AegisKnight.  Not ported into the engine yet, but noteworthy nonetheless.
+
+Dec 13
+ - Fixed a bug that caused writing to mx, my, or mb to also alter vctrace, and
+   each other. @_x;
+
+Dec 14
+ - VERGE now manually frees all it's memory in when it finds memory
+   corruption, or Sys_Error (or it's VC equivalent, Exit) are called.
+   Unsure if it's necessary, but it doesn't seem to be doing any harm.
+ - Tweaked preprocessor, you can now #define a (5+3) without it going
+   ballistic on you.  Well, Ear did it first, so give him credit for this one.
+
+ **** Revision 1 released ****
+
+Dec 18
+ - Fixed up the BMP code.  It should load up 24bit BMPs and bmps of odd widths
+   now.
+ - Fixed hicolour image loading stuff.  It now substitutes flat black for the
+   mask colour again, like it should.
+ - Tweaked file i/o.  The file io stuff now uses index handles, a la fonts.
+   Much safer.  The only difference in implementation is that fopen and
+   fwopen return -1 on error, not 0.  Consider changing this for
+   compatibility's sake.  As a side effect, no more than 10 files may be
+   opened simultaneously now.
+ - Fixed fseekline yet again.  Actually tested it this time. ;)
+
+Dec 19
+ - Finished the file i/o stuff.  Everything returns 0 on error again.
+ - Entities that are turned off with entity.on are no longer rendered.
+
+Dec 20
+ - Tried to convert tcopysprite to asm.  No luck.  Optimized it a bit,
+   though.   (both 8 and 16 bit colour versions)
+ - Fixed ReadVars and writevars, for real this time!
+
+Dec 22
+ - Incorporated aen's newer string routines.  Should be considerably faster,
+   as they are no longer dynamicly allocated.
+ - Added aen's console stuff, which is now linked-list free!  Joy!
+
+Dec 23
+ - Added PNG stuff.  Seems to work alright.  PNGs will not load in 8 bit
+   colour yet.  Note that libpng1.dll and zlib.dll are necessary now. :/
+   Also, I couldn't find the GCC libs for libpng, so if you want to compile
+   it under ming, then you'll have to find them yourself. This build compiles
+   under MSVC6.
+ - The hicolour screenshot function was swapping the red and blue channels.
+   Fixed it.
+ - The entity wander code was ignoring the Delay property.  Fixed.
+
+ **** Revision 2 ****
+
+Dec 25 & 26
+ - Played with ASM in the graphics routines.
+   * Wrote an MMX enhanced memory copier for showpage.  Squeezes an extra ounce
+     of speed out of it.
+   * Made some attempts to convert the 8 bit CopySprite to MMX enhanced ASM.
+     Failed, but proven possible.
+   * 8 bit CopySprite converted to ASM.  No real improvement,
+     left commented out.
+   * 8 bit TCopySprite converted.  ~%8 improvement in framerate.
+   * 16 bit CopySprite converted to ASM.  Not much improvement, but it's there
+     Kept it.
+   * 16 bit MMX CopySprite written.  Faster yet on MMX enabled systems.
+ - Learned something.  Showpage is slow purely because of the DX stuff going
+   on.  There's nothing to be done about it, really.
+
+ **** Revision 2.1 ****
+
+Dec 27
+ - Converted the 8 bit ScaleSprite to ASM.  Superfast!
+
+Dec 28
+ - Converted the rest of the nontranslucent ScaleSprites to ASM.
+ - added built-in variables, "zone.event[]" and "zone.chance[]",
+   cuz Zara was yelling at me. ;_;
+
+==================================== Notes ==================================
+
+- v2.6 has to share with Windows, and that means you do too.  Put
+  UpdateControls() in any process that takes up a considerable amount of time.
+  (delay functions, etc...)
+
+  I doubt it'd be drastic, but you could cause other applications to slow down
+  if you don't.
+
+- If you're multitasking to and from v2.6 often, it is advised that you put
+  "safemode" in user.cfg.  This will add more stability, at the cost of a
+  little bit of latency when playing sound effects.
+
+- Some mods that play under MikMod don't play under MIDAS, the current sound
+  system.  v2.6 will tell you, and refuse to play the mod, but it won't crash.
+
+- The key[] array and last_pressed are only updated after an UpdateControls()
+  now.
+
+- HookKey no longer operates while other VC scripts are running, only when
+  the engine itself has control.
+
+- Putting "window" in user.cfg will run v2.6 in windowed mode.  There's no
+  8bit windowed mode at the moment, however.  Trying to set such a mode up
+  probably won't break anything, but it won't work either.
+
+- If you get distorted/no image in windowed mode/high colour, try setting your
+  desktop resolution to 16bpp and trying again.
+
+- The new function Imagesize(x1,y1,x2,y2) returns the number of bytes an
+  image would require, taking pixel depth into account.  It's meant for
+  GrabRegion, mask and such, so use it. ;)
+
+- Currently, v2.6 is dependant on midas11.dll for sound output, and libpng1.dll
+  and zlib.dll for PNG decoding.  Keep them in the VERGE directory. (you can
+  probably skip the second two if you have Sphere installed, but that's just
+  an airy theory)
+
+Special thanks to Zaratustra for the application icon.
