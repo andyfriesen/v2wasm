@@ -856,7 +856,7 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
             je      nodraw8  // yes.  Skip it
 
             mov     [edi],al       // faster than stosb O_o (even when you take the inc into
-                // account)
+            // account)
         nodraw8:
             inc     edi
             loop    xloop8
