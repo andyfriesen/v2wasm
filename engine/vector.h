@@ -2,7 +2,7 @@
 #ifndef VECTOR_INC
 #define VECTOR_INC
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -142,16 +142,16 @@ class queue_t : public vector_t<T> {
     int F_head, F_tail;
 
    public:
-    queue_t() : F_head(0), F_tail(0) { setsize(256); }
+    queue_t() : F_head(0), F_tail(0) { this->setsize(256); }
 
     // override these
     T &pop() {
         if (F_head != F_tail)
-            return F_data[F_head++ % F_size];
+            return this->F_data[F_head++ % this->F_size];
         else
-            return F_data[F_tail];
+            return this->F_data[F_tail];
     }
-    virtual T &push() { return F_data[++F_tail % F_size]; }
+    virtual T &push() { return this->F_data[++F_tail % this->F_size]; }
 };
 
 #endif  // VECTOR_INC

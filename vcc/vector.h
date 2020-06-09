@@ -2,7 +2,7 @@
 #ifndef VECTOR_INC
 #define VECTOR_INC
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 

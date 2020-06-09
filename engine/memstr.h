@@ -2,7 +2,7 @@
 #ifndef MEMSTR_INC
 #define MEMSTR_INC
 
-#include <iostream.h>
+#include <iostream>
 #include <stdio.h>
 
 #include "linked.h"
@@ -84,7 +84,7 @@ class memorystream_t : public linked_node {
     int loadfromfile(const char *filename);
     int savetofile(const char *filename) const;
 
-    void diagnostics(ostream &os);
+    void diagnostics(std::ostream &os);
 };
 
 #endif  // MEMSTR_INC

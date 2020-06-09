@@ -13,11 +13,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-// ³                          The VERGE Engine                           ³
-// ³              Copyright (C)1998 BJ Eirich (aka vecna)                ³
-// ³                      Main Game Engine module                        ³
-// ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
+// ï¿½                          The VERGE Engine                           ï¿½
+// ï¿½              Copyright (C)1998 BJ Eirich (aka vecna)                ï¿½
+// ï¿½                      Main Game Engine module                        ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // CHANGELOG:
@@ -40,34 +40,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // + added ScreenShot() on F11
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-#define ENGINE_H
-#include <conio.h>
 #include "verge.h"
 
 // ================================= Data ====================================
-
-typedef struct {
-    word start;   // strand start
-    word finish;  // strand end
-    word delay;   // tile-switch delay
-    word mode;    // tile-animation mode
-} vspanim_r;
-
-typedef struct {
-    char pmultx, pdivx;           // parallax multiplier/divisor for X
-    char pmulty, pdivy;           // parallax multiplier/divisor for Y
-    unsigned short sizex, sizey;  // layer dimensions.
-    unsigned char trans, hline;   // transparency flag | hline (raster fx)
-} layer_r;
-
-typedef struct {
-    char name[40];                // zone name/desc
-    unsigned short script;        // script to call thingy
-    unsigned short percent;       // chance of executing
-    unsigned short delay;         // step-delay
-    unsigned short aaa;           // Accept Adjacent Activation
-    unsigned short entityscript;  // script to call for entities
-} zoneinfo;
 
 zoneinfo zones[256];          // zone data records
 layer_r layer[6];             // Array of layer data
@@ -340,7 +315,7 @@ void LoadMAP(const char *fname) {
 
     vread(sig, 6, f);
     sig[6] = '\0';
-    if (V_strcmp(sig, "MAPù5"))
+    if (V_strcmp(sig, "MAPï¿½5"))
         Sys_Error("%s is not a recognized MAP file.", fname);
 
     // Lalala! Can you find Waldo hiding in the code? Here's a hint, he likes to

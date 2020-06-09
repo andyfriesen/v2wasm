@@ -13,11 +13,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                          The VERGE Engine                           Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                           Imaging module                            Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                          The VERGE Engine                           О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                           Imaging module                            О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 // Mega kudos to aen for porting that GIF code.
 
 /*
@@ -37,7 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     *       Fixed PCX loading code. Again.
 */
 
-#include <conio.h>
+// #include <conio.h>
 #include "i_png.h"
 #include "verge.h"
 

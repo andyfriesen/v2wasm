@@ -13,11 +13,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                          The VERGE Engine                           Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                      Command Console module                         Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                          The VERGE Engine                           О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                      Command Console module                         О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
 /*
         mod log:
@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "verge.h"
+#include "keycodes.h"
 
 #define CONSOLE_TEXT_LINES 100
 #define CONSOLE_LAST_LINES 25

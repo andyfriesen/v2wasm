@@ -21,6 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // V2 SCRIPT EDITOR
 // /////////////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 static linked_list *lines = 0;
 static linked_node *current_line = 0;
 static int current_line_n = 0;

@@ -2,7 +2,7 @@
 #ifndef STRING_INC
 #define STRING_INC
 
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
 
 #include "memstr.h"

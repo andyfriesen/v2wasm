@@ -1,12 +1,4 @@
-// DirectDraw stuff.  Bleh
-#ifndef w_graph_h
-#define w_graph_h
-
-#define DXGUID
-
-#include <ddraw.h>
-#include <windows.h>
-//#include "verge.h"
+#pragma once
 
 class GrDriver {
    protected:
@@ -29,26 +21,7 @@ class GrDriver {
 
     bool MMX;  // set to true if we're allowed to use it
 
-    // Win32/DirectDraw
-    RECT clip;  // clip rect. ;)
-    HWND hWnd;  // Window handle (for the clipper
-
-    LPDIRECTDRAW lpdd;
-    LPDIRECTDRAWSURFACE mainsurf, offsurf;
-    LPDIRECTDRAWCLIPPER mainclip;
-    LPDIRECTDRAWPALETTE ddpal;
-    DDSURFACEDESC ddsd;
-
     void GetPixelFormat();             // sets rpos, rsize, etc...
-    void LogDDErr(HRESULT errorcode);  // for debugging
-
-    // only used in showpage currently.
-    int Lock();
-    int UnLock();
-
-    void DestroySurfaces();
-    void
-    MakeClientFit();  // make the window fit the screen (in windowed mode only)
 
    public:
     GrDriver();
@@ -62,7 +35,7 @@ class GrDriver {
     byte pal[768];      // the current palette, post-PaletteMorph
 
     // initialization/etc...
-    bool Init(HWND hwnd,
+    bool Init(
         int x,
         int y,
         int bpp,
@@ -215,7 +188,7 @@ class GrDriver {
     void ShowPage();
 
     // weird rendering magic stuff ;)
-    void SetClipRect(RECT clip);
+    // void SetClipRect(RECT clip);
     void RestoreRenderSettings();
     void SetRenderDest(int x, int y, byte *dest);
 
@@ -225,5 +198,3 @@ class GrDriver {
    public:
     void PaletteMorph(int r, int g, int b, int percent, int intensity);
 };
-
-#endif

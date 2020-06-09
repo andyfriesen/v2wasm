@@ -3,36 +3,22 @@
 // In short: there is NO WARRENTY on this, you can't keep it secret, and you
 // can't steal credit from me.
 
-#ifndef w_input_h
-#define w_input_h
-
-#include <dinput.h>
-#include <windows.h>
+#pragma once
 
 class Input {
    private:
-    // handles
-    HINSTANCE hInst;  // app handle
-    HWND hWnd;        // window handle
-
-    // DirectInput objects
-    LPDIRECTINPUT lpdi;
-    LPDIRECTINPUTDEVICE keybd;
-    LPDIRECTINPUTDEVICE mouse;
-    // LPDIRECTINPUTDEVICE joystick;
-
     // key buffer
     unsigned char key_buffer[256];   // remember up to 256 events
     unsigned char kb_start, kb_end;  // start/end of keyboard buffer.  Since
                                      // they're bytes, they automaticly wrap
                                      // around.
 
-    RECT mclip;
+    // RECT mclip;
 
     // for UnPress
     byte unpress[9];
 
-    int Test(HRESULT result, char *errmsg);
+    // int Test(HRESULT result, char *errmsg);
 
    public:
     unsigned char key[256];  // set to 1 if the key is down, 0 otherwise
@@ -48,7 +34,7 @@ class Input {
     Input();   // constructor
     ~Input();  // destructor
 
-    int Init(HINSTANCE hinst, HWND hwnd);
+    int Init();
     void ShutDown();
 
     void Poll();    // updates key queue and key array
@@ -64,5 +50,3 @@ class Input {
     void UpdateMouse();
     void ClipMouse(int x1, int y1, int x2, int y2);
 };
-
-#endif

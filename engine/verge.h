@@ -27,27 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define VERSION "2.6rev2.1"
 
-/*#ifdef _WIN32
-//  #include <windows.h>
-  #define WIN32_LEAN_AND_MEAN
-  #define delay Sleep
-#endif*/
-
-#ifndef _WIN32
-#include <dos.h>
-#endif
-
-/* // woohoo, don't need 'em, don't want 'em. ;)
-extern "C" {
-//	#include <stdio.h>
-//	#include <stdlib.h>
-//	#include <string.h>
-}
-*/
-
-/*#define byte unsigned char // predefined somewhere in windows' stuff
-#define word unsigned short int*/
-#define quad unsigned int
+using quad = unsigned int;
 
 #define TRUE 1
 #define FALSE 0
@@ -84,7 +64,6 @@ extern void Sys_Error(const char *message, ...);
 extern GrDriver gfx;
 extern Input input;
 
-extern HWND hWnd;
 extern bool bActive;
 
 extern int hicolor;

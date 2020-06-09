@@ -16,6 +16,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef VC_H
 #define VC_H
 
+struct VFILE;
+
 extern int v2_touchy;  // exit to system at first sign of trouble?
 
 extern int mapevents;  // number of map events in this VC

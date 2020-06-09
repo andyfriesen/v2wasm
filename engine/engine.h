@@ -46,12 +46,12 @@ typedef struct {
 } zoneinfo;
 
 extern zoneinfo zones[256];          // zone data records
-extern layer_r layer[4];             // Array of layer data
+extern layer_r layer[6];             // Array of layer data
 extern vspanim_r vspanim[100];       // tile animation data
 extern unsigned short vadelay[100];  // Tile animation delay ctr
 
-extern char mapname[60];  // MAP filename
-extern char vspname[60];  // VSP filemap
+extern char mapname[61];  // MAP filename
+extern char vspname[61];  // VSP filemap
 
 // extern char rstring[20];                    // render-order string
 extern string_k rstring;
@@ -59,9 +59,9 @@ extern string_k rstring;
 extern char numlayers;         // number of layers in map
 extern byte *obstruct, *zone;  // obstruction and zone buffers
 extern int bufsize;            // how many bytes need to be written
-extern char layertoggle[4];    // layer visible toggles
+extern char layertoggle[8];    // layer visible toggles
 
-extern word *layers[4];  // Raw layer data
+extern word *layers[6];  // Raw layer data
 extern int xwin, ywin;
 
 // -- entity things --
