@@ -119,7 +119,7 @@ sources = [
     'render.cpp',
     'str.cpp',
     'vc.cpp',
-    # 'w_graph.cpp',
+    'w_graph.cpp',
 
     'engine.cpp',
     'image.cpp',

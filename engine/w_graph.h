@@ -26,7 +26,7 @@ class GrDriver {
 
     int vsync;  // vertal sync flag
 
-    bool MMX;  // set to true if we're allowed to use it
+    RECT clip;
 
     void GetPixelFormat();             // sets rpos, rsize, etc...
 

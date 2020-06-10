@@ -28,76 +28,16 @@
 
 #include <math.h>  // for RotScale
 
-// Comment this to use all the C blitters
-#define GR_ASM
-
-bool __cdecl IsMMX(void);  // prototype
-
 GrDriver::GrDriver() {
-    lpdd =
-        NULL;  // none of these objects are initially allocated, so let's make
-               // sure they're all null
-    mainsurf = NULL;
-    offsurf = NULL;
-    mainclip = NULL;
-    ddpal = NULL;
-
     screen = NULL;
     truescreen = NULL;
 
     morphlut = NULL;
     lucentlut16 = NULL;
     lucentlut8 = NULL;
-
-    MMX = IsMMX();  // what the hell, get a jumpstart. ;)
 }
 
 GrDriver::~GrDriver() { ShutDown(); }
-
-// This sure beats fishing around ddraw.h :D
-void GrDriver::LogDDErr(HRESULT errorcode) {
-    Log("");
-    Logp("DirectDraw Error: ");
-    switch (errorcode) {
-    case DDERR_WASSTILLDRAWING:
-        Log("Was still drawing");
-        break;
-    case DDERR_SURFACELOST:
-        Log("SurfaceLost");
-        break;
-    case DDERR_INVALIDRECT:
-        Log("InvalidRect");
-        break;
-    case DDERR_UNSUPPORTED:
-        Log("Unsupported");
-        break;
-    case DDERR_EXCLUSIVEMODEALREADYSET:
-        Log("Exclusive mode already set");
-        break;
-    case DDERR_HWNDALREADYSET:
-        Log("hWnd already set");
-        break;
-    case DDERR_INVALIDOBJECT:
-        Log("Invalid object");
-        break;
-    case DDERR_INVALIDPARAMS:
-        Log("Invalid Params");
-        break;
-    case DDERR_OUTOFMEMORY:
-        Log("Out of memory");
-        break;
-    case DDERR_INVALIDPIXELFORMAT:
-        Log("Invalid pixel format");
-        break;
-    case DDERR_INVALIDCAPS:
-        Log("Invalid caps");
-        break;
-    case DDERR_UNSUPPORTEDMODE:
-        Log("Unsupported mode");
-        break;
-    }
-    Log("");
-}
 
 // if we're fullscreen, then offsurf is attached to the main surface, and we
 // simply flip() in ShowPage.
@@ -107,28 +47,7 @@ void GrDriver::LogDDErr(HRESULT errorcode) {
 // returns 1 on success
 // x and y are the resolution, c is the colour depth (in bits per pixel) fullscr
 // is true if we aren't running windowed
-bool GrDriver::Init(HWND hwnd, int x, int y, int c, bool fullscr) {
-    // TODO: add windowed stuff
-    HRESULT result;
-
-    // bounds checking
-    if (c != 8 && c != 16) return 0;  // TODO: 24/32bit support?
-    if (!x || !y) return 0;  // a mode with pixels on it would be preferable
-
-    hWnd = hwnd;  // save this for later :)
-
-    bpp = c / 8;  // bpp is in BYTES per pixel, c is in bits.  Adjust.
-    xres = x;
-    yres = y;
-    // create lpdd
-    result = DirectDrawCreate(NULL, &lpdd, NULL);
-    if (result != DD_OK) {
-        Log("Failed creating DDraw Object");
-        return 0;
-    }
-
-    if (SetMode(x, y, c, fullscr)) return 1;  // yay!
-
+bool GrDriver::Init(int x, int y, int c, bool fullscr) {
     return 0;  // :(
 }
 
@@ -145,310 +64,35 @@ int GrDriver::SetMode(int x, int y, int c, bool fs) {
     // switching to/from windowed mode.
     // TODO: Why doesn't switching to/from windowed mode work?
 
-    HRESULT result;
-    DDSURFACEDESC ddsc;
-    DDSCAPS ddscaps;
-
-    if (c / 8 != bpp) {
-        Log("Error: Unable to change bit depth at this point.");
-        return 0;  // not yet
-    }
-
-    if (x) xres = x;
-    if (y) yres = y;
-
-    bpp = c / 8;
-    if (truescreen != NULL) delete truescreen;
-    truescreen = new byte[xres * yres * bpp];
-    RestoreRenderSettings();  // heh, why not? Saves a bit of redundant code :)
-
-    DestroySurfaces();
-    fullscreen = fs;
-
-    if (fullscreen) {
-        // FULLSCREEN MODE CODE GOES HERE
-        result =
-            lpdd->SetCooperativeLevel(hWnd, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
-        if (result != DD_OK) {
-            Log("Unable to set co-op level");
-            LogDDErr(result);
-            return 0;
-        }
-        result = lpdd->SetDisplayMode(x, y, c);
-        if (result != DD_OK) {
-            Log("Unable to set display mode");
-            LogDDErr(result);
-            return 0;
-        }
-
-        ZeroMemory(&ddsc, sizeof ddsc);
-        ddsc.dwSize = sizeof ddsc;
-        ddsc.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
-        ddsc.ddsCaps.dwCaps =
-            DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
-        ddsc.dwBackBufferCount = 1;
-        result = lpdd->CreateSurface(&ddsc, &mainsurf, NULL);
-        if (result != DD_OK) {
-            Log("Unable to create primary surface");
-            LogDDErr(result);
-            return 0;
-        }
-
-        ddscaps.dwCaps = DDSCAPS_BACKBUFFER;
-        result = mainsurf->GetAttachedSurface(&ddscaps, &offsurf);
-        if (result != DD_OK) return 0;
-    } else {
-        // WINDOWED MODE CODE HERE
-        result = lpdd->SetCooperativeLevel(hWnd, DDSCL_NORMAL);
-        if (result != DD_OK) {
-            Log("Error setting co-op mode (windowed)");
-            LogDDErr(result);
-            return 0;
-        }
-
-        ddsc.dwSize = sizeof ddsc;
-        ddsc.dwFlags = DDSD_CAPS;
-        ddsc.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
-        result = lpdd->CreateSurface(&ddsc, &mainsurf, NULL);
-        if (result != DD_OK) {
-            Log("Unable to create primary surface (windowed)");
-            LogDDErr(result);
-            return 0;
-        }
-
-        ZeroMemory(&ddsc, sizeof ddsc);
-        ddsc.dwSize = sizeof ddsc;
-        ddsc.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT;
-        ddsc.dwHeight = yres;
-        ddsc.dwWidth = xres;
-        ddsc.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
-        if (bpp == 1) {
-            ddsc.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
-            ddsc.ddpfPixelFormat.dwFlags = DDPF_PALETTEINDEXED8 | DDPF_RGB;
-            ddsc.ddpfPixelFormat.dwRGBBitCount = 8;
-        } else {
-            ddsc.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
-            ddsc.ddpfPixelFormat.dwFlags = DDPF_RGB;
-            ddsc.ddpfPixelFormat.dwRGBBitCount = 16;
-            ddsc.ddpfPixelFormat.dwBBitMask = 0x001F;  // set a 5:6:5 surface.
-            ddsc.ddpfPixelFormat.dwGBitMask = 0x07E0;
-            ddsc.ddpfPixelFormat.dwRBitMask = 0xF800;
-        }
-        result = lpdd->CreateSurface(&ddsc, &offsurf, NULL);
-        if (result != DD_OK) {
-            Log("Error creating back surface (windowed)");
-            LogDDErr(result);
-            return 0;
-        }
-    }
-
-    if (bpp == 1) {
-        PALETTEENTRY ddp[256];
-        int i;
-
-        for (i = 0; i < 256; i++) {
-            ddp[i].peRed = pal[i * 3];
-            ddp[i].peBlue = pal[i * 3 + 1];
-            ddp[i].peGreen = pal[i * 3 + 2];
-            ddp[i].peFlags = 0;
-        }
-
-        // create a palette
-        result = lpdd->CreatePalette(
-            DDPCAPS_8BIT | DDPCAPS_ALLOW256, ddp, &ddpal, NULL);
-        if (result != DD_OK) return 0;
-        mainsurf->SetPalette(ddpal);
-    } else {
-        GetPixelFormat();
-        trans_mask = PackPixel(255, 0, 255);
-    }
-
-    result = lpdd->CreateClipper(0, &mainclip, NULL);
-    if (result != DD_OK) {
-        Log("Error creating clipper");
-        return 0;
-    }
-
-    result = mainclip->SetHWnd(0, hWnd);
-    if (result != DD_OK) {
-        Log("Error setting window handle");
-        return 0;
-    }
-
-    result = mainsurf->SetClipper(mainclip);
-    if (result != DD_OK) {
-        Log("Error assigning clipper");
-        return 0;
-    }
-
-    if (!fullscreen)
-        MakeClientFit();
-    else
-        ShowCursor(false);
-
-    sprintf(driverdesc, "DirectDraw %i.%i %ix%ix%i", DIRECTDRAW_VERSION >> 8,
-        DIRECTDRAW_VERSION & 255, xres, yres, bpp * 8);
     return 1;
 }
 
-void GrDriver::DestroySurfaces() {
-    // heh, sure are a lot of surfaces to destroy
-    if (mainsurf != NULL) mainsurf->Release();
-    mainsurf = NULL;
-    if (!fullscreen && offsurf != NULL) offsurf->Release(), offsurf = NULL;
-    if (mainclip != NULL) mainclip->Release();
-    mainclip = NULL;
-}
-
 void GrDriver::ShutDown() {
-    if (lpdd == NULL) return;
-
-    if (mainclip != NULL) {
-        mainclip->Release();
-        mainclip = NULL;
-    }
-    if (mainsurf != NULL) {
-        mainsurf->Release();
-        mainsurf = NULL;
-    }
-
-    // if we're fullscreen, then offsurf is attached to mainsurf, and thus is
-    // destroyed along with it
-    // FIXME? offsurf isn't nullified in fullscreen mode after going through
-    // this.
-    // Do we care?
-    if (offsurf != NULL && !fullscreen) {
-        offsurf->Release();
-        offsurf = NULL;
-    }
-
-    if (ddpal != NULL) {
-        ddpal->Release();
-        ddpal = NULL;
-    }
-
-    if (screen != NULL) {
-        delete screen;
-        screen = NULL;
-    }
-
-    lpdd->Release();
-    lpdd = NULL;
-}
-
-void GrDriver::MakeClientFit() {
-    RECT client, window, goal;
-    int ox, oy;  // how far off are we?
-
-    if (fullscreen) return;  // why?
-    goal.left = goal.top = 0;
-    goal.right = xres;
-    goal.bottom = yres;
-
-    GetClientRect(hWnd, &client);
-    GetWindowRect(hWnd, &window);
-
-    // find out how much adjustment we need to do
-    ox = xres - client.right;
-    oy = yres - client.bottom;
-
-    // do it!
-    window.right += ox;
-    window.bottom += oy;
-
-    POINT pt;
-
-    pt.x = pt.y = 0;
-
-    ClientToScreen(hWnd, &pt);
-    // OffsetRect(&window,pt.x,pt.y);
-
-    MoveWindow(hWnd, window.left, window.top, window.right - window.left,
-        window.bottom - window.top, true);
 }
 
 void GrDriver::ShowPage() {
-    byte *s, *d;
+    uint8_t *s, *d;
     quad srcinc, destinc;  // incrememt values for the copy loop
     int yl;
 
     RenderGUI();  // gah! --tSB
 
-    // ooh, pre-emptive surface checking.  I wonder why nobody else does this.
-    // :P
-    // --tSB
-    if (mainsurf->IsLost()) {
-        mainsurf->Restore();
-        offsurf->Restore();
-    }
-
     cpubyte = PFLIP;
-    if (!Lock()) return;
+
+#if 0
     s = screen;
-    d = (byte *)(ddsd.lpSurface);
+    d = (uint8_t *)(ddsd.lpSurface);
     yl = yres;
     if (!morphlut || bpp == 1) {
-        if (MMX) {
-            srcinc = xres * bpp;
-            destinc = ddsd.lPitch;
+        srcinc = xres * bpp;
+        destinc = ddsd.lPitch;
 
-            for (; yl; yl--)  // TODO: asm
-            {
-                memcpy(d, s, xres * bpp);
-                s += srcinc;
-                d += destinc;
-            }  // straight copy
-        } else {
-            int quadsperline = xres * bpp / 8;
-            destinc = ddsd.lPitch - xres * bpp;
-
-            /* Bitchass MMX Enhanced Mem Copier(tm)
-               registers:
-               esi - source
-               edi - dest
-               eax - surface pitch-bytes per line
-               ebx - xres*bpp/8
-               ecx - x loop counter
-               edx - y loop counter
-               Notes:
-               There isn't any code at all for the event of a graphics mode
-               whose
-               width isn't a multiple of 8.
-               (or 16 in the case of 8bit modes)  I can't think of any
-               fullscreen
-               modes that do that, but it might
-               be an issue in windowed mode.
-               TODO:
-               play with it
-            */
-            __asm {
-         mov     esi,s
-         mov     edi,d
-         mov     eax,destinc
-         mov     ebx,quadsperline
-
-         mov     edx,yl
-
-yloop:
-         mov     ecx,ebx  // ecx=quadsperline
-
-         xloop:
-             movq   mm0,[esi]  // grab a bunch of pixels
-             add    esi,8
-
-             movq   [edi],mm0  // dump 'em back
-             add    edi,8  // inc the source/dest pointers
-
-         loop    xloop
-
-         add     edi,eax  // dest+=pitch-xres*bpp
-     
-         dec     edx  // yl--;
-         jnz     yloop  // if (yl) goto yloop
-
-         emms  // clean up the MMX stuff
-            }
-        }
+        for (; yl; yl--)
+        {
+            memcpy(d, s, xres * bpp);
+            s += srcinc;
+            d += destinc;
+        }  // straight copy
     } else {
         srcinc = xres * bpp;
         destinc = ddsd.lPitch;
@@ -463,7 +107,6 @@ yloop:
             d16 += destinc / 2;
         }
     }
-    if (!UnLock()) return;
 
     HRESULT result;
 
@@ -500,31 +143,7 @@ yloop:
         }
     }
     cpubyte = ETC;
-}
-
-int GrDriver::Lock() {
-    HRESULT result;
-
-    ddsd.dwSize = sizeof ddsd;
-    result = offsurf->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL);
-    if (result != DD_OK) {
-        Log("Error locking off surface");
-        LogDDErr(result);
-        return 0;
-    }
-    return 1;
-}
-
-int GrDriver::UnLock() {
-    HRESULT result;
-
-    result = offsurf->Unlock(ddsd.lpSurface);
-    if (result != DD_OK) {
-        Log("Error unlocking off surface");
-        LogDDErr(result);
-        return 0;
-    }
-    return 1;
+#endif
 }
 
 // accessors
@@ -539,16 +158,12 @@ char *GrDriver::DriverDesc() { return driverdesc; }
 void GrDriver::Clear() { memset(screen, 0, xres * yres * bpp); }
 
 void GrDriver::VSync(bool on) {
-    if (on)
-        vsync = 0;
-    else
-        vsync = DDFLIP_NOVSYNC;
 }
 
 // ===================================== OPAQUE BLITS
 // =====================================
 
-void GrDriver::CopySprite(int x, int y, int width, int height, byte *src)
+void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t *src)
 // Assumes the surface is locked!!!
 {
     int xl, yl, xs, ys;
@@ -576,138 +191,21 @@ void GrDriver::CopySprite(int x, int y, int width, int height, byte *src)
         y = clip.top;
     }
 
-    if (bpp == 2)  // blit for hicolour
-    {
-        word *s16, *d16;
+    uint8_t* s8 = src + (ys * width + xs) * bpp;
+    uint8_t* d8 = screen + (y * scrx + x) * bpp;
 
-        s16 = (word *)(src) + ((ys * width) + xs);
-        d16 = (word *)(screen) + y * scrx + x;
-#ifndef GR_ASM
-        xl <<= 1;
-        for (; yl; yl--) {
-            memcpy(d16, s16, xl);
-            s16 += width;
-            d16 += scrx;
-        }
-#else
-        // Registers:
-        // esi: source
-        // edi: dest
-        // ecx: x loop counter
-        // edx: y loop counter
-        // eax: source pointer increment
-        // ebx: dest pointer increment
+    xl *= bpp;
+    width *= bpp;
+    scrx *= bpp;
 
-        // The ops that are paired are the ones I'm hoping will fit into the u &
-        // v
-        // pipes
-        // TODO: Bitchass MMX stuff?  Unlikely, since ASM doesn't seem to be
-        // improving the framerate much.
-
-        // Teeny bit faster than the C version.  The MMX version is a teeny bit
-        // faster yet.
-
-        int sx = scrx;
-
-        //*
-        if (MMX) {
-            int numquads = xl / 4;  // (widthinpixels)*bpp/8  (where bpp=2 here)
-            int leftover = xl % 4;
-
-            __asm {
-            mov     esi,s16  // esi=s16
-            mov     edi,d16  // edi=d16
-
-            mov     eax,width  // eax=width
-            mov     ebx,sx  // ebx=sx
-
-            sub     eax,xl  // eax=width-xl
-
-            sub     ebx,xl  // ebx=sx-xl
-            shl     eax,1  // eax=(width-xl)*2 (bytes, not pixels)
-
-            shl     ebx,1  // ebx=(sx-xl)*2
-
-            mov     edx,yl  // edx=yl
-
-        yloop16mmx:
-                mov     ecx,numquads
-                jcxz    leftovers16mmx
-           
-            xloop16mmx:
-                    movq   mm0,[esi]  // grab a bunch of pixels
-                    add    esi,8
-
-                    movq   [edi],mm0  // dump 'em back
-                    add    edi,8  // inc the source/dest pointers
-
-                loop    xloop16mmx
-
-        leftovers16mmx:
-                mov     ecx,leftover
-                jcxz    endline16mmx
-
-                rep     movsw  // copy any odd pixels
-
-        endline16mmx:
-                add     esi,eax  // move the pointers down to the beginning of the next line
-                add     edi,ebx
-                
-                dec     edx
-            jnz     yloop16mmx
-
-            emms
-            }
-        } else             //*/
-            __asm {
-            mov     esi,s16
-            mov     edi,d16
-    
-            mov     eax,width  // eax=width
-            mov     ebx,sx  // ebx=scrx
-    
-            sub     eax,xl  // eax=width-xl
-    
-            sub     ebx,xl  // ebx=scrx-xl
-            shl     eax,1  // eax=(width-xl)*2; (2 bpp)
-
-            shl     ebx,1  // ebx=(scrx-xl)*2; (2bpp)
-
-            mov     edx,yl  // dx=y length
-    yloop16:
-                mov     ecx,xl  // ecx=xl (in pixels)
-                rep     movsw  // copy a line
-
-            add     esi,eax
-            add     edi,ebx
-    
-            dec     edx
-            jnz     yloop16
-            }
-#endif      // GR_ASM
-    } else  // 8bit blit
-    {
-        byte *s8, *d8;
-        s8 = src + (ys * width + xs);
-        d8 = screen + (y * scrx + x);
-        /*
-        #ifndef GR_ASM
-            if (MMX)
-             __asm
-                {
-                }
-                else
-        #else
-        //*/
-        for (; yl; yl--) {
-            memcpy(d8, s8, xl);
-            s8 += width;
-            d8 += scrx;
-        }
+    for (; yl; yl--) {
+        memcpy(d8, s8, xl);
+        s8 += width;
+        d8 += scrx;
     }
 }
 
-void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
+void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
     int xl, yl, xs, ys;
     int srci, desti;  // source inc, dest inc
 
@@ -743,7 +241,6 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
 
         s16 = (word *)(src) + ys * width + xs;
         d16 = (word *)(screen) + y * scrx + x;
-#ifndef GR_ASM
         for (; yl > 0; yl--) {
             int a = xl;
             while (a--) {
@@ -754,62 +251,12 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
             d16 += desti;
             s16 += srci;
         }
-#else
-        int sx = scrx;
-        word t = trans_mask;
-        /*
-        Registers:
-        esi - Source ptr
-        edi - dest ptr
-        eax - source increment / current pixel (whatever)
-        ebx - dest increment
-        ecx - x loop counter
-        edx - y loop counter
-        */
-        __asm {
-        mov     esi,s16
-        mov     edi,d16
-        
-        mov     eax,srci  // eax=srci
-        mov     ebx,desti  // ebx=desti
-
-        shl     eax,1  // bytes, not pixels
-        shl     ebx,1  // ditto
-
-        mov     edx,yl
-    yloop16:
-            mov     ecx,xl
-            push    ax  // we need ax for awhile
-            
-        xloop16:
-                mov     ax,[esi]  // grab a pixel
-                add     esi,2  // increment the source pointer
-
-                cmp     ax,t
-                je      nodraw16
-
-                mov     [edi],ax
-
-            nodraw16:
-                add     edi,2
-                loop    xloop16
-
-            pop     ax
-            add     esi,eax
-            add     edi,ebx
-
-        dec     edx
-        jnz     yloop16
-
-            // end16:
-        }
-#endif
     } else  // 8bit blit
     {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
         d8 = screen + y * scrx + x;
-#ifndef GR_ASM
+
         for (; yl; yl--) {
             x = xl;
             while (x--) {
@@ -820,55 +267,6 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
             d8 += desti;
             s8 += srci;
         }
-#else
-        /* registers
-           esi - source pointer
-           edi - dest pointer
-           edx - y loop counter
-           ecx - x loop counter
-           ebx - desti (above)
-           eax - srci (above), and the current pixel
-
-        Notes:  MMX isn't feasable for nonopaque blits, so don't even consider
-        it.
-                This one improves the framerate by about %8 on my system.
-        (pretty
-        good, IMHO)
-        */
-        int sx = scrx;  // can't access class members in inline asm.
-        __asm {
-        mov     esi,s8
-        mov     edi,d8
-        
-        mov     edx,yl  // edx=yl
-        mov     ebx,desti
-        mov     eax,srci
-
-    yloop8:
-        mov     ecx,xl  // set up the x loop counter
-        push    eax  // we need this register for awhile
-
-        xloop8:
-            mov     al,[esi]  // faster than lodsb o_O
-            inc     esi
-
-            cmp     al,0  // is it the transparent pixel value?
-            je      nodraw8  // yes.  Skip it
-
-            mov     [edi],al       // faster than stosb O_o (even when you take the inc into
-            // account)
-        nodraw8:
-            inc     edi
-            loop    xloop8
-
-        pop     eax  // get our source incrementor back
-        add     edi,ebx  // d8+=desti;
-        add     esi,eax  // s8+=srci;
-
-        dec     edx  // dec the y loop counter
-        jnz     yloop8
-        }
-#endif
     }
     cpubyte = ETC;
 }
@@ -877,14 +275,12 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, byte *src) {
 // this code segment,
 // I hereby dedicate ScaleSprite to all who died in the War(s).
 void GrDriver::ScaleSprite(
-    int x, int y, int iwidth, int iheight, int dwidth, int dheight, byte *src) {
+    int x, int y, int iwidth, int iheight, int dwidth, int dheight, uint8_t *src) {
     int xerr, yerr;
     int xerr_start, yerr_start;
     int xadj, yadj;
     int xl, yl, xs, ys;
-#ifndef GR_ASM
-    int i, j, c;  // only the C blitters need these.
-#endif
+    int i, j, c;
 
     cpubyte = RENDER;
 
@@ -919,11 +315,10 @@ void GrDriver::ScaleSprite(
     yerr = yerr_start & 0xffff;
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
 
         s8 = src + ((yerr_start >> 16) * iwidth);
         d8 = screen + y * scrx + x;
-#ifndef GR_ASM
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
@@ -937,67 +332,12 @@ void GrDriver::ScaleSprite(
             s8 += (yerr >> 16) * iwidth;
             yerr &= 0xffff;
         }
-#else
-        /*
-        Registers:
-        esi - source pointer
-        edi - dest pointer
-        al  - source pixel
-        ebx - y loop counter
-        ecx - x loop counter
-        edx - source offset index/temp register for math-type stuff
-        */
-        int screenx = scrx;
-
-        if (!yl || !xl) return;  // caca
-
-        __asm {
-		mov		esi,s8
-		mov		edi,d8
-		mov		ebx,yl
-	yloop8:
-			xor		ecx,ecx
-			mov		edx,xerr_start
-			mov		xerr,edx
-		xloop8:
-				mov		edx,xerr
-				shr		edx,16
-
-				mov		al,[esi+edx]
-				mov		[edi+ecx],al
-
-				mov		edx,xadj
-				add		xerr,edx
-
-				inc		ecx
-				cmp		ecx,xl
-			jl	xloop8
-
-			add		edi,screenx
-			
-			mov		edx,yadj
-			add		edx,yerr  // edx=yadj+yerr
-			mov		yerr,edx  // yerr=edx  (yerr+=yadj, edx=yerr;)
-
-			mov		eax,iwidth  // eax=iwidth
-			shr		edx,16  // edx=yerr>>16
-
-			mul		dx  // eax=(yerr>>16)*iwidth
-			add		esi,eax  // esi+=(yerr>>16)*iwidth
-
-			and		yerr,0xFFFF  // yerr&=0xFFFF;
-
-			dec		ebx
-		jnz		yloop8
-        }
-#endif
     } else {
         word *s16, *d16;
 
         s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
         d16 = (word *)(screen) + y * scrx + x;
 
-#ifndef GR_ASM
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
@@ -1010,79 +350,16 @@ void GrDriver::ScaleSprite(
             s16 += (yerr >> 16) * iwidth;
             yerr &= 0xffff;
         }
-#else
-        /*
-        Registers:
-        esi - source pointer
-        edi - dest pointer
-        ax  - source pixel
-        ebx - y loop counter
-        ecx - x loop counter
-        edx - source offset index/temp register for math-type stuff
-        */
-        int screenx = scrx;
-
-        if (!yl || !xl) return;  // caca
-
-        __asm {
-		mov		esi,s16
-		mov		edi,d16
-		mov		ebx,yl
-	yloop16:
-			xor		ecx,ecx
-			mov		edx,xerr_start
-			mov		xerr,edx
-		xloop16:
-				mov		edx,xerr
-				shr		edx,15  // >>16, but *2 since we want a word-sized offset
-				and		edx,~1  // strip the low bit
-
-				mov		ax,[esi+edx]  // grab a pixel
-
-				shl		ecx,1  // we need a word sized offset for a sec, double ecx
-				mov		[edi+ecx],ax
-				shr		ecx,1  // restore our loop counter
-
-				mov		edx,xadj
-				add		xerr,edx
-
-				inc		ecx
-				cmp		ecx,xl
-			jl	xloop16
-
-			add		edi,screenx
-			add		edi,screenx  // word sized offset (again!)
-			
-			mov		edx,yadj
-			add		edx,yerr  // edx=yadj+yerr
-			mov		yerr,edx  // yerr=edx  (yerr+=yadj, edx=yerr;)
-
-			mov		eax,iwidth  // eax=iwidth
-			shr		edx,16  // edx=yerr>>16
-
-			mul		dx  // eax=(yerr>>16)*iwidth
-			
-			shl		eax,1  // need a word-sized offset
-			add		esi,eax  // esi+=(yerr>>16)*iwidth
-
-			and		yerr,0xFFFF  // yerr&=0xFFFF;
-
-			dec		ebx
-		jnz		yloop16
-        }
-#endif
     }
 }
 
 void GrDriver::TScaleSprite(
-    int x, int y, int iwidth, int iheight, int dwidth, int dheight, byte *src) {
+    int x, int y, int iwidth, int iheight, int dwidth, int dheight, uint8_t *src) {
     int xerr, yerr;
     int xerr_start, yerr_start;
     int xadj, yadj;
     int xl, yl, xs, ys;
-#ifndef GR_ASM
-    int i, j, c;  // only the C blitters need these.
-#endif
+    int i, j, c;
 
     cpubyte = RENDER;
 
@@ -1117,11 +394,10 @@ void GrDriver::TScaleSprite(
     yerr = yerr_start & 0xffff;
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
 
         s8 = src + ((yerr_start >> 16) * iwidth);
         d8 = screen + y * scrx + x;
-#ifndef GR_ASM
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
@@ -1135,71 +411,12 @@ void GrDriver::TScaleSprite(
             s8 += (yerr >> 16) * iwidth;
             yerr &= 0xffff;
         }
-#else
-        /*
-        Registers:
-        esi - source pointer
-        edi - dest pointer
-        al  - source pixel
-        ebx - y loop counter
-        ecx - x loop counter
-        edx - source offset index/temp register for math-type stuff
-        */
-        int screenx = scrx;
-
-        if (!yl || !xl) return;  // caca
-
-        __asm {
-		mov		esi,s8
-		mov		edi,d8
-		mov		ebx,yl
-	yloop8:
-			xor		ecx,ecx
-			mov		edx,xerr_start
-			mov		xerr,edx
-		xloop8:
-				mov		edx,xerr
-				shr		edx,16
-
-				mov		al,[esi+edx]
-				cmp		al,0
-				je		nodraw8
-
-				mov		[edi+ecx],al
-			nodraw8:
-
-				mov		edx,xadj
-				add		xerr,edx
-
-				inc		ecx
-				cmp		ecx,xl
-			jl	xloop8
-
-			add		edi,screenx
-			
-			mov		edx,yadj
-			add		edx,yerr  // edx=yadj+yerr
-			mov		yerr,edx  // yerr=edx  (yerr+=yadj, edx=yerr;)
-
-			mov		eax,iwidth  // eax=iwidth
-			shr		edx,16  // edx=yerr>>16
-
-			mul		dx  // eax=(yerr>>16)*iwidth
-			add		esi,eax  // esi+=(yerr>>16)*iwidth
-
-			and		yerr,0xFFFF  // yerr&=0xFFFF;
-
-			dec		ebx
-		jnz		yloop8
-        }
-#endif
     } else {
         word *s16, *d16;
 
         s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
         d16 = (word *)(screen) + y * scrx + x;
 
-#ifndef GR_ASM
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
@@ -1212,72 +429,6 @@ void GrDriver::TScaleSprite(
             s16 += (yerr >> 16) * iwidth;
             yerr &= 0xffff;
         }
-#else
-        /*
-        Registers:
-        esi - source pointer
-        edi - dest pointer
-        ax  - source pixel
-        ebx - y loop counter
-        ecx - x loop counter
-        edx - source offset index/temp register for math-type stuff
-        */
-        int screenx = scrx;
-        word tcolour = trans_mask;
-
-        if (!yl || !xl) return;  // caca
-
-        __asm {
-		mov		esi,s16
-		mov		edi,d16
-		mov		ebx,yl
-	yloop16:
-			xor		ecx,ecx
-			mov		edx,xerr_start
-			mov		xerr,edx
-		xloop16:
-				mov		edx,xerr
-				shr		edx,15  // >>16, but *2 since we want a word-sized offset
-				and		edx,~1  // strip the low bit
-
-				mov		ax,[esi+edx]  // grab a pixel
-				cmp		ax,tcolour  // transparent colour?
-				je		nodraw16  // yup, skip it
-
-				shl		ecx,1  // we need a word sized offset for a sec, double ecx
-				mov		[edi+ecx],ax
-				shr		ecx,1  // restore our loop counter
-
-			nodraw16:
-
-				mov		edx,xadj
-				add		xerr,edx
-
-				inc		ecx
-				cmp		ecx,xl
-			jl	xloop16
-
-			add		edi,screenx
-			add		edi,screenx  // word sized offset (again!)
-			
-			mov		edx,yadj
-			add		edx,yerr  // edx=yadj+yerr
-			mov		yerr,edx  // yerr=edx  (yerr+=yadj, edx=yerr;)
-
-			mov		eax,iwidth  // eax=iwidth
-			shr		edx,16  // edx=yerr>>16
-
-			mul		dx  // eax=(yerr>>16)*iwidth
-			
-			shl		eax,1  // need a word-sized offset
-			add		esi,eax  // esi+=(yerr>>16)*iwidth
-
-			and		yerr,0xFFFF  // yerr&=0xFFFF;
-
-			dec		ebx
-		jnz		yloop16
-        }
-#endif
     }
 }
 
@@ -1287,7 +438,7 @@ void GrDriver::RotScale(int posx,
     int height,
     float angle,
     float scale,
-    byte *src) {
+    uint8_t *src) {
     // new! shamelessly ripped off from alias.zip
     // except the atan2 stuff which i had to make up myself AEN so there :p
 
@@ -1343,7 +494,7 @@ void GrDriver::RotScale(int posx,
     }
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
         d8 = screen + posx + posy * scrx;
         s8 = src;
         for (y = 0; y < yl; y++) {
@@ -1358,7 +509,7 @@ void GrDriver::RotScale(int posx,
                     tempy < height) {
                     pt = s8[tempx + tempy * width];
                     if (pt)
-                        d8[x] = (byte)
+                        d8[x] = (uint8_t)
                             pt;  // dest[x]=translucency_table[(pt<<8)|dest[x]];
                 }
 
@@ -1403,7 +554,7 @@ void GrDriver::RotScale(int posx,
     }
 }
 
-void GrDriver::WrapBlit(int x, int y, int width, int height, byte *src) {
+void GrDriver::WrapBlit(int x, int y, int width, int height, uint8_t *src) {
     int cur_x, sign_y;
 
     if (width < 1 || height < 1) return;
@@ -1417,7 +568,7 @@ void GrDriver::WrapBlit(int x, int y, int width, int height, byte *src) {
     }
 }
 
-void GrDriver::TWrapBlit(int x, int y, int width, int height, byte *src) {
+void GrDriver::TWrapBlit(int x, int y, int width, int height, uint8_t *src) {
     int cur_x, sign_y;
 
     if (width < 1 || height < 1) return;
@@ -1517,7 +668,7 @@ inline void GrDriver::SetPixelLucent(word *dest, int c, int lucentmode)
 }
 
 void GrDriver::CopySpriteLucent(
-    int x, int y, int width, int height, byte *src, int lucentmode) {
+    int x, int y, int width, int height, uint8_t *src, int lucentmode) {
     int xl, yl, xs, ys;
     int a;
 
@@ -1559,7 +710,7 @@ void GrDriver::CopySpriteLucent(
         }
     } else  // 8bit blit
     {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
         d8 = screen + y * scrx + x;
 
@@ -1575,7 +726,7 @@ void GrDriver::CopySpriteLucent(
 }
 
 void GrDriver::TCopySpriteLucent(
-    int x, int y, int width, int height, byte *src, int lucentmode) {
+    int x, int y, int width, int height, uint8_t *src, int lucentmode) {
     int xl, yl, xs, ys;
     int a;
 
@@ -1619,7 +770,7 @@ void GrDriver::TCopySpriteLucent(
         }
     } else  // 8bit blit
     {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
         d8 = screen + y * scrx + x;
 
@@ -1640,7 +791,7 @@ void GrDriver::ScaleSpriteLucent(int x,
     int iheight,
     int dwidth,
     int dheight,
-    byte *src,
+    uint8_t *src,
     int lucent) {
     int i, j;
     int xerr, yerr;
@@ -1682,7 +833,7 @@ void GrDriver::ScaleSpriteLucent(int x,
     yerr = yerr_start & 0xffff;
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
 
         s8 = src + (ys * iwidth);
         d8 = screen + y * scrx + x;
@@ -1727,7 +878,7 @@ void GrDriver::TScaleSpriteLucent(int x,
     int iheight,
     int dwidth,
     int dheight,
-    byte *src,
+    uint8_t *src,
     int lucent) {
     int i, j;
     int xerr, yerr;
@@ -1769,7 +920,7 @@ void GrDriver::TScaleSpriteLucent(int x,
     yerr = yerr_start & 0xffff;
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
 
         s8 = src + (ys * iwidth);
         d8 = screen + y * scrx + x;
@@ -1814,7 +965,7 @@ void GrDriver::RotScaleLucent(int posx,
     int height,
     float angle,
     float scale,
-    byte *src,
+    uint8_t *src,
     int lucent) {
     // new! shamelessly ripped off from alias.zip
     // except the atan2 stuff which i had to make up myself AEN so there :p
@@ -1871,7 +1022,7 @@ void GrDriver::RotScaleLucent(int posx,
     }
 
     if (bpp == 1) {
-        byte *s8, *d8;
+        uint8_t *s8, *d8;
         d8 = screen + posx + posy * scrx;
         s8 = src;
         for (y = 0; y < yl; y++) {
@@ -1951,7 +1102,7 @@ void GrDriver::BlitStipple(int x, int y, int colour) {
     }
 
     if (bpp == 1) {
-        byte *d8;
+        uint8_t *d8;
         d8 = screen + y * scrx + x;
         for (ay = 0; ay < yl; ay++) {
             for (ax = 0; ax < xl; ax++)
@@ -1970,7 +1121,7 @@ void GrDriver::BlitStipple(int x, int y, int colour) {
 }
 
 void GrDriver::WrapBlitLucent(
-    int x, int y, int width, int height, byte *src, int lucent) {
+    int x, int y, int width, int height, uint8_t *src, int lucent) {
     int cur_x, sign_y;
 
     if (width < 1 || height < 1) return;
@@ -1985,7 +1136,7 @@ void GrDriver::WrapBlitLucent(
 }
 
 void GrDriver::TWrapBlitLucent(
-    int x, int y, int width, int height, byte *src, int lucent) {
+    int x, int y, int width, int height, uint8_t *src, int lucent) {
     int cur_x, sign_y;
 
     if (width < 1 || height < 1) return;
@@ -2009,7 +1160,7 @@ void GrDriver::SetPixel(int x, int y, int colour, int lucent) {
         return;
 
     if (bpp == 1) {
-        byte *p = screen + ofs;
+        uint8_t *p = screen + ofs;
         if (lucent)
             *p = lucentlut8[colour || *p << 8];
         else
@@ -2028,7 +1179,7 @@ int GrDriver::GetPixel(int x, int y) {
         return 0;
 
     if (bpp == 1) {
-        byte *c;
+        uint8_t *c;
         c = screen + y * scrx + x;
         return *c;
     } else {
@@ -2057,7 +1208,7 @@ void GrDriver::HLine(int x, int y, int x2, int colour, int lucent) {
     if (x2 < clip.left) return;
 
     if (bpp == 1) {
-        byte *d8;
+        uint8_t *d8;
         d8 = screen + (y * scrx + x);
         xl = x2 - x + 1;
         if (lucent)
@@ -2092,7 +1243,7 @@ void GrDriver::VLine(int x, int y, int y2, int colour, int lucent) {
     if (x < clip.left) return;
 
     if (bpp == 1) {
-        byte *d8;
+        uint8_t *d8;
         d8 = screen + (y * scrx + x);
         int yl = y2 - y + 1;
         if (lucent)
@@ -2102,7 +1253,7 @@ void GrDriver::VLine(int x, int y, int y2, int colour, int lucent) {
             }
         else
             while (yl--) {
-                *d8 = (byte)colour;
+                *d8 = (uint8_t)colour;
                 d8 += scrx;
             }
     } else {
@@ -2532,7 +1683,7 @@ inline void GrDriver::tmaphline(int x1,
     int ty2,
     int texw,
     int texh,
-    byte *image) {
+    uint8_t *image) {
     int i;
     int txstep, txval;
     int tystep, tyval;
@@ -2587,7 +1738,7 @@ void GrDriver::TMapPoly(int x1,
     int ty3,
     int tw,
     int th,
-    byte *img) {
+    uint8_t *img) {
     int xstep, xstep2;
     int xval, xval2;
     int txstep, txstep2;
@@ -2597,7 +1748,7 @@ void GrDriver::TMapPoly(int x1,
     int yon;
     int swaptemp;
 
-    byte *image;
+    uint8_t *image;
     int texw, texh;
 
     image = img;
@@ -2696,7 +1847,7 @@ void GrDriver::TMapPoly(int x1,
     }
 }
 
-void GrDriver::Mask(byte *src, byte *mask, int width, int height, byte *dest) {
+void GrDriver::Mask(uint8_t *src, uint8_t *mask, int width, int height, uint8_t *dest) {
     int i = width * height;
     if (bpp == 2) {
         word *s16 = (word *)src;
@@ -2721,7 +1872,7 @@ void GrDriver::Mask(byte *src, byte *mask, int width, int height, byte *dest) {
 }
 
 void GrDriver::Silhouette(
-    int width, int height, byte *src, byte *dest, int colour) {
+    int width, int height, uint8_t *src, uint8_t *dest, int colour) {
     width *= height;
     if (bpp == 1) {
         while (width--) {
@@ -2741,7 +1892,7 @@ void GrDriver::Silhouette(
 }
 
 void GrDriver::ChangeAll(
-    int width, int height, byte *src, int srccolour, int destcolour) {
+    int width, int height, uint8_t *src, int srccolour, int destcolour) {
     width *= height;
     if (bpp == 1) {
         while (width--) {
@@ -2759,50 +1910,13 @@ void GrDriver::ChangeAll(
 
 // Pixel/palette crap
 
-void GrDriver::GetPixelFormat(void) {
-    DDPIXELFORMAT ddpf;
-    int r, g, b;
-
-    memset(&ddpf, 0, sizeof ddpf);
-    ddpf.dwSize = sizeof(DDPIXELFORMAT);
-    offsurf->GetPixelFormat(&ddpf);
+void GrDriver::GetPixelFormat() {
     rpos = 0;
-    gpos = 0;
-    bpos = 0;
-    rsize = 0;
-    gsize = 0;
-    bsize = 0;
+    gpos = 8;
+    bpos = 16;
+    rsize = gsize = bsize = 8;
 
-    r = ddpf.dwRBitMask;
-    g = ddpf.dwGBitMask;
-    b = ddpf.dwBBitMask;
-
-    while ((r & 1) == 0 && rpos < 32) {
-        r >>= 1;
-        rpos++;
-    }
-    while ((g & 1) == 0 && gpos < 32) {
-        g >>= 1;
-        gpos++;
-    }
-    while ((b & 1) == 0 && bpos < 32) {
-        b >>= 1;
-        bpos++;
-    }
-    while ((r & 1) == 1) {
-        r >>= 1;
-        rsize++;
-    }
-    while ((g & 1) == 1) {
-        g >>= 1;
-        gsize++;
-    }
-    while ((b & 1) == 1) {
-        b >>= 1;
-        bsize++;
-    }
-
-    bpp = ddpf.dwRGBBitCount / 8;
+    bpp = 2;
 
     lucentmask = ~((1 << rpos) | (1 << gpos) | (1 << bpos));
 }
@@ -2856,8 +1970,9 @@ void GrDriver::UnPackPixel(int c, int &r, int &g, int &b) {
     if (bsize < 8) b = (b << (8 - bsize)) & 255;
 }
 
-int GrDriver::SetPalette(byte *p)  // p is a char[768]
+int GrDriver::SetPalette(uint8_t *p)  // p is a char[768]
 {
+#if 0
     HRESULT result;
     PALETTEENTRY ddp[256];
     int i;
@@ -2890,11 +2005,13 @@ int GrDriver::SetPalette(byte *p)  // p is a char[768]
         LogDDErr(result);
         return 0;
     }
+#endif
     return 1;
 }
 
-int GrDriver::GetPalette(byte *p)  // p is a char[768]
+int GrDriver::GetPalette(uint8_t *p)  // p is a char[768]
 {
+#if 0
     HRESULT result;
     PALETTEENTRY ddp[256];
     int i;
@@ -2914,10 +2031,11 @@ int GrDriver::GetPalette(byte *p)  // p is a char[768]
     }
 
     memcpy(p, pal, 768);
+#endif
     return 1;
 }
 
-int GrDriver::InitLucentLUT(byte *data)
+int GrDriver::InitLucentLUT(uint8_t *data)
 // this just copies the data into lucentlut8 so the lucent stuff can work in
 // 8bit mode.
 {
@@ -2950,7 +2068,7 @@ void GrDriver::SetClipRect(RECT newrect) {
     memcpy(&clip, &newrect, sizeof clip);
 }
 
-void GrDriver::SetRenderDest(int x, int y, byte *dest) {
+void GrDriver::SetRenderDest(int x, int y, uint8_t *dest) {
     scrx = x;
     scry = y;
     clip.top = clip.left = 0;
@@ -2975,7 +2093,7 @@ inline int GrDriver::morph_step(int S, int D, int mix, int light) {
 void GrDriver::PaletteMorph(
     int mr, int mg, int mb, int percent, int intensity) {
     int rgb[3], n;
-    byte pmorph_palette[3 * 256];
+    uint8_t pmorph_palette[3 * 256];
 
     int i;
     int wr, wg, wb;
@@ -3021,49 +2139,4 @@ void GrDriver::PaletteMorph(
         // enforce new palette
         SetPalette(pmorph_palette);
     }
-}
-
-bool __cdecl IsMMX(void)
-/*
-  I didn't write this.  I got it from:
-  http://gamedev.net/reference/programming/features/mmxblend/
-  By John Hebert
-
-  --tSB
-*/
-{
-    SYSTEM_INFO si;
-    int nCPUFeatures = 0;
-    GetSystemInfo(&si);
-    if (si.dwProcessorType != PROCESSOR_INTEL_386 &&
-        si.dwProcessorType != PROCESSOR_INTEL_486) {
-        try {
-            __asm
-            {
-                ; we must push/pop the registers << CPUID>>  writes to, as the
-				; optimiser doesn't know about << CPUID>> , and so doesn't expect
-				; these registers to change.
-                push eax
-                push ebx
-                push ecx
-                push edx
-
-                ; << CPUID>> 
-                ; eax=0,1,2 -> CPU info in eax,ebx,ecx,edx
-                mov eax,1
-                _emit 0x0f
-                _emit 0xa2
-                mov nCPUFeatures,edx
-
-                pop edx
-                pop ecx
-                pop ebx
-                pop eax
-            }
-        } catch (...)  // just to be sure...
-        {
-            return false;
-        }
-    }
-    return (nCPUFeatures & 0x00800000) != 0;
 }
