@@ -541,7 +541,7 @@ void InitSystems() {
     LogDone();
 
     Logp("Sys: Initializing graphics.");
-    if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8, fullscreenmode))
+    if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8))
         Sys_Error("Error initizlizing graphics");
     if (!gfx.SetPalette(vergepal))
         Sys_Error("Error setting the palette");

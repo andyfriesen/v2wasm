@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         28	Decemeber	1999	Major revamp.
 */
 
-#include "keycodes.h"
+#include "keyboard.h"
 #include "verge.h"
 
 #define CONSOLE_TEXT_LINES 100
