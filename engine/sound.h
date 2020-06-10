@@ -22,7 +22,7 @@ extern int sfx_mixrate;
 extern int sfx_bufflen;
 extern int sfx_safemode;
 
-void InitMusicSystem(unsigned int hWnd);
+void InitMusicSystem();
 void ShutdownMusicSystem();
 void PlayMusic(const char *);
 int GetMusicVolume();

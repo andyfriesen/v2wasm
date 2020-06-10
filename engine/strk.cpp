@@ -16,6 +16,10 @@
 
 #include "strk.h"
 
+using std::cout;
+using std::ostream;
+using std::endl; 
+
 string_k::string_k() {
     //	cout << "string_k::string_k()" << endl;
 

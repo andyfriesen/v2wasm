@@ -204,10 +204,12 @@ static byte *Image_LoadPCXBuf(const char *fname) {
     return buf;
 }
 
-/*struct RGBQUAD // redundant in Win32
-{
-        unsigned char r, g, b, a;
-};*/
+struct RGBQUAD {
+    unsigned char rgbBlue;
+    unsigned char rgbGreen;
+    unsigned char rgbRed;
+    unsigned char rgbAlpha;
+};
 
 /*typedef struct tagRGBQUAD {
         BYTE	rgbBlue;

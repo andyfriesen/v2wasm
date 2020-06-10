@@ -1,6 +1,6 @@
 
 #include <iostream>
-//#include "str.h"
+#include "str.h"
 #include "verge.h"
 
 string_t &string_t::operator=(const string_t &rhs) {

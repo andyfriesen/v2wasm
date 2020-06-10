@@ -13,12 +13,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef TIMER_H
-#define TIMER_H
+#pragma once
 
 extern int InitTimer();
 extern void ShutdownTimer();
 
 extern unsigned int systemtime, timer_count, vctimer, hktimer;
-
-#endif

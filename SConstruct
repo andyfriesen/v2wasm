@@ -119,15 +119,15 @@ sources = [
     'render.cpp',
     'str.cpp',
     'vc.cpp',
-    'w_graph.cpp',
+    # 'w_graph.cpp',
 
     'engine.cpp',
     'image.cpp',
     'memstr.cpp',
-    'sound.cpp',
+    # 'sound.cpp',
     'strk.cpp',
     'verge.cpp',
-    'w_input.cpp',
+    # 'w_input.cpp',
 ]
 sources = ['engine/' + s for s in sources]
 

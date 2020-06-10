@@ -1,5 +1,12 @@
 #pragma once
 
+struct RECT {
+    int left;
+    int top;
+    int right;
+    int bottom;
+};
+
 class GrDriver {
    protected:
     byte *truescreen;  // pointer to real screen data
@@ -188,7 +195,7 @@ class GrDriver {
     void ShowPage();
 
     // weird rendering magic stuff ;)
-    // void SetClipRect(RECT clip);
+    void SetClipRect(RECT clip);
     void RestoreRenderSettings();
     void SetRenderDest(int x, int y, byte *dest);
 

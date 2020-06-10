@@ -29,9 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdarg.h>  // va_*()
 #include <stdlib.h>
 #include <time.h>
-#include <windows.h>
 
-//#define MAIN_H
 #include "verge.h"
 
 #define TITLE "VERGE v2.6"
@@ -44,12 +42,6 @@ extern void Logp(const char *message);
 extern void InitLog();
 
 extern char logoutput;
-
-// Data
-
-// Win32 stuff
-HWND hWnd;
-bool bActive;
 
 static unsigned char vergepal[] = {0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x03,
     0x03, 0x03, 0x05, 0x05, 0x05, 0x07, 0x07, 0x07, 0x09, 0x09, 0x09, 0x0a,
@@ -337,21 +329,10 @@ void Sys_Error(const char *format, ...) {
     input.ShutDown();
     gfx.ShutDown();
     ShutdownMusicSystem();
-    // CD_Deinit();
-    /*MD_PlayStop();
-    MD_Exit();*/
-    // sound.init();
 
-    /*if (ShutdownVideo)
-		ShutdownVideo(1);*/  // grdriver's destructor handles this for us
-
-    DestroyWindow(hWnd);  // is this necessary? --tSB
-
-    if (strcmp("", string)) MessageBox(NULL, string, "", 0);
     fflush(stdout);
 
     FreeAllMemory();
-    PostQuitMessage(0);
 
     exit(-1);
 }
@@ -524,136 +505,44 @@ void ParseAutoCFG() {
     vclose(vf);
 }
 
-// --tSB moved Conlib_Ver() to conlib.h (that's the only place it's needed
-// anyway :P
-
-int CheckMessages() {
-    // Win95 can bite me.
-    // mehehehe --tSB
-    MSG msg;
-    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE) || !bActive) {
-        if (msg.message == WM_QUIT) return msg.wParam;
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-    return 0;
-}
-
-void InitSystems(HINSTANCE hInst) {
+void InitSystems() {
     InitLog();
 
     Log("v2.6 startup. Logfile initialized.");
 
     Logp("Sys: Initializing keyboard handler.");
-    if (!input.Init(hInst, hWnd))
+    if (!input.Init())
         Sys_Error("Error initializing keyboard handler");
     memset(bindarray, 0, 256);  // no keys bound yet
     input.ClipMouse(0, 0, vidxres, vidyres);
     LogDone();
 
     Logp("Sys: Initializing timer. Set 100hz.");
-    if (!InitTimer()) Sys_Error("Error initing timer");
+    if (!InitTimer())
+        Sys_Error("Error initing timer");
     LogDone();
-
-    /*
-    Logp("Sys: Initializing CD Audio.");
-    CD_Init();
-    LogDone();
-    */
 
     Logp("Sys: Initializing music system.");
-    InitMusicSystem((unsigned int)hWnd);
+    InitMusicSystem();
     LogDone();
 
     Logp("Sys: Initializing graphics.");
-    if (!gfx.Init(hWnd, vidxres, vidyres, hicolour ? 16 : 8, fullscreenmode))
+    if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8, fullscreenmode))
         Sys_Error("Error initizlizing graphics");
     if (!gfx.SetPalette(vergepal)) Sys_Error("Error setting the palette");
     LogDone();
 }
 
-LRESULT CALLBACK MainWinProc(
-    HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    switch (msg) {
-    // Mouse management
-    // General Win32 type crap
-    case WM_KEYDOWN:
-        input.Poll();
-    case WM_KEYUP:
-        input.Poll();
-    case WM_ACTIVATE:
-        bActive = LOWORD(wParam) !=
-                  WA_INACTIVE;  // I know it's ugly.  Sue me, I'm lazy.
-        if (bActive) {
-            SoundResume();
-        } else {
-            SoundPause();
-        }
-        return 0;
-    /*
-       case WM_ACTIVATEAPP: bActive=wParam!=0?true:false;
-                            if (bActive)
-                             {
-                              SoundResume();
-                             }
-                            else
-                             {
-                              SoundPause();
-                             }
-                            InvalidateRect(hWnd,NULL,true);
-                            return 0;*/
-
-    case WM_CLOSE:
-        Sys_Error("");
-        return 0;
-    }
-    return DefWindowProc(hwnd, msg, wParam, lParam);
-}
-
-//#include "dpmi.h"
-int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmd, int nShow) {
-    WNDCLASSEX wc;  // Win32. blarg
-                    /*	if (1 == argc) {
-                                    printf("VERGE v.%s build %s at %s.
-                       \n",VERSION,__DATE__,__TIME__);
-                                    printf("Copyright (C)1998 vecna \n");
-                                    delay(500);
-                            }*/
+int main(int argc, char** argv) {
     InitLog();
 
-    srand(timeGetTime());
+    // srand(timeGetTime());
     // ---Directly from the DOS version -- used to be in VERGE.CPP but it fits
     // here better. --tSB
     InitializeDefaults();
     ParseStartupFiles();
 
-    // set up and register window class
-    ZeroMemory(&wc, sizeof wc);
-    wc.cbSize = sizeof wc;
-    wc.style = 0;
-    wc.lpfnWndProc = MainWinProc;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    wc.hInstance = hInst;
-    wc.hIcon = LoadIcon(hInst, "AppIcon");
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
-    wc.lpszMenuName = NULL;
-    wc.lpszClassName = NAME;
-    wc.cbClsExtra = 0;
-    wc.cbWndExtra = 0;
-    RegisterClassEx(&wc);
-
-    // Create it!
-    hWnd = CreateWindowEx(0, NAME, TITLE,
-        0,  // WS_SYSMENU,
-        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-        HWND_DESKTOP, NULL, hInst, NULL);
-    ShowWindow(hWnd, nShow);
-    SetFocus(hWnd);
-    //    ShowCursor(false);
-
-    InitSystems(hInst);
+    InitSystems();
 
     bActive = true;
 

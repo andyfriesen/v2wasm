@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 class Input {
    private:
     // key buffer
@@ -16,7 +18,7 @@ class Input {
     // RECT mclip;
 
     // for UnPress
-    byte unpress[9];
+    uint8_t unpress[9];
 
     // int Test(HRESULT result, char *errmsg);
 

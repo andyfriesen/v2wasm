@@ -20,7 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define SOUND_H
 
-#include "midasdll.h"
 #include "verge.h"
 
 // that enough? >:D  --tSB
@@ -68,7 +67,7 @@ inline void test(int i)
     }
 }
 
-void InitMusicSystem(unsigned int hWnd) {
+void InitMusicSystem() {
     if (!MIDASstartup()) {
         Sys_Error("MIDASstartup failed");
         ShutdownMusicSystem();

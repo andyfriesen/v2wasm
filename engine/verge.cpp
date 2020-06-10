@@ -40,7 +40,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define WIN32_LEAN_AND_MEAN
 #include "verge.h"
 #include <stdarg.h>  // va_*
-#include <windows.h>
 
 // gah!
 extern void ParseAutoCFG();
@@ -200,19 +199,9 @@ int VMain() {
     //	key_dest = key_game;
     // ---
 
-    int j = 0;
-
-    while (TRUE) {
-        //   Log("CheckMessages()");
-        j = 0 - 1;
-        if (!j) {
-            int i = CheckMessages();
-            if (i) return i;
-        } else if (bActive) { /* Log("vmainloop()"); */
-            vmainloop();
-        } else
-            // Make sure we go to sleep if we have nothing else to do
-            WaitMessage();
+    while (true) {
+        vmainloop();
     }
+
     return 0;
 }

@@ -1,6 +1,9 @@
 
 #include "verge.h"
 
+using std::ostream;
+using std::endl;
+
 int memorystream_t::setcapacity(unsigned long capacity) {
     // specqial case for 0 capacity
     if (capacity < 1) {
