@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //#define WIN32_LEAN_AND_MEAN
 
-#include <stdarg.h>  // va_*()
+#include <stdarg.h> // va_*()
 #include <stdlib.h>
 #include <time.h>
 
@@ -37,8 +37,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // in VERGE.CPP
 extern int VMain();
-extern void Log(const char *message);
-extern void Logp(const char *message);
+extern void Log(const char* message);
+extern void Logp(const char* message);
 extern void InitLog();
 
 extern char logoutput;
@@ -107,80 +107,89 @@ static unsigned char vergepal[] = {0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x03,
     0x22, 0x00, 0x24, 0x1b, 0x00, 0x1b, 0x14, 0x00, 0x12, 0x0d, 0x00, 0x09,
     0x07, 0x00, 0x00, 0x00, 0x00, 0x29, 0x00, 0x28, 0x23, 0x00, 0x2b, 0x1d,
     0x00, 0x2f, 0x17, 0x00, 0x32, 0x12, 0x00, 0x35, 0x0c, 0x00, 0x38, 0x06,
-    0x00, 0x3c, 0x3f, 0x3f, 0x3f, 0x3f};  // gah!
+    0x00, 0x3c, 0x3f, 0x3f, 0x3f, 0x3f}; // gah!
 
-int hicolour = 0;            // bleh --tSB
-bool fullscreenmode = true;  // ditto
+int hicolour = 0;           // bleh --tSB
+bool fullscreenmode = true; // ditto
 
-char *strbuf = 0;  // Universal temporary string buffer. :)
+char* strbuf = 0; // Universal temporary string buffer. :)
 
 char joyflag = 0;
 
 int vidxres = 0;
 int vidyres = 0;
 
-char nocdaudio = 0;  // do not use CD audio
+char nocdaudio = 0; // do not use CD audio
 
-string_k startmap;  // start map
+string_k startmap; // start map
 
 // ================================= Code ====================================
 
-void V_memset(void *dest, int fill, int count) {
+void V_memset(void* dest, int fill, int count) {
     int i;
-    for (i = 0; i < count; i++) ((byte *)dest)[i] = (byte)fill;
+    for (i = 0; i < count; i++)
+        ((byte*)dest)[i] = (byte)fill;
 }
 
-void V_memcpy(void *dest, const void *src, int count) {
+void V_memcpy(void* dest, const void* src, int count) {
     int i;
 
     if ((((long)dest | (long)src | count) & 3) == 0) {
         count >>= 2;
-        for (i = 0; i < count; i++) ((int *)dest)[i] = ((int *)src)[i];
+        for (i = 0; i < count; i++)
+            ((int*)dest)[i] = ((int*)src)[i];
     } else
-        for (i = 0; i < count; i++) ((byte *)dest)[i] = ((byte *)src)[i];
+        for (i = 0; i < count; i++)
+            ((byte*)dest)[i] = ((byte*)src)[i];
 }
 
-int V_memcmp(const void *m1, const void *m2, int count) {
+int V_memcmp(const void* m1, const void* m2, int count) {
     while (count) {
         count--;
-        if (((byte *)m1)[count] != ((byte *)m2)[count]) return -1;
+        if (((byte*)m1)[count] != ((byte*)m2)[count])
+            return -1;
     }
     return 0;
 }
 
-void V_strcpy(char *dest, const char *src) {
+void V_strcpy(char* dest, const char* src) {
     while (*src) {
         *dest++ = *src++;
     }
     *dest++ = 0;
 }
 
-void V_strncpy(char *dest, const char *src, int count) {
+void V_strncpy(char* dest, const char* src, int count) {
     while (*src && count--) {
         *dest++ = *src++;
     }
-    if (count) *dest++ = 0;
+    if (count)
+        *dest++ = 0;
 }
 
-int V_strlen(const char *str) {
+int V_strlen(const char* str) {
     int count;
 
     count = 0;
-    while (str[count]) count++;
+    while (str[count])
+        count++;
 
     return count;
 }
 
-void V_strcat(char *dest, char *src) {
+void V_strcat(char* dest, char* src) {
     dest += V_strlen(dest);
     V_strcpy(dest, src);
 }
 
-int V_strcmp(const char *s1, const char *s2) {
+int V_strcmp(const char* s1, const char* s2) {
     while (1) {
-        if (*s1 < *s2) return -1;  // strings not equal
-        if (*s1 > *s2) return +1;
-        if (!*s1) return 0;  // strings are equal
+        if (*s1 < *s2)
+            return -1; // strings not equal
+        if (*s1 > *s2)
+            return +1;
+        if (!*s1)
+            return 0; // strings are equal
         s1++;
         s2++;
     }
@@ -188,7 +197,7 @@ int V_strcmp(const char *s1, const char *s2) {
     // return 666;
 }
 
-int V_atoi(const char *str) {
+int V_atoi(const char* str) {
     int val;
     int sign;
     int c;
@@ -231,14 +240,15 @@ int V_atoi(const char *str) {
     //
     while (1) {
         c = *str++;
-        if (c < '0' || c > '9') return val * sign;
+        if (c < '0' || c > '9')
+            return val * sign;
         val = val * 10 + c - '0';
     }
 
     // return 0;
 }
 
-float V_atof(const char *str) {
+float V_atof(const char* str) {
     float val;
     int sign;
     int c;
@@ -288,12 +298,14 @@ float V_atof(const char *str) {
             decimal = total;
             continue;
         }
-        if (c < '0' || c > '9') break;
+        if (c < '0' || c > '9')
+            break;
         val = val * 10 + c - '0';
         total++;
     }
 
-    if (decimal == -1) return val * sign;
+    if (decimal == -1)
+        return val * sign;
     while (total > decimal) {
         val /= 10;
         total--;
@@ -302,7 +314,7 @@ float V_atof(const char *str) {
     return val * sign;
 }
 
-char *va(char *format, ...) {
+char* va(char* format, ...) {
     va_list argptr;
     static char string[1024];
 
@@ -313,7 +325,7 @@ char *va(char *format, ...) {
     return string;
 }
 
-void Sys_Error(const char *format, ...) {
+void Sys_Error(const char* format, ...) {
     va_list argptr;
     static char string[1024];
 
@@ -355,28 +367,28 @@ void InitializeDefaults() {
 	jb2=2;
 	jb3=3;
 	jb4=4;
-	joyflag=0;       */  // joystick
+	joyflag=0;       */ // joystick
     // defaults
     // to
     // disabled
 
-    vidxres = 320;  // default res is 320x240
+    vidxres = 320; // default res is 320x240
     vidyres = 240;
 
-    logoutput = 0;  // Don't be annoyingly verbose
+    logoutput = 0; // Don't be annoyingly verbose
 
-    V_memset(bindarray, 0, sizeof(bindarray));  // clear this here so we don't
-                                                // trigger random events on the
-                                                // first keypress
+    V_memset(bindarray, 0, sizeof(bindarray)); // clear this here so we don't
+                                               // trigger random events on the
+                                               // first keypress
 
-    strbuf = (char *)valloc(2000, "strbuf", OID_TEMP);  // globally used string;
-                                                        // TODO: remove all
-                                                        // dependencies on this,
-                                                        // and get rid of it
+    strbuf = (char*)valloc(2000, "strbuf", OID_TEMP); // globally used string;
+                                                      // TODO: remove all
+                                                      // dependencies on this,
+                                                      // and get rid of it
 
-    startmap = "";  // test.map";            // default startup map
+    startmap = ""; // test.map";            // default startup map
 
-    gfx.VSync(false);  // no vsync by default
+    gfx.VSync(false); // no vsync by default
 
     // default MikMod settings
     /*	md_mode		=DMODE_STEREO|DMODE_16BITS|DMODE_INTERP;
@@ -389,17 +401,17 @@ void InitializeDefaults() {
 // <aen, apr 21>
 // + added these few static routines and made ParseStartupFiles() use'em
 
-static VFILE *user_cfg_file = 0;
+static VFILE* user_cfg_file = 0;
 static char parse_str[256];
 
-static char *parse_cfg_token() {
+static char* parse_cfg_token() {
     vscanf(user_cfg_file, "%s", parse_str);
     return parse_str;
 }
 
 // compares string against parse_str (grabbed by parse_cfg_token())
 // 0=mismatch, 1=match
-static int parse_match(char *str) { return !strcmp(parse_str, str); }
+static int parse_match(char* str) { return !strcmp(parse_str, str); }
 
 // zero error correcting or detection; fix <aen, apr 21>
 void ParseStartupFiles() {
@@ -435,7 +447,7 @@ void ParseStartupFiles() {
         else if (parse_match("startmap")) {
             startmap = parse_cfg_token();
             continue;
-        }  // --tSB why not?
+        } // --tSB why not?
         // 0=auto detect, 1=???, 2=???, 3=nosound
         else if (parse_match("sound_device")) {
             parse_cfg_token();
@@ -482,11 +494,12 @@ void ParseStartupFiles() {
 }
 
 void ParseAutoCFG() {
-    VFILE *vf;
+    VFILE* vf;
     int i;
 
     vf = vopen("auto.cfg");
-    if (!vf) return;
+    if (!vf)
+        return;
 
     while (1) {
         char temp[256 + 1] = {0};
@@ -494,7 +507,8 @@ void ParseAutoCFG() {
         temp[256] = '\0';
 
         for (i = 0; i < V_strlen(temp); i++) {
-            if (temp[i] == 10 || temp[i] == 13) temp[i] = 0;
+            if (temp[i] == 10 || temp[i] == 13)
+                temp[i] = 0;
         }
         if (V_strlen(temp) < 2) {
             break;
@@ -513,7 +527,7 @@ void InitSystems() {
     Logp("Sys: Initializing keyboard handler.");
     if (!input.Init())
         Sys_Error("Error initializing keyboard handler");
-    memset(bindarray, 0, 256);  // no keys bound yet
+    memset(bindarray, 0, 256); // no keys bound yet
     input.ClipMouse(0, 0, vidxres, vidyres);
     LogDone();
 
@@ -529,7 +543,8 @@ void InitSystems() {
     Logp("Sys: Initializing graphics.");
     if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8, fullscreenmode))
         Sys_Error("Error initizlizing graphics");
-    if (!gfx.SetPalette(vergepal)) Sys_Error("Error setting the palette");
+    if (!gfx.SetPalette(vergepal))
+        Sys_Error("Error setting the palette");
     LogDone();
 }
 

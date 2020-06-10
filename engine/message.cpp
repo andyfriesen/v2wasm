@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // /////////////////////////////////////////////////////////////////////////////////////////////////
 
 struct message_t : public linked_node {
-    int compare(void *c) { return ((message_t *)c)->expire_at > expire_at; }
+    int compare(void* c) { return ((message_t*)c)->expire_at > expire_at; }
 
     message_t(string_k s, int expire) : text(s), expire_at(expire) {}
 
@@ -48,15 +48,16 @@ static char profile[6];
 // /////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void Message_CheckExpirations() {
-    if (!messages.number_nodes()) return;
+    if (!messages.number_nodes())
+        return;
 
     messages.go_head();
     do {
-        message_t *m = (message_t *)messages.current();
+        message_t* m = (message_t*)messages.current();
         if (systemtime > m->expire_at) {
             messages.go_next();
 
-            messages.unlink((linked_node *)m);
+            messages.unlink((linked_node*)m);
             delete m;
 
             continue;
@@ -75,7 +76,7 @@ void RenderGUI() {
         x = y = 1;
         messages.go_head();
         do {
-            message_t *m = (message_t *)messages.current();
+            message_t* m = (message_t*)messages.current();
 
             Font_GotoXY(x, y);
             Font_Print(0, m->text.c_str());
@@ -86,7 +87,8 @@ void RenderGUI() {
         } while (messages.current() != messages.head());
     }
 
-    if (!cpu_watch) return;
+    if (!cpu_watch)
+        return;
     frames++;
 
     x = gfx.scrx - Font_GetWidth(0) * 10 - 4;
@@ -120,12 +122,12 @@ void Message_Send(string_k text, int duration) {
     Log(va("Message: %s", text.c_str()));
 
     messages.insert_tail(
-        (linked_node *)new message_t(text, systemtime + duration));
+        (linked_node*)new message_t(text, systemtime + duration));
 
     // did we go over limit? if so, remove head
     if (messages.number_nodes() > 5) {
-        message_t *m = (message_t *)messages.head();
-        messages.unlink((linked_node *)m);
+        message_t* m = (message_t*)messages.head();
+        messages.unlink((linked_node*)m);
         delete m;
     }
 }

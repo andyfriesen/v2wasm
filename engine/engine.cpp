@@ -44,52 +44,52 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ================================= Data ====================================
 
-zoneinfo zones[256];          // zone data records
-layer_r layer[6];             // Array of layer data
-vspanim_r vspanim[100];       // tile animation data
-unsigned short vadelay[100];  // Tile animation delay ctr
+zoneinfo zones[256];         // zone data records
+layer_r layer[6];            // Array of layer data
+vspanim_r vspanim[100];      // tile animation data
+unsigned short vadelay[100]; // Tile animation delay ctr
 
-char mapname[60 + 1];  // MAP filename
-char vspname[60 + 1];  // VSP filemap
-char musname[60 + 1];  // MAP bkgrd music default filename
+char mapname[60 + 1]; // MAP filename
+char vspname[60 + 1]; // VSP filemap
+char musname[60 + 1]; // MAP bkgrd music default filename
 // char rstring[20];                    // render-order string
 string_k rstring;
-char numlayers;  // number of layers in map
-byte *obstruct = 0;
-byte *zone = 0;       // obstruction and zone buffers
-char layertoggle[8];  // layer visible toggles
-word xstart, ystart;  // MAP start x/y location
-int bufsize;          // how many bytes need to be written
-int numzones;         // number of active zones
+char numlayers; // number of layers in map
+byte* obstruct = 0;
+byte* zone = 0;      // obstruction and zone buffers
+char layertoggle[8]; // layer visible toggles
+word xstart, ystart; // MAP start x/y location
+int bufsize;         // how many bytes need to be written
+int numzones;        // number of active zones
 
-word *layers[6];         // Raw layer data
-int xwin = 0, ywin = 0;  // camera offset
+word* layers[6];        // Raw layer data
+int xwin = 0, ywin = 0; // camera offset
 
 // -- vsp data --
 
-byte *vsp = 0, *vspmask;  // VSP data buffer.
-unsigned short numtiles;  // number of tiles in VSP.
-unsigned short *tileidx;  // tile index thingamajig
-char *flipped;            // bi-direction looping flag
+byte *vsp = 0, *vspmask; // VSP data buffer.
+unsigned short numtiles; // number of tiles in VSP.
+unsigned short* tileidx; // tile index thingamajig
+char* flipped;           // bi-direction looping flag
 
 // entity stuffs
 
-char *msbuf[100];  // ptr-table to script offset
-char *ms = 0;      // script text buffer
-byte nms;          // number of movescripts
+char* msbuf[100]; // ptr-table to script offset
+char* ms = 0;     // script text buffer
+byte nms;         // number of movescripts
 
-char numfollowers = 0;     // number of party followers
-byte follower[10];         // maximum of 10 followers.
-char laststeps[10] = {0};  // record of last movements
+char numfollowers = 0;    // number of party followers
+byte follower[10];        // maximum of 10 followers.
+char laststeps[10] = {0}; // record of last movements
 int lastent;
 
 // -- stuff --
 
-byte movegranularity;  // means nothing now, please remove
+byte movegranularity; // means nothing now, please remove
 byte movectr = 0;
 
-byte phantom = 0;     // walk-through-walls
-byte speeddemon = 0;  // doublespeed cheat
+byte phantom = 0;    // walk-through-walls
+byte speeddemon = 0; // doublespeed cheat
 
 // <aen>
 // This *MUST* have 256 elements, because of the new input code. I generate my
@@ -100,11 +100,11 @@ byte speeddemon = 0;  // doublespeed cheat
 // <tSB>
 // Still needs 256 elements, but because of DirectInput.
 
-int bindarray[256];  // bind script offset
+int bindarray[256]; // bind script offset
 
 // ================================= Code ====================================
 
-int ReadCompressedLayer1(byte *dest, int len, char *buf) {
+int ReadCompressedLayer1(byte* dest, int len, char* buf) {
     byte run, w;
 
     do {
@@ -116,15 +116,17 @@ int ReadCompressedLayer1(byte *dest, int len, char *buf) {
         }
         len -= run;
         // totally bogus. shaa.
-        if (len < 0) return 1;
-        while (run--) *dest++ = w;
+        if (len < 0)
+            return 1;
+        while (run--)
+            *dest++ = w;
     } while (len);
 
     // good
     return 0;
 }
 
-int ReadCompressedLayer2(word *dest, int len, word *buf) {
+int ReadCompressedLayer2(word* dest, int len, word* buf) {
     word run, w;
 
     do {
@@ -136,20 +138,22 @@ int ReadCompressedLayer2(word *dest, int len, word *buf) {
         }
         len -= run;
         // totally bogus. shaa.
-        if (len < 0) return 1;
-        while (run--) *dest++ = w;
+        if (len < 0)
+            return 1;
+        while (run--)
+            *dest++ = w;
     } while (len);
 
     // good
     return 0;
 }
 
-void LoadVSP(const char *fname) {
-    VFILE *f;
+void LoadVSP(const char* fname) {
+    VFILE* f;
     int n, bufsize;
     word ver;
-    char *cb;
-    word *c;  // --tSB
+    char* cb;
+    word* c; // --tSB
     word r, g, b;
 
     // Mwahaha! The Indefatigable Grue has snuck into the V2 source code! It is
@@ -158,31 +162,34 @@ void LoadVSP(const char *fname) {
     // FIXME: 8 bit palettes are getting mangled in here somewhere :P
 
     f = vopen(fname);
-    if (!f) Sys_Error("*error* Could not open VSP file %s.", fname);
+    if (!f)
+        Sys_Error("*error* Could not open VSP file %s.", fname);
 
     vread(&ver, 2, f);
-    if (ver > 5) Sys_Error("Invalid VSP %s", fname);
+    if (ver > 5)
+        Sys_Error("Invalid VSP %s", fname);
     if (gfx.bpp < 2 && ver > 3)
         Sys_Error("Unable to load hicolour VSPs in 8bit mode");
 
     // vsp's, and thus map's, palette
-    if (ver < 4)  // no palette in v4&5 VSPs - tSB
+    if (ver < 4) // no palette in v4&5 VSPs - tSB
         vread(gfx.gamepal, 3 * 256, f);
 
     vread(&numtiles, 2, f);
-    if (numtiles < 1) numtiles = 1;
+    if (numtiles < 1)
+        numtiles = 1;
     if (ver < 4)
-        vsp = (byte *)valloc(256 * numtiles, "vsp", OID_IMAGE);
+        vsp = (byte*)valloc(256 * numtiles, "vsp", OID_IMAGE);
     else
-        vsp = (byte *)valloc(512 * numtiles, "vsp (hicolor)", OID_IMAGE);
+        vsp = (byte*)valloc(512 * numtiles, "vsp (hicolor)", OID_IMAGE);
 
     switch (ver) {
     case 2:
-        vread(vsp, 256 * numtiles, f);  // old version; raw data
+        vread(vsp, 256 * numtiles, f); // old version; raw data
         break;
     case 3:
-        vread(&n, 4, f);  // compressed version
-        cb = (char *)valloc(n, "LoadVSP:cb", OID_TEMP);
+        vread(&n, 4, f); // compressed version
+        cb = (char*)valloc(n, "LoadVSP:cb", OID_TEMP);
         vread(cb, n, f);
         n = ReadCompressedLayer1(vsp, 16 * 16 * numtiles, cb);
         if (n) {
@@ -191,30 +198,30 @@ void LoadVSP(const char *fname) {
         vfree(cb);
         break;
     case 4:
-        vread(
-            vsp, numtiles * 512, f);  // hicolor uncompressed (from v2+i) - tSB
+        vread(vsp, numtiles * 512, f); // hicolor uncompressed (from v2+i) - tSB
 
         for (n = 0; n < numtiles * 256; n++) {
-            b = ((word *)vsp)[n];
+            b = ((word*)vsp)[n];
             if (b) {
                 r = (word)(b >> 10);
                 g = (word)((b >> 5) & 31);
                 b = (word)(b & 31);
                 // Gah! @_@
-                ((word *)vsp)[n] =
+                ((word*)vsp)[n] =
                     (r << 11) + (g << 6) +
-                    b;  // v4 vsps are 1:5:5:5, 16bit color is 5:6:5
+                    b; // v4 vsps are 1:5:5:5, 16bit color is 5:6:5
             } else
-                ((word *)vsp)[n] = gfx.trans_mask;
+                ((word*)vsp)[n] = gfx.trans_mask;
         }
         break;
     case 5:
         vread(&bufsize, 4, f);
-        cb = (char *)valloc(bufsize, "LoadVSP: cb", OID_TEMP);  // compressed
+        cb = (char*)valloc(bufsize, "LoadVSP: cb", OID_TEMP); // compressed
         vread(cb, bufsize, f);
         if (gfx.bpp > 1) {
-            n = ReadCompressedLayer2((word *)vsp, numtiles * 256, (word *)cb);
-            if (n) Sys_Error("LoadVSP: %s: bogus compressed image data", fname);
+            n = ReadCompressedLayer2((word*)vsp, numtiles * 256, (word*)cb);
+            if (n)
+                Sys_Error("LoadVSP: %s: bogus compressed image data", fname);
             vfree(cb);
         }
         break;
@@ -230,13 +237,13 @@ void LoadVSP(const char *fname) {
         // leave it
         // alone.
         if (gfx.bpp == 2) {
-            c = (word *)valloc(16 * 16 * numtiles * 2,
+            c = (word*)valloc(16 * 16 * numtiles * 2,
                 "LoadVSP: Tile Data (hicolour)", OID_IMAGE);
             for (n = 0; n < 16 * 16 * numtiles; n++) {
-                c[n] = gfx.Conv8(vsp[n]);  // Do it!
+                c[n] = gfx.Conv8(vsp[n]); // Do it!
             }
-            vfree(vsp);       // dump the 8bit data
-            vsp = (byte *)c;  // and keep the hicolour data
+            vfree(vsp);     // dump the 8bit data
+            vsp = (byte*)c; // and keep the hicolour data
         }
     } else {
         // we'll assume we're in hicolour mode by this point
@@ -244,7 +251,7 @@ void LoadVSP(const char *fname) {
         // closest-matching-colour
         // type stuff)
         for (n = 0; n < 16 * 16 * numtiles; n++)
-            ((word *)vsp)[n] = gfx.Conv16(((word *)vsp)[n]);
+            ((word*)vsp)[n] = gfx.Conv16(((word*)vsp)[n]);
     }
 
     // animation strand data
@@ -261,11 +268,12 @@ void LoadVSP(const char *fname) {
     */
 
     // allocate and build tileidx.
-    tileidx = (unsigned short *)valloc(2 * numtiles, "tileidx", OID_MISC);
-    for (n = 0; n < numtiles; n++) tileidx[n] = (unsigned short)n;
+    tileidx = (unsigned short*)valloc(2 * numtiles, "tileidx", OID_MISC);
+    for (n = 0; n < numtiles; n++)
+        tileidx[n] = (unsigned short)n;
 
     // for ping-pong mode
-    flipped = (char *)valloc(numtiles, "flipped", OID_MISC);
+    flipped = (char*)valloc(numtiles, "flipped", OID_MISC);
 
     animate = TRUE;
 }
@@ -296,11 +304,11 @@ void FreeVSP() {
     }
 }
 
-void LoadMAP(const char *fname) {
-    VFILE *f;
-    char *cb;
+void LoadMAP(const char* fname) {
+    VFILE* f;
+    char* cb;
     int i;
-    int bogus;  // for checking ReadCompressedLayer*
+    int bogus; // for checking ReadCompressedLayer*
     char sig[6 + 1];
     char rstring_temp[20 + 1];
 
@@ -311,7 +319,8 @@ void LoadMAP(const char *fname) {
     mapname[60] = '\0';
 
     f = vopen(fname);
-    if (!f) Sys_Error("Could not find %s.", fname);
+    if (!f)
+        Sys_Error("Could not find %s.", fname);
 
     vread(sig, 6, f);
     sig[6] = '\0';
@@ -335,19 +344,20 @@ void LoadMAP(const char *fname) {
     // vread(strbuf, 51, f);
 
     vread(&numlayers, 1, f);
-    for (i = 0; i < numlayers; i++) vread(&layer[i], 12, f);
+    for (i = 0; i < numlayers; i++)
+        vread(&layer[i], 12, f);
 
     V_memset(layertoggle, 0, 8);
     // read actual layer data.
     for (i = 0; i < numlayers; i++) {
         vread(&bufsize, 4, f);
         layers[i] =
-            (unsigned short *)valloc(layer[i].sizex * (layer[i].sizey + 2) * 2,
+            (unsigned short*)valloc(layer[i].sizex * (layer[i].sizey + 2) * 2,
                 "LoadMAP:layers[i]", OID_MAP);
-        cb = (char *)valloc(bufsize, "LoadMAP:cb", OID_TEMP);
+        cb = (char*)valloc(bufsize, "LoadMAP:cb", OID_TEMP);
         vread(cb, bufsize, f);
         bogus = ReadCompressedLayer2(
-            layers[i], (layer[i].sizex * layer[i].sizey), (word *)cb);
+            layers[i], (layer[i].sizex * layer[i].sizey), (word*)cb);
         if (bogus) {
             Sys_Error("LoadMAP: %s: bogus compressed layer data (layer %d)",
                 fname, i);
@@ -356,14 +366,14 @@ void LoadMAP(const char *fname) {
         layertoggle[i] = 1;
     }
 
-    obstruct = (byte *)valloc(
+    obstruct = (byte*)valloc(
         layer[0].sizex * (layer[0].sizey + 2), "obstruct", OID_MAP);
     zone =
-        (byte *)valloc(layer[0].sizex * (layer[0].sizey + 2), "zone", OID_MAP);
+        (byte*)valloc(layer[0].sizex * (layer[0].sizey + 2), "zone", OID_MAP);
 
     // read obstruction grid
     vread(&bufsize, 4, f);
-    cb = (char *)valloc(bufsize, "LoadMAP:cb (2)", OID_TEMP);
+    cb = (char*)valloc(bufsize, "LoadMAP:cb (2)", OID_TEMP);
     vread(cb, bufsize, f);
     bogus =
         ReadCompressedLayer1(obstruct, (layer[0].sizex * layer[0].sizey), cb);
@@ -374,7 +384,7 @@ void LoadMAP(const char *fname) {
 
     // zone grid
     vread(&bufsize, 4, f);
-    cb = (char *)valloc(bufsize, "LoadMAP:cb (3)", OID_TEMP);
+    cb = (char*)valloc(bufsize, "LoadMAP:cb (3)", OID_TEMP);
     vread(cb, bufsize, f);
     bogus = ReadCompressedLayer1(zone, (layer[0].sizex * layer[0].sizey), cb);
     if (bogus) {
@@ -407,13 +417,13 @@ void LoadMAP(const char *fname) {
     vread(&i, 4, f);
     vread(msbuf, nms * 4, f);
     if (nms) {
-        ms = (char *)valloc(i, "LoadMAP:ms", OID_MAP);
+        ms = (char*)valloc(i, "LoadMAP:ms", OID_MAP);
         vread(ms, i, f);
     } else {
         vseek(f, i, 0);
-        ms = (char *)valloc(16, "LoadMAP:ms", OID_MAP);
+        ms = (char*)valloc(16, "LoadMAP:ms", OID_MAP);
     }
-    vread(&i, 4, f);  // # of things
+    vread(&i, 4, f); // # of things
     LoadMapVC(f);
     vclose(f);
 
@@ -421,7 +431,8 @@ void LoadMAP(const char *fname) {
     LoadVSP(vspname);
     LoadCHRList();
     Logp(va(" [%d] ", mapevents));
-    if (V_strlen(musname)) PlayMusic(musname);
+    if (V_strlen(musname))
+        PlayMusic(musname);
     LogDone();
     ExecuteEvent(0);
     timer_count = 0;
@@ -430,8 +441,10 @@ void LoadMAP(const char *fname) {
 void FreeMAP() {
     int n;
 
-    if (obstruct) vfree(obstruct);
-    if (zone) vfree(zone);
+    if (obstruct)
+        vfree(obstruct);
+    if (zone)
+        vfree(zone);
     for (n = 0; n < numlayers; n += 1) {
         if (layers[n] != NULL) {
             vfree(layers[n]);
@@ -458,33 +471,42 @@ void FreeMAP() {
 }
 
 int PlayerObstructed(char dir) {
-    if (phantom) return 0;
+    if (phantom)
+        return 0;
     switch (dir) {
     case 0:
-        if (ObstructionAt(player->tx, player->ty + 1)) return 1;
+        if (ObstructionAt(player->tx, player->ty + 1))
+            return 1;
         break;
     case 1:
-        if (ObstructionAt(player->tx, player->ty - 1)) return 1;
+        if (ObstructionAt(player->tx, player->ty - 1))
+            return 1;
         break;
     case 2:
-        if (ObstructionAt(player->tx - 1, player->ty)) return 1;
+        if (ObstructionAt(player->tx - 1, player->ty))
+            return 1;
         break;
     case 3:
-        if (ObstructionAt(player->tx + 1, player->ty)) return 1;
+        if (ObstructionAt(player->tx + 1, player->ty))
+            return 1;
         break;
     }
     switch (dir) {
     case 0:
-        if (EntityObsAt(player->tx, player->ty + 1)) return 1;
+        if (EntityObsAt(player->tx, player->ty + 1))
+            return 1;
         break;
     case 1:
-        if (EntityObsAt(player->tx, player->ty - 1)) return 1;
+        if (EntityObsAt(player->tx, player->ty - 1))
+            return 1;
         break;
     case 2:
-        if (EntityObsAt(player->tx - 1, player->ty)) return 1;
+        if (EntityObsAt(player->tx - 1, player->ty))
+            return 1;
         break;
     case 3:
-        if (EntityObsAt(player->tx + 1, player->ty)) return 1;
+        if (EntityObsAt(player->tx + 1, player->ty))
+            return 1;
         break;
     }
     return 0;
@@ -499,7 +521,8 @@ void CheckZone() {
         zonedelay = 0;
         lz = curzone;
     }
-    if (!zones[curzone].percent) return;
+    if (!zones[curzone].percent)
+        return;
     if (zonedelay < zones[curzone].delay) {
         zonedelay++;
         return;
@@ -609,7 +632,7 @@ void MoveFollowers() {
 
 //--- zero 5.7.99
 
-void WritePalette(FILE *f) {
+void WritePalette(FILE* f) {
     int n;
     unsigned char write_pal[3 * 256];
 
@@ -622,7 +645,7 @@ void WritePalette(FILE *f) {
     fwrite(write_pal, 3, 256, f);
 }
 
-void WritePCXLine(unsigned char *p, int len, FILE *pcxf) {
+void WritePCXLine(unsigned char* p, int len, FILE* pcxf) {
     int i;
     unsigned char byt, samect, repcode;
 
@@ -642,23 +665,24 @@ void WritePCXLine(unsigned char *p, int len, FILE *pcxf) {
     } while (i < len);
 }
 
-void WriteBMP24(void)  // the Speed Bump
+void WriteBMP24(void) // the Speed Bump
 {
     int n;
     word w;
-    word *scr;
+    word* scr;
 
     int x, y;
     unsigned int i;
     char fnamestr[13];
-    FILE *bmpf;
+    FILE* bmpf;
 
     n = 0;
     do {
         sprintf(fnamestr, "%d.bmp", n);
         bmpf = fopen(fnamestr, "r");
         i = (int)bmpf;
-        if (bmpf) fclose(bmpf);
+        if (bmpf)
+            fclose(bmpf);
         n++;
     } while (i);
     n--;
@@ -669,27 +693,27 @@ void WriteBMP24(void)  // the Speed Bump
     bmpf = fopen(fnamestr, "wb");
 
     w = 19778;
-    fwrite(&w, 1, 2, bmpf);  // file marker, always = 'BM'
+    fwrite(&w, 1, 2, bmpf); // file marker, always = 'BM'
     i = (gfx.scrx * gfx.scry * 3) + 54;
-    fwrite(&i, 1, 4, bmpf);  // size of file=size of screen + size of header
+    fwrite(&i, 1, 4, bmpf); // size of file=size of screen + size of header
     w = 0;
-    fwrite(&w, 1, 2, bmpf);  // reserved1
+    fwrite(&w, 1, 2, bmpf); // reserved1
     w = 0;
-    fwrite(&w, 1, 2, bmpf);  // reserved2
+    fwrite(&w, 1, 2, bmpf); // reserved2
     i = 54;
-    fwrite(&i, 1, 4, bmpf);  // bmp data is right after the header
+    fwrite(&i, 1, 4, bmpf); // bmp data is right after the header
     i = 40;
-    fwrite(&i, 1, 4, bmpf);  // size of image
+    fwrite(&i, 1, 4, bmpf); // size of image
     i = gfx.scrx;
-    fwrite(&i, 1, 4, bmpf);  // bmp width
+    fwrite(&i, 1, 4, bmpf); // bmp width
     i = gfx.scry;
-    fwrite(&i, 1, 4, bmpf);  // bmp height
+    fwrite(&i, 1, 4, bmpf); // bmp height
     w = 1;
-    fwrite(&w, 1, 2, bmpf);  // just one color plane
+    fwrite(&w, 1, 2, bmpf); // just one color plane
     w = 24;
-    fwrite(&w, 1, 2, bmpf);  // 24 bit image
+    fwrite(&w, 1, 2, bmpf); // 24 bit image
     i = 0;
-    fwrite(&i, 1, 4, bmpf);  // no compression
+    fwrite(&i, 1, 4, bmpf); // no compression
     i = gfx.scrx * gfx.scry * 3;
     fwrite(&i, 1, 4, bmpf);
     i = 0;
@@ -699,13 +723,13 @@ void WriteBMP24(void)  // the Speed Bump
     i = 0;
     fwrite(&i, 1, 4, bmpf);
     i = 0;
-    fwrite(&i, 1, 4, bmpf);  // all the colors are important
+    fwrite(&i, 1, 4, bmpf); // all the colors are important
 
     fseek(bmpf, 54, SEEK_SET);
     y = gfx.scry;
 
     //  gfx.Lock();
-    scr = (word *)gfx.screen;
+    scr = (word*)gfx.screen;
 
     while (y > 0) {
         for (x = 0; x < gfx.scrx; x++) {
@@ -736,14 +760,15 @@ void ScreenShot() {
     unsigned short w1;
     int i, n;
     char fnamestr[13];
-    FILE *pcxf;
+    FILE* pcxf;
 
     n = 0;
     do {
         sprintf(fnamestr, "%d.pcx", n);
         pcxf = fopen(fnamestr, "r");
         i = (int)pcxf;
-        if (pcxf) fclose(pcxf);
+        if (pcxf)
+            fclose(pcxf);
         n++;
     } while (i);
     n--;
@@ -758,39 +783,40 @@ void ScreenShot() {
     // Write PCX header
 
     b1 = 10;
-    fwrite(&b1, 1, 1, pcxf);  // manufacturer always = 10
+    fwrite(&b1, 1, 1, pcxf); // manufacturer always = 10
     b1 = 5;
-    fwrite(&b1, 1, 1, pcxf);  // version = 3.0, >16 colors
+    fwrite(&b1, 1, 1, pcxf); // version = 3.0, >16 colors
     b1 = 1;
-    fwrite(&b1, 1, 1, pcxf);  // encoding always = 1
+    fwrite(&b1, 1, 1, pcxf); // encoding always = 1
     b1 = 8;
-    fwrite(&b1, 1, 1, pcxf);  // 8 bits per pixel, for 256 colors
+    fwrite(&b1, 1, 1, pcxf); // 8 bits per pixel, for 256 colors
     w1 = 0;
-    fwrite(&w1, 1, 2, pcxf);  // xmin = 0;
+    fwrite(&w1, 1, 2, pcxf); // xmin = 0;
     w1 = 0;
-    fwrite(&w1, 1, 2, pcxf);  // ymin = 0;
+    fwrite(&w1, 1, 2, pcxf); // ymin = 0;
     w1 = (unsigned short)(gfx.scrx - 1);
-    fwrite(&w1, 1, 2, pcxf);  // xmax = 319;
+    fwrite(&w1, 1, 2, pcxf); // xmax = 319;
     w1 = (unsigned short)(gfx.scry - 1);
-    fwrite(&w1, 1, 2, pcxf);  // ymax = 199;
+    fwrite(&w1, 1, 2, pcxf); // ymax = 199;
     w1 = (unsigned short)gfx.scrx;
-    fwrite(&w1, 1, 2, pcxf);  // hres = 320;
+    fwrite(&w1, 1, 2, pcxf); // hres = 320;
     w1 = (unsigned short)gfx.scry;
-    fwrite(&w1, 1, 2, pcxf);  // vres = 200;
+    fwrite(&w1, 1, 2, pcxf); // vres = 200;
 
     fwrite(gfx.screen, 1, 48, pcxf);
 
     b1 = 0;
-    fwrite(&b1, 1, 1, pcxf);  // reserved always = 0.
+    fwrite(&b1, 1, 1, pcxf); // reserved always = 0.
     b1 = 1;
-    fwrite(&b1, 1, 1, pcxf);  // number of color planes. Just 1 for 8bit.
+    fwrite(&b1, 1, 1, pcxf); // number of color planes. Just 1 for 8bit.
     w1 = (unsigned short)gfx.scrx;
-    fwrite(&w1, 1, 2, pcxf);  // number of bytes per line
+    fwrite(&w1, 1, 2, pcxf); // number of bytes per line
 
     w1 = 0;
     fwrite(&w1, 1, 1, pcxf);
     // fwrite(screen, 1, 59, pcxf);          // filler
-    for (w1 = 0; w1 < 59; w1++) fputc(0, pcxf);
+    for (w1 = 0; w1 < 59; w1++)
+        fputc(0, pcxf);
 
     for (w1 = 0; w1 < gfx.scry; w1++)
         WritePCXLine(gfx.screen + w1 * gfx.scrx, gfx.scrx, pcxf);
@@ -823,13 +849,15 @@ void Key_Game() {
 
     // HookKey'd stuff
     while (char c = input.GetKey())
-        if (bindarray[c]) HookKey(bindarray[c]);
+        if (bindarray[c])
+            HookKey(bindarray[c]);
 
     if (input.key[DIK_GRAVE]) {
         Console_Activate();
     }
 
-    if (input.key[DIK_LMENU] && input.key[DIK_X]) Sys_Error("");
+    if (input.key[DIK_LMENU] && input.key[DIK_X])
+        Sys_Error("");
     // FIXME: it doesn't work. :P (switching to windowed mode results in a
     // window,
     // but no change in display mode, switching to fullscreen results in a
@@ -845,7 +873,7 @@ void Key_Game() {
 void ProcessControls1() {
     if (!player->moving) {
         // at this point, player is not moving
-        Key_Game();  // update keyboard and stuff
+        Key_Game(); // update keyboard and stuff
         if (input.down) {
             if (PlayerObstructed(0)) {
                 player->animofs = 0;
@@ -854,8 +882,8 @@ void ProcessControls1() {
             }
 
             if (player->facing != 0) {
-                player->animofs = 0;  // chr[player->chrindex].danim;
-                                      // player->delayct = 0;
+                player->animofs = 0; // chr[player->chrindex].danim;
+                                     // player->delayct = 0;
             }
 
             player->facing = 0;
@@ -869,8 +897,8 @@ void ProcessControls1() {
             }
 
             if (player->facing != 1) {
-                player->animofs = 0;  // chr[player->chrindex].uanim;
-                                      // player->delayct = 0;
+                player->animofs = 0; // chr[player->chrindex].uanim;
+                                     // player->delayct = 0;
             }
 
             player->facing = 1;
@@ -884,8 +912,8 @@ void ProcessControls1() {
             }
 
             if (player->facing != 2) {
-                player->animofs = 0;  // chr[player->chrindex].lanim;
-                                      // player->delayct = 0;
+                player->animofs = 0; // chr[player->chrindex].lanim;
+                                     // player->delayct = 0;
             }
 
             player->facing = 2;
@@ -899,15 +927,15 @@ void ProcessControls1() {
             }
 
             if (player->facing != 3) {
-                player->animofs = 0;  // chr[player->chrindex].ranim;
-                                      // player->delayct = 0;
+                player->animofs = 0; // chr[player->chrindex].ranim;
+                                     // player->delayct = 0;
             }
 
             player->facing = 3;
             player->moving = 4, player->movecnt = 15;
             player->tx++, player->x++;
         }
-    }  // !player moving
+    } // !player moving
     /*
     if (!player->moving)
     {
@@ -1011,11 +1039,13 @@ void ProcessControls1() {
         CheckZone();
     }
 
-    if (!player->movecnt && input.b1) Activate();
+    if (!player->movecnt && input.b1)
+        Activate();
 }
 
 void ProcessControls() {
-    if (!player) return;
+    if (!player)
+        return;
 
     ProcessControls1();
     AnimateEntity(player);
@@ -1025,6 +1055,7 @@ void GameTick() {
     input.Update();
 
     ProcessControls();
-    if (speeddemon && input.key[DIK_LCONTROL]) ProcessControls();
+    if (speeddemon && input.key[DIK_LCONTROL])
+        ProcessControls();
     ProcessEntities();
 }

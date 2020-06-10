@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         28	Decemeber	1999	Major revamp.
 */
 
-#include "verge.h"
 #include "keycodes.h"
+#include "verge.h"
 
 #define CONSOLE_TEXT_LINES 100
 #define CONSOLE_LAST_LINES 25
@@ -43,13 +43,14 @@ class console_command_t {
     string_k m_name;
     void (*m_execute)();
 
-   public:
+  public:
     console_command_t() : m_execute(0) {}
     console_command_t(string_k s, void (*e)()) : m_name(s), m_execute(e) {}
 
     string_k name() const { return m_name; }
     void execute() {
-        if (m_execute) m_execute();
+        if (m_execute)
+            m_execute();
     }
 };
 
@@ -63,7 +64,7 @@ static vector_t<console_command_t> concmds;
 static int console_processing = 0;
 
 // console background image
-static byte *consolebg = 0;
+static byte* consolebg = 0;
 
 static vector_t<string_k> consoletext;
 
@@ -77,11 +78,11 @@ static int cmdpos = -1;
 
 static vector_t<string_k> args;
 
-static char cursor = 1;           // flag on/off cursor visible
-static unsigned int cswtime = 0;  // cursor switch time.
+static char cursor = 1;          // flag on/off cursor visible
+static unsigned int cswtime = 0; // cursor switch time.
 
 // aen <24dec99> Changed to fixed point.
-static int conlines = 0;  // Number of visible lines
+static int conlines = 0; // Number of visible lines
 
 static int backtrack = 0;
 
@@ -106,8 +107,10 @@ string_k Con_GetArg(int x) {
 int Con_BottomEdge() { return conlines; }
 
 void Con_SetViewablePixelRows(int x) {
-    if (x < 0) x = 0;
-    if (x > Con_Length()) x = Con_Length();
+    if (x < 0)
+        x = 0;
+    if (x > Con_Length())
+        x = Con_Length();
 
     conlines = x;
 }
@@ -155,7 +158,8 @@ static void Con_AddCommand(string_k name, void (*execute)()) {
     // alphabetize, heh! cool.
     int n;
     for (n = 0; n < concmds.size(); ++n)
-        if (concmds[n].name() > name) break;
+        if (concmds[n].name() > name)
+            break;
     concmds.insert(n, console_command_t(name, execute));
 }
 
@@ -204,7 +208,8 @@ void Console_Draw(void) {
         cursor ^= 1;
         cswtime = systemtime + 40;
     }
-    if (cursor) Font_Print(0, "-");
+    if (cursor)
+        Font_Print(0, "-");
 }
 
 void ParseCommand(string_k text)
@@ -212,24 +217,28 @@ void ParseCommand(string_k text)
 {
     args.clear();
 
-    const char *s = text.c_str();
+    const char* s = text.c_str();
 
     while (*s) {
         // skip whitespace
-        while (*s && ' ' >= *s) ++s;
+        while (*s && ' ' >= *s)
+            ++s;
 
         string_k token;
         // clump non-whitespace
-        while (*s && ' ' < *s) token += *s++;
+        while (*s && ' ' < *s)
+            token += *s++;
 
         // add it to the argument list!
-        if (token.length() > 0) args.push(token);
+        if (token.length() > 0)
+            args.push(token);
     }
 }
 
 void ConKey_Tab() {
     int len = glob_cmd.length();
-    if (len < 1) return;
+    if (len < 1)
+        return;
 
     // command completion
     for (int n = 0; n < concmds.size(); ++n) {
@@ -244,7 +253,8 @@ void ConKey_Tab() {
 void ConKey_Type(int k) {
     // printable characters
     if (k > 31 && k < 128) {
-        if (glob_cmd.length() < 256) glob_cmd += (char)k;
+        if (glob_cmd.length() < 256)
+            glob_cmd += (char)k;
     }
 }
 
@@ -273,21 +283,25 @@ void Con_Key(int key) {
         backtrack -= 2;
 
         // scrolling down could become odd; keep even
-        if (backtrack & 1) ++backtrack;
+        if (backtrack & 1)
+            ++backtrack;
         //        backtrack&=~1;                          // I'm so evil --tSB
 
-        if (backtrack < 0) backtrack = 0;
+        if (backtrack < 0)
+            backtrack = 0;
         break;
 
     case DIK_UP:
         ++cmdpos;
-        if (cmdpos > lastcmds.size() - 1) cmdpos = lastcmds.size() - 1;
+        if (cmdpos > lastcmds.size() - 1)
+            cmdpos = lastcmds.size() - 1;
         glob_cmd = lastcmds[cmdpos];
         break;
 
     case DIK_DOWN:
         --cmdpos;
-        if (cmdpos < -1) cmdpos = -1;
+        if (cmdpos < -1)
+            cmdpos = -1;
         glob_cmd = cmdpos > -1 ? lastcmds[cmdpos] : "";
         break;
 
@@ -375,14 +389,16 @@ void Console_Init(void) {
 
 void Console_Printf(string_k s) {
     consoletext.insert(0, s);
-    if (consoletext.size() >= CONSOLE_TEXT_LINES) consoletext.pop();
+    if (consoletext.size() >= CONSOLE_TEXT_LINES)
+        consoletext.pop();
 
     backtrack = 0;
 }
 
 void Console_SendCommand(string_k cmd) {
     // there must be commands available to execute!
-    if (concmds.size() < 1) return;
+    if (concmds.size() < 1)
+        return;
 
     ParseCommand(cmd.upper());
     if (Con_NumArgs() < 1) {
@@ -402,10 +418,12 @@ void Console_SendCommand(string_k cmd) {
         }
 
     // if we couldn't find anything, let user know
-    if (n >= concmds.size()) Console_Printf("*** unrecognized command ***");
+    if (n >= concmds.size())
+        Console_Printf("*** unrecognized command ***");
 
     lastcmds.insert(0, cmd);
-    if (lastcmds.size() >= CONSOLE_LAST_LINES) lastcmds.pop();
+    if (lastcmds.size() >= CONSOLE_LAST_LINES)
+        lastcmds.pop();
 
     // globals
     cmdpos = -1;
@@ -413,7 +431,8 @@ void Console_SendCommand(string_k cmd) {
 }
 
 void Console_Activate() {
-    if (!allowconsole && !consoleoverride) return;
+    if (!allowconsole && !consoleoverride)
+        return;
 
     int tag, r;
     tag = r = 0;
@@ -429,21 +448,23 @@ void Console_Activate() {
         Console_Draw();
         gfx.ShowPage();
 
-        CheckMessages();  // handles any keypresses, and stores them in the
-                          // keyboard
-                          // buffer.
+        CheckMessages(); // handles any keypresses, and stores them in the
+                         // keyboard
+                         // buffer.
 
         int key;
         // Clear the buffer, handle all the keys. (so none are lost when the
         // framerate goes down)
-        while (key = input.GetKey()) Con_Key(key);  // --tSB
+        while (key = input.GetKey())
+            Con_Key(key); // --tSB
 
         tag = systemtime - tag;
         while (tag > 0) {
             tag--;
 
             Con_SetViewablePixelRows(r * r);
-            if (r * r < Con_Length()) r++;
+            if (r * r < Con_Length())
+                r++;
         }
     }
 
@@ -464,7 +485,8 @@ void Console_Activate() {
             tag--;
 
             Con_SetViewablePixelRows(r * r);
-            if (r > 0) r--;
+            if (r > 0)
+                r--;
         }
     }
 

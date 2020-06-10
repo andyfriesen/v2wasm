@@ -50,21 +50,21 @@ extern int screen_length;
 
 extern int vsync;
 
-extern unsigned char *screen;
-extern unsigned char *video;
-extern unsigned char *vscreen;
+extern unsigned char* screen;
+extern unsigned char* video;
+extern unsigned char* vscreen;
 
 extern unsigned char game_palette[3 * 256];
-extern unsigned char *translucency_table;
-extern word *morphlut;
+extern unsigned char* translucency_table;
+extern word* morphlut;
 
-extern char *DriverDesc;
+extern char* DriverDesc;
 
-extern void CalcLucent(int tlevel);  //- tSB
+extern void CalcLucent(int tlevel); //- tSB
 
 extern int GFX_SetMode(int xres, int yres);
 extern void VidInfo(void);
-extern void GFX_SetPalette(unsigned char *pal);
+extern void GFX_SetPalette(unsigned char* pal);
 extern void GFX_GetPalette(void);
 extern void GFX_SetPaletteIntensity(int intensity);
 
@@ -91,7 +91,7 @@ extern void MorphPalette(void);
 extern void LFB_BlitMapLine(int x,
     int y,
     int y_offset,
-    unsigned short *source,
+    unsigned short* source,
     int masked,
     int color_mapped);
 
@@ -99,7 +99,7 @@ extern void LFB_Blit(int x,
     int y,
     int width,
     int length,
-    unsigned char *source,
+    unsigned char* source,
     int masked,
     int color_mapped);
 
@@ -109,7 +109,7 @@ extern void LFB_BlitZoom(int x,
     int sh,
     int dw,
     int dh,
-    unsigned char *src,
+    unsigned char* src,
     int masked,
     int color_mapped);
 
@@ -118,16 +118,16 @@ extern void LFB_BlitBop(int x,
     int width,
     int length,
     int color,
-    unsigned char *source,
+    unsigned char* source,
     int color_mapped);
 
-extern void LFB_BlitMask(unsigned char *source,
-    unsigned char *mask,
+extern void LFB_BlitMask(unsigned char* source,
+    unsigned char* mask,
     int width,
     int length,
-    unsigned char *dest);
+    unsigned char* dest);
 
-extern void LFB_ChangeAll(unsigned char *source,
+extern void LFB_ChangeAll(unsigned char* source,
     int width,
     int length,
     int source_color,
@@ -151,7 +151,7 @@ extern void LFB_BlitWrap(quad x,
     quad y,
     int width,
     int length,
-    unsigned char *source,
+    unsigned char* source,
     int masked,
     int color_mapped);
 
@@ -161,17 +161,17 @@ extern void LFB_BlitRotZoom(int posx,
     quad length,
     float angle,
     float scale,
-    unsigned char *source,
+    unsigned char* source,
     int masked,
     int color_mapped);
 
-extern unsigned char *InitMosaicTable(void);
+extern unsigned char* InitMosaicTable(void);
 extern void Mosaic(quad xlevel,
     quad ylevel,
-    byte *tbl,
+    byte* tbl,
     quad xmin,
     quad ymin,
     quad xmax,
     quad ymax);
 
-#endif  // VDRIVER_INC
+#endif // VDRIVER_INC

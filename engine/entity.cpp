@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 chrlist_r chrlist[100];
 byte nmchr, playernum;
-entity_r *player = 0;
+entity_r* player = 0;
 entity_r entity[256];
 byte entities = 0;
 
@@ -49,9 +49,10 @@ byte movesuccess;
 // ================================= Code ====================================
 
 void EntitySetFace(int ent, int face) {
-    entity_r *ep;
+    entity_r* ep;
 
-    if (ent < 0 || ent >= entities) return;
+    if (ent < 0 || ent >= entities)
+        return;
 
     ep = entity + ent;
     ep->facing = (byte)face;
@@ -65,9 +66,9 @@ void EntitySetFace(int ent, int face) {
                     case 3: ep->frame = (byte) chr[ep->chrindex].ridle; break;
             }*/
     ep->frame =
-        (byte)chr[ep->chrindex].idle[ep->facing];  // way more elegant (yes
-                                                   // I learned Pascal
-                                                   // before C ^_^) - tSB
+        (byte)chr[ep->chrindex].idle[ep->facing]; // way more elegant (yes
+                                                  // I learned Pascal
+                                                  // before C ^_^) - tSB
 }
 
 int ObstructionAt(int tx, int ty) {
@@ -84,17 +85,18 @@ int Zone(int tx, int ty) {
     return zone[(ty * layer[0].sizex) + tx];
 }
 
-void LoadCHR(const char *fname, chrdata *c) {
-    VFILE *f;
+void LoadCHR(const char* fname, chrdata* c) {
+    VFILE* f;
     char ver;
     char b;
     int n;
-    char *ptr;
+    char* ptr;
 
-    V_strlwr((char *)fname);
+    V_strlwr((char*)fname);
 
     f = vopen(fname);
-    if (!f) Sys_Error("Could not open CHR file %s.", fname);
+    if (!f)
+        Sys_Error("Could not open CHR file %s.", fname);
 
     strncpy(c->fname, fname, 59);
     c->fname[59] = '\0';
@@ -117,32 +119,33 @@ void LoadCHR(const char *fname, chrdata *c) {
     if (ver == 2) {
         vread(&c->totalframes, 2, f);
         vread(&n, 4, f);
-        ptr = (char *)valloc(n, "LoadCHR:ptr", OID_TEMP);
+        ptr = (char*)valloc(n, "LoadCHR:ptr", OID_TEMP);
         vread(ptr, n, f);
         c->imagedata = new byte[c->fxsize * c->fysize *
-                                c->totalframes];  //(byte *) valloc(c->fxsize *
-                                                  // c->fysize * c->totalframes,
+                                c->totalframes]; //(byte *) valloc(c->fxsize *
+                                                 // c->fysize * c->totalframes,
         //"LoadCHR:c->imagedata",
         // OID_IMAGE);
 
         n = ReadCompressedLayer1(
             c->imagedata, c->fxsize * c->fysize * c->totalframes, ptr);
-        if (n) Sys_Error("LoadCHR: %s: bogus compressed image data", fname);
+        if (n)
+            Sys_Error("LoadCHR: %s: bogus compressed image data", fname);
 
         vfree(ptr);
 
         if (gfx.bpp > 1) {
-            unsigned short *_16 =
+            unsigned short* _16 =
                 new unsigned short[c->fxsize * c->fysize * c->totalframes];
             for (n = 0; n < c->fxsize * c->fysize * c->totalframes; n++) {
                 if (!c->imagedata[n])
                     _16[n] = gfx.trans_mask;
                 else
                     _16[n] =
-                        gfx.Conv8(c->imagedata[n]);  // LoToHi(c->imagedata[n]);
+                        gfx.Conv8(c->imagedata[n]); // LoToHi(c->imagedata[n]);
             }
             delete[] c->imagedata;
-            c->imagedata = (byte *)_16;
+            c->imagedata = (byte*)_16;
         }
 
         vread(&c->idle[2], 4, f);
@@ -166,10 +169,11 @@ void LoadCHR(const char *fname, chrdata *c) {
                 break;
             }
             vread(&n, 4, f);
-            if (n > 99) Sys_Error("Animation strand too long. %d", n);
+            if (n > 99)
+                Sys_Error("Animation strand too long. %d", n);
             vread(ptr, n, f);
         }
-    } else  // if (ver==4)
+    } else // if (ver==4)
     {
         vread(&c->idle[2], 2, f);
         vread(&c->idle[3], 2, f);
@@ -201,27 +205,28 @@ void LoadCHR(const char *fname, chrdata *c) {
         }
 
         c->imagedata =
-            new byte[c->fxsize * c->fysize * c->totalframes * 2];  //(byte
+            new byte[c->fxsize * c->fysize * c->totalframes * 2]; //(byte
         //*)valloc(c->fxsize*c->fysize*c->totalframes*2,"LoadCHR
         //(4):imagedata",OID_IMAGE);
         vread(&n, 4, f);
-        ptr = (char *)valloc(n, "LoadCHR (hicolour): n", OID_TEMP);
+        ptr = (char*)valloc(n, "LoadCHR (hicolour): n", OID_TEMP);
         vread(ptr, n, f);
-        n = ReadCompressedLayer2(((word *)c->imagedata),
-            c->fxsize * c->fysize * c->totalframes, (word *)ptr);
-        if (n) Sys_Error("Stuff has happened whilst loading up a hicolour CHR");
+        n = ReadCompressedLayer2(((word*)c->imagedata),
+            c->fxsize * c->fysize * c->totalframes, (word*)ptr);
+        if (n)
+            Sys_Error("Stuff has happened whilst loading up a hicolour CHR");
         vfree(ptr);
         // adjust data to suit pixel format
         if (gfx.bpp > 1) {
             for (n = 0; n < (c->fxsize * c->fysize * c->totalframes); n++)
-                if (!((word *)c->imagedata)[n])
-                    ((word *)c->imagedata)[n] = gfx.trans_mask;
+                if (!((word*)c->imagedata)[n])
+                    ((word*)c->imagedata)[n] = gfx.trans_mask;
         }
     }
     vclose(f);
 }
 
-int CacheCHR(const char *fname) {
+int CacheCHR(const char* fname) {
     if (numchrs >= 100)
         Sys_Error("CacheCHR: too many chrs loaded: %d", numchrs);
 
@@ -243,53 +248,58 @@ void LoadCHRList() {
     int n;
 
     for (n = 0; n < nmchr; n++) {
-        if (V_strlen(chrlist[n].t)) CacheCHR(chrlist[n].t);
+        if (V_strlen(chrlist[n].t))
+            CacheCHR(chrlist[n].t);
     }
 }
 
 void DrawEntity(int i) {
     int a, b, dx, dy;
-    unsigned char *ptr;
+    unsigned char* ptr;
 
-    if (!entity[i].visible || !entity[i].on) return;
+    if (!entity[i].visible || !entity[i].on)
+        return;
 
     dx = entity[i].x - xwin;
     dy = entity[i].y - ywin;
 
     a = entity[i].chrindex;
-    if (a < 0 || a >= numchrs) return;
+    if (a < 0 || a >= numchrs)
+        return;
 
     b = entity[i].specframe
             ? entity[i].specframe
-            : entity[i].frame;  // specframe was disabled! why?! -tSB
+            : entity[i].frame; // specframe was disabled! why?! -tSB
 
     if (b < 0 || b >= chr[a].totalframes)
         Sys_Error("DrawEntity: invalid frame request: %d (%d total)", b,
             chr[a].totalframes);
 
-    ptr = (unsigned char *)(chr[a].imagedata +
-                            ((b * chr[a].fxsize * chr[a].fysize) * gfx.bpp));
+    ptr = (unsigned char*)(chr[a].imagedata +
+                           ((b * chr[a].fxsize * chr[a].fysize) * gfx.bpp));
 
     gfx.TCopySprite(
         dx - chr[a].hx, dy - chr[a].hy, chr[a].fxsize, chr[a].fysize, ptr);
 }
 
-static int cmpent(const void *a, const void *b) {
-    return entity[*(byte *)a].y - entity[*(byte *)b].y;
+static int cmpent(const void* a, const void* b) {
+    return entity[*(byte*)a].y - entity[*(byte*)b].y;
 }
 
 void RenderEntities() {
     int n;
 
     qsort(entidx, cc, 1, cmpent);
-    for (n = 0; n < cc; n++) DrawEntity(entidx[n]);
+    for (n = 0; n < cc; n++)
+        DrawEntity(entidx[n]);
 }
 
-int GetArg(entity_r *p) {
+int GetArg(entity_r* p) {
     int n;
     static char token[10];
 
-    while (' ' == *p->animofs) p->animofs++;
+    while (' ' == *p->animofs)
+        p->animofs++;
 
     n = 0;
     while (*p->animofs >= '0' && *p->animofs <= '9') {
@@ -300,8 +310,9 @@ int GetArg(entity_r *p) {
     return V_atoi(token);
 }
 
-static void AnimateSetFrames(entity_r *p) {
-    if (!p) return;
+static void AnimateSetFrames(entity_r* p) {
+    if (!p)
+        return;
 
     if (!p->animofs) {
         p->delayct = 0;
@@ -324,21 +335,22 @@ static void AnimateSetFrames(entity_r *p) {
         }
         // !p->moving
         else {
-            p->animofs = 0;  // tSB
+            p->animofs = 0; // tSB
             p->frame = (byte)chr[p->chrindex].idle[p->facing];
-            p->delayct = 0;  // tSB
+            p->delayct = 0; // tSB
         }
     }
 }
 
-void GetNextCommand(entity_r *p) {
-    if (p->animofs == NULL)  // gah! --tSB
+void GetNextCommand(entity_r* p) {
+    if (p->animofs == NULL) // gah! --tSB
     {
         AnimateSetFrames(p);
         return;
     }
 
-    while (' ' == *p->animofs) p->animofs++;
+    while (' ' == *p->animofs)
+        p->animofs++;
     switch (*p->animofs++) {
     case 'f':
     case 'F':
@@ -356,8 +368,9 @@ void GetNextCommand(entity_r *p) {
     }
 }
 
-void AnimateEntity(entity_r *p) {
-    if (!p) return;
+void AnimateEntity(entity_r* p) {
+    if (!p)
+        return;
 
     AnimateSetFrames(p);
 
@@ -371,9 +384,11 @@ int EntityAt(int ex, int ey) {
     int n;
 
     for (n = 0; n < cc; n++) {
-        if (&entity[entidx[n]] == player) continue;
+        if (&entity[entidx[n]] == player)
+            continue;
         if (ex == entity[entidx[n]].tx && ey == entity[entidx[n]].ty) {
-            if (entity[entidx[n]].on) return entidx[n] + 1;
+            if (entity[entidx[n]].on)
+                return entidx[n] + 1;
         }
     }
     return 0;
@@ -383,10 +398,12 @@ int EntityObsAt(int ex, int ey) {
     int n;
 
     for (n = 0; n < cc; n++) {
-        if (&entity[entidx[n]] == player) continue;
+        if (&entity[entidx[n]] == player)
+            continue;
         if (ex == entity[entidx[n]].tx && ey == entity[entidx[n]].ty &&
             entity[entidx[n]].obsmode2) {
-            if (entity[entidx[n]].on) return entidx[n] + 1;
+            if (entity[entidx[n]].on)
+                return entidx[n] + 1;
         }
     }
     return 0;
@@ -398,7 +415,8 @@ int AEntityObsAt(int ex, int ey) {
     for (n = 0; n < cc; n++) {
         if (ex == entity[entidx[n]].tx && ey == entity[entidx[n]].ty &&
             entity[entidx[n]].obsmode2) {
-            if (entity[entidx[n]].on) return entidx[n] + 1;
+            if (entity[entidx[n]].on)
+                return entidx[n] + 1;
         }
     }
     return 0;
@@ -413,8 +431,10 @@ void SiftEntities() {
         dx = entity[n].x - xwin + 16;
         dy = entity[n].y - ywin + 16;
 
-        if (dx < 0 || dx > gfx.scrx + chr[entity[n].chrindex].fxsize) continue;
-        if (dy < 0 || dy > gfx.scry + chr[entity[n].chrindex].fysize) continue;
+        if (dx < 0 || dx > gfx.scrx + chr[entity[n].chrindex].fxsize)
+            continue;
+        if (dy < 0 || dy > gfx.scry + chr[entity[n].chrindex].fysize)
+            continue;
 
         entidx[cc++] = (byte)n;
     }
@@ -434,7 +454,7 @@ void MoveRight(int i) {
     }
 
     if (entity[i].facing != 3) {
-        entity[i].animofs = 0;  // trigger strand reset
+        entity[i].animofs = 0; // trigger strand reset
     }
     entity[i].facing = 3;
     entity[i].moving = 4;
@@ -459,7 +479,7 @@ void MoveLeft(int i) {
     }
 
     if (entity[i].facing != 2) {
-        entity[i].animofs = 0;  // trigger strand reset
+        entity[i].animofs = 0; // trigger strand reset
     }
     entity[i].facing = 2;
     entity[i].moving = 3;
@@ -484,7 +504,7 @@ void MoveUp(int i) {
     }
 
     if (entity[i].facing != 1) {
-        entity[i].animofs = 0;  // trigger strand reset
+        entity[i].animofs = 0; // trigger strand reset
     }
     entity[i].facing = 1;
     entity[i].moving = 2;
@@ -509,7 +529,7 @@ void MoveDown(int i) {
     }
 
     if (entity[i].facing != 0) {
-        entity[i].animofs = 0;  // trigger strand reset
+        entity[i].animofs = 0; // trigger strand reset
     }
     entity[i].facing = 0;
     entity[i].moving = 1;
@@ -522,13 +542,14 @@ void MoveDown(int i) {
 
 void Wander1(int i) {
     if (!entity[i].data1) {
-        entity[i].data2 = (word)rnd(0, 3);     // pick a direction
-        entity[i].data1 = entity[i].step + 1;  // and set the step count
+        entity[i].data2 = (word)rnd(0, 3);    // pick a direction
+        entity[i].data1 = entity[i].step + 1; // and set the step count
     }
 
     if (entity[i].data1 == 1) {
         entity[i].delayctr++;
-        if (entity[i].delayctr >= entity[i].delay) entity[i].data1 = 0;
+        if (entity[i].delayctr >= entity[i].delay)
+            entity[i].data1 = 0;
         EntitySetFace(i, entity[i].facing);
         entity[i].animofs = 0;
         entity[i].moving = 0;
@@ -550,7 +571,8 @@ void Wander1(int i) {
         break;
     }
     entity[i].data1--;
-    if (entity[i].data1 == 1) entity[i].delayctr = 0;
+    if (entity[i].data1 == 1)
+        entity[i].delayctr = 0;
 
     /*
     if (entity[i].data1==1)
@@ -565,22 +587,22 @@ void Wander1(int i) {
 void Wander2(int i) {
     if (!entity[i].data1) {
         entity[i].data3 = (word)rnd(
-            0, 3);  // data3 is the direction the entity will try to move in
+            0, 3); // data3 is the direction the entity will try to move in
         entity[i].data1 =
             (word)(entity[i].step +
-                   1);  // data1 is the number of steps in that direction
+                   1); // data1 is the number of steps in that direction
     }
-    if (entity[i].data1 == 1)  // if there's one more step
+    if (entity[i].data1 == 1) // if there's one more step
     {
-        entity[i].delayctr++;  // increment the wait counter
+        entity[i].delayctr++; // increment the wait counter
         if (entity[i].delayctr >=
-            entity[i].delay)      // and check to see if we're done yet
-            entity[i].data1 = 0;  // yes, set data1 to 0 so that the if above
-                                  // can choose a direction
+            entity[i].delay)     // and check to see if we're done yet
+            entity[i].data1 = 0; // yes, set data1 to 0 so that the if above
+                                 // can choose a direction
         EntitySetFace(i, entity[i].facing);
         entity[i].animofs = 0;
         entity[i].moving = 0;
-        return;  // we're done
+        return; // we're done
     }
     if (entity[i].data1 > 1) {
         switch (entity[i].data3) {
@@ -602,7 +624,8 @@ void Wander2(int i) {
             break;
         }
         entity[i].data1--;
-        if (entity[i].data1 == 1) entity[i].delayctr = 0;
+        if (entity[i].data1 == 1)
+            entity[i].delayctr = 0;
     }
 }
 
@@ -613,7 +636,8 @@ void Wander3(int i) {
     }
     if (entity[i].data1 == 1) {
         entity[i].delayctr++;
-        if (entity[i].delayctr >= entity[i].delay) entity[i].data1 = 0;
+        if (entity[i].delayctr >= entity[i].delay)
+            entity[i].data1 = 0;
         EntitySetFace(i, entity[i].facing);
         entity[i].animofs = 0;
         entity[i].movecode = 0;
@@ -622,25 +646,31 @@ void Wander3(int i) {
     if (entity[i].data1 > 1) {
         switch (entity[i].data2) {
         case 0:
-            if (entity[i].ty > entity[i].data3) MoveUp(i);
+            if (entity[i].ty > entity[i].data3)
+                MoveUp(i);
             break;
         case 1:
-            if (entity[i].ty < entity[i].data6) MoveDown(i);
+            if (entity[i].ty < entity[i].data6)
+                MoveDown(i);
             break;
         case 2:
-            if (entity[i].tx > entity[i].data2) MoveLeft(i);
+            if (entity[i].tx > entity[i].data2)
+                MoveLeft(i);
             break;
         case 3:
-            if (entity[i].tx < entity[i].data5) MoveRight(i);
+            if (entity[i].tx < entity[i].data5)
+                MoveRight(i);
             break;
         }
         entity[i].data1--;
-        if (entity[i].data1 == 1) entity[i].delayct = 0;
+        if (entity[i].data1 == 1)
+            entity[i].delayct = 0;
     }
 }
 
 void Whitespace(int i) {
-    while (' ' == *entity[i].scriptofs) entity[i].scriptofs++;
+    while (' ' == *entity[i].scriptofs)
+        entity[i].scriptofs++;
 }
 
 void GetArgMS(int i) {
@@ -693,12 +723,12 @@ void GetNextCommandMS(int i) {
         entity[i].delayct = 0;
         break;
 
-    case 0:  // End of script, set entity movement to "stopped"
+    case 0: // End of script, set entity movement to "stopped"
         entity[i].animofs = 0;
         entity[i].frame =
             (byte)chr[entity[i].chrindex]
-                .idle[entity[i].facing];  // set the appropriate idle frame
-        entity[i].movecode = 0;           // movecode=0 (stopped)
+                .idle[entity[i].facing]; // set the appropriate idle frame
+        entity[i].movecode = 0;          // movecode=0 (stopped)
         entity[i].mode = 7;
         entity[i].data1 = 0;
         entity[i].scriptofs = 0;
@@ -744,24 +774,29 @@ void MoveScript(int i) {
     if (!entity[i].scriptofs)
         entity[i].scriptofs = ms + (int)msbuf[entity[i].movescript];
 
-    if (!entity[i].mode) GetNextCommandMS(i);
+    if (!entity[i].mode)
+        GetNextCommandMS(i);
 
     switch (entity[i].mode) {
     case 1:
         MoveUp(i);
-        if (movesuccess) entity[i].data1--;
+        if (movesuccess)
+            entity[i].data1--;
         break;
     case 2:
         MoveDown(i);
-        if (movesuccess) entity[i].data1--;
+        if (movesuccess)
+            entity[i].data1--;
         break;
     case 3:
         MoveLeft(i);
-        if (movesuccess) entity[i].data1--;
+        if (movesuccess)
+            entity[i].data1--;
         break;
     case 4:
         MoveRight(i);
-        if (movesuccess) entity[i].data1--;
+        if (movesuccess)
+            entity[i].data1--;
         break;
     case 5:
         entity[i].speed = (byte)entity[i].data1;
@@ -782,14 +817,20 @@ void MoveScript(int i) {
         entity[i].data1 = 0;
         break;
     case 10:
-        if (entity[i].tx < entity[i].data1) MoveRight(i);
-        if (entity[i].tx > entity[i].data1) MoveLeft(i);
-        if (entity[i].tx == entity[i].data1) entity[i].data1 = 0;
+        if (entity[i].tx < entity[i].data1)
+            MoveRight(i);
+        if (entity[i].tx > entity[i].data1)
+            MoveLeft(i);
+        if (entity[i].tx == entity[i].data1)
+            entity[i].data1 = 0;
         break;
     case 11:
-        if (entity[i].ty < entity[i].data1) MoveDown(i);
-        if (entity[i].ty > entity[i].data1) MoveUp(i);
-        if (entity[i].ty == entity[i].data1) entity[i].data1 = 0;
+        if (entity[i].ty < entity[i].data1)
+            MoveDown(i);
+        if (entity[i].ty > entity[i].data1)
+            MoveUp(i);
+        if (entity[i].ty == entity[i].data1)
+            entity[i].data1 = 0;
         break;
     case 12:
         // entity[i].facing=(byte)entity[i].data1;
@@ -915,17 +956,21 @@ void ProcessEntity1(int i) {
     }
     */
 
-    if (entity[i].moving) ProcessMoving(i);
-    if (!entity[i].moving)  // else
+    if (entity[i].moving)
+        ProcessMoving(i);
+    if (!entity[i].moving) // else
         ProcessStopped(i);
 }
 
 void ProcessEntity(int i) {
-    if (player == entity + i) return;
+    if (player == entity + i)
+        return;
 
-    if (!entity[i].on) return;
+    if (!entity[i].on)
+        return;
 
-    if (!entity[i].speed) return;
+    if (!entity[i].speed)
+        return;
 
     if (entity[i].speed < 4) {
         switch (entity[i].speed) {
@@ -988,24 +1033,25 @@ void ProcessEntity(int i) {
 void ProcessEntities() {
     int n;
 
-    SiftEntities();  // in case people still want to affect only onscreen ents
+    SiftEntities(); // in case people still want to affect only onscreen ents
     for (n = 0; n < entities; n++) {
         ProcessEntity(n);
     }
 }
 
-int FindCHR(const char *fname) {
+int FindCHR(const char* fname) {
     int n = 0;
 
-    V_strlwr((char *)fname);
+    V_strlwr((char*)fname);
     for (n = 0; n < numchrs; n++) {
-        if (!V_strcmp(chr->fname, fname)) return n;
+        if (!V_strcmp(chr->fname, fname))
+            return n;
     }
 
     return -1;
 }
 
-int AllocateEntity(int x1, int y1, const char *fname) {
+int AllocateEntity(int x1, int y1, const char* fname) {
     int n = 0;
 
     n = FindCHR(fname);
@@ -1024,10 +1070,11 @@ int AllocateEntity(int x1, int y1, const char *fname) {
     return entities++;
 }
 
-void ChangeCHR(int who, const char *chrname) {
+void ChangeCHR(int who, const char* chrname) {
     int n = 0;
 
-    if (who < 0 || who >= 256) Sys_Error("ChangeCHR: no such entity: %d", who);
+    if (who < 0 || who >= 256)
+        Sys_Error("ChangeCHR: no such entity: %d", who);
 
     n = FindCHR(chrname);
     entity[who].chrindex = (byte)((n > -1) ? n : CacheCHR(chrname));

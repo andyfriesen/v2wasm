@@ -75,20 +75,20 @@ typedef struct DIOBJECTATTRIBUTES {
     WORD wUsagePage;
     WORD wUsage;
 } DIOBJECTATTRIBUTES, *LPDIOBJECTATTRIBUTES;
-typedef const DIOBJECTATTRIBUTES *LPCDIOBJECTATTRIBUTES;
+typedef const DIOBJECTATTRIBUTES* LPCDIOBJECTATTRIBUTES;
 
 typedef struct DIFFOBJECTATTRIBUTES {
     DWORD dwFFMaxForce;
     DWORD dwFFForceResolution;
 } DIFFOBJECTATTRIBUTES, *LPDIFFOBJECTATTRIBUTES;
-typedef const DIFFOBJECTATTRIBUTES *LPCDIFFOBJECTATTRIBUTES;
+typedef const DIFFOBJECTATTRIBUTES* LPCDIFFOBJECTATTRIBUTES;
 
 typedef struct DIOBJECTCALIBRATION {
     LONG lMin;
     LONG lCenter;
     LONG lMax;
 } DIOBJECTCALIBRATION, *LPDIOBJECTCALIBRATION;
-typedef const DIOBJECTCALIBRATION *LPCDIOBJECTCALIBRATION;
+typedef const DIOBJECTCALIBRATION* LPCDIOBJECTCALIBRATION;
 
 typedef struct DIEFFECTATTRIBUTES {
     DWORD dwEffectId;
@@ -97,14 +97,14 @@ typedef struct DIEFFECTATTRIBUTES {
     DWORD dwDynamicParams;
     DWORD dwCoords;
 } DIEFFECTATTRIBUTES, *LPDIEFFECTATTRIBUTES;
-typedef const DIEFFECTATTRIBUTES *LPCDIEFFECTATTRIBUTES;
+typedef const DIEFFECTATTRIBUTES* LPCDIEFFECTATTRIBUTES;
 
 typedef struct DIFFDEVICEATTRIBUTES {
     DWORD dwFlags;
     DWORD dwFFSamplePeriod;
     DWORD dwFFMinTimeResolution;
 } DIFFDEVICEATTRIBUTES, *LPDIFFDEVICEATTRIBUTES;
-typedef const DIFFDEVICEATTRIBUTES *LPCDIFFDEVICEATTRIBUTES;
+typedef const DIFFDEVICEATTRIBUTES* LPCDIFFDEVICEATTRIBUTES;
 
 typedef struct DIDRIVERVERSIONS {
     DWORD dwSize;
@@ -112,7 +112,7 @@ typedef struct DIDRIVERVERSIONS {
     DWORD dwHardwareRevision;
     DWORD dwFFDriverVersion;
 } DIDRIVERVERSIONS, *LPDIDRIVERVERSIONS;
-typedef const DIDRIVERVERSIONS *LPCDIDRIVERVERSIONS;
+typedef const DIDRIVERVERSIONS* LPCDIDRIVERVERSIONS;
 
 typedef struct DIDEVICESTATE {
     DWORD dwSize;
@@ -154,55 +154,55 @@ DECLARE_INTERFACE_(IDirectInputEffectDriver, IUnknown) {
     STDMETHOD(GetEffectStatus)(THIS_ DWORD, DWORD, LPDWORD) PURE;
 };
 
-typedef struct IDirectInputEffectDriver *LPDIRECTINPUTEFFECTDRIVER;
+typedef struct IDirectInputEffectDriver* LPDIRECTINPUTEFFECTDRIVER;
 
 #if !defined(__cplusplus) || defined(CINTERFACE)
-#define IDirectInputEffectDriver_QueryInterface(p, a, b) \
+#define IDirectInputEffectDriver_QueryInterface(p, a, b)                       \
     (p)->lpVtbl->QueryInterface(p, a, b)
 #define IDirectInputEffectDriver_AddRef(p) (p)->lpVtbl->AddRef(p)
 #define IDirectInputEffectDriver_Release(p) (p)->lpVtbl->Release(p)
-#define IDirectInputEffectDriver_DeviceID(p, a, b, c, d, e) \
+#define IDirectInputEffectDriver_DeviceID(p, a, b, c, d, e)                    \
     (p)->lpVtbl->DeviceID(p, a, b, c, d, e)
-#define IDirectInputEffectDriver_GetVersions(p, a) \
+#define IDirectInputEffectDriver_GetVersions(p, a)                             \
     (p)->lpVtbl->GetVersions(p, a)
-#define IDirectInputEffectDriver_Escape(p, a, b, c) \
+#define IDirectInputEffectDriver_Escape(p, a, b, c)                            \
     (p)->lpVtbl->Escape(p, a, b, c)
 #define IDirectInputEffectDriver_SetGain(p, a, b) (p)->lpVtbl->SetGain(p, a, b)
-#define IDirectInputEffectDriver_SendForceFeedbackCommand(p, a, b) \
+#define IDirectInputEffectDriver_SendForceFeedbackCommand(p, a, b)             \
     (p)->lpVtbl->SendForceFeedbackCommand(p, a, b)
-#define IDirectInputEffectDriver_GetForceFeedbackState(p, a, b) \
+#define IDirectInputEffectDriver_GetForceFeedbackState(p, a, b)                \
     (p)->lpVtbl->GetForceFeedbackState(p, a, b)
-#define IDirectInputEffectDriver_DownloadEffect(p, a, b, c, d, e) \
+#define IDirectInputEffectDriver_DownloadEffect(p, a, b, c, d, e)              \
     (p)->lpVtbl->DownloadEffect(p, a, b, c, d, e)
-#define IDirectInputEffectDriver_DestroyEffect(p, a, b) \
+#define IDirectInputEffectDriver_DestroyEffect(p, a, b)                        \
     (p)->lpVtbl->DestroyEffect(p, a, b)
-#define IDirectInputEffectDriver_StartEffect(p, a, b, c, d) \
+#define IDirectInputEffectDriver_StartEffect(p, a, b, c, d)                    \
     (p)->lpVtbl->StartEffect(p, a, b, c, d)
-#define IDirectInputEffectDriver_StopEffect(p, a, b) \
+#define IDirectInputEffectDriver_StopEffect(p, a, b)                           \
     (p)->lpVtbl->StopEffect(p, a, b)
-#define IDirectInputEffectDriver_GetEffectStatus(p, a, b, c) \
+#define IDirectInputEffectDriver_GetEffectStatus(p, a, b, c)                   \
     (p)->lpVtbl->GetEffectStatus(p, a, b, c)
 #else
-#define IDirectInputEffectDriver_QueryInterface(p, a, b) \
+#define IDirectInputEffectDriver_QueryInterface(p, a, b)                       \
     (p)->QueryInterface(a, b)
 #define IDirectInputEffectDriver_AddRef(p) (p)->AddRef()
 #define IDirectInputEffectDriver_Release(p) (p)->Release()
-#define IDirectInputEffectDriver_DeviceID(p, a, b, c, d, e) \
+#define IDirectInputEffectDriver_DeviceID(p, a, b, c, d, e)                    \
     (p)->DeviceID(a, b, c, d, e)
 #define IDirectInputEffectDriver_GetVersions(p, a) (p)->GetVersions(a)
 #define IDirectInputEffectDriver_Escape(p, a, b, c) (p)->Escape(a, b, c)
 #define IDirectInputEffectDriver_SetGain(p, a, b) (p)->SetGain(a, b)
-#define IDirectInputEffectDriver_SendForceFeedbackCommand(p, a, b) \
+#define IDirectInputEffectDriver_SendForceFeedbackCommand(p, a, b)             \
     (p)->SendForceFeedbackCommand(a, b)
-#define IDirectInputEffectDriver_GetForceFeedbackState(p, a, b) \
+#define IDirectInputEffectDriver_GetForceFeedbackState(p, a, b)                \
     (p)->GetForceFeedbackState(a, b)
-#define IDirectInputEffectDriver_DownloadEffect(p, a, b, c, d, e) \
+#define IDirectInputEffectDriver_DownloadEffect(p, a, b, c, d, e)              \
     (p)->DownloadEffect(a, b, c, d, e)
 #define IDirectInputEffectDriver_DestroyEffect(p, a, b) (p)->DestroyEffect(a, b)
-#define IDirectInputEffectDriver_StartEffect(p, a, b, c, d) \
+#define IDirectInputEffectDriver_StartEffect(p, a, b, c, d)                    \
     (p)->StartEffect(a, b, c, d)
 #define IDirectInputEffectDriver_StopEffect(p, a, b) (p)->StopEffect(a, b)
-#define IDirectInputEffectDriver_GetEffectStatus(p, a, b, c) \
+#define IDirectInputEffectDriver_GetEffectStatus(p, a, b, c)                   \
     (p)->GetEffectStatus(a, b, c)
 #endif
 
@@ -256,7 +256,7 @@ typedef struct IDirectInputEffectDriver *LPDIRECTINPUTEFFECTDRIVER;
 /* Specific settings for joystick hardware */
 #define JOY_HWS_HASZ 0x00000001l   /* has Z info? */
 #define JOY_HWS_HASPOV 0x00000002l /* point of view hat present */
-#define JOY_HWS_POVISBUTTONCOMBOS \
+#define JOY_HWS_POVISBUTTONCOMBOS                                              \
     0x00000004l                       /* pov done through combo of buttons */
 #define JOY_HWS_POVISPOLL 0x00000008l /* pov done through polling */
 #define JOY_HWS_ISYOKE 0x00000010l    /* joystick is a flight yoke */
@@ -296,13 +296,13 @@ typedef struct IDirectInputEffectDriver *LPDIRECTINPUTEFFECTDRIVER;
 #define JOY_US_RESERVED 0x80000000l /* reserved */
 
 /* Settings for TypeInfo Flags1 */
-#define JOYTYPE_ZEROGAMEENUMOEMDATA \
+#define JOYTYPE_ZEROGAMEENUMOEMDATA                                            \
     0x00000001l /* Zero GameEnum's OEM data field */
-#define JOYTYPE_NOAUTODETECTGAMEPORT \
+#define JOYTYPE_NOAUTODETECTGAMEPORT                                           \
     0x00000002l /* Device does not support Autodetect gameport*/
-#define JOYTYPE_NOHIDDIRECT \
+#define JOYTYPE_NOHIDDIRECT                                                    \
     0x00000004l /* Do not use HID directly for this device */
-#define JOYTYPE_DEFAULTPROPSHEET \
+#define JOYTYPE_DEFAULTPROPSHEET                                               \
     0x80000000l /* CPL overrides custom property sheet */
 
 /* struct for storing x,y, z, and rudder values */
@@ -313,14 +313,14 @@ typedef struct joypos_tag {
     DWORD dwR;
     DWORD dwU;
     DWORD dwV;
-} JOYPOS, FAR *LPJOYPOS;
+} JOYPOS, FAR* LPJOYPOS;
 
 /* struct for storing ranges */
 typedef struct joyrange_tag {
     JOYPOS jpMin;
     JOYPOS jpMax;
     JOYPOS jpCenter;
-} JOYRANGE, FAR *LPJOYRANGE;
+} JOYRANGE, FAR* LPJOYRANGE;
 
 /*
  *  dwTimeout - value at which to timeout joystick polling
@@ -333,12 +333,12 @@ typedef struct joyreguservalues_tag {
     DWORD dwTimeOut;
     JOYRANGE jrvRanges;
     JOYPOS jpDeadZone;
-} JOYREGUSERVALUES, FAR *LPJOYREGUSERVALUES;
+} JOYREGUSERVALUES, FAR* LPJOYREGUSERVALUES;
 
 typedef struct joyreghwsettings_tag {
     DWORD dwFlags;
     DWORD dwNumButtons;
-} JOYREGHWSETTINGS, FAR *LPJOYHWSETTINGS;
+} JOYREGHWSETTINGS, FAR* LPJOYHWSETTINGS;
 
 /* range of values returned by the hardware (filled in by calibration) */
 /*
@@ -350,7 +350,7 @@ typedef struct joyreghwvalues_tag {
     JOYRANGE jrvHardware;
     DWORD dwPOVValues[JOY_POV_NUMDIRS];
     DWORD dwCalFlags;
-} JOYREGHWVALUES, FAR *LPJOYREGHWVALUES;
+} JOYREGHWVALUES, FAR* LPJOYREGHWVALUES;
 
 /* hardware configuration */
 /*
@@ -366,7 +366,7 @@ typedef struct joyreghwconfig_tag {
     JOYREGHWVALUES hwv;
     DWORD dwType;
     DWORD dwReserved;
-} JOYREGHWCONFIG, FAR *LPJOYREGHWCONFIG;
+} JOYREGHWCONFIG, FAR* LPJOYREGHWCONFIG;
 
 /* joystick calibration info structure */
 typedef struct joycalibrate_tag {
@@ -377,14 +377,14 @@ typedef struct joycalibrate_tag {
     UINT wZbase;
     UINT wZdelta;
 } JOYCALIBRATE;
-typedef JOYCALIBRATE FAR *LPJOYCALIBRATE;
+typedef JOYCALIBRATE FAR* LPJOYCALIBRATE;
 
 #endif
 
 #ifndef DIJ_RINGZERO
 
 #define MAX_JOYSTRING 256
-typedef BOOL(FAR PASCAL *LPDIJOYTYPECALLBACK)(LPCWSTR, LPVOID);
+typedef BOOL(FAR PASCAL* LPDIJOYTYPECALLBACK)(LPCWSTR, LPVOID);
 
 #ifndef MAX_JOYSTICKOEMVXDNAME
 #define MAX_JOYSTICKOEMVXDNAME 260
@@ -406,7 +406,7 @@ typedef struct DIJOYTYPEINFO_DX5 {
     WCHAR wszDisplayName[MAX_JOYSTRING];
     WCHAR wszCallout[MAX_JOYSTICKOEMVXDNAME];
 } DIJOYTYPEINFO_DX5, *LPDIJOYTYPEINFO_DX5;
-typedef const DIJOYTYPEINFO_DX5 *LPCDIJOYTYPEINFO_DX5;
+typedef const DIJOYTYPEINFO_DX5* LPCDIJOYTYPEINFO_DX5;
 
 typedef struct DIJOYTYPEINFO {
     DWORD dwSize;
@@ -419,7 +419,7 @@ typedef struct DIJOYTYPEINFO {
     DWORD dwFlags1;
 #endif /* DIRECTINPUT_VERSION >= 0x05b2 */
 } DIJOYTYPEINFO, *LPDIJOYTYPEINFO;
-typedef const DIJOYTYPEINFO *LPCDIJOYTYPEINFO;
+typedef const DIJOYTYPEINFO* LPCDIJOYTYPEINFO;
 
 #define DIJC_GUIDINSTANCE 0x00000001
 #define DIJC_REGHWCONFIGTYPE 0x00000002
@@ -437,7 +437,7 @@ typedef struct DIJOYCONFIG_DX5 {
     WCHAR wszType[MAX_JOYSTRING];
     WCHAR wszCallout[MAX_JOYSTRING];
 } DIJOYCONFIG_DX5, *LPDIJOYCONFIG_DX5;
-typedef const DIJOYCONFIG_DX5 *LPCDIJOYCONFIG_DX5;
+typedef const DIJOYCONFIG_DX5* LPCDIJOYCONFIG_DX5;
 
 typedef struct DIJOYCONFIG {
     DWORD dwSize;
@@ -450,7 +450,7 @@ typedef struct DIJOYCONFIG {
     GUID guidGameport;
 #endif /* DIRECTINPUT_VERSION >= 0x05b2 */
 } DIJOYCONFIG, *LPDIJOYCONFIG;
-typedef const DIJOYCONFIG *LPCDIJOYCONFIG;
+typedef const DIJOYCONFIG* LPCDIJOYCONFIG;
 
 #define DIJU_USERVALUES 0x00000001
 #define DIJU_GLOBALDRIVER 0x00000002
@@ -462,7 +462,7 @@ typedef struct DIJOYUSERVALUES {
     WCHAR wszGlobalDriver[MAX_JOYSTRING];
     WCHAR wszGameportEmulator[MAX_JOYSTRING];
 } DIJOYUSERVALUES, *LPDIJOYUSERVALUES;
-typedef const DIJOYUSERVALUES *LPCDIJOYUSERVALUES;
+typedef const DIJOYUSERVALUES* LPCDIJOYUSERVALUES;
 
 DEFINE_GUID(GUID_KeyboardClass,
     0x4D36E96B,
@@ -541,38 +541,38 @@ DECLARE_INTERFACE_(IDirectInputJoyConfig, IUnknown) {
     STDMETHOD(OpenConfigKey)(THIS_ UINT, DWORD, PHKEY) PURE;
 };
 
-typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
+typedef struct IDirectInputJoyConfig* LPDIRECTINPUTJOYCONFIG;
 
 #if !defined(__cplusplus) || defined(CINTERFACE)
-#define IDirectInputJoyConfig_QueryInterface(p, a, b) \
+#define IDirectInputJoyConfig_QueryInterface(p, a, b)                          \
     (p)->lpVtbl->QueryInterface(p, a, b)
 #define IDirectInputJoyConfig_AddRef(p) (p)->lpVtbl->AddRef(p)
 #define IDirectInputJoyConfig_Release(p) (p)->lpVtbl->Release(p)
 #define IDirectInputJoyConfig_Acquire(p) (p)->lpVtbl->Acquire(p)
 #define IDirectInputJoyConfig_Unacquire(p) (p)->lpVtbl->Unacquire(p)
-#define IDirectInputJoyConfig_SetCooperativeLevel(p, a, b) \
+#define IDirectInputJoyConfig_SetCooperativeLevel(p, a, b)                     \
     (p)->lpVtbl->SetCooperativeLevel(p, a, b)
 #define IDirectInputJoyConfig_SendNotify(p) (p)->lpVtbl->SendNotify(p)
 #define IDirectInputJoyConfig_EnumTypes(p, a, b) (p)->lpVtbl->EnumTypes(p, a, b)
-#define IDirectInputJoyConfig_GetTypeInfo(p, a, b, c) \
+#define IDirectInputJoyConfig_GetTypeInfo(p, a, b, c)                          \
     (p)->lpVtbl->GetTypeInfo(p, a, b, c)
-#define IDirectInputJoyConfig_SetTypeInfo(p, a, b, c) \
+#define IDirectInputJoyConfig_SetTypeInfo(p, a, b, c)                          \
     (p)->lpVtbl->SetTypeInfo(p, a, b, c)
 #define IDirectInputJoyConfig_DeleteType(p, a) (p)->lpVtbl->DeleteType(p, a)
-#define IDirectInputJoyConfig_GetConfig(p, a, b, c) \
+#define IDirectInputJoyConfig_GetConfig(p, a, b, c)                            \
     (p)->lpVtbl->GetConfig(p, a, b, c)
-#define IDirectInputJoyConfig_SetConfig(p, a, b, c) \
+#define IDirectInputJoyConfig_SetConfig(p, a, b, c)                            \
     (p)->lpVtbl->SetConfig(p, a, b, c)
 #define IDirectInputJoyConfig_DeleteConfig(p, a) (p)->lpVtbl->DeleteConfig(p, a)
-#define IDirectInputJoyConfig_GetUserValues(p, a, b) \
+#define IDirectInputJoyConfig_GetUserValues(p, a, b)                           \
     (p)->lpVtbl->GetUserValues(p, a, b)
-#define IDirectInputJoyConfig_SetUserValues(p, a, b) \
+#define IDirectInputJoyConfig_SetUserValues(p, a, b)                           \
     (p)->lpVtbl->SetUserValues(p, a, b)
-#define IDirectInputJoyConfig_AddNewHardware(p, a, b) \
+#define IDirectInputJoyConfig_AddNewHardware(p, a, b)                          \
     (p)->lpVtbl->AddNewHardware(p, a, b)
-#define IDirectInputJoyConfig_OpenTypeKey(p, a, b, c) \
+#define IDirectInputJoyConfig_OpenTypeKey(p, a, b, c)                          \
     (p)->lpVtbl->OpenTypeKey(p, a, b, c)
-#define IDirectInputJoyConfig_OpenConfigKey(p, a, b, c) \
+#define IDirectInputJoyConfig_OpenConfigKey(p, a, b, c)                        \
     (p)->lpVtbl->OpenConfigKey(p, a, b, c)
 #else
 #define IDirectInputJoyConfig_QueryInterface(p, a, b) (p)->QueryInterface(a, b)
@@ -580,7 +580,7 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
 #define IDirectInputJoyConfig_Release(p) (p)->Release()
 #define IDirectInputJoyConfig_Acquire(p) (p)->Acquire()
 #define IDirectInputJoyConfig_Unacquire(p) (p)->Unacquire()
-#define IDirectInputJoyConfig_SetCooperativeLevel(p, a, b) \
+#define IDirectInputJoyConfig_SetCooperativeLevel(p, a, b)                     \
     (p)->SetCooperativeLevel(a, b)
 #define IDirectInputJoyConfig_SendNotify(p) (p)->SendNotify()
 #define IDirectInputJoyConfig_EnumTypes(p, a, b) (p)->EnumTypes(a, b)
@@ -594,7 +594,7 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
 #define IDirectInputJoyConfig_SetUserValues(p, a, b) (p)->SetUserValues(a, b)
 #define IDirectInputJoyConfig_AddNewHardware(p, a, b) (p)->AddNewHardware(a, b)
 #define IDirectInputJoyConfig_OpenTypeKey(p, a, b, c) (p)->OpenTypeKey(a, b, c)
-#define IDirectInputJoyConfig_OpenConfigKey(p, a, b, c) \
+#define IDirectInputJoyConfig_OpenConfigKey(p, a, b, c)                        \
     (p)->OpenConfigKey(a, b, c)
 #endif
 
@@ -606,7 +606,7 @@ typedef struct IDirectInputJoyConfig *LPDIRECTINPUTJOYCONFIG;
  *
  ****************************************************************************/
 
-#define DIERR_NOMOREITEMS \
+#define DIERR_NOMOREITEMS                                                      \
     MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, ERROR_NO_MORE_ITEMS)
 
 /*

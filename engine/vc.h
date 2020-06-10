@@ -18,9 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct VFILE;
 
-extern int v2_touchy;  // exit to system at first sign of trouble?
+extern int v2_touchy; // exit to system at first sign of trouble?
 
-extern int mapevents;  // number of map events in this VC
+extern int mapevents; // number of map events in this VC
 
 extern int hookretrace;
 extern int hooktimer;
@@ -37,7 +37,7 @@ typedef struct {
     int syscodeofs;
 } funcdecl;
 
-extern funcdecl *funcs;
+extern funcdecl* funcs;
 extern int numfuncs;
 
 /*
@@ -51,7 +51,7 @@ typedef struct {
     int arraylen;
 } strdecl;
 
-extern strdecl *str;
+extern strdecl* str;
 extern int numstr;
 
 typedef struct {
@@ -60,18 +60,18 @@ typedef struct {
     int arraylen;
 } vardecl;
 
-extern vardecl *vars;
+extern vardecl* vars;
 extern int numvars;
 
 extern int invc;
-extern char *mapvc;
+extern char* mapvc;
 extern char kill;
 
-extern quad *vcsp;
-extern quad *vcstack;
+extern quad* vcsp;
+extern quad* vcstack;
 
 extern void LoadSystemVC();
-extern void LoadMapVC(VFILE *f);
+extern void LoadMapVC(VFILE* f);
 extern void ReadVCVar();
 extern void WriteVCVar();
 extern void ExecuteEvent(int);
@@ -82,4 +82,4 @@ extern void HookRetrace();
 extern void HookTimer();
 extern void HookKey(int script);
 
-#endif  // VC_H
+#endif // VC_H

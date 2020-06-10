@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // ³                          Rendering module                           ³
 // ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
 
-#include <math.h>
 #include "verge.h"
+#include <math.h>
 
 // INTERFACE DATA
 // //////////////////////////////////////////////////////////////////////////////////
@@ -50,21 +50,25 @@ void Map_BlitLayer(int lay, int masked, int color_mapped) {
     int y_sub;
     int clip_width;
     int clip_length;
-    unsigned short *source;
+    unsigned short* source;
 
     // validate arguments
-    if (lay < 0 || lay >= numlayers) return;
+    if (lay < 0 || lay >= numlayers)
+        return;
 
     // is this layer visible?
-    if (!layertoggle[lay]) return;
+    if (!layertoggle[lay])
+        return;
 
     // adjust view according to parallax
     x = xwin * layer[lay].pmultx / layer[lay].pdivx;
     y = ywin * layer[lay].pmulty / layer[lay].pdivy;
 
     // make my life easier; don't allow scrolling past map edges
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
+    if (x < 0)
+        x = 0;
+    if (y < 0)
+        y = 0;
 
     // get subtile position while we still have pixel precision
     x_sub = -(x & 15);
@@ -104,13 +108,14 @@ void Map_BlitLayer(int lay, int masked, int color_mapped) {
     source = layers[lay] + y * layer[lay].sizex + x;
     y = y_sub;
     do {
-        y_sub = x_sub;  // don't try this at home
+        y_sub = x_sub; // don't try this at home
         x = clip_width;
         int xcount = 0;
         do {
             // validate tile request
             c = *source;
-            if (c < 0 || c >= numtiles) c = 0;
+            if (c < 0 || c >= numtiles)
+                c = 0;
             // validate it again
             c = tileidx[c];
             if (c >= 0 && c < numtiles) {
@@ -138,7 +143,7 @@ void Map_BlitLayer(int lay, int masked, int color_mapped) {
             }
             source += 1;
             x -= 1;
-            y_sub += 16;  // x screen position
+            y_sub += 16; // x screen position
         } while (x);
         source += (layer[lay].sizex - clip_width);
         y += 16;
@@ -150,7 +155,8 @@ void Map_BlitLayer(int lay, int masked, int color_mapped) {
 // //////////////////////////////////////////////////////////////////////////////////
 
 void BlitLayer(int lay) {
-    if (lay < 0 || lay >= numlayers) return;
+    if (lay < 0 || lay >= numlayers)
+        return;
 
     // hline takes precedence
     if (layer[lay].hline) {
@@ -169,7 +175,7 @@ void DrawObstructions() {
     int y_sub;
     int clip_width;
     int clip_length;
-    unsigned char *source;
+    unsigned char* source;
 
     // debugging for now
     //	if (gfx.bpp>1) return;
@@ -179,8 +185,10 @@ void DrawObstructions() {
     y = ywin * layer[0].pmulty / layer[0].pdivy;
 
     // make my life easier; don't allow scrolling past map edges
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
+    if (x < 0)
+        x = 0;
+    if (y < 0)
+        y = 0;
 
     // get subtile position while we still have pixel precision
     x_sub = -(x & 15);
@@ -202,8 +210,10 @@ void DrawObstructions() {
     }
 
     // clip upper left
-    if (x + clip_width - 1 >= layer[0].sizex) clip_width = layer[0].sizex - x;
-    if (y + clip_length - 1 >= layer[0].sizey) clip_length = layer[0].sizey - y;
+    if (x + clip_width - 1 >= layer[0].sizex)
+        clip_width = layer[0].sizex - x;
+    if (y + clip_length - 1 >= layer[0].sizey)
+        clip_length = layer[0].sizey - y;
 
     // clip lower right
     if (x < 0) {
@@ -218,15 +228,16 @@ void DrawObstructions() {
     source = obstruct + y * layer[0].sizex + x;
     y = y_sub;
     do {
-        y_sub = x_sub;  // don't try this at home
+        y_sub = x_sub; // don't try this at home
         x = clip_width;
         int xcount = 0;
         do {
-            if (*source) gfx.BlitStipple(y_sub, y, *source);
+            if (*source)
+                gfx.BlitStipple(y_sub, y, *source);
 
             source += 1;
             x -= 1;
-            y_sub += 16;  // x screen position
+            y_sub += 16; // x screen position
         } while (x);
         source += (layer[0].sizex - clip_width);
         y += 16;
@@ -242,7 +253,7 @@ void DrawZones() {
     int temp;
     int clip_width;
     int clip_length;
-    unsigned char *source;
+    unsigned char* source;
 
     // debugging for now
     //	if (gfx.bpp>1) return;
@@ -252,8 +263,10 @@ void DrawZones() {
     y = ywin * layer[0].pmulty / layer[0].pdivy;
 
     // make my life easier; don't allow scrolling past map edges
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
+    if (x < 0)
+        x = 0;
+    if (y < 0)
+        y = 0;
 
     // get subtile position while we still have pixel precision
     x_sub = -(x & 15);
@@ -275,8 +288,10 @@ void DrawZones() {
     }
 
     // clip upper left
-    if (x + clip_width - 1 >= layer[0].sizex) clip_width = layer[0].sizex - x;
-    if (y + clip_length - 1 >= layer[0].sizey) clip_length = layer[0].sizey - y;
+    if (x + clip_width - 1 >= layer[0].sizex)
+        clip_width = layer[0].sizex - x;
+    if (y + clip_length - 1 >= layer[0].sizey)
+        clip_length = layer[0].sizey - y;
 
     // clip lower right
     if (x < 0) {
@@ -291,15 +306,16 @@ void DrawZones() {
     source = zone + y * layer[0].sizex + x;
     y = y_sub;
     do {
-        y_sub = x_sub;  // don't try this at home
+        y_sub = x_sub; // don't try this at home
         x = clip_width;
         int xcount = 0;
         do {
-            if (*source) gfx.BlitStipple(y_sub, y, *source);
+            if (*source)
+                gfx.BlitStipple(y_sub, y, *source);
 
             source += 1;
             x -= 1;
-            y_sub += 16;  // x screen position
+            y_sub += 16; // x screen position
         } while (x);
         source += (layer[0].sizex - clip_width);
         y += 16;
@@ -319,7 +335,7 @@ void DrawZones() {
     }
 }
 
-void HookScriptThing(int &rpos) {
+void HookScriptThing(int& rpos) {
     int mark = rpos + 1;
     while (rpos < rstring.length() &&
            ('X' != rstring[rpos] && 'x' != rstring[rpos])) {
@@ -383,18 +399,23 @@ void RenderMAP() {
         }
         rpos += 1;
     }
-    if (showobs) DrawObstructions();
-    if (showzone) DrawZones();
+    if (showobs)
+        DrawObstructions();
+    if (showzone)
+        DrawZones();
 }
 
-void CameraFocusOn(entity_r *focus) {
-    if (!focus) return;
+void CameraFocusOn(entity_r* focus) {
+    if (!focus)
+        return;
 
     // kludge for maps smaller than screen dimensions
     int w = gfx.scrx / 16;
-    if (layer[0].sizex < w) w = layer[0].sizex;
+    if (layer[0].sizex < w)
+        w = layer[0].sizex;
     int h = gfx.scry / 16;
-    if (layer[0].sizey < h) h = layer[0].sizey;
+    if (layer[0].sizey < h)
+        h = layer[0].sizey;
     w *= 16;
     h *= 16;
 
@@ -407,12 +428,14 @@ void CameraFocusOn(entity_r *focus) {
         ywin = (focus->y + 8 - (h / 2));
     else
         ywin = 0;
-    if (xwin > ((layer[0].sizex << 4) - w)) xwin = ((layer[0].sizex << 4) - w);
-    if (ywin > ((layer[0].sizey << 4) - h)) ywin = ((layer[0].sizey << 4) - h);
+    if (xwin > ((layer[0].sizex << 4) - w))
+        xwin = ((layer[0].sizex << 4) - w);
+    if (ywin > ((layer[0].sizey << 4) - h))
+        ywin = ((layer[0].sizey << 4) - h);
 }
 
 void DoCameraTracking() {
-    entity_r *focus;
+    entity_r* focus;
 
     // there's 3 basic camera tracking modes:
     //		#1	focus on player
@@ -436,7 +459,8 @@ void Render() {
     // for twerps who call Render() in a HookRetrace or HookTimer
     /* Tweaked.  Now the 'R' part of the renderstring is simply
        ignored if this is in a hooked script :) */
-    if (inside) return;
+    if (inside)
+        return;
     //        inside = 1;
 
     DoCameraTracking();
@@ -459,8 +483,10 @@ int rnd(int lo, int hi) {
 }
 
 void AnimateTile(int i, int l) {
-    if (i >= 100) return;
-    if (l < 0 || l >= numtiles) return;
+    if (i >= 100)
+        return;
+    if (l < 0 || l >= numtiles)
+        return;
 
     switch (vspanim[i].mode) {
     case 0:
@@ -511,11 +537,14 @@ void Animate(int i) {
 void CheckTileAnimation() {
     int i;
 
-    if (!animate) return;
-    if (!vsp) return;
+    if (!animate)
+        return;
+    if (!vsp)
+        return;
 
     for (i = 0; i < 100; i += 1) {
-        if ((vspanim[i].delay) && (vspanim[i].delay < vadelay[i])) Animate(i);
+        if ((vspanim[i].delay) && (vspanim[i].delay < vadelay[i]))
+            Animate(i);
         vadelay[i] += 1;
     }
 }

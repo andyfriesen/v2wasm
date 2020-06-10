@@ -35,7 +35,7 @@ class rangenum {
     s32 lo, hi;
     s32 n;
 
-   public:
+  public:
     rangenum(s32 l = 0, s32 h = 0) {
         set_limits(l, h);
         set(0);
@@ -46,7 +46,8 @@ class rangenum {
         hi = h;
     }
     void set(s32 x) {
-        if (x < lo || x > hi) return;
+        if (x < lo || x > hi)
+            return;
         n = x;
     }
     void inc(s32 x) { set(get() + x); }
@@ -55,4 +56,4 @@ class rangenum {
     s32 get_hi() const { return hi; }
 };
 
-#endif  // types_inc
+#endif // types_inc

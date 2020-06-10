@@ -52,7 +52,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Variable types.
 
-#define v_IMMEDIATE 1  // is this necessary?
+#define v_IMMEDIATE 1 // is this necessary?
 #define v_CHAR 2
 #define v_PTR 3
 #define v_INT 4

@@ -15,7 +15,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "linked.h"
 
-void linked_list::insert_before_current(linked_node *pn) {
+void linked_list::insert_before_current(linked_node* pn) {
     pn->set_prev(current()->prev());
     pn->set_next(current());
 
@@ -25,7 +25,7 @@ void linked_list::insert_before_current(linked_node *pn) {
     ++nn;
 }
 
-void linked_list::insert_after_current(linked_node *pn) {
+void linked_list::insert_after_current(linked_node* pn) {
     go_next();
     insert_before_current(pn);
     go_prev();
@@ -33,15 +33,16 @@ void linked_list::insert_after_current(linked_node *pn) {
 
 // unlink takes a node out of the linked list, but does not dispose of the
 // memory
-int linked_list::unlink(linked_node *pn) {
-    if (!head()) return 0;
+int linked_list::unlink(linked_node* pn) {
+    if (!head())
+        return 0;
 
     // if they want to unlink the first node
     if (head() == pn) {
         head()->prev()->set_next(
-            head()->next());  // set the first's last's next to the first's next
+            head()->next()); // set the first's last's next to the first's next
         head()->next()->set_prev(
-            head()->prev());  // set the first next's last to the first last
+            head()->prev()); // set the first next's last to the first last
 
         // if there is only one node
         if (head()->next() == head()) {
@@ -93,7 +94,7 @@ linked_list::~linked_list() {
         go_head();
         go_next();
         // cn=head()->next();
-        delete fn;  // delete the old node
+        delete fn; // delete the old node
         fn = current();
     }
     // clear the list
@@ -105,7 +106,7 @@ linked_list::~linked_list() {
 // this function returns the node number a node is in a linked list
 // it start at the node and goes backwards until it reaches the first
 // node
-int linked_list::node_number(linked_node *pn) {
+int linked_list::node_number(linked_node* pn) {
     int x = 1;
     while (pn != head()) {
         x++;
@@ -115,7 +116,7 @@ int linked_list::node_number(linked_node *pn) {
 }
 
 // this function returns a pointer to the xth node
-linked_node *linked_list::get_node(int x) {
+linked_node* linked_list::get_node(int x) {
     // start at the first node
     go_head();
 
@@ -133,7 +134,7 @@ linked_node *linked_list::get_node(int x) {
 }
 
 // this function adds a node to the end of a linked_list
-void linked_list::insert_tail(linked_node *pn) {
+void linked_list::insert_tail(linked_node* pn) {
     // if there are no nodes, then this one becomes the first
     if (0 == head()) {
         fn = pn;
@@ -150,13 +151,13 @@ void linked_list::insert_tail(linked_node *pn) {
 
 // to add a node at the fron of the list, just add it at the end and set
 // the first pointer to it
-void linked_list::insert_head(linked_node *pn) {
+void linked_list::insert_head(linked_node* pn) {
     insert_tail(pn);
     fn = pn;
 }
 
 // insert adds a node in the list according to is sort value
-void linked_list::insert(linked_node *pn) {
+void linked_list::insert(linked_node* pn) {
     // if there are nodes, or it belongs at the beginin call add front
     if ((0 == head()) || (pn->compare(head()) > 0)) {
         insert_head(pn);
@@ -182,13 +183,13 @@ void linked_list::insert(linked_node *pn) {
     }
 }
 
-linked_list::linked_list(linked_node *first) {
+linked_list::linked_list(linked_node* first) {
     fn = first;
     cn = first;
     nn = 0;
 
     if (first) {
-        linked_node *prev;
+        linked_node* prev;
 
         go_head();
         do {

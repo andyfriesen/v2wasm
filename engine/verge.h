@@ -32,13 +32,13 @@ using quad = unsigned int;
 #define TRUE 1
 #define FALSE 0
 
-extern void Sys_Error(const char *message, ...);
+extern void Sys_Error(const char* message, ...);
 
 #include "linked.h"
 
 #include "a_memory.h"
 
-#include "memstr.h"  // TODO: remove this?  I don't like it, and only the fonts use it right now.
+#include "memstr.h" // TODO: remove this?  I don't like it, and only the fonts use it right now.
 #include "strk.h"
 #include "vector.h"
 
@@ -68,17 +68,17 @@ extern bool bActive;
 
 extern int hicolor;
 
-extern char *strbuf;
+extern char* strbuf;
 
-extern void V_memset(void *dest, int fill, int count);
-extern void V_memcpy(void *dest, const void *src, int count);
-extern int V_memcmp(const void *m1, const void *m2, int count);
-extern void V_strcpy(char *dest, const char *src);
-extern void V_strncpy(char *dest, const char *src, int count);
-extern int V_strlen(const char *str);
-extern void V_strcat(char *dest, char *src);
-extern int V_strcmp(const char *s1, const char *s2);
-extern int V_atoi(const char *str);
-extern float V_atof(const char *str);
+extern void V_memset(void* dest, int fill, int count);
+extern void V_memcpy(void* dest, const void* src, int count);
+extern int V_memcmp(const void* m1, const void* m2, int count);
+extern void V_strcpy(char* dest, const char* src);
+extern void V_strncpy(char* dest, const char* src, int count);
+extern int V_strlen(const char* str);
+extern void V_strcat(char* dest, char* src);
+extern int V_strcmp(const char* s1, const char* s2);
+extern int V_atoi(const char* str);
+extern float V_atof(const char* str);
 
-#endif  // VERGE_INC
+#endif // VERGE_INC

@@ -25,18 +25,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // ================================= Data ====================================
 
-mountstruct pack[3];    // packfile structs
-byte filesmounted = 0;  // Number of VRG files to check.
+mountstruct pack[3];   // packfile structs
+byte filesmounted = 0; // Number of VRG files to check.
 // char headertag[]={ 'V','R','G','P','A','C','K',0 };
 char headertag[] = "VRGPACK\0";
 
 // ================================= Code ====================================
 
-int Exist(const char *filename) {
-    FILE *f;
+int Exist(const char* filename) {
+    FILE* f;
 
     f = fopen(filename, "rb");
-    if (!f) return 0;
+    if (!f)
+        return 0;
 
     fclose(f);
     return 1;
@@ -44,13 +45,13 @@ int Exist(const char *filename) {
 
 void DecryptHeader() {
     byte lastvalue, precodebyte;
-    byte *ptr;
+    byte* ptr;
 
-    ptr = (byte *)pack[filesmounted].files;
+    ptr = (byte*)pack[filesmounted].files;
     lastvalue = *ptr;
     ptr++;
 
-    while (ptr < (byte *)(int)pack[filesmounted].files +
+    while (ptr < (byte*)(int)pack[filesmounted].files +
                      (int)pack[filesmounted].numfiles * 100) {
         precodebyte = *ptr;
         (*ptr) -= lastvalue;
@@ -59,7 +60,7 @@ void DecryptHeader() {
     }
 }
 
-void MountVFile(const char *filename) {
+void MountVFile(const char* filename) {
     char buffer[10] = {0};
 
     pack[filesmounted].vhandle = fopen(filename, "rb");
@@ -88,7 +89,7 @@ void MountVFile(const char *filename) {
     // Allocate memory for headers and read them in.
 
     pack[filesmounted].files =
-        (filestruct *)valloc(pack[filesmounted].numfiles * 100,
+        (filestruct*)valloc(pack[filesmounted].numfiles * 100,
             "pack[filesmounted].files", OID_VFILE);
     fread(pack[filesmounted].files, pack[filesmounted].numfiles, 100,
         pack[filesmounted].vhandle);
@@ -106,7 +107,7 @@ char V_tolower(char c) {
     return c;
 }
 
-char *V_strlwr(char *str) {
+char* V_strlwr(char* str) {
     while (*str) {
         *str = V_tolower(*str);
 
@@ -115,19 +116,22 @@ char *V_strlwr(char *str) {
     return str;
 }
 
-int V_strcasecmp(const char *s1, const char *s2) {
+int V_strcasecmp(const char* s1, const char* s2) {
     while (1) {
-        if (V_tolower(*s1) < V_tolower(*s2)) return -1;
-        if (V_tolower(*s1) > V_tolower(*s2)) return +1;
-        if (!*s1) return 0;
+        if (V_tolower(*s1) < V_tolower(*s2))
+            return -1;
+        if (V_tolower(*s1) > V_tolower(*s2))
+            return +1;
+        if (!*s1)
+            return 0;
         s1++;
         s2++;
     }
     // return 666;
 }
 
-VFILE *vopen(const char *filename) {
-    VFILE *tmp;
+VFILE* vopen(const char* filename) {
+    VFILE* tmp;
     char rf, vf;
     int i, j;
 
@@ -141,23 +145,26 @@ VFILE *vopen(const char *filename) {
     // if we don't find one in VFile or it's overridable then a real file will
     // be used. That's the general logic progression.
 
-    if (Exist(filename)) rf = 1;
+    if (Exist(filename))
+        rf = 1;
 
     // Search the VFiles.
     for (i = filesmounted - 1; i >= 0; i--) {
         for (j = 0; j < pack[i].numfiles; j++) {
-            if (!V_strcasecmp(filename, (char *)(pack[i].files[j].fname))) {
+            if (!V_strcasecmp(filename, (char*)(pack[i].files[j].fname))) {
                 vf = 1;
                 break;
             }
         }
 
-        if (vf) break;
+        if (vf)
+            break;
     }
 
-    if (!vf && !rf) return 0;
+    if (!vf && !rf)
+        return 0;
 
-    tmp = (VFILE *)valloc(sizeof(VFILE), "vopen:tmp", OID_VFILE);
+    tmp = (VFILE*)valloc(sizeof(VFILE), "vopen:tmp", OID_VFILE);
 
     if (vf && rf) {
         if (pack[i].files[j].override)
@@ -185,7 +192,7 @@ VFILE *vopen(const char *filename) {
     return tmp;
 }
 
-void vread(void *dest, int len, VFILE *f) {
+void vread(void* dest, int len, VFILE* f) {
     // This is fairly simple.. Just make sure our filepointer is at the right
     // place, then do a straight fread.
 
@@ -202,18 +209,21 @@ void vread(void *dest, int len, VFILE *f) {
     fread(dest, 1, len, f->fp);
 }
 
-void vclose(VFILE *f) {
-    if (!f) return;
-    if (!f->s) fclose(f->fp);
+void vclose(VFILE* f) {
+    if (!f)
+        return;
+    if (!f->s)
+        fclose(f->fp);
     f->fp = 0;
     vfree(f);
 }
 
-int filesize(VFILE *f) {
+int filesize(VFILE* f) {
     int oldpos, tmp;
 
     // Filesize for Vfiles is real simple.
-    if (f->s) return pack[f->v].files[f->i].size;
+    if (f->s)
+        return pack[f->v].files[f->i].size;
 
     // It's a bit more complex for external files.
     oldpos = ftell(f->fp);
@@ -224,7 +234,7 @@ int filesize(VFILE *f) {
     return tmp;
 }
 
-int vtell(VFILE *f) {
+int vtell(VFILE* f) {
     if (!f->s) {
         return ftell(f->fp);
     }
@@ -232,7 +242,7 @@ int vtell(VFILE *f) {
     return pack[f->v].files[f->i].curofs;
 }
 
-void vseek(VFILE *f, int offset, int origin) {
+void vseek(VFILE* f, int offset, int origin) {
     if (!f->s) {
         fseek(f->fp, offset, origin);
         return;
@@ -257,28 +267,28 @@ void vseek(VFILE *f, int offset, int origin) {
     }
 }
 
-void _vscanf(VFILE *f, char *format, char *dest) {
+void _vscanf(VFILE* f, char* format, char* dest) {
     fscanf(f->fp, format, dest);
     if (f->s)
         pack[f->v].files[f->i].curofs =
             ftell(f->fp) - pack[f->v].files[f->i].packofs;
 }
 
-char vgetc(VFILE *f) {
+char vgetc(VFILE* f) {
     char c = 0;
 
     vread(&c, 1, f);
     return c;
 }
 
-word vgetw(VFILE *f) {
+word vgetw(VFILE* f) {
     word c = 0;
 
-    vread((char *)&c, 2, f);
+    vread((char*)&c, 2, f);
     return c;
 }
 
-void vgets(char *str, int len, VFILE *f) {
+void vgets(char* str, int len, VFILE* f) {
     if (f->s) {
         if (pack[f->v].curofs !=
             (pack[f->v].files[f->i].packofs + pack[f->v].files[f->i].curofs))

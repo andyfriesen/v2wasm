@@ -23,8 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // <tSB>  Nov 4, '00 - rewritten to work in Win32.  Borrows heavily from vecna's
 // winv1.
 
-#include "verge.h"
 #include "timer.h"
+#include "verge.h"
 
 // ================================= Data ====================================
 

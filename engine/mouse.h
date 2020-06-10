@@ -32,4 +32,4 @@ extern int Mouse_Button(int button);
 extern int Mouse_ButtonFlags();
 extern void Mouse_ButtonSetFlags(int flags);
 
-#endif  // MOUSE_INC
+#endif // MOUSE_INC

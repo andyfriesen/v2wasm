@@ -23,16 +23,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
-static linked_list *lines = 0;
-static linked_node *current_line = 0;
+static linked_list* lines = 0;
+static linked_node* current_line = 0;
 static int current_line_n = 0;
-static linked_node *top = 0;
+static linked_node* top = 0;
 static int top_n = 0;
 static int cursor_timer = 0;
 static int charx = 0;
 static int leftx = 0;
 static string_k v2se_filename = "";
-static byte *backdrop = 0;
+static byte* backdrop = 0;
 static int backdrop_width = 0;
 static int backdrop_length = 0;
 
@@ -43,14 +43,15 @@ static int V2SE_Rows() {
 static int V2SE_Columns() { return (gfx.XRes() - 2) / Font_GetWidth(0); }
 
 static int V2SE_LoadFile(string_k filename) {
-    FILE *fp = fopen(filename.c_str(), "rb");
+    FILE* fp = fopen(filename.c_str(), "rb");
     if (!fp) {
         return 0;
     }
 
     v2se_filename = filename;
 
-    if (lines) delete lines;
+    if (lines)
+        delete lines;
     lines = new linked_list;
 
     char text[1024 + 1] = {0};
@@ -64,10 +65,11 @@ static int V2SE_LoadFile(string_k filename) {
                 s += text[seek];
             seek++;
         }
-        lines->insert_tail((linked_node *)new string_k(s));
+        lines->insert_tail((linked_node*)new string_k(s));
 
         // arbitrary limit of 4k lines for now
-        if (lines->number_nodes() >= 1024 * 4) break;
+        if (lines->number_nodes() >= 1024 * 4)
+            break;
     }
 
     fclose(fp);
@@ -76,7 +78,8 @@ static int V2SE_LoadFile(string_k filename) {
 }
 
 static int V2SE_Init() {
-    if (!V2SE_LoadFile(Con_GetArg(1))) return 0;
+    if (!V2SE_LoadFile(Con_GetArg(1)))
+        return 0;
 
     backdrop = 0;
     /*	if (!backdrop)
@@ -102,8 +105,8 @@ static void V2SE_Shutdown() {
         // destroy lines
         lines->go_head();
         while (lines->head()) {
-            string_k *s = (string_k *)lines->head();
-            lines->unlink((linked_node *)s);
+            string_k* s = (string_k*)lines->head();
+            lines->unlink((linked_node*)s);
             delete s;
         }
     }
@@ -111,7 +114,8 @@ static void V2SE_Shutdown() {
     delete lines;
     lines = 0;
 
-    if (backdrop) vfree(backdrop);
+    if (backdrop)
+        vfree(backdrop);
     backdrop = 0;
 
     current_line = 0;
@@ -128,14 +132,15 @@ static void V2SE_Paint() {
         /*		LFB_BlitWrap(
 			leftx*Font_GetWidth(0), (top_n*Font_GetLength(0)),
 			backdrop_width, backdrop_length,
-			backdrop, 0, 0);*/  // TODO: put this back
+			backdrop, 0, 0);*/ // TODO: put this back
     } else {
         gfx.RectFill(0, 0, gfx.XRes() - 1, gfx.YRes() - 1, 0, 0);
     }
-    if (!lines->number_nodes()) return;
+    if (!lines->number_nodes())
+        return;
 
     int x, y;
-    linked_node *iter;
+    linked_node* iter;
 
     x = y = 1;
 
@@ -157,7 +162,7 @@ static void V2SE_Paint() {
 
         Font_GotoXY(x, y);
         // clipping rawks. ^_^
-        Font_Print(0, ((string_k *)iter)->mid(leftx, V2SE_Columns()).c_str());
+        Font_Print(0, ((string_k*)iter)->mid(leftx, V2SE_Columns()).c_str());
 
         y += Font_GetLength(0);
 
@@ -191,10 +196,12 @@ static int V2SE_MoveUp() {
 }
 
 static int V2SE_MoveUpCount(int n) {
-    if (n < 1) return 0;
+    if (n < 1)
+        return 0;
 
     int hit = 0;
-    while (n--) hit += V2SE_MoveUp();
+    while (n--)
+        hit += V2SE_MoveUp();
     return hit;
 }
 
@@ -213,10 +220,12 @@ static int V2SE_MoveDown() {
 }
 
 static int V2SE_MoveDownCount(int n) {
-    if (n < 1) return 0;
+    if (n < 1)
+        return 0;
 
     int hit = 0;
-    while (n--) hit += V2SE_MoveDown();
+    while (n--)
+        hit += V2SE_MoveDown();
     return hit;
 }
 
@@ -233,10 +242,12 @@ static int V2SE_MoveLeft() {
 }
 
 static int V2SE_MoveLeftCount(int n) {
-    if (n < 1) return 0;
+    if (n < 1)
+        return 0;
 
     int hit = 0;
-    while (n--) hit += V2SE_MoveLeft();
+    while (n--)
+        hit += V2SE_MoveLeft();
     return hit;
 }
 
@@ -253,22 +264,26 @@ static int V2SE_MoveRight() {
 }
 
 int V2SE_MoveRightCount(int n) {
-    if (n < 1) return 0;
+    if (n < 1)
+        return 0;
 
     int hit = 0;
-    while (n--) hit += V2SE_MoveRight();
+    while (n--)
+        hit += V2SE_MoveRight();
     return hit;
 }
 
 static int V2SE_InsertString(string_k add) {
-    string_k *s = (string_k *)current_line;
+    string_k* s = (string_k*)current_line;
 
-    if (s->length() + add.length() > 1024) return 0;
+    if (s->length() + add.length() > 1024)
+        return 0;
 
     if (charx >= s->length()) {
         int x = charx - s->length();
 
-        if (s->length() + x + add.length() > 1024) return 0;
+        if (s->length() + x + add.length() > 1024)
+            return 0;
 
         while (x--) {
             (*s) += ' ';
@@ -296,10 +311,11 @@ static void V2SE_InsertKey(int ch) {
 static void V2SE_Home() { charx = leftx = 0; }
 
 static void V2SE_End() {
-    charx = ((string_k *)current_line)->length();
+    charx = ((string_k*)current_line)->length();
 
     leftx = charx - V2SE_Columns() + 1;
-    if (leftx < 0) leftx = 0;
+    if (leftx < 0)
+        leftx = 0;
 }
 
 static int V2SE_PageUp() { return V2SE_MoveUpCount(V2SE_Rows() - 1); }
@@ -308,33 +324,34 @@ static int V2SE_PageDown() { return V2SE_MoveDownCount(V2SE_Rows() - 1); }
 
 static void V2SE_Tab() {
     int n = 4 - (charx % 4);
-    while (n--) V2SE_InsertKey(' ');
+    while (n--)
+        V2SE_InsertKey(' ');
 }
 
 static void V2SE_Enter() {
-    string_k *s = (string_k *)current_line;
+    string_k* s = (string_k*)current_line;
     string_k add = "";
     if (charx < s->length()) {
         add = s->mid(charx, 1024);
         (*s) = s->left(charx);
     }
     lines->set_current(current_line);
-    lines->insert_after_current((linked_node *)new string_k(add));
+    lines->insert_after_current((linked_node*)new string_k(add));
 
     V2SE_MoveDown();
     V2SE_Home();
 }
 
 static void V2SE_Delete() {
-    string_k *s = (string_k *)current_line;
+    string_k* s = (string_k*)current_line;
 
     if (charx < s->length()) {
         (*s) = s->mid(0, charx) + s->right(s->length() - (charx + 1));
     } else {
         if (current_line->next() != lines->head()) {
-            string_k *r = (string_k *)current_line->next();
+            string_k* r = (string_k*)current_line->next();
             V2SE_MoveLeftCount(V2SE_InsertString(*r));
-            lines->unlink((linked_node *)r);
+            lines->unlink((linked_node*)r);
             delete r;
         }
     }
@@ -349,11 +366,11 @@ static void V2SE_Backspace() {
 }
 
 static void V2SE_Save() {
-    FILE *fp = fopen("crap.dat", "wt");
+    FILE* fp = fopen("crap.dat", "wt");
 
     lines->go_head();
     do {
-        string_k s = *(string_k *)lines->current();
+        string_k s = *(string_k*)lines->current();
         s += '\n';
 
         fputs(s.c_str(), fp);
@@ -437,7 +454,8 @@ static void V2SE_Main() {
         gfx.ShowPage();
 
         //		input.Update();
-        while (int c = input.GetKey()) V2SE_Key(c);
+        while (int c = input.GetKey())
+            V2SE_Key(c);
 
         CheckMessages();
 
@@ -445,7 +463,8 @@ static void V2SE_Main() {
         while (tag) {
             tag--;
             cursor_timer++;
-            if (cursor_timer >= 40) cursor_timer -= 40;
+            if (cursor_timer >= 40)
+                cursor_timer -= 40;
         }
     }
 

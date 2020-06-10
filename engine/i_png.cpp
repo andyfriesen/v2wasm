@@ -15,13 +15,13 @@
 * Job:     loads a PNG image into a png_image structure
 * Returns: pointer to the image on success, NULL otherwise
 **********************/
-png_image *Import_PNG(const char *filename) {
+png_image* Import_PNG(const char* filename) {
     Log("Import_PNG started...");
 
-    png_image *pis = new png_image;
+    png_image* pis = new png_image;
 
     // open file
-    VFILE *file = vopen(filename);
+    VFILE* file = vopen(filename);
     if (file == NULL) {
         delete pis;
         return NULL;
@@ -90,17 +90,17 @@ png_image *Import_PNG(const char *filename) {
     // decode based on pixel depth
     int bit_depth = png_get_bit_depth(png_ptr, info_ptr);
     int num_channels = png_get_channels(png_ptr, info_ptr);
-    void **row_pointers = (void **)png_get_rows(png_ptr, info_ptr);
+    void** row_pointers = (void**)png_get_rows(png_ptr, info_ptr);
 
     if (bit_depth == 8 && num_channels == 4) {
         for (int i = 0; i < pis->height; i++) {
-            RGBA *row = (RGBA *)(row_pointers[i]);
+            RGBA* row = (RGBA*)(row_pointers[i]);
             for (int j = 0; j < pis->width; j++)
                 pis->pixels[i * pis->width + j] = row[j];
         }
     } else if (bit_depth == 8 && num_channels == 3) {
         for (int i = 0; i < pis->height; i++) {
-            RGB *row = (RGB *)(row_pointers[i]);
+            RGB* row = (RGB*)(row_pointers[i]);
             for (int j = 0; j < pis->width; j++) {
                 RGBA p = {row[j].red, row[j].green, row[j].blue, 255};
                 pis->pixels[i * pis->width + j] = p;
@@ -114,7 +114,7 @@ png_image *Import_PNG(const char *filename) {
         // if there is no palette, use black and white
         if (num_palette == 0) {
             for (int i = 0; i < pis->height; i++) {
-                byte *row = (byte *)(row_pointers[i]);
+                byte* row = (byte*)(row_pointers[i]);
                 for (int j = 0; j < pis->width; j++) {
                     pis->pixels[i * pis->width + j].red = row[j * 2];
                     pis->pixels[i * pis->width + j].green = row[j * 2];
@@ -122,10 +122,10 @@ png_image *Import_PNG(const char *filename) {
                     pis->pixels[i * pis->width + j].alpha = row[j * 2 + 1];
                 }
             }
-        } else  // otherwise use the palette
+        } else // otherwise use the palette
         {
             for (int i = 0; i < pis->height; i++) {
-                byte *row = (byte *)(row_pointers[i]);
+                byte* row = (byte*)(row_pointers[i]);
                 for (int j = 0; j < pis->width; j++) {
                     pis->pixels[i * pis->width + j].red =
                         palette[row[j * 2]].red;
@@ -150,7 +150,7 @@ png_image *Import_PNG(const char *filename) {
         // if there is no palette, use black and white
         if (num_palette == 0) {
             for (int i = 0; i < pis->height; i++) {
-                byte *row = (byte *)(row_pointers[i]);
+                byte* row = (byte*)(row_pointers[i]);
                 for (int j = 0; j < pis->width; j++) {
                     byte alpha = 255;
                     for (int k = 0; k < num_trans; k++) {
@@ -164,10 +164,10 @@ png_image *Import_PNG(const char *filename) {
                     pis->pixels[i * pis->width + j].alpha = alpha;
                 }
             }
-        } else  // otherwise use the palette
+        } else // otherwise use the palette
         {
             for (int i = 0; i < pis->height; i++) {
-                byte *row = (byte *)(row_pointers[i]);
+                byte* row = (byte*)(row_pointers[i]);
                 for (int j = 0; j < pis->width; j++) {
                     byte alpha = 255;
                     for (int k = 0; k < num_trans; k++) {
@@ -189,9 +189,9 @@ png_image *Import_PNG(const char *filename) {
         png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
 
         for (int i = 0; i < pis->height; i++) {
-            RGBA *dst = pis->pixels + i * pis->width;
+            RGBA* dst = pis->pixels + i * pis->width;
 
-            byte *row = (byte *)(row_pointers[i]);
+            byte* row = (byte*)(row_pointers[i]);
             for (int j = 0; j < pis->width / 2; j++) {
                 byte p1 = *row >> 4;
                 byte p2 = *row & 0xF;
@@ -226,10 +226,10 @@ png_image *Import_PNG(const char *filename) {
         png_get_PLTE(png_ptr, info_ptr, &palette, &num_palette);
 
         for (int i = 0; i < pis->height; i++) {
-            RGBA *dst = pis->pixels + i * pis->width;
+            RGBA* dst = pis->pixels + i * pis->width;
 
             int mask = 1;
-            byte *p = (byte *)(row_pointers[i]);
+            byte* p = (byte*)(row_pointers[i]);
 
             for (int j = 0; j < pis->width; j++) {
                 dst->red = palette[(*p & mask) > 0].red;
@@ -270,6 +270,6 @@ png_image *Import_PNG(const char *filename) {
 ******************************************/
 static void CDECL PNG_read_function(
     png_structp png_ptr, png_bytep data, png_size_t length) {
-    VFILE *file = (VFILE *)png_get_io_ptr(png_ptr);
+    VFILE* file = (VFILE*)png_get_io_ptr(png_ptr);
     vread(data, length, file);
 }

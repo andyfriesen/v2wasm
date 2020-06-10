@@ -37,4 +37,4 @@ extern void BlitLayer(byte c);
 extern void CheckTileAnimation();
 extern int rnd(int min, int max);
 
-#endif  // RENDER_INC
+#endif // RENDER_INC

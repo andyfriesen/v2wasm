@@ -36,19 +36,19 @@ class rawmem {
     // what are we using this memory for?
     char m_use[RAWMEM_USAGE_STRING_LENGTH + 1];
 
-    u8 *m_data;    // the raw buffer
+    u8* m_data;    // the raw buffer
     u32 m_length;  // user size request for buffer; mostly for suffix corruption
                    // detection
     u32 m_hunks;   // hunks currently allocated
-    u32 m_touched;  // byte total of memory in-use
+    u32 m_touched; // byte total of memory in-use
 
     // used by ctors
     void zero_all();
     // total amount of memory this rawmem object currently contains
     u32 bytes_allocated() const;
 
-   public:
-    rawmem(s32 requested = 0, const char *use = 0L);
+  public:
+    rawmem(s32 requested = 0, const char* use = 0L);
     ~rawmem();
 
     u32 hunks() const;
@@ -58,52 +58,55 @@ class rawmem {
     u32 length() const;
 
     void destroy();
-    void resize(s32 requested, const char *use = 0L);
-    void become_string(const char *text);
+    void resize(s32 requested, const char* use = 0L);
+    void become_string(const char* text);
 
     // reallocate if hunks required to hold length() bytes is less than
     // the currently allocated number of blocks
     void consolidate();
     void report();
 
-    u8 *get(s32 n, u32 z) const;
-    u32 *get_u32(s32 n) const;
-    u16 *get_u16(s32 n) const;
-    u8 *get_u8(s32 n) const;
-    u8 &operator[](s32 n) const;
+    u8* get(s32 n, u32 z) const;
+    u32* get_u32(s32 n) const;
+    u16* get_u16(s32 n) const;
+    u8* get_u8(s32 n) const;
+    u8& operator[](s32 n) const;
 
-    void set_use(const char *use);
-    char *get_use() const;
+    void set_use(const char* use);
+    char* get_use() const;
 
-    friend void rawmem_fill_u8(rawptr &dest, u32, s32);
-    friend void rawmem_xfer(rawptr &dest, rawptr &source, s32);
+    friend void rawmem_fill_u8(rawptr& dest, u32, s32);
+    friend void rawmem_xfer(rawptr& dest, rawptr& source, s32);
 };
 
 class rawptr {
-    rawmem *raw;
+    rawmem* raw;
     rangenum offset;
 
-   public:
+  public:
     rawptr() {}
-    rawptr(rawmem *r, u32 pos = 0) {
+    rawptr(rawmem* r, u32 pos = 0) {
         point_to(r);
         set_pos(pos);
     }
 
     void touch(u32 count) {
-        if (!raw) return;
+        if (!raw)
+            return;
         raw->touch(get_pos() + count);
     }
 
-    void point_to(rawmem *r) {
-        if (!r) return;
+    void point_to(rawmem* r) {
+        if (!r)
+            return;
         raw = r;
         offset.set_limits(0, r->length() - 1);
     }
     // rawmem* pointing_to() const { return raw; }
 
-    u8 *get(u32 count) {
-        if (!raw) return 0L;
+    u8* get(u32 count) {
+        if (!raw)
+            return 0L;
         return raw->get(get_pos(), count);
     }
 
@@ -113,9 +116,10 @@ class rawptr {
 
     void set_start() { set_pos(0); }
     void set_end() {
-        if (!raw) return;
+        if (!raw)
+            return;
         set_pos(raw->length() - 1);
     }
 };
 
-#endif  // rawmem_inc
+#endif // rawmem_inc

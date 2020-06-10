@@ -21,4 +21,4 @@ extern void CPUTick();
 
 extern void Message_Send(string_k text, int duration);
 
-#endif  // MESSAGE_INC
+#endif // MESSAGE_INC

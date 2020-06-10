@@ -32,33 +32,32 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "verge.h"
 
 class font_t {
-   private:
+  private:
     string_k F_filename;
 
     int F_cellwidth,
-        F_cellheight;   // font cell dimensions; currently all fonts are
-                        // monospace
-    int F_subsetcount;  // total sets within this font
-    int F_selected;     // currently selected subset
+        F_cellheight;  // font cell dimensions; currently all fonts are
+                       // monospace
+    int F_subsetcount; // total sets within this font
+    int F_selected;    // currently selected subset
 
-    memorystream_t F_data;  // holds font image data
+    memorystream_t F_data; // holds font image data
 
     // helpers
-    int loadheader(VFILE *vfp);
+    int loadheader(VFILE* vfp);
 
-   public:
+  public:
     int vacant() const { return (F_data.getsize() < 1); }
 
     void loadbiosfont();
-    void
-    clear()  // vacates this font; frees image data, empties filename string
+    void clear() // vacates this font; frees image data, empties filename string
     {
         F_filename = "";
         F_data.clear();
     }
 
     // accessors
-    const string_k &getfilename() const { return F_filename; }
+    const string_k& getfilename() const { return F_filename; }
     int getheight() const { return F_cellheight; }
     int getwidth() const { return F_cellwidth; }
     int getsubsetcount() const { return F_subsetcount; }
@@ -72,40 +71,44 @@ class font_t {
 
     // primary interface
 
-    int loadfromfile(const char *filename);
+    int loadfromfile(const char* filename);
 
     int selected() const { return F_selected; }
     void select(int subset) {
-        if (subset < 0 || subset >= F_subsetcount) return;
+        if (subset < 0 || subset >= F_subsetcount)
+            return;
         F_selected = subset;
     }
 
     void paintchar(const char ch);
-    void paintstring(const char *zstr, int imbed = 0);
+    void paintstring(const char* zstr, int imbed = 0);
 };
 
 #define MAX_FONTS 10
 class fontcontroller_t {
-   private:
+  private:
     // actual fonts
     font_t F_fonts[MAX_FONTS];
 
-   public:
+  public:
     // default constructor
     fontcontroller_t() {}
-    void load(int slot, const char *filename) {
+    void load(int slot, const char* filename) {
         // invalid slot
-        if (slot < 0 || slot >= MAX_FONTS) return;
+        if (slot < 0 || slot >= MAX_FONTS)
+            return;
         // invalid name
-        if (!filename) return;
+        if (!filename)
+            return;
 
         F_fonts[slot].loadfromfile(filename);
     }
 
     // accessors
-    font_t &getfont(int slot) {
+    font_t& getfont(int slot) {
         // invalid requests get the dummy
-        if (slot < 0 || slot >= MAX_FONTS) return F_fonts[0];
+        if (slot < 0 || slot >= MAX_FONTS)
+            return F_fonts[0];
         // valid requests are fulfilled
         return F_fonts[slot];
     }
@@ -124,7 +127,8 @@ static int font_x, font_y, font_alignx;
 
 void font_t::paintchar(const char ch) {
     // validate character range
-    if (ch < 32 && ch >= 127) return;
+    if (ch < 32 && ch >= 127)
+        return;
 
     // convert to font bay character offset
     int offset = (F_selected * 96 * F_cellwidth * F_cellheight) +
@@ -136,10 +140,10 @@ void font_t::paintchar(const char ch) {
     /*	LFB_Blit(font_x, font_y, F_cellwidth, F_cellheight,
                     (unsigned char*)F_data.getposdata(), 1, 0);*/
     gfx.TCopySprite(
-        font_x, font_y, F_cellwidth, F_cellheight, (byte *)F_data.getposdata());
+        font_x, font_y, F_cellwidth, F_cellheight, (byte*)F_data.getposdata());
 }
 
-void font_t::paintstring(const char *zstr, int imbed) {
+void font_t::paintstring(const char* zstr, int imbed) {
     while (*zstr) {
         const unsigned char ch = *zstr++;
 
@@ -177,7 +181,7 @@ void font_t::paintstring(const char *zstr, int imbed) {
     }
 }
 
-int font_t::loadheader(VFILE *vfp) {
+int font_t::loadheader(VFILE* vfp) {
     if (!vfp)
         // failure
         return 0;
@@ -216,11 +220,11 @@ int font_t::loadheader(VFILE *vfp) {
     return 1;
 }
 
-int font_t::loadfromfile(const char *filename) {
+int font_t::loadfromfile(const char* filename) {
     // set filename; stuff relies on this for error messages
     F_filename = filename;
 
-    VFILE *f = vopen(F_filename.c_str());
+    VFILE* f = vopen(F_filename.c_str());
     if (!f) {
         Log(va("font_t::loadfromfile: %s: unable to open", getfilename()));
         // failture
@@ -234,7 +238,7 @@ int font_t::loadfromfile(const char *filename) {
         // match
         F_data.setsize(F_subsetcount * 96 * (F_cellwidth * F_cellheight));
         // bend the rules and read in the font
-        vread((char *)F_data.getdata(), F_data.getsize(), f);
+        vread((char*)F_data.getdata(), F_data.getsize(), f);
 
         vclose(f);
     }
@@ -247,8 +251,8 @@ int font_t::loadfromfile(const char *filename) {
         F_data.clear();
         F_data.setsize(sizeof(unsigned short) * save.getsize());
         // bend the rules so we can do this a little bit faster
-        unsigned char *saveptr = (unsigned char *)save.getdata();
-        unsigned short *newptr = (unsigned short *)F_data.getdata();
+        unsigned char* saveptr = (unsigned char*)save.getdata();
+        unsigned short* newptr = (unsigned short*)F_data.getdata();
         for (unsigned int n = 0; n < save.getsize(); n += 1) {
             newptr[n] = (unsigned short)((saveptr[n]) ? (gfx.Conv8(saveptr[n]))
                                                       : gfx.trans_mask);
@@ -260,11 +264,11 @@ int font_t::loadfromfile(const char *filename) {
 
 // wrapper routines for font-related classes
 
-void Font_Print(int slot, const char *zstr) {
+void Font_Print(int slot, const char* zstr) {
     fontcontroller.getfont(slot).paintstring(zstr);
 }
 
-void Font_PrintImbed(int slot, const char *zstr) {
+void Font_PrintImbed(int slot, const char* zstr) {
     fontcontroller.getfont(slot).paintstring(zstr, 1);
 }
 
@@ -274,12 +278,13 @@ int Font_GetLength(int slot) {
     return fontcontroller.getfont(slot).getheight();
 }
 
-int Font_Load(const char *filename) {
+int Font_Load(const char* filename) {
     int n;
     for (n = 0; n < MAX_FONTS; n++) {
         if (fontcontroller.getfont(n).vacant())
             // if we fail, return a bogus slot; will equate to usage of 'dummy'
-            if (!fontcontroller.getfont(n).loadfromfile(filename)) return -1;
+            if (!fontcontroller.getfont(n).loadfromfile(filename))
+                return -1;
             // we succeeded, break out
             else
                 break;

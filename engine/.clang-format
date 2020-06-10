@@ -1,5 +1,4 @@
 ---
-BasedOnStyle: Google
 AlignAfterOpenBracket: DontAlign
 BinPackParameters: 'false'
 IndentCaseLabels: 'false'

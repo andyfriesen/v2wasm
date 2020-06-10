@@ -27,11 +27,11 @@ typedef struct {
 typedef struct {
     int width;
     int height;
-    RGBA *pixels;
+    RGBA* pixels;
 } png_image;
 
-png_image *Import_PNG(const char *filename);
+png_image* Import_PNG(const char* filename);
 static void __cdecl PNG_read_function(
     png_structp png_ptr, png_bytep data, png_size_t length);
 
-#endif  // def I_PNG_H
+#endif // def I_PNG_H

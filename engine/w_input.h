@@ -8,12 +8,12 @@
 #include <cstdint>
 
 class Input {
-   private:
+  private:
     // key buffer
-    unsigned char key_buffer[256];   // remember up to 256 events
-    unsigned char kb_start, kb_end;  // start/end of keyboard buffer.  Since
-                                     // they're bytes, they automaticly wrap
-                                     // around.
+    unsigned char key_buffer[256];  // remember up to 256 events
+    unsigned char kb_start, kb_end; // start/end of keyboard buffer.  Since
+                                    // they're bytes, they automaticly wrap
+                                    // around.
 
     // RECT mclip;
 
@@ -22,31 +22,31 @@ class Input {
 
     // int Test(HRESULT result, char *errmsg);
 
-   public:
-    unsigned char key[256];  // set to 1 if the key is down, 0 otherwise
-    char last_pressed;       // last key event here
+  public:
+    unsigned char key[256]; // set to 1 if the key is down, 0 otherwise
+    char last_pressed;      // last key event here
 
     // mouse stuff
-    int mousex, mousey;  // mouse coordinates
+    int mousex, mousey; // mouse coordinates
     int mouseb;
 
-    char up, down, left, right;  // directional controls
-    char b1, b2, b3, b4;         // virtual button thingies
+    char up, down, left, right; // directional controls
+    char b1, b2, b3, b4;        // virtual button thingies
 
-    Input();   // constructor
-    ~Input();  // destructor
+    Input();  // constructor
+    ~Input(); // destructor
 
     int Init();
     void ShutDown();
 
-    void Poll();    // updates key queue and key array
-    void Update();  // updates left, down, etc...
+    void Poll();   // updates key queue and key array
+    void Update(); // updates left, down, etc...
     void UnPress(int control);
 
     // Keyboard stuff
     int GetKey();
     void ClearKeys();
-    char Scan2ASCII(int scancode);  // returns the ASCII code. ;)
+    char Scan2ASCII(int scancode); // returns the ASCII code. ;)
 
     void MoveMouse(int x, int y);
     void UpdateMouse();

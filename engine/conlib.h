@@ -22,7 +22,7 @@ static void Conlib_ConsoleBG_Syntax() {
 static void Conlib_ConsoleBG() {
     switch (Con_NumArgs()) {
     case 2: {
-        byte *pic = 0;
+        byte* pic = 0;
 
         pic = Image_LoadBuf(Con_GetArg(1).c_str());
         // if we couldn't find it, notify user
@@ -43,9 +43,9 @@ static void Conlib_ConsoleBG() {
         }
 
         // anything else is success; free old, set loaded as new
-        if (consolebg)  // first time it'll be nothing; don't make mem routines
-                        // dump
-                        // a report
+        if (consolebg) // first time it'll be nothing; don't make mem routines
+                       // dump
+                       // a report
             vfree(consolebg);
         consolebg = pic;
     } break;

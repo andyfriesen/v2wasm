@@ -16,10 +16,10 @@
 // + <tSB> 12.05.00 - Mouse code rehashed, using DInput again.
 
 #define DIRECTINPUT_VERSION 0X0500
-#include "w_input.h"  // woo!  no dependencies! :D
+#include "w_input.h" // woo!  no dependencies! :D
 #include <dinput.h>
 
-#include "verge.h"  // for log :P
+#include "verge.h" // for log :P
 
 static byte key_ascii_tbl[128] = {0, 0, '1', '2', '3', '4', '5', '6', '7', '8',
     '9', '0', '-', '=', 8, 9, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
@@ -44,10 +44,11 @@ Input::Input() {
 }
 
 Input::~Input() {
-    if (lpdi != NULL) ShutDown();
+    if (lpdi != NULL)
+        ShutDown();
 }
 
-inline int Input::Test(HRESULT result, char *errmsg) {
+inline int Input::Test(HRESULT result, char* errmsg) {
     if (result != DI_OK) {
         Log(errmsg);
         return 0;
@@ -63,7 +64,8 @@ int Input::Init(HINSTANCE hinst, HWND hwnd) {
     hWnd = hwnd;
 
     result = DirectInputCreate(hinst, DIRECTINPUT_VERSION, &lpdi, NULL);
-    if (!Test(result, "DI:DInputCreate")) return 0;
+    if (!Test(result, "DI:DInputCreate"))
+        return 0;
     /* if (result!=DI_OK)
       {
        Log("DI:DInputcreate");
@@ -110,14 +112,17 @@ int Input::Init(HINSTANCE hinst, HWND hwnd) {
 
     // ---------------mouse-----------------
     result = lpdi->CreateDevice(GUID_SysMouse, &mouse, NULL);
-    if (!Test(result, "DI:CreateMouseDevice")) return 0;
+    if (!Test(result, "DI:CreateMouseDevice"))
+        return 0;
 
     result = mouse->SetDataFormat(&c_dfDIMouse);
-    if (!Test(result, "DI:SetMouseDataFormat")) return 0;
+    if (!Test(result, "DI:SetMouseDataFormat"))
+        return 0;
 
     result =
         mouse->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-    if (!Test(result, "DI:SetMouseCoOpLevel")) return 0;
+    if (!Test(result, "DI:SetMouseCoOpLevel"))
+        return 0;
 
     mclip.top = mclip.left = 0;
     mclip.right = 320;
@@ -127,7 +132,8 @@ int Input::Init(HINSTANCE hinst, HWND hwnd) {
 }
 
 void Input::ShutDown() {
-    if (lpdi == NULL) return;
+    if (lpdi == NULL)
+        return;
     if (keybd != NULL) {
         keybd->Unacquire();
         keybd->Release();
@@ -143,8 +149,8 @@ void Input::ShutDown() {
     lpdi = NULL;
 }
 
-void Input::Poll()  // updates the key[] array.  This is called in winproc in
-                    // response to WM_KEYDOWN and WM_KEYUP
+void Input::Poll() // updates the key[] array.  This is called in winproc in
+                   // response to WM_KEYDOWN and WM_KEYUP
 {
     HRESULT result;
     DIDEVICEOBJECTDATA didata[128];
@@ -154,18 +160,18 @@ void Input::Poll()  // updates the key[] array.  This is called in winproc in
     // read from the keyboard (buffered mode this time!
     result = keybd->GetDeviceData(
         sizeof(DIDEVICEOBJECTDATA), didata, &numentries, 0);
-    if (result != DI_OK && result != DI_BUFFEROVERFLOW)  // HEY! D:<
+    if (result != DI_OK && result != DI_BUFFEROVERFLOW) // HEY! D:<
     {
-        keybd->Acquire();  // re-acquire it
+        keybd->Acquire(); // re-acquire it
         result = keybd->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), didata,
-            &numentries, 0);  // and try again!
+            &numentries, 0); // and try again!
     }
 
     if (!numentries || result == DIERR_OTHERAPPHASPRIO)
-        return;  // TODO: joystick?
+        return; // TODO: joystick?
 
-    unsigned int i, k;  // loop counter, key index
-    bool kdown;         // is the key down?
+    unsigned int i, k; // loop counter, key index
+    bool kdown;        // is the key down?
     for (i = 0; i < numentries; i++) {
         k = didata[i].dwOfs;
         kdown = didata[i].dwData & 0x80 ? true : false;
@@ -173,8 +179,10 @@ void Input::Poll()  // updates the key[] array.  This is called in winproc in
         // First off, DX has separate codes for the control keys, and alt keys,
         // etc...
         // We don't want that.  Convert 'em.
-        if (k == DIK_RCONTROL) k = DIK_LCONTROL;
-        if (k == DIK_RMENU) k = DIK_LMENU;
+        if (k == DIK_RCONTROL)
+            k = DIK_LCONTROL;
+        if (k == DIK_RMENU)
+            k = DIK_LMENU;
 
         if (unpress[k]) {
             if (kdown)
@@ -183,14 +191,14 @@ void Input::Poll()  // updates the key[] array.  This is called in winproc in
                 unpress[k] = 0;
         }
 
-        key[k] = kdown ? 1 : 0;  // 1 if it's down, 0 if it isn't. (high bit of
-                                 // dwData is set if the key is down)
-        last_pressed = k;        // this is kinda handy
+        key[k] = kdown ? 1 : 0; // 1 if it's down, 0 if it isn't. (high bit of
+                                // dwData is set if the key is down)
+        last_pressed = k;       // this is kinda handy
 
-        if (kdown && kb_end != kb_start + 1)  // only if the buffer isn't full
+        if (kdown && kb_end != kb_start + 1) // only if the buffer isn't full
             key_buffer[kb_end++] =
-                k;  // add it to the queue, if the key was pushed
-                    // TODO: key repeating?
+                k; // add it to the queue, if the key was pushed
+                   // TODO: key repeating?
     }
 
     if (key[DIK_F11]) {
@@ -201,8 +209,8 @@ void Input::Poll()  // updates the key[] array.  This is called in winproc in
     // -------------mouse-------------
 }
 
-void Input::Update()  // updates the direction variables and the virtual buttons
-                      // (b1, b2, etc..)
+void Input::Update() // updates the direction variables and the virtual buttons
+                     // (b1, b2, etc..)
 {
     Poll();
 
@@ -211,7 +219,7 @@ void Input::Update()  // updates the direction variables and the virtual buttons
     left = key[DIK_LEFT];
     right = key[DIK_RIGHT];
 
-    b1 = key[DIK_ENTER];  // TODO: make these customizable
+    b1 = key[DIK_ENTER]; // TODO: make these customizable
     b2 = key[DIK_LALT] | key[DIK_RALT];
     b3 = key[DIK_ESCAPE];
     b4 = key[DIK_SPACE];
@@ -272,7 +280,8 @@ void Input::Update()  // updates the direction variables and the virtual buttons
 int Input::GetKey()
 // gets the next key from the buffer, or 0 if there isn't one
 {
-    if (kb_start == kb_end) return 0;  // nope!  nuthin here
+    if (kb_start == kb_end)
+        return 0; // nope!  nuthin here
 
     return key_buffer[kb_start++];
 }
@@ -287,15 +296,23 @@ void Input::UnPress(int control) {
     switch (control) {
     // GROSS!
     case 0:
-        if (b1) unpress[1] = 1;
-        if (b2) unpress[2] = 1;
-        if (b3) unpress[3] = 1;
-        if (b4) unpress[4] = 1;
+        if (b1)
+            unpress[1] = 1;
+        if (b2)
+            unpress[2] = 1;
+        if (b3)
+            unpress[3] = 1;
+        if (b4)
+            unpress[4] = 1;
 
-        if (up) unpress[5] = 1;
-        if (down) unpress[6] = 1;
-        if (left) unpress[7] = 1;
-        if (right) unpress[8] = 1;
+        if (up)
+            unpress[5] = 1;
+        if (down)
+            unpress[6] = 1;
+        if (left)
+            unpress[7] = 1;
+        if (right)
+            unpress[8] = 1;
         break;
     case 1:
         if (b1) {
@@ -323,16 +340,20 @@ void Input::UnPress(int control) {
         break;
 
     case 5:
-        if (up) unpress[5] = 1;
+        if (up)
+            unpress[5] = 1;
         break;
     case 6:
-        if (down) unpress[6] = 1;
+        if (down)
+            unpress[6] = 1;
         break;
     case 7:
-        if (left) unpress[7] = 1;
+        if (left)
+            unpress[7] = 1;
         break;
     case 8:
-        if (right) unpress[8] = 1;
+        if (right)
+            unpress[8] = 1;
         break;
     }
 }
@@ -355,21 +376,30 @@ void Input::UpdateMouse() {
 
     mouse->Acquire();
     result = mouse->GetDeviceState(sizeof(dims), &dims);
-    if (!Test(result, "DirectInput Error: Error reading the mouse")) return;
+    if (!Test(result, "DirectInput Error: Error reading the mouse"))
+        return;
 
     mousex += dims.lX;
     mousey += dims.lY;
 
-    if (mousex < mclip.left) mousex = mclip.left;
-    if (mousex > mclip.right) mousex = mclip.right;
-    if (mousey < mclip.top) mousey = mclip.top;
-    if (mousey > mclip.bottom) mousey = mclip.bottom;
+    if (mousex < mclip.left)
+        mousex = mclip.left;
+    if (mousex > mclip.right)
+        mousex = mclip.right;
+    if (mousey < mclip.top)
+        mousey = mclip.top;
+    if (mousey > mclip.bottom)
+        mousey = mclip.bottom;
 
     mouseb = 0;
-    if (dims.rgbButtons[0] & 0x80) mouseb |= 1;
-    if (dims.rgbButtons[1] & 0x80) mouseb |= 2;
-    if (dims.rgbButtons[2] & 0x80) mouseb |= 4;
-    if (dims.rgbButtons[3] & 0x80) mouseb |= 8;
+    if (dims.rgbButtons[0] & 0x80)
+        mouseb |= 1;
+    if (dims.rgbButtons[1] & 0x80)
+        mouseb |= 2;
+    if (dims.rgbButtons[2] & 0x80)
+        mouseb |= 4;
+    if (dims.rgbButtons[3] & 0x80)
+        mouseb |= 8;
 }
 
 void Input::ClipMouse(int x1, int y1, int x2, int y2) {

@@ -24,11 +24,11 @@ extern int sfx_safemode;
 
 void InitMusicSystem();
 void ShutdownMusicSystem();
-void PlayMusic(const char *);
+void PlayMusic(const char*);
 int GetMusicVolume();
 void SetMusicVolume(int vol);
 void StopMusic();
-int CacheSound(const char *);
+int CacheSound(const char*);
 void FreeAllSounds();
 void PlaySFX(int, int, int);
 

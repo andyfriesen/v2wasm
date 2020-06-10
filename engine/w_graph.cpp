@@ -26,7 +26,7 @@
 
 #include "verge.h"
 
-#include <math.h>  // for RotScale
+#include <math.h> // for RotScale
 
 GrDriver::GrDriver() {
     screen = NULL;
@@ -47,8 +47,8 @@ GrDriver::~GrDriver() { ShutDown(); }
 // returns 1 on success
 // x and y are the resolution, c is the colour depth (in bits per pixel) fullscr
 // is true if we aren't running windowed
-bool GrDriver::Init(int x, int y, int c, bool fullscr) {
-    return 0;  // :(
+bool GrDriver::Init(int x, int y, int c) {
+    return 0; // :(
 }
 
 int GrDriver::SetMode(int x, int y, int c, bool fs) {
@@ -67,15 +67,14 @@ int GrDriver::SetMode(int x, int y, int c, bool fs) {
     return 1;
 }
 
-void GrDriver::ShutDown() {
-}
+void GrDriver::ShutDown() {}
 
 void GrDriver::ShowPage() {
     uint8_t *s, *d;
-    quad srcinc, destinc;  // incrememt values for the copy loop
+    quad srcinc, destinc; // incrememt values for the copy loop
     int yl;
 
-    RenderGUI();  // gah! --tSB
+    RenderGUI(); // gah! --tSB
 
     cpubyte = PFLIP;
 
@@ -153,22 +152,22 @@ int GrDriver::YRes() { return yres; }
 
 bool GrDriver::IsFullScreen() { return fullscreen; }
 
-char *GrDriver::DriverDesc() { return driverdesc; }
+char* GrDriver::DriverDesc() { return driverdesc; }
 
 void GrDriver::Clear() { memset(screen, 0, xres * yres * bpp); }
 
-void GrDriver::VSync(bool on) {
-}
+void GrDriver::VSync(bool on) {}
 
 // ===================================== OPAQUE BLITS
 // =====================================
 
-void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t *src)
+void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t* src)
 // Assumes the surface is locked!!!
 {
     int xl, yl, xs, ys;
 
-    if (screen == NULL) return;
+    if (screen == NULL)
+        return;
 
     cpubyte = RENDER;
     xl = width;
@@ -178,8 +177,10 @@ void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t *src)
         y + yl <= clip.top)
         return;
 
-    if (x + xl - 1 >= clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 >= clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 >= clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 >= clip.bottom)
+        yl = clip.bottom - y + 1;
     if (x < clip.left) {
         xs = clip.left - x;
         xl -= xs;
@@ -205,11 +206,12 @@ void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t *src)
     }
 }
 
-void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
+void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t* src) {
     int xl, yl, xs, ys;
-    int srci, desti;  // source inc, dest inc
+    int srci, desti; // source inc, dest inc
 
-    if (screen == NULL) return;
+    if (screen == NULL)
+        return;
 
     cpubyte = RENDER;
     xl = width;
@@ -219,8 +221,10 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
         y + yl <= clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
     if (x < clip.left) {
         xs = clip.left - x;
         xl -= xs;
@@ -235,23 +239,24 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
     desti = scrx - xl;
     srci = width - xl;
 
-    if (bpp > 1)  // blit for hicolour
+    if (bpp > 1) // blit for hicolour
     {
         word *s16, *d16;
 
-        s16 = (word *)(src) + ys * width + xs;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + ys * width + xs;
+        d16 = (word*)(screen) + y * scrx + x;
         for (; yl > 0; yl--) {
             int a = xl;
             while (a--) {
-                if (*s16 != trans_mask) *d16 = *s16;
+                if (*s16 != trans_mask)
+                    *d16 = *s16;
                 d16++;
                 s16++;
             }
             d16 += desti;
             s16 += srci;
         }
-    } else  // 8bit blit
+    } else // 8bit blit
     {
         uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
@@ -260,7 +265,8 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
         for (; yl; yl--) {
             x = xl;
             while (x--) {
-                if (*s8) *d8 = *s8;
+                if (*s8)
+                    *d8 = *s8;
                 d8++;
                 s8++;
             }
@@ -274,8 +280,13 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t *src) {
 // Seeing as how I spent the day I got off thanks to Rememberance day porting
 // this code segment,
 // I hereby dedicate ScaleSprite to all who died in the War(s).
-void GrDriver::ScaleSprite(
-    int x, int y, int iwidth, int iheight, int dwidth, int dheight, uint8_t *src) {
+void GrDriver::ScaleSprite(int x,
+    int y,
+    int iwidth,
+    int iheight,
+    int dwidth,
+    int dheight,
+    uint8_t* src) {
     int xerr, yerr;
     int xerr_start, yerr_start;
     int xadj, yadj;
@@ -284,7 +295,8 @@ void GrDriver::ScaleSprite(
 
     cpubyte = RENDER;
 
-    if (dwidth < 1 || dheight < 1) return;
+    if (dwidth < 1 || dheight < 1)
+        return;
 
     xl = dwidth;
     yl = dheight;
@@ -293,8 +305,10 @@ void GrDriver::ScaleSprite(
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
 
     if (x < clip.left) {
         xs = clip.left - x;
@@ -335,8 +349,8 @@ void GrDriver::ScaleSprite(
     } else {
         word *s16, *d16;
 
-        s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + (yerr_start >> 16) * iwidth;
+        d16 = (word*)(screen) + y * scrx + x;
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
@@ -353,8 +367,13 @@ void GrDriver::ScaleSprite(
     }
 }
 
-void GrDriver::TScaleSprite(
-    int x, int y, int iwidth, int iheight, int dwidth, int dheight, uint8_t *src) {
+void GrDriver::TScaleSprite(int x,
+    int y,
+    int iwidth,
+    int iheight,
+    int dwidth,
+    int dheight,
+    uint8_t* src) {
     int xerr, yerr;
     int xerr_start, yerr_start;
     int xadj, yadj;
@@ -363,7 +382,8 @@ void GrDriver::TScaleSprite(
 
     cpubyte = RENDER;
 
-    if (dwidth < 1 || dheight < 1) return;
+    if (dwidth < 1 || dheight < 1)
+        return;
 
     xl = dwidth;
     yl = dheight;
@@ -372,8 +392,10 @@ void GrDriver::TScaleSprite(
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
 
     if (x < clip.left) {
         xs = clip.left - x;
@@ -403,7 +425,8 @@ void GrDriver::TScaleSprite(
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
                 c = s8[(xerr >> 16)];
-                if (c) d8[j] = c;
+                if (c)
+                    d8[j] = c;
                 xerr += xadj;
             }
             d8 += scrx;
@@ -414,14 +437,15 @@ void GrDriver::TScaleSprite(
     } else {
         word *s16, *d16;
 
-        s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + (yerr_start >> 16) * iwidth;
+        d16 = (word*)(screen) + y * scrx + x;
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
                 c = s16[(xerr >> 16)];
-                if (c != trans_mask) d16[j] = c;
+                if (c != trans_mask)
+                    d16[j] = c;
                 xerr += xadj;
             }
             d16 += scrx;
@@ -438,7 +462,7 @@ void GrDriver::RotScale(int posx,
     int height,
     float angle,
     float scale,
-    uint8_t *src) {
+    uint8_t* src) {
     // new! shamelessly ripped off from alias.zip
     // except the atan2 stuff which i had to make up myself AEN so there :p
 
@@ -456,7 +480,7 @@ void GrDriver::RotScale(int posx,
         (int)((float)width / scale * sin(ft) + (float)height / scale * cos(ft));
     W_HEIGHT = W_WIDTH;
     W_HEIGHT_CENTER = W_HEIGHT >> 1;
-    W_WIDTH_CENTER = W_HEIGHT_CENTER;  // W_WIDTH/2;
+    W_WIDTH_CENTER = W_HEIGHT_CENTER; // W_WIDTH/2;
 
     sinas = (int)(sin(-angle) * 65536 * scale);
     cosas = (int)(cos(-angle) * 65536 * scale);
@@ -467,21 +491,24 @@ void GrDriver::RotScale(int posx,
     posy -= W_HEIGHT_CENTER;
 
     // clipping
-    if (W_WIDTH < 2 || W_HEIGHT < 2) return;
+    if (W_WIDTH < 2 || W_HEIGHT < 2)
+        return;
     xl = W_WIDTH;
     yl = W_HEIGHT;
     xs = ys = 0;
     if (posx > clip.right || posy > clip.bottom || posx + xl < clip.left ||
         posy + yl < clip.top)
         return;
-    if (posx + xl - 1 > clip.right) xl = clip.right - posx + 1;
-    if (posy + yl - 1 > clip.bottom) yl = clip.bottom - posy + 1;
+    if (posx + xl - 1 > clip.right)
+        xl = clip.right - posx + 1;
+    if (posy + yl - 1 > clip.bottom)
+        yl = clip.bottom - posy + 1;
     if (posx < clip.left) {
         xs = clip.left - posx;
         xl -= xs;
         posx = clip.left;
 
-        xc += cosas * xs;  // woo!
+        xc += cosas * xs; // woo!
         yc -= sinas * xs;
     }
     if (posy < clip.top) {
@@ -489,7 +516,7 @@ void GrDriver::RotScale(int posx,
         yl -= ys;
         posy = clip.top;
 
-        xc += sinas * ys;  // woo!
+        xc += sinas * ys; // woo!
         yc += cosas * ys;
     }
 
@@ -510,7 +537,7 @@ void GrDriver::RotScale(int posx,
                     pt = s8[tempx + tempy * width];
                     if (pt)
                         d8[x] = (uint8_t)
-                            pt;  // dest[x]=translucency_table[(pt<<8)|dest[x]];
+                            pt; // dest[x]=translucency_table[(pt<<8)|dest[x]];
                 }
 
                 srcx += cosas;
@@ -524,8 +551,8 @@ void GrDriver::RotScale(int posx,
         }
     } else {
         word *s16, *d16;
-        d16 = (word *)screen + posx + posy * scrx;
-        s16 = (word *)src;
+        d16 = (word*)screen + posx + posy * scrx;
+        s16 = (word*)src;
         for (y = 0; y < yl; y++) {
             srcx = xc;
             srcy = yc;
@@ -539,7 +566,7 @@ void GrDriver::RotScale(int posx,
                     pt = s16[tempx + tempy * width];
                     if (pt != trans_mask)
                         d16[x] =
-                            pt;  // dest[x]=translucency_table[(pt<<8)|dest[x]];
+                            pt; // dest[x]=translucency_table[(pt<<8)|dest[x]];
                 }
 
                 srcx += cosas;
@@ -554,10 +581,11 @@ void GrDriver::RotScale(int posx,
     }
 }
 
-void GrDriver::WrapBlit(int x, int y, int width, int height, uint8_t *src) {
+void GrDriver::WrapBlit(int x, int y, int width, int height, uint8_t* src) {
     int cur_x, sign_y;
 
-    if (width < 1 || height < 1) return;
+    if (width < 1 || height < 1)
+        return;
 
     x %= width, y %= height;
     sign_y = 0 - y;
@@ -568,10 +596,11 @@ void GrDriver::WrapBlit(int x, int y, int width, int height, uint8_t *src) {
     }
 }
 
-void GrDriver::TWrapBlit(int x, int y, int width, int height, uint8_t *src) {
+void GrDriver::TWrapBlit(int x, int y, int width, int height, uint8_t* src) {
     int cur_x, sign_y;
 
-    if (width < 1 || height < 1) return;
+    if (width < 1 || height < 1)
+        return;
 
     x %= width, y %= height;
     sign_y = 0 - y;
@@ -585,23 +614,23 @@ void GrDriver::TWrapBlit(int x, int y, int width, int height, uint8_t *src) {
 // ===================================== TRANSLUCENT BLITS
 // =====================================
 
-inline void GrDriver::SetPixelLucent(word *dest, int c, int lucentmode)
+inline void GrDriver::SetPixelLucent(word* dest, int c, int lucentmode)
 // only for hicolour.  It should be noted that this simply accepts a pointer to
 // dest, insted of x and y coordinates.  This is simply because the blits
 // themselves can calculate dest more efficiently themselves.  (speed is good)
 // TODO: ASM!  Everywhere, anywhere!
 {
-    int rs, gs, bs;  // rgb of source pixel
-    int rd, gd, bd;  // rgb of dest pixel
+    int rs, gs, bs; // rgb of source pixel
+    int rd, gd, bd; // rgb of dest pixel
 
     switch (lucentmode) {
     case 0:
         *dest = c;
-        return;  // wtf? oh well, return it anyway
+        return; // wtf? oh well, return it anyway
     case 1:
         *dest = ((*dest & lucentmask) + (c & lucentmask)) >> 1;
-        return;  // ooh easy stuff.
-    case 2:      // variable lucency
+        return; // ooh easy stuff.
+    case 2:     // variable lucency
         UnPackPixel(*dest, rs, gs, bs);
         UnPackPixel(c, rd, gd, bd);
         rd = lucentlut16[rd << 8 | rs];
@@ -609,26 +638,32 @@ inline void GrDriver::SetPixelLucent(word *dest, int c, int lucentmode)
         bd = lucentlut16[bd << 8 | bs];
         *dest = PackPixel(rd, gd, bd);
         return;
-    case 3:  // addition
+    case 3: // addition
         UnPackPixel(*dest, rs, gs, bs);
         UnPackPixel(c, rd, gd, bd);
         rs += rd;
         gs += gd;
         bs += bd;
-        if (rs > 255) rs = 255;
-        if (gs > 255) gs = 255;
-        if (bs > 255) bs = 255;
+        if (rs > 255)
+            rs = 255;
+        if (gs > 255)
+            gs = 255;
+        if (bs > 255)
+            bs = 255;
         *dest = PackPixel(rs, gs, bs);
         return;
-    case 4:  // subtraction
+    case 4: // subtraction
         UnPackPixel(*dest, rs, gs, bs);
         UnPackPixel(c, rd, gd, bd);
         rs -= rd;
         gs -= gd;
         bs -= bd;
-        if (rs < 0) rs = 0;
-        if (gs < 0) gs = 0;
-        if (bs < 0) bs = 0;
+        if (rs < 0)
+            rs = 0;
+        if (gs < 0)
+            gs = 0;
+        if (bs < 0)
+            bs = 0;
         *dest = PackPixel(rs, gs, bs);
         return;
     /* this is quasi-slick, IMO.
@@ -644,9 +679,12 @@ inline void GrDriver::SetPixelLucent(word *dest, int c, int lucentmode)
         rs += rd;
         gs += gd;
         bs += bd;
-        if (rs > 255) rs = 255;
-        if (gs > 255) gs = 255;
-        if (bs > 255) bs = 255;
+        if (rs > 255)
+            rs = 255;
+        if (gs > 255)
+            gs = 255;
+        if (bs > 255)
+            bs = 255;
         *dest = PackPixel(rs, gs, bs);
         return;
 
@@ -659,20 +697,24 @@ inline void GrDriver::SetPixelLucent(word *dest, int c, int lucentmode)
         rs -= rd;
         gs -= gd;
         bs -= bd;
-        if (rs < 0) rs = 0;
-        if (gs < 0) gs = 0;
-        if (bs < 0) bs = 0;
+        if (rs < 0)
+            rs = 0;
+        if (gs < 0)
+            gs = 0;
+        if (bs < 0)
+            bs = 0;
         *dest = PackPixel(rs, gs, bs);
         return;
     }
 }
 
 void GrDriver::CopySpriteLucent(
-    int x, int y, int width, int height, uint8_t *src, int lucentmode) {
+    int x, int y, int width, int height, uint8_t* src, int lucentmode) {
     int xl, yl, xs, ys;
     int a;
 
-    if (screen == NULL) return;
+    if (screen == NULL)
+        return;
 
     cpubyte = RENDER;
     xl = width;
@@ -682,8 +724,10 @@ void GrDriver::CopySpriteLucent(
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
     if (x < clip.left) {
         xs = clip.left - x;
         xl -= xs;
@@ -695,29 +739,29 @@ void GrDriver::CopySpriteLucent(
         y = clip.top;
     }
 
-    if (bpp > 1)  // blit for hicolour
+    if (bpp > 1) // blit for hicolour
     {
         word *s16, *d16;
 
-        s16 = (word *)(src) + ys * width + xs;
-        d16 = (word *)(screen) + y * scrx + x;
-        for (; yl; yl--)  // TODO: asm
+        s16 = (word*)(src) + ys * width + xs;
+        d16 = (word*)(screen) + y * scrx + x;
+        for (; yl; yl--) // TODO: asm
         {
             for (a = 0; a < xl; a++)
                 SetPixelLucent(&d16[a], s16[a], lucentmode);
             s16 += width;
             d16 += scrx;
         }
-    } else  // 8bit blit
+    } else // 8bit blit
     {
         uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
         d8 = screen + y * scrx + x;
 
-        for (; yl; yl--)  // TODO: asm
+        for (; yl; yl--) // TODO: asm
         {
             for (a = 0; a < xl; a++)
-                d8[a] = lucentlut8[d8[a] | (s8[a] << 8)];  // wee
+                d8[a] = lucentlut8[d8[a] | (s8[a] << 8)]; // wee
             s8 += width;
             d8 += scrx;
         }
@@ -726,11 +770,12 @@ void GrDriver::CopySpriteLucent(
 }
 
 void GrDriver::TCopySpriteLucent(
-    int x, int y, int width, int height, uint8_t *src, int lucentmode) {
+    int x, int y, int width, int height, uint8_t* src, int lucentmode) {
     int xl, yl, xs, ys;
     int a;
 
-    if (screen == NULL) return;
+    if (screen == NULL)
+        return;
 
     cpubyte = RENDER;
     xl = width;
@@ -740,8 +785,10 @@ void GrDriver::TCopySpriteLucent(
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
     if (x < clip.left) {
         xs = clip.left - x;
         xl -= xs;
@@ -753,14 +800,14 @@ void GrDriver::TCopySpriteLucent(
         y = clip.top;
     }
 
-    if (bpp > 1)  // blit for hicolour
+    if (bpp > 1) // blit for hicolour
     {
         word *s16, *d16;
 
-        s16 = (word *)(src) + ys * width + xs;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + ys * width + xs;
+        d16 = (word*)(screen) + y * scrx + x;
         //    xl=xl*2;
-        for (; yl; yl--)  // TODO: asm
+        for (; yl; yl--) // TODO: asm
         {
             for (a = 0; a < xl; a++)
                 if (s16[a] != trans_mask)
@@ -768,16 +815,17 @@ void GrDriver::TCopySpriteLucent(
             s16 += width;
             d16 += scrx;
         }
-    } else  // 8bit blit
+    } else // 8bit blit
     {
         uint8_t *s8, *d8;
         s8 = src + ys * width + xs;
         d8 = screen + y * scrx + x;
 
-        for (; yl; yl--)  // TODO: asm
+        for (; yl; yl--) // TODO: asm
         {
             for (a = 0; a < xl; a++)
-                if (s8[a]) d8[a] = lucentlut8[d8[a] | (s8[a] << 8)];  // wee
+                if (s8[a])
+                    d8[a] = lucentlut8[d8[a] | (s8[a] << 8)]; // wee
             s8 += width;
             d8 += scrx;
         }
@@ -791,7 +839,7 @@ void GrDriver::ScaleSpriteLucent(int x,
     int iheight,
     int dwidth,
     int dheight,
-    uint8_t *src,
+    uint8_t* src,
     int lucent) {
     int i, j;
     int xerr, yerr;
@@ -802,7 +850,8 @@ void GrDriver::ScaleSpriteLucent(int x,
 
     cpubyte = RENDER;
 
-    if (dwidth < 1 || dheight < 1) return;
+    if (dwidth < 1 || dheight < 1)
+        return;
 
     xl = dwidth;
     yl = dheight;
@@ -811,8 +860,10 @@ void GrDriver::ScaleSpriteLucent(int x,
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
 
     if (x < clip.left) {
         xs = clip.left - x;
@@ -853,15 +904,15 @@ void GrDriver::ScaleSpriteLucent(int x,
     } else {
         word *s16, *d16;
 
-        s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + (yerr_start >> 16) * iwidth;
+        d16 = (word*)(screen) + y * scrx + x;
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
                 c = s16[(xerr >> 16)];
                 //       if (c!=trans_mask)
-                SetPixelLucent(&d16[j], c, lucent);  // d16[j] = c;
+                SetPixelLucent(&d16[j], c, lucent); // d16[j] = c;
                 xerr += xadj;
             }
             d16 += scrx;
@@ -878,7 +929,7 @@ void GrDriver::TScaleSpriteLucent(int x,
     int iheight,
     int dwidth,
     int dheight,
-    uint8_t *src,
+    uint8_t* src,
     int lucent) {
     int i, j;
     int xerr, yerr;
@@ -889,7 +940,8 @@ void GrDriver::TScaleSpriteLucent(int x,
 
     cpubyte = RENDER;
 
-    if (dwidth < 1 || dheight < 1) return;
+    if (dwidth < 1 || dheight < 1)
+        return;
 
     xl = dwidth;
     yl = dheight;
@@ -898,8 +950,10 @@ void GrDriver::TScaleSpriteLucent(int x,
         y + yl < clip.top)
         return;
 
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
 
     if (x < clip.left) {
         xs = clip.left - x;
@@ -929,7 +983,8 @@ void GrDriver::TScaleSpriteLucent(int x,
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
                 c = s8[(xerr >> 16)];
-                if (c) d8[j] = c;  // translucency_table[d[j] | (c << 8)];
+                if (c)
+                    d8[j] = c; // translucency_table[d[j] | (c << 8)];
                 xerr += xadj;
             }
             d8 += scrx;
@@ -940,15 +995,15 @@ void GrDriver::TScaleSpriteLucent(int x,
     } else {
         word *s16, *d16;
 
-        s16 = (word *)(src) + (yerr_start >> 16) * iwidth;
-        d16 = (word *)(screen) + y * scrx + x;
+        s16 = (word*)(src) + (yerr_start >> 16) * iwidth;
+        d16 = (word*)(screen) + y * scrx + x;
 
         for (i = 0; i < yl; i += 1) {
             xerr = xerr_start;
             for (j = 0; j < xl; j += 1) {
                 c = s16[(xerr >> 16)];
                 if (c != trans_mask)
-                    SetPixelLucent(&d16[j], c, lucent);  // d16[j] = c;
+                    SetPixelLucent(&d16[j], c, lucent); // d16[j] = c;
                 xerr += xadj;
             }
             d16 += scrx;
@@ -965,7 +1020,7 @@ void GrDriver::RotScaleLucent(int posx,
     int height,
     float angle,
     float scale,
-    uint8_t *src,
+    uint8_t* src,
     int lucent) {
     // new! shamelessly ripped off from alias.zip
     // except the atan2 stuff which i had to make up myself AEN so there :p
@@ -984,7 +1039,7 @@ void GrDriver::RotScaleLucent(int posx,
         (int)((float)width / scale * sin(ft) + (float)height / scale * cos(ft));
     W_HEIGHT = W_WIDTH;
     W_HEIGHT_CENTER = W_HEIGHT >> 1;
-    W_WIDTH_CENTER = W_HEIGHT_CENTER;  // W_WIDTH/2;
+    W_WIDTH_CENTER = W_HEIGHT_CENTER; // W_WIDTH/2;
 
     sinas = (int)(sin(-angle) * 65536 * scale);
     cosas = (int)(cos(-angle) * 65536 * scale);
@@ -995,21 +1050,24 @@ void GrDriver::RotScaleLucent(int posx,
     posy -= W_HEIGHT_CENTER;
 
     // clipping
-    if (W_WIDTH < 2 || W_HEIGHT < 2) return;
+    if (W_WIDTH < 2 || W_HEIGHT < 2)
+        return;
     xl = W_WIDTH;
     yl = W_HEIGHT;
     xs = ys = 0;
     if (posx > clip.right || posy > clip.bottom || posx + xl < clip.left ||
         posy + yl < clip.top)
         return;
-    if (posx + xl - 1 > clip.right) xl = clip.right - posx + 1;
-    if (posy + yl - 1 > clip.bottom) yl = clip.bottom - posy + 1;
+    if (posx + xl - 1 > clip.right)
+        xl = clip.right - posx + 1;
+    if (posy + yl - 1 > clip.bottom)
+        yl = clip.bottom - posy + 1;
     if (posx < clip.left) {
         xs = clip.left - posx;
         xl -= xs;
         posx = clip.left;
 
-        xc += cosas * xs;  // woo!
+        xc += cosas * xs; // woo!
         yc -= sinas * xs;
     }
     if (posy < clip.top) {
@@ -1017,7 +1075,7 @@ void GrDriver::RotScaleLucent(int posx,
         yl -= ys;
         posy = clip.top;
 
-        xc += sinas * ys;  // woo!
+        xc += sinas * ys; // woo!
         yc += cosas * ys;
     }
 
@@ -1036,7 +1094,8 @@ void GrDriver::RotScaleLucent(int posx,
                 if (tempx >= 0 && tempx < width && tempy >= 0 &&
                     tempy < height) {
                     pt = s8[tempx + tempy * width];
-                    if (pt) d8[x] = lucentlut8[(pt << 8) | d8[x]];
+                    if (pt)
+                        d8[x] = lucentlut8[(pt << 8) | d8[x]];
                 }
 
                 srcx += cosas;
@@ -1050,8 +1109,8 @@ void GrDriver::RotScaleLucent(int posx,
         }
     } else {
         word *s16, *d16;
-        d16 = (word *)(screen) + posy * scrx + posx;
-        s16 = (word *)src;
+        d16 = (word*)(screen) + posy * scrx + posx;
+        s16 = (word*)src;
         for (y = 0; y < yl; y++) {
             srcx = xc;
             srcy = yc;
@@ -1065,7 +1124,7 @@ void GrDriver::RotScaleLucent(int posx,
                     pt = s16[tempx + tempy * width];
                     if (pt)
                         SetPixelLucent(&d16[x], pt,
-                            lucent);  // d16[x]=pt;//dest[x]=translucency_table[(pt<<8)|dest[x]];
+                            lucent); // d16[x]=pt;//dest[x]=translucency_table[(pt<<8)|dest[x]];
                 }
 
                 srcx += cosas;
@@ -1090,8 +1149,10 @@ void GrDriver::BlitStipple(int x, int y, int colour) {
     if (x > clip.right || y > clip.bottom || x + xl < clip.left ||
         y + yl < clip.top)
         return;
-    if (x + xl - 1 > clip.right) xl = clip.right - x + 1;
-    if (y + yl - 1 > clip.bottom) yl = clip.bottom - y + 1;
+    if (x + xl - 1 > clip.right)
+        xl = clip.right - x + 1;
+    if (y + yl - 1 > clip.bottom)
+        yl = clip.bottom - y + 1;
     if (x < clip.left) {
         xl += x - clip.left;
         x = clip.left;
@@ -1102,29 +1163,32 @@ void GrDriver::BlitStipple(int x, int y, int colour) {
     }
 
     if (bpp == 1) {
-        uint8_t *d8;
+        uint8_t* d8;
         d8 = screen + y * scrx + x;
         for (ay = 0; ay < yl; ay++) {
             for (ax = 0; ax < xl; ax++)
-                if ((ax + ay) & 1) d8[ax] = colour;
+                if ((ax + ay) & 1)
+                    d8[ax] = colour;
             d8 += scrx;
         }
     } else {
-        word *d16;
-        d16 = (word *)(screen) + y * scrx + x;
+        word* d16;
+        d16 = (word*)(screen) + y * scrx + x;
         for (ay = 0; ay < yl; ay++) {
             ax = xl;
-            while (ax--) SetPixelLucent(d16++, colour, 1);
+            while (ax--)
+                SetPixelLucent(d16++, colour, 1);
             d16 += scrx - xl;
         }
     }
 }
 
 void GrDriver::WrapBlitLucent(
-    int x, int y, int width, int height, uint8_t *src, int lucent) {
+    int x, int y, int width, int height, uint8_t* src, int lucent) {
     int cur_x, sign_y;
 
-    if (width < 1 || height < 1) return;
+    if (width < 1 || height < 1)
+        return;
 
     x %= width, y %= height;
     sign_y = 0 - y;
@@ -1136,10 +1200,11 @@ void GrDriver::WrapBlitLucent(
 }
 
 void GrDriver::TWrapBlitLucent(
-    int x, int y, int width, int height, uint8_t *src, int lucent) {
+    int x, int y, int width, int height, uint8_t* src, int lucent) {
     int cur_x, sign_y;
 
-    if (width < 1 || height < 1) return;
+    if (width < 1 || height < 1)
+        return;
 
     x %= width, y %= height;
     sign_y = 0 - y;
@@ -1160,13 +1225,13 @@ void GrDriver::SetPixel(int x, int y, int colour, int lucent) {
         return;
 
     if (bpp == 1) {
-        uint8_t *p = screen + ofs;
+        uint8_t* p = screen + ofs;
         if (lucent)
             *p = lucentlut8[colour || *p << 8];
         else
             *p = colour;
     } else {
-        word *p = (word *)screen + ofs;
+        word* p = (word*)screen + ofs;
         if (lucent)
             SetPixelLucent(p, colour, lucent);
         else
@@ -1179,12 +1244,12 @@ int GrDriver::GetPixel(int x, int y) {
         return 0;
 
     if (bpp == 1) {
-        uint8_t *c;
+        uint8_t* c;
         c = screen + y * scrx + x;
         return *c;
     } else {
-        word *w;
-        w = (word *)screen + y * scrx + x;
+        word* w;
+        w = (word*)screen + y * scrx + x;
         return *w;
     }
 }
@@ -1196,33 +1261,42 @@ void GrDriver::HLine(int x, int y, int x2, int colour, int lucent) {
         int a = x2;
         x2 = x;
         x = a;
-    }  // swap 'em
+    } // swap 'em
 
-    if (x < clip.left) x = clip.left;
-    if (x2 > clip.right) x2 = clip.right;
+    if (x < clip.left)
+        x = clip.left;
+    if (x2 > clip.right)
+        x2 = clip.right;
 
     // Is the line even onscreen?
-    if (y < clip.top) return;
-    if (y > clip.bottom) return;
-    if (x > clip.right) return;
-    if (x2 < clip.left) return;
+    if (y < clip.top)
+        return;
+    if (y > clip.bottom)
+        return;
+    if (x > clip.right)
+        return;
+    if (x2 < clip.left)
+        return;
 
     if (bpp == 1) {
-        uint8_t *d8;
+        uint8_t* d8;
         d8 = screen + (y * scrx + x);
         xl = x2 - x + 1;
         if (lucent)
-            while (xl--) *d8 = lucentlut8[*d8++ | (colour << 8)];
+            while (xl--)
+                *d8 = lucentlut8[*d8++ | (colour << 8)];
         else
-            memset(d8, (char)colour, xl);  // woo. hard
+            memset(d8, (char)colour, xl); // woo. hard
     } else {
-        word *d16;
-        d16 = (word *)(screen) + y * scrx + x;
+        word* d16;
+        d16 = (word*)(screen) + y * scrx + x;
         xl = x2 - x + 1;
         if (lucent)
-            while (xl--) SetPixelLucent(d16++, colour, lucent);
+            while (xl--)
+                SetPixelLucent(d16++, colour, lucent);
         else
-            while (xl--) *d16++ = (word)colour;  // woo. also hard.
+            while (xl--)
+                *d16++ = (word)colour; // woo. also hard.
     }
 }
 
@@ -1231,19 +1305,25 @@ void GrDriver::VLine(int x, int y, int y2, int colour, int lucent) {
         int a = y2;
         y2 = y;
         y = a;
-    }  // swap 'em
+    } // swap 'em
 
-    if (y < clip.top) y = clip.top;
-    if (y2 > clip.bottom) y2 = clip.bottom;
+    if (y < clip.top)
+        y = clip.top;
+    if (y2 > clip.bottom)
+        y2 = clip.bottom;
 
     // Is the line even onscreen?
-    if (y2 < clip.top) return;
-    if (y > clip.bottom) return;
-    if (x > clip.right) return;
-    if (x < clip.left) return;
+    if (y2 < clip.top)
+        return;
+    if (y > clip.bottom)
+        return;
+    if (x > clip.right)
+        return;
+    if (x < clip.left)
+        return;
 
     if (bpp == 1) {
-        uint8_t *d8;
+        uint8_t* d8;
         d8 = screen + (y * scrx + x);
         int yl = y2 - y + 1;
         if (lucent)
@@ -1257,8 +1337,8 @@ void GrDriver::VLine(int x, int y, int y2, int colour, int lucent) {
                 d8 += scrx;
             }
     } else {
-        word *d16;
-        d16 = (word *)(screen) + y * scrx + x;
+        word* d16;
+        d16 = (word*)(screen) + y * scrx + x;
         int yl = y2 - y + 1;
         if (lucent)
             while (yl--) {
@@ -1273,7 +1353,7 @@ void GrDriver::VLine(int x, int y, int y2, int colour, int lucent) {
     }
 }
 
-void swap(int &a, int &b) {
+void swap(int& a, int& b) {
     int c;
     c = a;
     a = b;
@@ -1455,7 +1535,7 @@ void GrDriver::Line(int x1, int y1, int x2, int y2, int colour, int lucent) {
                 }
         }
     } else {
-        word *s16 = (word *)screen;
+        word* s16 = (word*)screen;
         if (n > m) {
             xcxi = abs(2 * xc * xi);
             if (lucent)
@@ -1502,7 +1582,7 @@ void GrDriver::Rect(int x1, int y1, int x2, int y2, int colour, int lucent) {
         a = x1;
         x1 = x2;
         x2 = a;
-    }  // swap 'em
+    } // swap 'em
     if (y1 > y2) {
         a = y1;
         y1 = y2;
@@ -1528,7 +1608,7 @@ void GrDriver::RectFill(
         a = x1;
         x1 = x2;
         x2 = a;
-    }  // swap 'em
+    } // swap 'em
     if (y1 > y2) {
         a = y1;
         y1 = y2;
@@ -1536,12 +1616,17 @@ void GrDriver::RectFill(
     }
 
     // range checking
-    if (x1 < clip.left) x1 = clip.left;
-    if (x2 > clip.right) x2 = clip.right;
-    if (y1 < clip.top) y1 = clip.top;
-    if (y2 > clip.bottom) y2 = clip.bottom;
+    if (x1 < clip.left)
+        x1 = clip.left;
+    if (x2 > clip.right)
+        x2 = clip.right;
+    if (y1 < clip.top)
+        y1 = clip.top;
+    if (y2 > clip.bottom)
+        y2 = clip.bottom;
 
-    for (a = y1; a <= y2; a++) HLine(x1, a, x2, colour, lucent);
+    for (a = y1; a <= y2; a++)
+        HLine(x1, a, x2, colour, lucent);
 }
 
 void GrDriver::Circle(int x, int y, int radius, int colour, int lucent) {
@@ -1555,15 +1640,21 @@ void GrDriver::Circle(int x, int y, int radius, int colour, int lucent) {
 
     do {
         SetPixel(x + cx, y + cy, colour, lucent);
-        if (cx) SetPixel(x - cx, y + cy, colour, lucent);
-        if (cy) SetPixel(x + cx, y - cy, colour, lucent);
-        if (cx && cy) SetPixel(x - cx, y - cy, colour, lucent);
+        if (cx)
+            SetPixel(x - cx, y + cy, colour, lucent);
+        if (cy)
+            SetPixel(x + cx, y - cy, colour, lucent);
+        if (cx && cy)
+            SetPixel(x - cx, y - cy, colour, lucent);
 
         if (cx != cy) {
             SetPixel(x + cy, y + cx, colour, lucent);
-            if (cx) SetPixel(x + cy, y - cx, colour, lucent);
-            if (cy) SetPixel(x - cy, y + cx, colour, lucent);
-            if (cx && cy) SetPixel(x - cy, y - cx, colour, lucent);
+            if (cx)
+                SetPixel(x + cy, y - cx, colour, lucent);
+            if (cy)
+                SetPixel(x - cy, y + cx, colour, lucent);
+            if (cx && cy)
+                SetPixel(x - cy, y - cx, colour, lucent);
         }
 
         if (df < 0) {
@@ -1593,7 +1684,8 @@ void GrDriver::CircleFill(int x, int y, int radius, int colour, int lucent) {
 
     do {
         HLine(x - cy, y - cx, x + cy, colour, lucent);
-        if (cx) HLine(x - cy, y + cx, x + cy, colour, lucent);
+        if (cx)
+            HLine(x - cy, y + cx, x + cy, colour, lucent);
 
         if (df < 0) {
             df += d_e;
@@ -1602,7 +1694,8 @@ void GrDriver::CircleFill(int x, int y, int radius, int colour, int lucent) {
         } else {
             if (cx != cy) {
                 HLine(x - cx, y - cy, x + cx, colour, lucent);
-                if (cy) HLine(x - cx, y + cy, x + cx, colour, lucent);
+                if (cy)
+                    HLine(x - cx, y + cy, x + cx, colour, lucent);
             }
             df += d_se;
             d_e += 2;
@@ -1683,7 +1776,7 @@ inline void GrDriver::tmaphline(int x1,
     int ty2,
     int texw,
     int texh,
-    uint8_t *image) {
+    uint8_t* image) {
     int i;
     int txstep, txval;
     int tystep, tyval;
@@ -1700,13 +1793,14 @@ inline void GrDriver::tmaphline(int x1,
             ty1 = ty2;
             ty2 = i;
         }
-        if ((x1 > scrx) || (x2 < 0)) return;
+        if ((x1 > scrx) || (x2 < 0))
+            return;
         txstep = ((tx2 - tx1) << 16) / (x2 - x1);
         tystep = ((ty2 - ty1) << 16) / (x2 - x1);
         txval = tx1 << 16;
         tyval = ty1 << 16;
-        word *s16 = (word *)screen;
-        word *d16 = (word *)image;
+        word* s16 = (word*)screen;
+        word* d16 = (word*)image;
 
         if (bpp == 1)
             for (i = x1; i < x2; i++) {
@@ -1738,7 +1832,7 @@ void GrDriver::TMapPoly(int x1,
     int ty3,
     int tw,
     int th,
-    uint8_t *img) {
+    uint8_t* img) {
     int xstep, xstep2;
     int xval, xval2;
     int txstep, txstep2;
@@ -1748,7 +1842,7 @@ void GrDriver::TMapPoly(int x1,
     int yon;
     int swaptemp;
 
-    uint8_t *image;
+    uint8_t* image;
     int texw, texh;
 
     image = img;
@@ -1847,12 +1941,13 @@ void GrDriver::TMapPoly(int x1,
     }
 }
 
-void GrDriver::Mask(uint8_t *src, uint8_t *mask, int width, int height, uint8_t *dest) {
+void GrDriver::Mask(
+    uint8_t* src, uint8_t* mask, int width, int height, uint8_t* dest) {
     int i = width * height;
     if (bpp == 2) {
-        word *s16 = (word *)src;
-        word *m16 = (word *)mask;
-        word *d16 = (word *)dest;  // bleh, makes my life easier
+        word* s16 = (word*)src;
+        word* m16 = (word*)mask;
+        word* d16 = (word*)dest; // bleh, makes my life easier
 
         while (i--) {
             *d16 = (*s16 & *m16);
@@ -1872,19 +1967,21 @@ void GrDriver::Mask(uint8_t *src, uint8_t *mask, int width, int height, uint8_t 
 }
 
 void GrDriver::Silhouette(
-    int width, int height, uint8_t *src, uint8_t *dest, int colour) {
+    int width, int height, uint8_t* src, uint8_t* dest, int colour) {
     width *= height;
     if (bpp == 1) {
         while (width--) {
-            if (*src) *dest = colour;
+            if (*src)
+                *dest = colour;
             src++;
             dest++;
         }
     } else {
-        word *s16 = (word *)src;
-        word *d16 = (word *)dest;
+        word* s16 = (word*)src;
+        word* d16 = (word*)dest;
         while (width--) {
-            if (*s16 != trans_mask) *d16 = colour;
+            if (*s16 != trans_mask)
+                *d16 = colour;
             s16++;
             d16++;
         }
@@ -1892,17 +1989,19 @@ void GrDriver::Silhouette(
 }
 
 void GrDriver::ChangeAll(
-    int width, int height, uint8_t *src, int srccolour, int destcolour) {
+    int width, int height, uint8_t* src, int srccolour, int destcolour) {
     width *= height;
     if (bpp == 1) {
         while (width--) {
-            if (*src == srccolour) *src = destcolour;
+            if (*src == srccolour)
+                *src = destcolour;
             src++;
         }
     } else {
-        word *s16 = (word *)src;
+        word* s16 = (word*)src;
         while (width--) {
-            if (*s16 == srccolour) *s16 = destcolour;
+            if (*s16 == srccolour)
+                *s16 = destcolour;
             s16++;
         }
     }
@@ -1926,9 +2025,10 @@ unsigned int GrDriver::Conv8(int c) {
     int i, r, g, b;
     static int lowestsofar, highestsofar;
 
-    if (bpp == 1) return c;  // we'll assume it's the same palette for now.
+    if (bpp == 1)
+        return c; // we'll assume it's the same palette for now.
 
-    i = c * 3;  // pedal to the metal! ;D
+    i = c * 3; // pedal to the metal! ;D
     r = gamepal[i++];
     g = gamepal[i++];
     b = gamepal[i++];
@@ -1952,25 +2052,31 @@ unsigned int GrDriver::Conv16(int c)
 }
 
 unsigned int GrDriver::PackPixel(int r, int g, int b) {
-    if (rsize < 8) r >>= 8 - rsize;
-    if (gsize < 8) g >>= 8 - gsize;
-    if (bsize < 8) b >>= 8 - bsize;
+    if (rsize < 8)
+        r >>= 8 - rsize;
+    if (gsize < 8)
+        g >>= 8 - gsize;
+    if (bsize < 8)
+        b >>= 8 - bsize;
 
     return (r << rpos) | (g << gpos) | (b << bpos);
     // TODO: add closest-matching-colour function for 8bit modes.
 }
 
-void GrDriver::UnPackPixel(int c, int &r, int &g, int &b) {
+void GrDriver::UnPackPixel(int c, int& r, int& g, int& b) {
     r = c >> rpos;
     g = c >> gpos;
     b = c >> bpos;
 
-    if (rsize < 8) r = (r << (8 - rsize)) & 255;
-    if (gsize < 8) g = (g << (8 - gsize)) & 255;
-    if (bsize < 8) b = (b << (8 - bsize)) & 255;
+    if (rsize < 8)
+        r = (r << (8 - rsize)) & 255;
+    if (gsize < 8)
+        g = (g << (8 - gsize)) & 255;
+    if (bsize < 8)
+        b = (b << (8 - bsize)) & 255;
 }
 
-int GrDriver::SetPalette(uint8_t *p)  // p is a char[768]
+int GrDriver::SetPalette(uint8_t* p) // p is a char[768]
 {
 #if 0
     HRESULT result;
@@ -2009,7 +2115,7 @@ int GrDriver::SetPalette(uint8_t *p)  // p is a char[768]
     return 1;
 }
 
-int GrDriver::GetPalette(uint8_t *p)  // p is a char[768]
+int GrDriver::GetPalette(uint8_t* p) // p is a char[768]
 {
 #if 0
     HRESULT result;
@@ -2035,14 +2141,15 @@ int GrDriver::GetPalette(uint8_t *p)  // p is a char[768]
     return 1;
 }
 
-int GrDriver::InitLucentLUT(uint8_t *data)
+int GrDriver::InitLucentLUT(uint8_t* data)
 // this just copies the data into lucentlut8 so the lucent stuff can work in
 // 8bit mode.
 {
-    if (lucentlut8 != NULL) delete lucentlut8;
+    if (lucentlut8 != NULL)
+        delete lucentlut8;
     lucentlut8 = new char[256 * 256];
     memcpy(lucentlut8, data, 256 * 256);
-    return 1;  // bleh, simple
+    return 1; // bleh, simple
 }
 
 void GrDriver::CalcLucentLUT(int lucency) {
@@ -2052,7 +2159,8 @@ void GrDriver::CalcLucentLUT(int lucency) {
     biggest = biggest < gsize ? gsize : biggest;
     biggest = biggest < bsize ? bsize : biggest;
 
-    if (lucentlut16 == NULL) lucentlut16 = new word[65535];  // o_O --tSB
+    if (lucentlut16 == NULL)
+        lucentlut16 = new word[65535]; // o_O --tSB
 
     int i, j;
 
@@ -2068,7 +2176,7 @@ void GrDriver::SetClipRect(RECT newrect) {
     memcpy(&clip, &newrect, sizeof clip);
 }
 
-void GrDriver::SetRenderDest(int x, int y, uint8_t *dest) {
+void GrDriver::SetRenderDest(int x, int y, uint8_t* dest) {
     scrx = x;
     scry = y;
     clip.top = clip.left = 0;
@@ -2101,14 +2209,15 @@ void GrDriver::PaletteMorph(
 
     if (bpp == 2) {
         if (percent && intensity == 63) {
-            if (morphlut) delete morphlut;
+            if (morphlut)
+                delete morphlut;
             morphlut = NULL;
             return;
         }
         if (morphlut == NULL)
             morphlut =
-                new word[65536];  // YES, I like look-up tables, thank you very
-                                  // much. --tSB
+                new word[65536]; // YES, I like look-up tables, thank you very
+                                 // much. --tSB
         for (i = 0; i < 65535; i++) {
             UnPackPixel(i, r, g, b);
 

@@ -16,18 +16,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef MEMORY_H
 #define MEMORY_H
 
-extern void *valloc(int amount, char *desc, int owner);
-extern void *qvalloc(int amount);
-extern void qvfree(void *ptr);
+extern void* valloc(int amount, char* desc, int owner);
+extern void* qvalloc(int amount);
+extern void qvfree(void* ptr);
 extern int TotalBytesAllocated(void);
-extern int FindChunk(void *pointer);
+extern int FindChunk(void* pointer);
 extern void FreeChunk(int i);
-extern int vfree(void *pointer);
+extern int vfree(void* pointer);
 extern void FreeByOwner(int owner);
 extern void MemReport(void);
 extern int ChunkIntegrity(int i);
 extern void CheckCorruption(void);
-extern void FreeAllMemory();  // --tSB
+extern void FreeAllMemory(); // --tSB
 
 // Standardized OID (Owner ID) values
 
@@ -38,4 +38,4 @@ extern void FreeAllMemory();  // --tSB
 #define OID_MAP 4
 #define OID_VC 5
 
-#endif  // MEMORY_H
+#endif // MEMORY_H

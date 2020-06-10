@@ -39,20 +39,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define WIN32_LEAN_AND_MEAN
 #include "verge.h"
-#include <stdarg.h>  // va_*
+#include <stdarg.h> // va_*
 
 // gah!
 extern void ParseAutoCFG();
 
 // ================================= Win32 stuff =============================
 
-GrDriver gfx;  // DirectDraw
-Input input;   // DirectInput
+GrDriver gfx; // DirectDraw
+Input input;  // DirectInput
 
 // ================================= Data ====================================
 
 // declared in VDRIVER.C
-char logoutput = 1;  // Verbose debugging startup mode
+char logoutput = 1; // Verbose debugging startup mode
 
 // ================================= Code ====================================
 
@@ -62,23 +62,26 @@ void InitLog() {
     }
 }
 
-static FILE *Log_OpenLog() {
-    FILE *f;
+static FILE* Log_OpenLog() {
+    FILE* f;
 
     f = fopen("VERGE.LOG", "aw");
-    if (!f) Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
+    if (!f)
+        Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
 
     return f;
 }
 
-void Log(const char *message) {
-    FILE *f;
+void Log(const char* message) {
+    FILE* f;
 
-    if (!logoutput) return;
+    if (!logoutput)
+        return;
 
     f = Log_OpenLog();
 
-    if (!f) Sys_Error("Error logging!");
+    if (!f)
+        Sys_Error("Error logging!");
 
     fprintf(f, "%s\n", message);
     fflush(f);
@@ -87,14 +90,16 @@ void Log(const char *message) {
 }
 
 // used in conjunction with LogDone()
-void Logp(const char *message) {
-    FILE *f;
+void Logp(const char* message) {
+    FILE* f;
 
-    if (!logoutput) return;
+    if (!logoutput)
+        return;
 
     f = Log_OpenLog();
 
-    if (!f) Sys_Error("Error logging!");
+    if (!f)
+        Sys_Error("Error logging!");
 
     fprintf(f, "%s", message);
     fflush(f);
@@ -103,9 +108,10 @@ void Logp(const char *message) {
 }
 
 void LogDone() {
-    FILE *f;
+    FILE* f;
 
-    if (!logoutput) return;
+    if (!logoutput)
+        return;
 
     f = Log_OpenLog();
 
@@ -118,10 +124,11 @@ void LogDone() {
 // InitSystems moved to startup.cpp, where it can have access to Win32
 
 void LoadTransTable() {
-    VFILE *vf;
-    byte *translucency_table;
+    VFILE* vf;
+    byte* translucency_table;
 
-    if (gfx.bpp != 1) return;  // why bother?
+    if (gfx.bpp != 1)
+        return; // why bother?
 
     /*    if (translucency_table)
           Sys_Error("Foul things are afoot."); */
@@ -132,11 +139,11 @@ void LoadTransTable() {
     }
 
     translucency_table =
-        (byte *)valloc(256 * 256, "translucency_table", OID_TEMP);
+        (byte*)valloc(256 * 256, "translucency_table", OID_TEMP);
 
     vread(translucency_table, 256 * 256, vf);
     vclose(vf);
-    gfx.InitLucentLUT(translucency_table);  // weird, I know. ;)
+    gfx.InitLucentLUT(translucency_table); // weird, I know. ;)
     vfree(translucency_table);
 }
 
@@ -193,7 +200,8 @@ int VMain() {
         RunSystemAutoexec();
 
     // if there is no starting map at this point, we're done.
-    if (startmap.length() < 1) Sys_Error("");
+    if (startmap.length() < 1)
+        Sys_Error("");
 
     // don't forget to set input destination
     //	key_dest = key_game;

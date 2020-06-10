@@ -34,16 +34,16 @@ typedef unsigned short WORD;
 typedef unsigned int UINT;
 typedef unsigned long DWORD;
 
-typedef VOID *LPVOID;
-typedef CHAR *LPCHAR;
-typedef INT *LPINT;
-typedef LONG *LPLONG;
-typedef BOOL *LPBOOL;
-typedef BYTE *LPBYTE;
-typedef WORD *LPWORD;
-typedef UINT *LPUINT;
-typedef DWORD *LPDWORD;
-typedef CHAR *LPSTR;
+typedef VOID* LPVOID;
+typedef CHAR* LPCHAR;
+typedef INT* LPINT;
+typedef LONG* LPLONG;
+typedef BOOL* LPBOOL;
+typedef BYTE* LPBYTE;
+typedef WORD* LPWORD;
+typedef UINT* LPUINT;
+typedef DWORD* LPDWORD;
+typedef CHAR* LPSTR;
 typedef DWORD HANDLE;
 
 /* helper macros */
@@ -258,13 +258,13 @@ typedef struct {
 } AUDIOMODULE, *LPAUDIOMODULE;
 
 /* audio callback function defines */
-typedef VOID(AIAPI *LPFNAUDIOWAVE)(LPBYTE, UINT);
-typedef VOID(AIAPI *LPFNAUDIOTIMER)(VOID);
-typedef VOID(AIAPI *LPFNAUDIOCALLBACK)(BYTE, UINT, UINT);
+typedef VOID(AIAPI* LPFNAUDIOWAVE)(LPBYTE, UINT);
+typedef VOID(AIAPI* LPFNAUDIOTIMER)(VOID);
+typedef VOID(AIAPI* LPFNAUDIOCALLBACK)(BYTE, UINT, UINT);
 
 /* audio handle defines */
 typedef HANDLE HAC;
-typedef HAC *LPHAC;
+typedef HAC* LPHAC;
 
 #pragma pack()
 
@@ -323,11 +323,11 @@ UINT AIAPI AGetModuleStatus(LPBOOL lpnStatus);
 UINT AIAPI ASetModuleCallback(LPFNAUDIOCALLBACK lpfnAudioCallback);
 
 UINT AIAPI ALoadModuleFile(
-    LPSTR lpszFileName, LPAUDIOMODULE *lplpModule, DWORD dwFileOffset);
+    LPSTR lpszFileName, LPAUDIOMODULE* lplpModule, DWORD dwFileOffset);
 UINT AIAPI AFreeModuleFile(LPAUDIOMODULE lpModule);
 
 UINT AIAPI ALoadWaveFile(
-    LPSTR lpszFileName, LPAUDIOWAVE *lplpWave, DWORD dwFileOffset);
+    LPSTR lpszFileName, LPAUDIOWAVE* lplpWave, DWORD dwFileOffset);
 UINT AIAPI AFreeWaveFile(LPAUDIOWAVE lpWave);
 
 #ifdef __cplusplus

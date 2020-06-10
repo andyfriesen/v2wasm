@@ -71,7 +71,7 @@ struct pcx_header_t {
 
 //#pragma off (unreferenced);
 
-static void read_pcx_line(VFILE *vf, byte *start, short skip, int width) {
+static void read_pcx_line(VFILE* vf, byte* start, short skip, int width) {
     int c, n, run;
 
     n = 0;
@@ -93,8 +93,8 @@ static void read_pcx_line(VFILE *vf, byte *start, short skip, int width) {
 
 //#pragma on (unreferenced);
 
-static byte *Image_LoadPCXBuf(const char *fname) {
-    VFILE *vf;
+static byte* Image_LoadPCXBuf(const char* fname) {
+    VFILE* vf;
     byte *dest, *buf;
     int c, n, run;
     pcx_header_t h;
@@ -102,7 +102,7 @@ static byte *Image_LoadPCXBuf(const char *fname) {
     vf = vopen(fname);
     if (!vf) {
         Log(va("Image_LoadPCXBuf: %s: unable to open", fname));
-        return (byte *)0;
+        return (byte*)0;
     }
 
     // validate header info
@@ -110,25 +110,25 @@ static byte *Image_LoadPCXBuf(const char *fname) {
     if (h.manufacturer != 10) {
         Log(va("Image_LoadPCXBuf: %s: not a valid PCX file (manufacturer %d)",
             fname, h.manufacturer));
-        return (byte *)0;
+        return (byte*)0;
     }
     vread(&h.version, 1, vf);
     if (h.version != 5) {
         Log(va("Image_LoadPCXBuf: %s: not a valid PCX file (version %d)", fname,
             h.version));
-        return (byte *)0;
+        return (byte*)0;
     }
     vread(&h.encoding, 1, vf);
     if (h.encoding != 1) {
         Log(va("Image_LoadPCXBuf: %s: not a valid PCX file (encoding %d)",
             fname, h.encoding));
-        return (byte *)0;
+        return (byte*)0;
     }
     vread(&h.bits_per_pixel, 1, vf);
     if (h.bits_per_pixel != 8) {
         Log(va("Image_LoadPCXBuf: %s: not a valid PCX file (bpp %d)", fname,
             h.bits_per_pixel));
-        return (byte *)0;
+        return (byte*)0;
     }
 
     vread(&h.xmin, 2, vf);
@@ -138,7 +138,7 @@ static byte *Image_LoadPCXBuf(const char *fname) {
     vread(&h.hres, 2, vf);
     vread(&h.vres, 2, vf);
 
-    vseek(vf, 48L, SEEK_CUR);  // skip colormap
+    vseek(vf, 48L, SEEK_CUR); // skip colormap
 
     vread(&h.reserved, 1, vf);
 
@@ -149,13 +149,13 @@ static byte *Image_LoadPCXBuf(const char *fname) {
     vread(&h.bytes_per_line, 2, vf);
     vread(&h.palette_type, 2, vf);
 
-    vseek(vf, 128L, SEEK_SET);  // skip filler
+    vseek(vf, 128L, SEEK_SET); // skip filler
 
     image_width = h.xmax - h.xmin + 1;
     image_length = h.ymax - h.ymin + 1;
 
     // decompress image into buffer
-    buf = (byte *)valloc(image_width * image_length * (_24bit ? 3 : 1) + 4,
+    buf = (byte*)valloc(image_width * image_length * (_24bit ? 3 : 1) + 4,
         "Image_LoadPCXBuf:buf", OID_IMAGE);
     if (!buf) {
         Sys_Error("Image_LoadPCXBuf: %s: memory exhausted on buf", fname);
@@ -171,7 +171,7 @@ static byte *Image_LoadPCXBuf(const char *fname) {
             dest += (image_width * 3);
         }
     } else {
-        while (row)  // n<image_width*image_length)
+        while (row) // n<image_width*image_length)
         {
             n = 0;
             while (n < h.bytes_per_line) {
@@ -221,13 +221,13 @@ struct RGBQUAD {
 
 static RGBQUAD bmppalette[1024];
 
-static byte *Image_LoadBMPBuf(const char *fname) {
+static byte* Image_LoadBMPBuf(const char* fname) {
     byte pad[4], *buf;
-    VFILE *bmpfile;
+    VFILE* bmpfile;
     int y, x;
     byte r, g, b;
     byte colordepth;
-    byte *p;
+    byte* p;
     char pal[768];
 
     if (!(bmpfile = vopen(fname)))
@@ -241,9 +241,9 @@ static byte *Image_LoadBMPBuf(const char *fname) {
     vseek(bmpfile, 28, SEEK_SET);
     vread(&colordepth, 1, bmpfile);
     if (colordepth == 8) {
-        buf = (byte *)valloc(
+        buf = (byte*)valloc(
             2 * image_width * image_length, "LoadBMPBuf:buf", OID_IMAGE);
-        p = (byte *)valloc(
+        p = (byte*)valloc(
             image_width * image_length, "LoadBMPBuf:p", OID_IMAGE);
         vseek(bmpfile, 54 + 1024, SEEK_SET);
         for (y = 0; y < 256; y++) {
@@ -253,12 +253,12 @@ static byte *Image_LoadBMPBuf(const char *fname) {
         }
 
         for (y = image_length - 1; y >= 0; y--) {
-            vread((char *)((int)p + y * image_width), image_width, bmpfile);
+            vread((char*)((int)p + y * image_width), image_width, bmpfile);
             // vread(pad,image_width%4,bmpfile);
             vread(pad, ((4 - (image_width % 4)) % 4),
-                bmpfile);  // skip a few bytes
+                bmpfile); // skip a few bytes
         }
-        gfx.SetPalette((byte *)pal);
+        gfx.SetPalette((byte*)pal);
         vclose(bmpfile);
         return p;
     } else if (colordepth == 24) {
@@ -271,7 +271,7 @@ static byte *Image_LoadBMPBuf(const char *fname) {
         }
 
         _24bit = 1;
-        buf = (byte *)valloc(
+        buf = (byte*)valloc(
             3 * image_width * image_length, "LoadBMPBuf:buf", OID_IMAGE);
         int ofs;
         vseek(bmpfile, 54, SEEK_SET);
@@ -289,15 +289,14 @@ static byte *Image_LoadBMPBuf(const char *fname) {
             }
             // vread(pad,image_width%4,bmpfile);
             vread(pad, ((4 - ((image_width * 3) % 4)) % 4),
-                bmpfile);  // skip a few bytes
+                bmpfile); // skip a few bytes
         }
         vclose(bmpfile);
         return buf;
     } else {
-        Sys_Error(
-            "BMP file %s has incorrect color depth. (only 8 and 24 bit "
-            "images are supported)\r\nWhat the hell are you doing trying "
-            "to\r\nload a 4 color bmp for?",
+        Sys_Error("BMP file %s has incorrect color depth. (only 8 and 24 bit "
+                  "images are supported)\r\nWhat the hell are you doing trying "
+                  "to\r\nload a 4 color bmp for?",
             fname);
     }
     return NULL;
@@ -316,8 +315,8 @@ typedef signed long s32;
 typedef struct {
     u8 bits;
     u8 background;
-    u8 *palette;
-    u8 *image;
+    u8* palette;
+    u8* image;
     s16 wide, deep;
 } gif_image_info;
 
@@ -360,27 +359,29 @@ static char* gif_error_messages[] =
 // read colour palette, vga palette values are 6 bit numbers
 // while gif allows for 8 bit so shift right to get correct colours
 
-static u8 *gif_read_palette(FILE *fp, s32 bytes) {
+static u8* gif_read_palette(FILE* fp, s32 bytes) {
     s32 n;
-    u8 *block;
+    u8* block;
 
-    block = (u8 *)valloc(3 * 256, "gifDec pal", OID_TEMP);
+    block = (u8*)valloc(3 * 256, "gifDec pal", OID_TEMP);
     if (!block) {
         Sys_Error("gif_read_palette: memory exhausted on block");
     }
 
     bytes = bytes / 3 * 3;
-    for (n = 0; n < bytes; n += 1) block[n] = (u8)(fgetc(fp) >> 2);
+    for (n = 0; n < bytes; n += 1)
+        block[n] = (u8)(fgetc(fp) >> 2);
 
     return block;
 }
 
 // read a block of bytes into memory
-static s32 block_mem_read(FILE *fp, u8 *buffer, s32 bytes) {
+static s32 block_mem_read(FILE* fp, u8* buffer, s32 bytes) {
     s32 status = 0;
 
     status = fread(buffer, 1, bytes, fp);
-    if (status != bytes) return EOF;
+    if (status != bytes)
+        return EOF;
 
     return TRUE;
 }
@@ -388,7 +389,7 @@ static s32 block_mem_read(FILE *fp, u8 *buffer, s32 bytes) {
 // read a unsigned 16 bit value from file, low byte first; note that this
 // is reverse endian-ness (ie. fwrite(&s,1,2,fp); writes high byte first).
 
-static s16 read_word_lbf(FILE *fp) {
+static s16 read_word_lbf(FILE* fp) {
     s32 a, b;
 
     a = fgetc(fp);
@@ -398,10 +399,10 @@ static s16 read_word_lbf(FILE *fp) {
 }
 
 // read the GIF file header structure into a sequence
-static gif_header *get_gif_header(FILE *fp) {
-    gif_header *h = 0L;
+static gif_header* get_gif_header(FILE* fp) {
+    gif_header* h = 0L;
 
-    h = (gif_header *)valloc(sizeof(gif_header), "gifDec header", OID_TEMP);
+    h = (gif_header*)valloc(sizeof(gif_header), "gifDec header", OID_TEMP);
     if (!h) {
         Sys_Error("get_gif_header: memory exhausted on h");
     }
@@ -409,7 +410,8 @@ static gif_header *get_gif_header(FILE *fp) {
     fread(h->sig, 1, 6, fp);
     h->sig[6] = 0;
 
-    if (V_memcmp(h->sig, "GIF", 3) != 0) return (gif_header *)0;  // NULL;
+    if (V_memcmp(h->sig, "GIF", 3) != 0)
+        return (gif_header*)0; // NULL;
 
     h->screenwide = read_word_lbf(fp);
     image_width = h->screenwide;
@@ -424,10 +426,10 @@ static gif_header *get_gif_header(FILE *fp) {
 
 // gif file can contain more than one image,
 // each image is preceeded by a header structure
-static gif_image_descriptor *get_image_descriptor(FILE *fp) {
-    gif_image_descriptor *id = 0L;
+static gif_image_descriptor* get_image_descriptor(FILE* fp) {
+    gif_image_descriptor* id = 0L;
 
-    id = (gif_image_descriptor *)valloc(
+    id = (gif_image_descriptor*)valloc(
         sizeof(gif_image_descriptor), "gifDec image", OID_TEMP);
     if (!id) {
         Sys_Error("get_image_descriptor: memory exhausted on id");
@@ -454,10 +456,10 @@ static u8 start_table[] = {0, 4, 2, 1, 0};
 
 // unpack an LZW compressed image
 // returns a sequence containing screen display lines of the image
-static u8 *unpack_image(
-    FILE *fp, s32 start_code_size, u32 width, u32 depth, u32 flags) {
-    u8 *buffer;
-    u8 *line_buffer;
+static u8* unpack_image(
+    FILE* fp, s32 start_code_size, u32 width, u32 depth, u32 flags) {
+    u8* buffer;
+    u8* line_buffer;
 
     u16 first_code_stack[4096];
     u16 last_code_stack[4096];
@@ -478,15 +480,15 @@ static u8 *unpack_image(
     s32 pass;
     s32 u;
 
-    u8 b[256];  // read buffer; for block reads
-    u8 *p;      // current byte in read buffer
-    u8 *q;      // last byte in read buffer + 1
+    u8 b[256]; // read buffer; for block reads
+    u8* p;     // current byte in read buffer
+    u8* q;     // last byte in read buffer + 1
 
-    line_buffer = (u8 *)valloc(width, "gd_linebuf", OID_TEMP);
+    line_buffer = (u8*)valloc(width, "gd_linebuf", OID_TEMP);
     if (!line_buffer) {
         Sys_Error("unpack_image: memory exhausted on line_buffer");
     }
-    buffer = (u8 *)valloc(width * depth, "gif image", OID_TEMP);
+    buffer = (u8*)valloc(width * depth, "gif image", OID_TEMP);
     if (!buffer) {
         Sys_Error("unpack_image: memory exhausted on buffer");
     }
@@ -500,18 +502,18 @@ static u8 *unpack_image(
         vfree(line_buffer);
         vfree(buffer);
 
-        Log("unpack_image: ERROR_BAD_STARTCODE");  // bad symbol size
+        Log("unpack_image: ERROR_BAD_STARTCODE"); // bad symbol size
 
-        return (byte *)0;
+        return (byte*)0;
     }
 
     p = b;
     q = b;
 
-    clear_code = 1 << start_code_size;  // pow(2, start_code_size);
+    clear_code = 1 << start_code_size; // pow(2, start_code_size);
     next_code = clear_code + 2;
     code_size = start_code_size + 1;
-    code_size2 = 1 << code_size;  // pow(2, code_size);
+    code_size2 = 1 << code_size; // pow(2, code_size);
     old_code = NO_CODE;
     old_token = NO_CODE;
 
@@ -526,7 +528,7 @@ static u8 *unpack_image(
 
                     Log("unpack image: ERROR_EOF");
 
-                    return (byte *)0;
+                    return (byte*)0;
                 }
                 p = b;
                 q = b + block_size;
@@ -550,7 +552,7 @@ static u8 *unpack_image(
 
                     Log("unpack_image: ERROR_EOF");
 
-                    return (byte *)0;
+                    return (byte*)0;
                 }
                 p = b;
                 q = b + block_size;
@@ -570,7 +572,7 @@ static u8 *unpack_image(
 
                         Log("unpack_image: ERROR_EOF");
 
-                        return (byte *)0;
+                        return (byte*)0;
                     }
                     p = b;
                     q = b + block_size;
@@ -586,7 +588,8 @@ static u8 *unpack_image(
         this_code &= word_mask_table[code_size];
         current_code = this_code;
 
-        if (this_code == (clear_code + 1) || block_size == 0) break;
+        if (this_code == (clear_code + 1) || block_size == 0)
+            break;
 
         if (this_code > next_code) {
             vfree(line_buffer);
@@ -594,13 +597,13 @@ static u8 *unpack_image(
 
             Log("unpack_image: ERROR_BAD_CODE");
 
-            return (byte *)0;
+            return (byte*)0;
         }
 
         if (this_code == clear_code) {
             next_code = clear_code + 2;
             code_size = start_code_size + 1;
-            code_size2 = 1 << code_size;  // pow(2, code_size);
+            code_size2 = 1 << code_size; // pow(2, code_size);
             old_code = NO_CODE;
             old_token = NO_CODE;
         } else {
@@ -612,7 +615,7 @@ static u8 *unpack_image(
 
                     Log("unpack_image: ERROR_BAD_FIRST_CODE");
 
-                    return (byte *)0;
+                    return (byte*)0;
                 }
 
                 first_code_stack[eui(u)] = (u16)old_token;
@@ -647,7 +650,8 @@ static u8 *unpack_image(
                 }
 
                 // no more bytes on stack
-                if (u == 1) break;
+                if (u == 1)
+                    break;
 
                 u--;
                 this_code = first_code_stack[eui(u)];
@@ -659,7 +663,7 @@ static u8 *unpack_image(
                 next_code++;
                 if (next_code >= code_size2 && code_size < 12) {
                     code_size++;
-                    code_size2 = 1 << code_size;  // pow(2, code_size);
+                    code_size2 = 1 << code_size; // pow(2, code_size);
                 }
             }
 
@@ -674,34 +678,34 @@ static u8 *unpack_image(
 }
 
 // skip the extension blocks as we are only after the image
-static void skip_extension(FILE *fp) {
+static void skip_extension(FILE* fp) {
     s32 n;
     char temp[256];
 
-    n = fgetc(fp);  // throwaway extension function code
-    n = fgetc(fp);  // get length of block
+    n = fgetc(fp); // throwaway extension function code
+    n = fgetc(fp); // get length of block
 
     while (n > 0 && n != EOF) {
         // throwaway block
         fread(temp, 1, n, fp);
 
-        n = fgetc(fp);  // get length of next block
+        n = fgetc(fp); // get length of next block
     }
 }
 
 // unpack the GIF file
 // returns ImageInfo sequence containing image and image data
-static gif_image_info *unpack_gif(const char *filename) {
-    gif_header *h = 0;
-    gif_image_info *ii = 0;
-    gif_image_descriptor *id = 0;
+static gif_image_info* unpack_gif(const char* filename) {
+    gif_header* h = 0;
+    gif_image_info* ii = 0;
+    gif_image_descriptor* id = 0;
     int i;
-    VFILE *f;
-    FILE *fp;
+    VFILE* f;
+    FILE* fp;
     s32 c, b;
-    u8 *local_palette = 0;
+    u8* local_palette = 0;
 
-    ii = (gif_image_info *)valloc(
+    ii = (gif_image_info*)valloc(
         sizeof(gif_image_info), "gifDec info", OID_TEMP);
     if (!ii) {
         Sys_Error("unpack_gif: memory exhausted on ii");
@@ -711,13 +715,13 @@ static gif_image_info *unpack_gif(const char *filename) {
     if (!f) {
         vfree(ii);
         Log(va("Could not open GIF file %s.", filename));
-        return (gif_image_info *)0;
+        return (gif_image_info*)0;
     }
     fp = f->fp;
     if (!fp) {
         vfree(ii);
         Log("\nBad filename");
-        return (gif_image_info *)0;
+        return (gif_image_info*)0;
     }
 
     // file starts with the Logical Screen Descriptor structure
@@ -728,13 +732,13 @@ static gif_image_info *unpack_gif(const char *filename) {
     ii->background = h->background;
 
     // get Global colour palette if there is one
-    if (h->hflags & 0x80)  // is flags bit 8 set?
+    if (h->hflags & 0x80) // is flags bit 8 set?
     {
-        c = 3 << ii->bits;  // size of global colour map
+        c = 3 << ii->bits; // size of global colour map
         ii->palette = gif_read_palette(fp, c);
-        V_memcpy(gfx.gamepal, ii->palette, 3 * 256);  // <aen> aha; hidden bug
+        V_memcpy(gfx.gamepal, ii->palette, 3 * 256); // <aen> aha; hidden bug
         for (i = 0; i < 3 * 256; i += 1)
-            gfx.gamepal[i] >>= 2;  //= (byte) (gfx.gamepal[i] >> 2);
+            gfx.gamepal[i] >>= 2; //= (byte) (gfx.gamepal[i] >> 2);
         vfree(ii->palette);
     }
     vfree(h);
@@ -744,18 +748,19 @@ static gif_image_info *unpack_gif(const char *filename) {
     while (c == 0x2c || c == 0x21 || c == 0) {
         // image separator so unpack the image
         if (c == 0x2c) {
-            id = get_image_descriptor(fp);  // get the Image Descriptor
+            id = get_image_descriptor(fp); // get the Image Descriptor
             // if there is a local Color Table then overwrite the global table
             if (id->iflags & 0x80) {
                 ii->bits = (u8)((id->iflags & 7) + 1);
                 b = 3 << ii->bits;
-                if (local_palette) vfree(local_palette);
+                if (local_palette)
+                    vfree(local_palette);
                 local_palette = gif_read_palette(fp, b);
                 V_memcpy(gfx.gamepal, local_palette, 3 * 256);
                 vfree(local_palette);
             }
 
-            c = fgetc(fp);  // get the LZW Minimum Code Size
+            c = fgetc(fp); // get the LZW Minimum Code Size
             ii->image = unpack_image(fp, c, id->wide, id->deep, id->iflags);
             vclose(f);
 
@@ -763,7 +768,7 @@ static gif_image_info *unpack_gif(const char *filename) {
             if (!ii->image) {
                 vfree(ii);
                 Log("unpack_gif: error reading image data");
-                return (gif_image_info *)0;
+                return (gif_image_info*)0;
             }
 
             ii->wide = id->wide;
@@ -775,33 +780,34 @@ static gif_image_info *unpack_gif(const char *filename) {
         }
         // extension introducer
         else if (c == 0x21) {
-            skip_extension(fp);  // throw the extension away
+            skip_extension(fp); // throw the extension away
         }
 
         c = fgetc(fp);
     }
     // no image?
-    return (gif_image_info *)0;
+    return (gif_image_info*)0;
 }
 
 static void SizeUpPalette(void) {
     int n;
 
     for (n = 0; n < 3 * 256; n += 1) {
-        gfx.gamepal[n] <<= 2;  //= (unsigned char) (gfx.pal[n] << 2);
+        gfx.gamepal[n] <<= 2; //= (unsigned char) (gfx.pal[n] << 2);
     }
 }
 
-static byte *Image_LoadGIFBuf(const char *fname) {
-    gif_image_info *giip = 0;
-    byte *t = 0;
+static byte* Image_LoadGIFBuf(const char* fname) {
+    gif_image_info* giip = 0;
+    byte* t = 0;
 
     giip = unpack_gif(fname);
-    if (!giip) return (byte *)0;
+    if (!giip)
+        return (byte*)0;
 
     image_width = giip->wide;
     image_length = giip->deep;
-    t = (byte *)giip->image;
+    t = (byte*)giip->image;
 
     vfree(giip);
 
@@ -810,19 +816,20 @@ static byte *Image_LoadGIFBuf(const char *fname) {
     return t;
 }
 
-static byte *Image_LoadPNGBuf(const char *fname) {
+static byte* Image_LoadPNGBuf(const char* fname) {
     int x, y;
-    byte *buf;
-    byte *p;  // current position
-    png_image *png;
+    byte* buf;
+    byte* p; // current position
+    png_image* png;
 
     png = Import_PNG(fname);
-    if (!png) return NULL;  // fail?
+    if (!png)
+        return NULL; // fail?
 
-    image_length = png->height;  // get the dimensions
+    image_length = png->height; // get the dimensions
     image_width = png->width;
 
-    buf = (byte *)valloc(image_width * image_length * 3, "LoadPNG", OID_IMAGE);
+    buf = (byte*)valloc(image_width * image_length * 3, "LoadPNG", OID_IMAGE);
     // new byte[image_width*image_length*3];           // we'll return a 24 bit
     // image, and let the other image stuff convert it to 16bpp
 
@@ -841,11 +848,11 @@ static byte *Image_LoadPNGBuf(const char *fname) {
     return buf;
 }
 
-static int DetermineFileType(const char *fname) {
-    const char *ext = 0;
+static int DetermineFileType(const char* fname) {
+    const char* ext = 0;
     int type = 255;
 
-    V_strlwr((char *)fname);
+    V_strlwr((char*)fname);
     ext = fname + V_strlen(fname) - 3;
 
     if (!V_strcmp(ext, "pcx"))
@@ -867,8 +874,8 @@ static int DetermineFileType(const char *fname) {
 int Image_Width() { return image_width; }
 int Image_Length() { return image_length; }
 
-byte *Image_LoadBuf(const char *filename) {
-    byte *ptr = 0;
+byte* Image_LoadBuf(const char* filename) {
+    byte* ptr = 0;
 
     switch (DetermineFileType(filename)) {
     case 0:
@@ -888,36 +895,37 @@ byte *Image_LoadBuf(const char *filename) {
         Log(va("%s: unrecognized image type", filename));
     }
 
-    if (!ptr) return ptr;
+    if (!ptr)
+        return ptr;
 
     // heh, error check
     if (_24bit && gfx.bpp == 1)
         Sys_Error(va(
             "Attempted to load truecolour image %s while in 256 colour mode.",
-            filename));  // silly VERGEr
+            filename)); // silly VERGEr
 
     // if in hicolor mode, must convert 8-bit to 16-bit
     if (gfx.bpp > 1 && !_24bit) {
-        word *hip;
+        word* hip;
         int n;
 
         // buffer for new 16-bit image
-        hip = (word *)valloc(
+        hip = (word*)valloc(
             image_width * image_length * 2, "Image_LoadBuf:hip", 0);
         // convert to 16-bit
         for (n = 0; n < image_width * image_length; n++)
             hip[n] = gfx.Conv8(ptr[n]);
 
-        vfree(ptr);         // free old 8-bit data
-        ptr = (byte *)hip;  // reassign new 16-bit data
+        vfree(ptr);       // free old 8-bit data
+        ptr = (byte*)hip; // reassign new 16-bit data
     }
     if (_24bit) {
-        word *hip;
+        word* hip;
         int n;
-        byte *p;
+        byte* p;
 
         // buffer for new 16-bit image
-        hip = (word *)valloc(
+        hip = (word*)valloc(
             image_width * image_length * 2, "Image_LoadBuf:hip", 0);
         // convert to 16-bit
         p = ptr;
@@ -929,8 +937,8 @@ byte *Image_LoadBuf(const char *filename) {
             p += 3;
         }
 
-        vfree(ptr);         // free old 8-bit data
-        ptr = (byte *)hip;  // reassign new 16-bit data
+        vfree(ptr);       // free old 8-bit data
+        ptr = (byte*)hip; // reassign new 16-bit data
     }
 
     return ptr;

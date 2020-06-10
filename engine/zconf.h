@@ -87,7 +87,7 @@
 #endif
 
 /* Some Mac compilers merge all .h files incorrectly: */
-#if defined(__MWERKS__) || defined(applec) || defined(THINK_C) || \
+#if defined(__MWERKS__) || defined(applec) || defined(THINK_C) ||              \
     defined(__SC__)
 #define NO_DUMMY_DECL
 #endif
@@ -228,11 +228,11 @@ typedef uInt FAR uIntf;
 typedef uLong FAR uLongf;
 
 #ifdef STDC
-typedef void FAR *voidpf;
-typedef void *voidp;
+typedef void FAR* voidpf;
+typedef void* voidp;
 #else
-typedef Byte FAR *voidpf;
-typedef Byte *voidp;
+typedef Byte FAR* voidpf;
+typedef Byte* voidp;
 #endif
 
 #ifdef HAVE_UNISTD_H

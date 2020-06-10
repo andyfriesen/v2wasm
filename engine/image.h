@@ -19,6 +19,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern int Image_Width();
 extern int Image_Length();
 
-extern byte *Image_LoadBuf(const char *filename);
+extern byte* Image_LoadBuf(const char* filename);
 
-#endif  // IMAGE_INC
+#endif // IMAGE_INC

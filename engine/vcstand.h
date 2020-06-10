@@ -49,7 +49,8 @@ void vc_Malloc() {
 
     Log(va("VC allocating %u bytes, ptr at 0x%08X.", n, vcreturn));
 
-    if (!vcreturn) Message_Send("Warning: VC failed malloc", 750);
+    if (!vcreturn)
+        Message_Send("Warning: VC failed malloc", 750);
 }
 
 void vc_Free() {
@@ -57,7 +58,7 @@ void vc_Free() {
 
     ptr = ResolveOperand();
 
-    vfree((void *)ptr);
+    vfree((void*)ptr);
 
     Log(va("VC freeing allocated heap at 0x%08X.", ptr));
 }
@@ -93,9 +94,9 @@ void vc_copysprite() {
     ptr = ResolveOperand();
 
     if (lucentmode)
-        gfx.CopySpriteLucent(x, y, width, length, (byte *)ptr, lucentmode);
+        gfx.CopySpriteLucent(x, y, width, length, (byte*)ptr, lucentmode);
     else
-        gfx.CopySprite(x, y, width, length, (byte *)ptr);
+        gfx.CopySprite(x, y, width, length, (byte*)ptr);
 }
 
 void vc_tcopysprite() {
@@ -109,9 +110,9 @@ void vc_tcopysprite() {
     ptr = ResolveOperand();
 
     if (lucentmode)
-        gfx.TCopySpriteLucent(x, y, width, length, (byte *)ptr, lucentmode);
+        gfx.TCopySpriteLucent(x, y, width, length, (byte*)ptr, lucentmode);
     else
-        gfx.TCopySprite(x, y, width, length, (byte *)ptr);
+        gfx.TCopySprite(x, y, width, length, (byte*)ptr);
 }
 
 void vc_EntitySpawn() {
@@ -158,7 +159,7 @@ void vc_LoadFont() {
 void vc_PlayFLI() {
     Log("vc_PlayFLI disabled.");
 
-    ResolveString();  // FLI filename
+    ResolveString(); // FLI filename
 
     /*
     string_k fli_filename=ResolveString();
@@ -206,9 +207,9 @@ void vc_PrintString() {
 
 void vc_LoadRaw() {
     string_k raw_filename;
-    VFILE *vf;
+    VFILE* vf;
     int n;
-    char *ptr;
+    char* ptr;
 
     raw_filename = ResolveString();
 
@@ -217,7 +218,7 @@ void vc_LoadRaw() {
         Sys_Error("vc_LoadRaw: could not open file %s", raw_filename.c_str());
     }
     n = filesize(vf);
-    ptr = (char *)valloc(n, "LoadRaw:t", OID_VC);
+    ptr = (char*)valloc(n, "LoadRaw:t", OID_VC);
     if (!ptr) {
         Sys_Error("vc_LoadRaw: memory exhausted on ptr");
     }
@@ -237,9 +238,11 @@ void vc_SetTile() {
     value = ResolveOperand();
 
     // ensure all arguments are valid
-    if (x < 0 || y < 0) return;
+    if (x < 0 || y < 0)
+        return;
     if (lay == 6 || lay == 7) {
-        if (x >= layer[0].sizex || y >= layer[0].sizey) return;
+        if (x >= layer[0].sizex || y >= layer[0].sizey)
+            return;
     } else {
         if ((lay >= 0 && lay < 6) &&
             (x >= layer[lay].sizex || y >= layer[lay].sizey)) {
@@ -284,10 +287,10 @@ void vc_ScaleSprite() {
 
     if (!lucentmode)
         gfx.ScaleSprite(x, y, source_width, source_length, dest_width,
-            dest_length, (byte *)ptr);
+            dest_length, (byte*)ptr);
     else
         gfx.ScaleSpriteLucent(x, y, source_width, source_length, dest_width,
-            dest_length, (byte *)ptr, lucentmode);
+            dest_length, (byte*)ptr, lucentmode);
 }
 
 void vc_EntityMove() {
@@ -420,7 +423,7 @@ void vc_strcmp() {
 void vc_FontWidth() {
     int n;
 
-    n = ResolveOperand();  // slot
+    n = ResolveOperand(); // slot
 
     vcreturn = Font_GetWidth(n);
 }
@@ -477,9 +480,11 @@ void vc_GetTile() {
     vcreturn = 0;
 
     // ensure all arguments are valid
-    if (x < 0 || y < 0) return;
+    if (x < 0 || y < 0)
+        return;
     if (lay == 6 || lay == 7) {
-        if (x >= layer[0].sizex || y >= layer[0].sizey) return;
+        if (x >= layer[0].sizex || y >= layer[0].sizey)
+            return;
     } else {
         if ((lay >= 0 && lay < 6) &&
             (x >= layer[lay].sizex || y >= layer[lay].sizey)) {
@@ -515,7 +520,8 @@ void vc_SetResolution() {
     yres = ResolveOperand();
 
     vcreturn = gfx.SetMode(xres, yres, gfx.bpp * 8, gfx.IsFullScreen());
-    if (!vcreturn) Sys_Error("vc_SetResolution failed");
+    if (!vcreturn)
+        Sys_Error("vc_SetResolution failed");
     gfx.Clear();
     input.ClipMouse(0, 0, xres, yres);
 }
@@ -557,17 +563,18 @@ void vc_SetClipRect() {
     else if (clip.bottom >= gfx.scry)
         clip.bottom = gfx.scry - 1, bogus++;
 
-    if (bogus) Log(va("vc_SetClipRect: %d bogus args", bogus));
+    if (bogus)
+        Log(va("vc_SetClipRect: %d bogus args", bogus));
     gfx.SetClipRect(clip);
 }
 
 void vc_SetRenderDest() {
-    byte *scr;
+    byte* scr;
     int x, y;
 
     x = ResolveOperand();
     y = ResolveOperand();
-    scr = (byte *)ResolveOperand();
+    scr = (byte*)ResolveOperand();
     gfx.SetRenderDest(x, y, scr);
 }
 
@@ -621,7 +628,8 @@ void vc_PartyMove() {
            the player is
            forced to reset their computer. (ctrl-alt-del doesn't even work!) */
         input.Update();
-        if (input.key[DIK_LMENU] && input.key[DIK_X]) Sys_Error("");
+        if (input.key[DIK_LMENU] && input.key[DIK_X])
+            Sys_Error("");
     }
 
     tracker = (byte)vcpop();
@@ -642,10 +650,10 @@ void vc_WrapBlit() {
     ptr = ResolveOperand();
 
     if (!lucentmode)
-        gfx.WrapBlit(offsetx, offsety, width, length, (byte *)ptr);
+        gfx.WrapBlit(offsetx, offsety, width, length, (byte*)ptr);
     else
         gfx.WrapBlitLucent(
-            offsetx, offsety, width, length, (byte *)ptr, lucentmode);
+            offsetx, offsety, width, length, (byte*)ptr, lucentmode);
 }
 
 void vc_TWrapBlit() {
@@ -659,10 +667,10 @@ void vc_TWrapBlit() {
     ptr = ResolveOperand();
 
     if (!lucentmode)
-        gfx.TWrapBlit(offsetx, offsety, width, length, (byte *)ptr);
+        gfx.TWrapBlit(offsetx, offsety, width, length, (byte*)ptr);
     else
         gfx.TWrapBlitLucent(
-            offsetx, offsety, width, length, (byte *)ptr, lucentmode);
+            offsetx, offsety, width, length, (byte*)ptr, lucentmode);
 }
 
 void vc_SetMousePos() {
@@ -708,8 +716,10 @@ void vc_HookKey() {
     int key, script;
 
     key = ResolveOperand();
-    if (key < 0) key = 0;
-    if (key > 127) key = 127;
+    if (key < 0)
+        key = 0;
+    if (key > 127)
+        key = 127;
     //	key = scantokey[key];
 
     script = 0;
@@ -740,9 +750,9 @@ void vc_PaletteMorph() {
     int r, g, b;
     int percent, intensity;
 
-    r = ResolveOperand();  // red
-    g = ResolveOperand();  // green
-    b = ResolveOperand();  // blue
+    r = ResolveOperand(); // red
+    g = ResolveOperand(); // green
+    b = ResolveOperand(); // blue
 
     percent = 100 - ResolveOperand();
     intensity = ResolveOperand();
@@ -762,20 +772,20 @@ string_k EnforceNoDirectories(string_k s) {
         Sys_Error(
             va("EnforceNoDirectories: Invalid file name (%s)", s.c_str()));
 
-    if (s[1] == ':')  // second char a colon?  (eg C:autoexec.bat)
+    if (s[1] == ':') // second char a colon?  (eg C:autoexec.bat)
         Sys_Error(
             va("EnforceNoDirectories: Invalid file name (%s)", s.c_str()));
     n = 0;
     while (n < s.length() - 1) {
         if (s[n] == '.' &&
             s[n + 1] ==
-                '.')  // two (or more) consective periods?  (eg ..\autoexec.bat)
+                '.') // two (or more) consective periods?  (eg ..\autoexec.bat)
             Sys_Error(
                 va("EnforceNoDirectories: Invalid file name (%s)", s.c_str()));
         n++;
     }
 
-    return s;  // We're clean! - tSB
+    return s; // We're clean! - tSB
 }
 
 void vc_OpenFile() {
@@ -841,10 +851,11 @@ void vc_QuickRead() {
 
     // which line are we reading from the file?
     seekline = ResolveOperand();
-    if (seekline < 1) seekline = 1;
+    if (seekline < 1)
+        seekline = 1;
 
     // open the file
-    VFILE *f = vopen(filename.c_str());
+    VFILE* f = vopen(filename.c_str());
     if (!f) {
         Sys_Error("vc_QuickRead: could not open %s", filename.c_str());
     }
@@ -855,9 +866,10 @@ void vc_QuickRead() {
         vgets(temp, 255, f);
     }
     // suppress trailing CR/LF
-    char *p = temp;
+    char* p = temp;
     while (*p) {
-        if ('\n' == *p || '\r' == *p) *p = '\0';
+        if ('\n' == *p || '\r' == *p)
+            *p = '\0';
         p++;
     }
 
@@ -872,7 +884,7 @@ void vc_QuickRead() {
 void vc_AddFollower() {
     Log("vc_AddFollower disabled.");
 
-    ResolveOperand();  // entity
+    ResolveOperand(); // entity
 
     /*
     int n;
@@ -891,13 +903,13 @@ void vc_AddFollower() {
 void vc_FlatPoly() {
     int a, b, c, d, e, f, g;
 
-    a = ResolveOperand();  // a
-    b = ResolveOperand();  // b
-    c = ResolveOperand();  // c
-    d = ResolveOperand();  // d
-    e = ResolveOperand();  // e
-    f = ResolveOperand();  // f
-    g = ResolveOperand();  // g
+    a = ResolveOperand(); // a
+    b = ResolveOperand(); // b
+    c = ResolveOperand(); // c
+    d = ResolveOperand(); // d
+    e = ResolveOperand(); // e
+    f = ResolveOperand(); // f
+    g = ResolveOperand(); // g
 
     gfx.FlatPoly(a, b, c, d, e, f, g);
 }
@@ -920,7 +932,7 @@ void vc_TMapPoly() {
     m = ResolveOperand();
     n = ResolveOperand();
     o = ResolveOperand();
-    gfx.TMapPoly(a, b, c, d, e, f, g, h, i, j, k, l, m, n, (byte *)o);
+    gfx.TMapPoly(a, b, c, d, e, f, g, h, i, j, k, l, m, n, (byte*)o);
 }
 
 void vc_CacheSound() {
@@ -955,11 +967,11 @@ void vc_RotScale() {
 
     if (!lucentmode)
         gfx.RotScale(x, y, width, length, (float)(angle * 3.14159 / 180.0),
-            (float)(scale / 1000.0), (byte *)ptr);
+            (float)(scale / 1000.0), (byte*)ptr);
     else
         gfx.RotScaleLucent(x, y, width, length,
             (float)(angle * 3.14159 / 180.0), (float)(scale / 1000.0),
-            (byte *)ptr, lucentmode);
+            (byte*)ptr, lucentmode);
 }
 
 void vc_MapLine()
@@ -980,8 +992,10 @@ void vc_MapLine()
     y_offset = ResolveOperand();
     lay = ResolveOperand();
 
-    if (lay < 0 || lay >= numlayers) return;  // validate arguments
-    if (!layertoggle[lay]) return;            // is this layer visible?
+    if (lay < 0 || lay >= numlayers)
+        return; // validate arguments
+    if (!layertoggle[lay])
+        return; // is this layer visible?
 
     // This is the location of the first tile we draw, it'll be at the left hand
     // edge of the screen
@@ -991,24 +1005,25 @@ void vc_MapLine()
     y_offset &= 15;
 
     if (x_map < 0)
-        x_map = 0;  // make my life easier; don't allow scrolling past map edges
-    if (y_map < 0) y_map = 0;
+        x_map = 0; // make my life easier; don't allow scrolling past map edges
+    if (y_map < 0)
+        y_map = 0;
 
-    x_sub = -(x_map &
-              15);  // get subtile position while we still have pixel precision
+    x_sub = -(
+        x_map & 15); // get subtile position while we still have pixel precision
     y_sub = (y_map & 15);
 
-    x_map >>= 4;  // determine upper left tile coords of camera
+    x_map >>= 4; // determine upper left tile coords of camera
     y_map >>= 4;
 
-    word *source = layers[lay] + y_map * layer[lay].sizex + x_map;  // ew
+    word* source = layers[lay] + y_map * layer[lay].sizex + x_map; // ew
     // TODO: GetTile function (inline!)
     x = x_sub;
 
     do {
         if (*source)
             gfx.CopySprite(x, y, 16, 1,
-                (byte *)(vsp) +
+                (byte*)(vsp) +
                     (16 * 16 * tileidx[*source] + (16 * y_sub)) * gfx.bpp);
 
         source += 1;
@@ -1050,8 +1065,10 @@ void vc_TMapLine()
     y_offset = ResolveOperand();
     lay = ResolveOperand();
 
-    if (lay < 0 || lay >= numlayers) return;  // validate arguments
-    if (!layertoggle[lay]) return;            // is this layer visible?
+    if (lay < 0 || lay >= numlayers)
+        return; // validate arguments
+    if (!layertoggle[lay])
+        return; // is this layer visible?
 
     // This is the location of the first tile we draw, it'll be at the left hand
     // edge of the screen
@@ -1061,24 +1078,25 @@ void vc_TMapLine()
     y_offset &= 15;
 
     if (x_map < 0)
-        x_map = 0;  // make my life easier; don't allow scrolling past map edges
-    if (y_map < 0) y_map = 0;
+        x_map = 0; // make my life easier; don't allow scrolling past map edges
+    if (y_map < 0)
+        y_map = 0;
 
-    x_sub = -(x_map &
-              15);  // get subtile position while we still have pixel precision
+    x_sub = -(
+        x_map & 15); // get subtile position while we still have pixel precision
     y_sub = (y_map & 15);
 
-    x_map >>= 4;  // determine upper left tile coords of camera
+    x_map >>= 4; // determine upper left tile coords of camera
     y_map >>= 4;
 
-    word *source = layers[lay] + y_map * layer[lay].sizex + x_map;  // ew
+    word* source = layers[lay] + y_map * layer[lay].sizex + x_map; // ew
     // TODO: GetTile function (inline!)
     x = x_sub;
 
     do {
         if (*source)
             gfx.TCopySprite(x, y, 16, 1,
-                (byte *)(vsp) +
+                (byte*)(vsp) +
                     (16 * 16 * tileidx[*source] + (16 * y_sub)) * gfx.bpp);
 
         source += 1;
@@ -1125,10 +1143,10 @@ void vc_TScaleSprite() {
 
     if (lucentmode)
         gfx.TScaleSpriteLucent(x, y, source_width, source_length, dest_width,
-            dest_length, (byte *)ptr, lucentmode);
+            dest_length, (byte*)ptr, lucentmode);
     else
         gfx.TScaleSprite(x, y, source_width, source_length, dest_width,
-            dest_length, (byte *)ptr);
+            dest_length, (byte*)ptr);
 }
 
 void vc_GrabRegion() {
@@ -1160,7 +1178,8 @@ void vc_GrabRegion() {
     else if (ye >= gfx.scry)
         ye = gfx.scry - 1, bogus++;
 
-    if (bogus) Log(va("vc_GrabRegion: %d bogus args", bogus));
+    if (bogus)
+        Log(va("vc_GrabRegion: %d bogus args", bogus));
 
     // swap?
     if (xe < x) {
@@ -1178,26 +1197,27 @@ void vc_GrabRegion() {
     ye = ye - y + 1;
 
     if (gfx.bpp > 1) {
-        unsigned short *source;
-        unsigned short *ptr;
+        unsigned short* source;
+        unsigned short* ptr;
         int n;
 
-        source = ((unsigned short *)gfx.screen) + (y * gfx.scrx) + x;
-        ptr = (unsigned short *)ResolveOperand();
+        source = ((unsigned short*)gfx.screen) + (y * gfx.scrx) + x;
+        ptr = (unsigned short*)ResolveOperand();
 
         while (ye) {
-            for (n = 0; n < xe; n += 1) ptr[n] = source[n];
+            for (n = 0; n < xe; n += 1)
+                ptr[n] = source[n];
 
             ptr += xe;
             source += gfx.scrx;
             ye -= 1;
         }
     } else {
-        unsigned char *source;
-        unsigned char *ptr;
+        unsigned char* source;
+        unsigned char* ptr;
 
         source = gfx.screen + (y * gfx.scrx) + x;
-        ptr = (unsigned char *)ResolveOperand();
+        ptr = (unsigned char*)ResolveOperand();
 
         while (ye) {
             V_memcpy(ptr, source, xe);
@@ -1219,10 +1239,9 @@ void vc_Log() {
 
 void vc_fseekline() {
     int line;
-    VFILE *vf;
+    VFILE* vf;
 
-    line =
-        ResolveOperand() - 1;  // POO!  The -1 makes it work like it did in v2
+    line = ResolveOperand() - 1; // POO!  The -1 makes it work like it did in v2
     vf = GetReadFilePtr(ResolveOperand());
 
     vseek(vf, 0, SEEK_SET);
@@ -1236,7 +1255,7 @@ void vc_fseekline() {
 
 void vc_fseekpos() {
     int pos;
-    VFILE *vf;
+    VFILE* vf;
 
     pos = ResolveOperand();
     vf = GetReadFilePtr(ResolveOperand());
@@ -1245,11 +1264,11 @@ void vc_fseekpos() {
 }
 
 void vc_fread() {
-    char *buffer;
+    char* buffer;
     int len;
-    VFILE *vf;
+    VFILE* vf;
 
-    buffer = (char *)ResolveOperand();
+    buffer = (char*)ResolveOperand();
     len = ResolveOperand();
     vf = GetReadFilePtr(ResolveOperand());
 
@@ -1257,7 +1276,7 @@ void vc_fread() {
 }
 
 void vc_fgetbyte() {
-    VFILE *vf = 0;
+    VFILE* vf = 0;
     byte b = 0;
 
     // vf	=(VFILE *)ResolveOperand();
@@ -1268,7 +1287,7 @@ void vc_fgetbyte() {
 }
 
 void vc_fgetword() {
-    VFILE *vf = 0;
+    VFILE* vf = 0;
     word w = 0;
 
     // vf	=(VFILE *)ResolveOperand();
@@ -1279,7 +1298,7 @@ void vc_fgetword() {
 }
 
 void vc_fgetquad() {
-    VFILE *vf = 0;
+    VFILE* vf = 0;
     quad q = 0;
 
     // vf	=(VFILE *)ResolveOperand();
@@ -1291,9 +1310,9 @@ void vc_fgetquad() {
 
 void vc_fgetline() {
     char temp[256 + 1];
-    char *p;
+    char* p;
     int code, offset;
-    VFILE *vf;
+    VFILE* vf;
 
     // which global vc string do we read into?
     code = GrabC();
@@ -1304,7 +1323,7 @@ void vc_fgetline() {
 
     // file pointer; blegh
     // vf	=(VFILE *)ResolveOperand();
-    vf = GetReadFilePtr(ResolveOperand());  // Better? ;)  --tSB
+    vf = GetReadFilePtr(ResolveOperand()); // Better? ;)  --tSB
 
     // read line into temp buffer
     vgets(temp, 256, vf);
@@ -1313,7 +1332,8 @@ void vc_fgetline() {
     // suppress trailing CR/LF
     p = temp;
     while (*p) {
-        if ('\n' == *p || '\r' == *p) *p = '\0';
+        if ('\n' == *p || '\r' == *p)
+            *p = '\0';
         p++;
     }
 
@@ -1326,7 +1346,7 @@ void vc_fgetline() {
 void vc_fgettoken() {
     char temp[256];
     int code, offset;
-    VFILE *vf;
+    VFILE* vf;
 
     // which global vc string do we read into?
     code = GrabC();
@@ -1349,7 +1369,7 @@ void vc_fgettoken() {
 }
 
 void vc_fwritestring() {
-    FILE *f;
+    FILE* f;
     string_k temp;
 
     temp = ResolveString();
@@ -1360,11 +1380,11 @@ void vc_fwritestring() {
 }
 
 void vc_fwrite() {
-    char *buffer;
+    char* buffer;
     int length;
-    FILE *f;
+    FILE* f;
 
-    buffer = (char *)ResolveOperand();
+    buffer = (char*)ResolveOperand();
     length = ResolveOperand();
     // f		=(FILE *)ResolveOperand();
     f = GetWriteFilePtr(ResolveOperand());
@@ -1421,18 +1441,18 @@ void vc_memcpy() {
     char *source, *dest;
     int length;
 
-    dest = (char *)ResolveOperand();
-    source = (char *)ResolveOperand();
+    dest = (char*)ResolveOperand();
+    source = (char*)ResolveOperand();
     length = ResolveOperand();
 
     memcpy(dest, source, length);
 }
 
 void vc_memset() {
-    char *dest;
+    char* dest;
     int color, length;
 
-    dest = (char *)ResolveOperand();
+    dest = (char*)ResolveOperand();
     color = ResolveOperand();
     length = ResolveOperand();
 
@@ -1462,19 +1482,19 @@ void vc_Silhouette() {
     dest = ResolveOperand();
     colour = ResolveOperand();
 
-    gfx.Silhouette(width, height, (byte *)src, (byte *)dest, colour);
+    gfx.Silhouette(width, height, (byte*)src, (byte*)dest, colour);
 }
 
 void vc_Mosaic() {
     Log("vc_Mosaic disabled.");
 
-    ResolveOperand();  // a
-    ResolveOperand();  // b
-    ResolveOperand();  // c
-    ResolveOperand();  // d
-    ResolveOperand();  // e
-    ResolveOperand();  // f
-    ResolveOperand();  // g
+    ResolveOperand(); // a
+    ResolveOperand(); // b
+    ResolveOperand(); // c
+    ResolveOperand(); // d
+    ResolveOperand(); // e
+    ResolveOperand(); // f
+    ResolveOperand(); // g
 
     /*
   int a,b,c,d,e,f,g;
@@ -1491,7 +1511,7 @@ void vc_Mosaic() {
 }
 
 void vc_WriteVars() {
-    FILE *f;
+    FILE* f;
 
     // f	=(FILE *)ResolveOperand();
     f = GetWriteFilePtr(ResolveOperand());
@@ -1508,7 +1528,7 @@ void vc_WriteVars() {
 }
 
 void vc_ReadVars() {
-    VFILE *f;
+    VFILE* f;
 
     // f	=(VFILE *)ResolveOperand();
     f = GetReadFilePtr(ResolveOperand());
@@ -1519,8 +1539,9 @@ void vc_ReadVars() {
         int z;
         vread(&z, 4, f);
 
-        char *temp = new char[z + 1];
-        if (!temp) Sys_Error("vc_Readars: memory exhausted on %d bytes.", z);
+        char* temp = new char[z + 1];
+        if (!temp)
+            Sys_Error("vc_Readars: memory exhausted on %d bytes.", z);
         vread(temp, z, f);
         temp[z] = '\0';
         vc_strings[n] = temp;
@@ -1536,7 +1557,7 @@ void vc_NumForScript() { vcreturn = GrabD(); }
 
 void vc_Filesize() {
     string_k filename;
-    VFILE *vf;
+    VFILE* vf;
 
     filename = ResolveString();
 
@@ -1546,7 +1567,7 @@ void vc_Filesize() {
 }
 
 void vc_FTell() {
-    VFILE *vf;
+    VFILE* vf;
 
     // vf	=(VFILE *)ResolveOperand();
     vf = GetReadFilePtr(ResolveOperand());
@@ -1623,7 +1644,7 @@ void vc_Mask() {
     length = ResolveOperand();
     dest = ResolveOperand();
 
-    gfx.Mask((byte *)source, (byte *)dest, width, length, (byte *)mask);
+    gfx.Mask((byte*)source, (byte*)dest, width, length, (byte*)mask);
     /*LFB_BlitMask((unsigned char *) source, (unsigned char *) mask, width,
        length,
             (unsigned char *) dest);  */
@@ -1638,14 +1659,14 @@ void vc_ChangeAll() {
     source_color = ResolveOperand();
     dest_color = ResolveOperand();
 
-    gfx.ChangeAll(width, length, (byte *)source, source_color, dest_color);
+    gfx.ChangeAll(width, length, (byte*)source, source_color, dest_color);
     // eAll((unsigned char *) source, width, length, source_color, dest_color);
 }
 
 //- tSB
 void vc_fwritebyte() {
     char b;
-    FILE *f;
+    FILE* f;
 
     b = (char)ResolveOperand();
     // f=(FILE*)ResolveOperand();
@@ -1655,7 +1676,7 @@ void vc_fwritebyte() {
 
 void vc_fwriteword() {
     word b;
-    FILE *f;
+    FILE* f;
 
     b = (word)ResolveOperand();
     // f=(FILE*)ResolveOperand();
@@ -1665,7 +1686,7 @@ void vc_fwriteword() {
 
 void vc_fwritequad() {
     int b;
-    FILE *f;
+    FILE* f;
 
     b = ResolveOperand();
     // f=(FILE*)ResolveOperand();

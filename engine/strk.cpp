@@ -12,13 +12,13 @@
 #include <iostream>
 #include <string.h>
 
-#include "verge.h"  // debugging -- for Log
+#include "verge.h" // debugging -- for Log
 
 #include "strk.h"
 
 using std::cout;
 using std::ostream;
-using std::endl; 
+using std::endl;
 
 string_k::string_k() {
     //	cout << "string_k::string_k()" << endl;
@@ -26,7 +26,7 @@ string_k::string_k() {
     zap();
 }
 
-string_k::string_k(const char *source) {
+string_k::string_k(const char* source) {
     //	cout << "string_k::string_k(const char*)" << endl;
 
     // have to load something
@@ -35,7 +35,8 @@ string_k::string_k(const char *source) {
     }
     // clip source length to maximum allowed length
     int SL = strlen(source);
-    if (SL > STRK_LENGTH) SL = STRK_LENGTH;
+    if (SL > STRK_LENGTH)
+        SL = STRK_LENGTH;
     // zap existing contents
     zap();
     // copy in new string
@@ -50,20 +51,20 @@ string_k::string_k(char source) {
     F_data[1] = 0;
 }
 
-string_k operator+(const string_k &a, const string_k &b) {
+string_k operator+(const string_k& a, const string_k& b) {
     //	cout << "operator+(a, b)" << endl;
 
     string_k result(a);
     return result += b;
 }
 
-string_k &operator+=(string_k &lhs, const string_k &rhs) {
+string_k& operator+=(string_k& lhs, const string_k& rhs) {
     //	cout << "operator+=(lhs, rhs)" << endl;
 
     return lhs.append(rhs);
 }
 
-string_k &operator+=(string_k &lhs, char rhs) {
+string_k& operator+=(string_k& lhs, char rhs) {
     //	cout << "operator+=(lhs, char)" << endl;
 
     int L = lhs.length();
@@ -110,7 +111,7 @@ string_k string_k::right(int count) const {
     return mid(length() - count, count);
 }
 
-const char *string_k::c_str() const {  // obsolete (see below)
+const char* string_k::c_str() const { // obsolete (see below)
     return F_data;
 }
 
@@ -118,11 +119,11 @@ int string_k::length() const { return strlen(F_data); }
 
 int string_k::toint() const { return atoi(F_data); }
 
-string_k &string_k::append(const string_k &source) {
+string_k& string_k::append(const string_k& source) {
     return insert(source, length());
 }
 
-string_k &string_k::insert(const string_k &source, int X) {
+string_k& string_k::insert(const string_k& source, int X) {
     /*
 
     definitions:
@@ -164,7 +165,8 @@ string_k &string_k::insert(const string_k &source, int X) {
         // otherwise, push over and patch in
     } else {
         int rhs = length() - X;
-        if (R + rhs > STRK_LENGTH) rhs = STRK_LENGTH - R;
+        if (R + rhs > STRK_LENGTH)
+            rhs = STRK_LENGTH - R;
         // push
         memmove(F_data + R, F_data + X, rhs);
         // patch
@@ -195,30 +197,30 @@ string_k string_k::lower() {
 
 void string_k::zap() { F_data[0] = 0; }
 
-int compare(const string_k &a, const string_k &b) {
+int compare(const string_k& a, const string_k& b) {
     return strcmp(a.F_data, b.F_data);
 }
 
-int operator==(const string_k &a, const string_k &b) {
+int operator==(const string_k& a, const string_k& b) {
     return 0 == compare(a, b);
 }
 
-int operator!=(const string_k &a, const string_k &b) {
+int operator!=(const string_k& a, const string_k& b) {
     return 0 != compare(a, b);
 }
 
-int operator<(const string_k &a, const string_k &b) {
+int operator<(const string_k& a, const string_k& b) {
     return 0 > compare(a, b);
 }
 
-int operator>=(const string_k &a, const string_k &b) {
+int operator>=(const string_k& a, const string_k& b) {
     return 0 <= compare(a, b);
 }
 
-int operator>(const string_k &a, const string_k &b) {
+int operator>(const string_k& a, const string_k& b) {
     return 0 < compare(a, b);
 }
 
-int operator<=(const string_k &a, const string_k &b) {
+int operator<=(const string_k& a, const string_k& b) {
     return 0 >= compare(a, b);
 }

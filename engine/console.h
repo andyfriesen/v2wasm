@@ -45,4 +45,4 @@ extern void Console_SendCommand(string_k cmd);
 
 extern void Console_Activate();
 
-#endif  // CONSOLE_INC
+#endif // CONSOLE_INC

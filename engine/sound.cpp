@@ -35,18 +35,18 @@ typedef struct {
 // ============================ Interface type crap ==========================
 
 // most of this is unimplemented
-int sfx_volume = 63;    // misnomer -- music volume
-int sfx_numchans = 50;  // for EVERYTHING
+int sfx_volume = 63;   // misnomer -- music volume
+int sfx_numchans = 50; // for EVERYTHING
 int sfx_mixrate = 44100;
 int sfx_bufflen = 100;
 int sfx_safemode = 0;
 
 // ================================= Data ====================================
 
-MIDASmodule curmod;  // the currently loaded music file
+MIDASmodule curmod; // the currently loaded music file
 MIDASmodulePlayHandle
-    playhandle;       // I dunno, I just use the lib, I didn't write it. ;)
-int musicloaded = 0;  // gah.
+    playhandle;      // I dunno, I just use the lib, I didn't write it. ;)
+int musicloaded = 0; // gah.
 int musicvolume;
 
 int numsfx = 0;
@@ -54,7 +54,7 @@ sample_t sfx[MAXSOUNDS];
 
 // ================================= Code ====================================
 
-void ShutdownMusicSystem();  // BLEH! :P~
+void ShutdownMusicSystem(); // BLEH! :P~
 void StopMusic();
 void FreeAllSounds();
 
@@ -88,7 +88,7 @@ void InitMusicSystem() {
       }*/
 
     test(MIDASstartBackgroundPlay(0));
-    test(MIDASallocAutoEffectChannels(10));  // TODO: make this variable
+    test(MIDASallocAutoEffectChannels(10)); // TODO: make this variable
 
     /* if (!MIDASallocAutoEffectChannels(10))
       {
@@ -111,7 +111,7 @@ void UpdateSound(void) {
     //	Mikmod_Update(md);
 }
 
-void PlayMusic(const char *fname) {
+void PlayMusic(const char* fname) {
     char temp[255];
 
     strcpy(temp, fname);
@@ -130,14 +130,15 @@ void PlayMusic(const char *fname) {
 }
 
 int GetMusicVolume() {
-    return musicvolume << 1;  // *2
+    return musicvolume << 1; // *2
 }
 
 void SetMusicVolume(int volume) {
-    volume >>= 1;  // half
+    volume >>= 1; // half
     if (volume >= 0 && volume <= 64) {
         musicvolume = volume;
-        if (musicloaded) MIDASsetMusicVolume(playhandle, musicvolume);
+        if (musicloaded)
+            MIDASsetMusicVolume(playhandle, musicvolume);
     }
 }
 
@@ -149,10 +150,10 @@ void StopMusic() {
     musicloaded = 0;
 }
 
-int SampleRate(const char *fname)
+int SampleRate(const char* fname)
 // poo.  MIDAS makes you figure this one out on your own.  Oh well! --tSB
 {
-    VFILE *f;
+    VFILE* f;
 
     f = vopen(fname);
     if (!f)
@@ -169,8 +170,9 @@ int SampleRate(const char *fname)
     return i;
 }
 
-int CacheSound(const char *fname) {
-    if (numsfx == MAXSOUNDS) Sys_Error("Too many sound effects");
+int CacheSound(const char* fname) {
+    if (numsfx == MAXSOUNDS)
+        Sys_Error("Too many sound effects");
 
     char temp[255];
 
@@ -185,21 +187,23 @@ int CacheSound(const char *fname) {
 }
 
 void FreeAllSounds() {
-    for (int i = 0; i < numsfx; i++) MIDASfreeSample(sfx[i].sample);
+    for (int i = 0; i < numsfx; i++)
+        MIDASfreeSample(sfx[i].sample);
     numsfx = 0;
 }
 
 void PlaySFX(int index, int vol, int pan) {
     MIDASsamplePlayHandle i =
         MIDASplaySample(sfx[index].sample, MIDAS_CHANNEL_AUTO, 10,
-            sfx[index].rate, vol, MIDAS_PAN_MIDDLE);  //(pan+64)<<1);
+            sfx[index].rate, vol, MIDAS_PAN_MIDDLE); //(pan+64)<<1);
     test(i);
 }
 
 static int soundon = 1;
 
 void SoundPause() {
-    if (sfx_safemode) return;  // not needed
+    if (sfx_safemode)
+        return; // not needed
     if (soundon) {
         MIDASsuspend();
         soundon = 0;
@@ -207,7 +211,8 @@ void SoundPause() {
 }
 
 void SoundResume() {
-    if (sfx_safemode) return;  // extraneous
+    if (sfx_safemode)
+        return; // extraneous
     if (!soundon) {
         MIDASresume();
         soundon = 1;

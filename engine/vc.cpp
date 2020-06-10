@@ -65,29 +65,29 @@ void HookTimer();
 
 int v2_touchy = 0;
 
-char *sysvc = 0;
-char *mapvc = 0;
-char *basevc = 0;  // VC pool ptrs
-char *code = 0;    // VC current instruction pointer (IP)
+char* sysvc = 0;
+char* mapvc = 0;
+char* basevc = 0; // VC pool ptrs
+char* code = 0;   // VC current instruction pointer (IP)
 
-int *globalint = 0;  // system.vc global int variables
-int maxint = 0;      // maximum allocated # of ints
+int* globalint = 0; // system.vc global int variables
+int maxint = 0;     // maximum allocated # of ints
 
-string_k *vc_strings = 0;  // vc string workspace
+string_k* vc_strings = 0; // vc string workspace
 int stralloc = 0;
 
-int vcreturn = 0;        // return value of last int function
-string_k vcretstr = "";  // return value of last string function
-int returning_type = 0;  // hack to discern int from string returns
+int vcreturn = 0;       // return value of last int function
+string_k vcretstr = ""; // return value of last string function
+int returning_type = 0; // hack to discern int from string returns
 
-char *movescriptbuf = 0;  // VC EntityMove buffer
-char vctrack = 0;         // VC call tracking to verge.log
+char* movescriptbuf = 0; // VC EntityMove buffer
+char vctrack = 0;        // VC call tracking to verge.log
 
-quad *vcstack = 0;  // VC stack (seperate from main stack)
-quad *vcsp = 0;     // VC stack pointer [esp]
+quad* vcstack = 0; // VC stack (seperate from main stack)
+quad* vcsp = 0;    // VC stack pointer [esp]
 
-int mapevents = 0;       // number of map events in this VC
-int *event_offsets = 0;  // map VC offset table
+int mapevents = 0;      // number of map events in this VC
+int* event_offsets = 0; // map VC offset table
 // char*	mapvctbl[1024]	={0};	// map VC offset table
 // event offset marker
 
@@ -99,13 +99,13 @@ char kill = 0;
 
 // FUNC/STR/VAR ARRAYS
 
-funcdecl *funcs = 0;
+funcdecl* funcs = 0;
 int numfuncs = 0;
 
-strdecl *str = 0;
+strdecl* str = 0;
 int numstr = 0;
 
-vardecl *vars = 0;
+vardecl* vars = 0;
 int numvars = 0;
 
 // LOCAL FUNC VARS
@@ -114,7 +114,7 @@ int numvars = 0;
 #define NEW_LOCALS
 // *****
 
-#ifdef NEW_LOCALS  // *****
+#ifdef NEW_LOCALS // *****
 
 //#define DEBUG_LOCALS
 
@@ -133,18 +133,19 @@ static int str_last_base = 0;
 
 // Handle-based file access stuff --tSB
 const int MAXVCFILES =
-    10;  // maximum number of files that can be open at once. (through VC)
+    10; // maximum number of files that can be open at once. (through VC)
 
 typedef struct {
-    VFILE *readp;  // vfile, for reading
-    FILE *writep;  // conventional file, for writing
-    int mode;      // 0 - closed, 1 - read, 2 - write
+    VFILE* readp; // vfile, for reading
+    FILE* writep; // conventional file, for writing
+    int mode;     // 0 - closed, 1 - read, 2 - write
 } VC_file;
 
 VC_file vcfiles[MAXVCFILES];
 
 static void PushBase(int ip, int sp) {
-    if (base_ptr < 0 || base_ptr >= 1024) Sys_Error("PushBase: DEI!");
+    if (base_ptr < 0 || base_ptr >= 1024)
+        Sys_Error("PushBase: DEI!");
 
     int_base[base_ptr] = ip;
     str_base[base_ptr] = sp;
@@ -153,7 +154,8 @@ static void PushBase(int ip, int sp) {
 }
 
 static void PopBase() {
-    if (base_ptr <= 0 || base_ptr > 1024) Sys_Error("PushBase: DEI!");
+    if (base_ptr <= 0 || base_ptr > 1024)
+        Sys_Error("PushBase: DEI!");
 
     base_ptr--;
 
@@ -162,7 +164,8 @@ static void PopBase() {
 }
 
 static void PushInt(int n) {
-    if (int_stack_ptr < 0 || int_stack_ptr >= 1024) Sys_Error("PushInt: DEI!");
+    if (int_stack_ptr < 0 || int_stack_ptr >= 1024)
+        Sys_Error("PushInt: DEI!");
 
     int_stack[int_stack_ptr] = n;
 
@@ -172,7 +175,8 @@ static void PushInt(int n) {
     int_stack_ptr++;
 }
 static int PopInt() {
-    if (int_stack_ptr <= 0 || int_stack_ptr > 1024) Sys_Error("PopInt: DEI!");
+    if (int_stack_ptr <= 0 || int_stack_ptr > 1024)
+        Sys_Error("PopInt: DEI!");
 
     --int_stack_ptr;
 #ifdef DEBUG_LOCALS
@@ -183,7 +187,8 @@ static int PopInt() {
 }
 
 static void PushStr(string_k s) {
-    if (str_stack_ptr < 0 || str_stack_ptr >= 1024) Sys_Error("PushStr: DEI!");
+    if (str_stack_ptr < 0 || str_stack_ptr >= 1024)
+        Sys_Error("PushStr: DEI!");
 
     str_stack[str_stack_ptr] = s;
 
@@ -194,7 +199,8 @@ static void PushStr(string_k s) {
     str_stack_ptr++;
 }
 static string_k PopStr() {
-    if (str_stack_ptr <= 0 || str_stack_ptr > 1024) Sys_Error("PopStr: DEI!");
+    if (str_stack_ptr <= 0 || str_stack_ptr > 1024)
+        Sys_Error("PopStr: DEI!");
 
     --str_stack_ptr;
 #ifdef DEBUG_LOCALS
@@ -205,7 +211,7 @@ static string_k PopStr() {
     return str_stack[str_stack_ptr];
 }
 
-#else  // OLD LOCALS
+#else // OLD LOCALS
 
 #define MAX_ARGS 20
 #define MAX_LOCAL_STRINGS 10
@@ -217,7 +223,7 @@ struct lvars {
 
 static lvars lvar;
 
-#endif  // !def NEW_LOCALS
+#endif // !def NEW_LOCALS
 
 // PROTOTYPES
 // /////////////////////////////////////////////////////////////////////////////////////
@@ -227,8 +233,8 @@ void ExecuteSection();
 void ExecuteEvent(int i);
 void ExecuteUserFunc(int i);
 
-int ProcessOperand();    // Mutually dependant functions suck.
-int ProcessIfOperand();  // Hell yeah they do, bitch.
+int ProcessOperand();   // Mutually dependant functions suck.
+int ProcessIfOperand(); // Hell yeah they do, bitch.
 void HandleExternFunc();
 void HandleStdLib();
 void ExecuteBlock();
@@ -237,13 +243,13 @@ void ExecuteBlock();
 // ///////////////////////////////////////////////////////////////////////////////////////////
 
 static int sys_codesize = 0;
-static char *absolute_sys = 0;
+static char* absolute_sys = 0;
 
 static char xvc_sig[8] = "VERGE2X";
 
 void LoadSystemIndex() {
     char buf[8];
-    VFILE *f;
+    VFILE* f;
     int n;
 
     buf[0] = '\0';
@@ -270,7 +276,7 @@ void LoadSystemIndex() {
     // read # variables
     vread(&numvars, 4, f);
     if (numvars) {
-        vars = (vardecl *)valloc(
+        vars = (vardecl*)valloc(
             numvars * sizeof(vardecl), "LoadSystemVC$vars", OID_VC);
         vread(vars, numvars * 48, f);
     }
@@ -278,16 +284,17 @@ void LoadSystemIndex() {
     // read # functions
     vread(&numfuncs, 4, f);
     if (numfuncs) {
-        funcs = (funcdecl *)valloc(
+        funcs = (funcdecl*)valloc(
             numfuncs * sizeof(funcdecl), "LoadSystemVC$funcs", OID_VC);
         vread(funcs, numfuncs * 76, f);
     }
 
     // read # strings
     vread(&numstr, 4, f);
-    if (numstr < 1) numstr = 1;
+    if (numstr < 1)
+        numstr = 1;
     str =
-        (strdecl *)valloc(numstr * sizeof(strdecl), "LoadSystemVC$str", OID_VC);
+        (strdecl*)valloc(numstr * sizeof(strdecl), "LoadSystemVC$str", OID_VC);
     vread(str, numstr * 48, f);
 
     // done w/ this file
@@ -296,7 +303,7 @@ void LoadSystemIndex() {
 
 void LoadSystemCode() {
     char buf[8];
-    VFILE *f;
+    VFILE* f;
     int code_offset;
 
     buf[0] = '\0';
@@ -341,7 +348,7 @@ void LoadSystemCode() {
     vseek(f, code_offset, SEEK_SET);
 
     // grab system script code size and allocate a buffer for it
-    sysvc = (char *)valloc(sys_codesize, "LoadSystemCode$sysvc", OID_VC);
+    sysvc = (char*)valloc(sys_codesize, "LoadSystemCode$sysvc", OID_VC);
     absolute_sys = sysvc;
 
     // how many funcs, global ints, and global strings?
@@ -351,12 +358,11 @@ void LoadSystemCode() {
 
     // allocate global integer and string arrays
     if (maxint) {
-        globalint = (int *)valloc(4 * maxint, "globalint", OID_VC);
+        globalint = (int*)valloc(4 * maxint, "globalint", OID_VC);
     }
     if (stralloc) {
-        vc_strings =
-            new string_k[stralloc];  //(string *)valloc(sizeof(string) *
-                                     // stralloc, "vc_strings", OID_VC);
+        vc_strings = new string_k[stralloc]; //(string *)valloc(sizeof(string) *
+                                             // stralloc, "vc_strings", OID_VC);
     }
 
     // read in system script code
@@ -369,9 +375,10 @@ void RunSystemAutoexec() {
     int n;
 
     for (n = 0; n < numfuncs; n++) {
-        char *x = funcs[n].fname;
+        char* x = funcs[n].fname;
         V_strlwr(x);
-        if (!V_strcmp(x, "autoexec")) break;
+        if (!V_strcmp(x, "autoexec"))
+            break;
     }
     if (n < numfuncs)
         ExecuteUserFunc(n);
@@ -386,10 +393,10 @@ void LoadSystemVC() {
     LoadSystemCode();
 
     // initialize VC stack
-    vcstack = (quad *)valloc(6000, "vcstack", OID_VC);
+    vcstack = (quad*)valloc(6000, "vcstack", OID_VC);
     vcsp = vcstack;
 
-    movescriptbuf = (char *)valloc(256 * 256, "movescriptbuf", OID_VC);
+    movescriptbuf = (char*)valloc(256 * 256, "movescriptbuf", OID_VC);
 
     Log(va("system vclib init: %d funcs, %d ints (%d bytes), %d strings",
         numfuncs, numvars, maxint * 4, numstr, stralloc));
@@ -400,12 +407,13 @@ void LoadSystemVC() {
 }
 
 static int map_codesize = 0;
-static char *absolute_map = 0;
-void LoadMapVC(VFILE *f) {
+static char* absolute_map = 0;
+void LoadMapVC(VFILE* f) {
     // int codesize=0;
 
     vread(&mapevents, 4, f);
-    if (event_offsets) delete[] event_offsets;
+    if (event_offsets)
+        delete[] event_offsets;
     event_offsets = new int[mapevents];
     if (!event_offsets) {
         Sys_Error("LoadMapVC: memory exhausted on event_offsets");
@@ -413,8 +421,9 @@ void LoadMapVC(VFILE *f) {
     vread(event_offsets, 4 * mapevents, f);
 
     vread(&map_codesize, 4, f);
-    if (map_codesize < 1) map_codesize = 1;
-    mapvc = (char *)valloc(map_codesize, "mapvc", OID_VC);
+    if (map_codesize < 1)
+        map_codesize = 1;
+    mapvc = (char*)valloc(map_codesize, "mapvc", OID_VC);
     absolute_map = mapvc;
     vread(mapvc, map_codesize, f);
 }
@@ -483,7 +492,7 @@ word GrabW(void) {
     */
 
     code += 2;
-    return *(word *)(code - 2);
+    return *(word*)(code - 2);
 }
 
 quad GrabD(void) {
@@ -517,18 +526,18 @@ quad GrabD(void) {
     */
 
     code += 4;
-    return *(quad *)(code - 4);
+    return *(quad*)(code - 4);
 }
 
 string_k GrabString() {
     string_k ret;
     int c;
-    char temp[32 + 1];  // soften the blow
+    char temp[32 + 1]; // soften the blow
 
     ret = "";
     c = 0;
     while (*code) {
-        temp[c++] = GrabC();  //*code++;
+        temp[c++] = GrabC(); //*code++;
         if (c >= 32) {
             c = temp[c] = '\0';
             ret += temp;
@@ -590,11 +599,11 @@ int ReadInt(char category, int loc, int ofs) {
         case 16:
             return tracker;
         case 17:
-            return input.mousex;  // Mouse_X();
+            return input.mousex; // Mouse_X();
         case 18:
-            return input.mousey;  // Mouse_Y();
+            return input.mousey; // Mouse_Y();
         case 19:
-            return input.mouseb;  // Mouse_ButtonFlags();
+            return input.mouseb; // Mouse_ButtonFlags();
         case 20:
             return vctrack;
         case 21:
@@ -602,22 +611,22 @@ int ReadInt(char category, int loc, int ofs) {
         case 22:
             return Image_Length();
         case 23:
-            return GetMusicVolume();  // sound.volume;
+            return GetMusicVolume(); // sound.volume;
         case 24:
             return (int)vsp;
         case 25:
             return lastent;
         case 26:
             return input
-                .last_pressed;  // key_lastpress; //key_last(); //last_pressed;
-                                // --tSB wow, this one line has changed a bit.
-                                // ^_^
+                .last_pressed; // key_lastpress; //key_last(); //last_pressed;
+                               // --tSB wow, this one line has changed a bit.
+                               // ^_^
         case 27:
             return layer[0].sizex;
         case 28:
             return layer[0].sizey;
         case 29:
-            return 1;  // vsync; -- vsynch is always on in DirectX --tSB
+            return 1; // vsync; -- vsynch is always on in DirectX --tSB
         case 30:
             return entities;
         case 31:
@@ -639,7 +648,7 @@ int ReadInt(char category, int loc, int ofs) {
                         ofs, (int)gfx.screen, gfx.scrx, gfx.scry);
                 return 0;
             }
-            return gfx.bpp > 1 ? ((unsigned short *)gfx.screen)[ofs]
+            return gfx.bpp > 1 ? ((unsigned short*)gfx.screen)[ofs]
                                : gfx.screen[ofs];
             return 0;
         case 1:
@@ -739,7 +748,7 @@ int ReadInt(char category, int loc, int ofs) {
                     Sys_Error("ReadInt: bad offset to key[]: %d", ofs);
                 return 0;
             }
-            return input.key[ofs];  // scantokey[ofs]];
+            return input.key[ofs]; // scantokey[ofs]];
         case 12:
             if (ofs < 0 || ofs >= numlayers) {
                 if (v2_touchy)
@@ -751,11 +760,11 @@ int ReadInt(char category, int loc, int ofs) {
             return layer[ofs].hline;
 
         case 13:
-            return (int)(*(byte *)ofs);
+            return (int)(*(byte*)ofs);
         case 14:
-            return (int)(*(word *)ofs);
+            return (int)(*(word*)ofs);
         case 15:
-            return (int)(*(quad *)ofs);
+            return (int)(*(quad*)ofs);
 
         case 16:
             if (ofs < 0 || ofs >= 3 * 256) {
@@ -766,11 +775,11 @@ int ReadInt(char category, int loc, int ofs) {
             return (int)gfx.pal[ofs];
 
         case 17:
-            return (int)(*(char *)ofs);
+            return (int)(*(char*)ofs);
         case 18:
-            return (int)(*(short *)ofs);
+            return (int)(*(short*)ofs);
         case 19:
-            return (int)(*(int *)ofs);
+            return (int)(*(int*)ofs);
 
         /*
         // Modified by Pyro
@@ -830,9 +839,8 @@ int ReadInt(char category, int loc, int ofs) {
         case 23:
             if (ofs < 0 || ofs >= entities) {
                 if (v2_touchy)
-                    Sys_Error(
-                        "ReadInt: bad offset to entity.visible[]: %d (%d "
-                        "total)",
+                    Sys_Error("ReadInt: bad offset to entity.visible[]: %d (%d "
+                              "total)",
                         ofs, entities);
                 return 0;
             }
@@ -847,17 +855,17 @@ int ReadInt(char category, int loc, int ofs) {
                 return 0;
             }
             return entity[ofs].on;
-        case 25:  // I hate this hacked pointer crap --tSB
-            return (int)chr[entity[ofs].chrindex].imagedata;  // chr_data
+        case 25: // I hate this hacked pointer crap --tSB
+            return (int)chr[entity[ofs].chrindex].imagedata; // chr_data
         case 26:
-            return chr[entity[ofs].chrindex].fxsize;  // entity.width
+            return chr[entity[ofs].chrindex].fxsize; // entity.width
         case 27:
-            return chr[entity[ofs].chrindex].fysize;  // entity.height
+            return chr[entity[ofs].chrindex].fysize; // entity.height
         case 28:
-            return entity[ofs].chrindex;  // entity.chrindex
+            return entity[ofs].chrindex; // entity.chrindex
 
         case 29:
-            return zones[ofs].script;  // Zara made me add it!
+            return zones[ofs].script; // Zara made me add it!
         case 30:
             return zones[ofs].percent;
         default:
@@ -873,7 +881,7 @@ int ReadInt(char category, int loc, int ofs) {
         Log(va("op_LVAR: int_stack_base=%d, loc=%d", int_stack_base, loc));
 #endif
         return int_stack[int_stack_base + loc];
-#else  // OLD LOCALS
+#else // OLD LOCALS
         return lvar.nargs[loc];
 #endif
 
@@ -889,14 +897,16 @@ void WriteInt(char category, int loc, int ofs, int value) {
     switch (category) {
     case op_UVAR:
         if (loc < 0 || loc >= maxint) {
-            if (v2_touchy) Sys_Error("WriteInt: bad offset to globalint (var)");
+            if (v2_touchy)
+                Sys_Error("WriteInt: bad offset to globalint (var)");
             break;
         }
         globalint[loc] = value;
         break;
     case op_UVARRAY:
         if (loc < 0 || loc >= maxint) {
-            if (v2_touchy) Sys_Error("WriteInt: bad offset to globalint (arr)");
+            if (v2_touchy)
+                Sys_Error("WriteInt: bad offset to globalint (arr)");
             break;
         }
         globalint[loc] = value;
@@ -944,24 +954,24 @@ void WriteInt(char category, int loc, int ofs, int value) {
             return;
         case 17:
             input.mousex = value;
-            return;  // Mouse_SetPosition(value, Mouse_Y()); return;
+            return; // Mouse_SetPosition(value, Mouse_Y()); return;
         case 18:
             input.mousey = value;
-            return;  // Mouse_SetPosition(Mouse_X(), value); return;
+            return; // Mouse_SetPosition(Mouse_X(), value); return;
         case 19:
             input.mouseb = value;
-            return;  // Mouse_ButtonSetFlags(value); return;
+            return; // Mouse_ButtonSetFlags(value); return;
         case 20:
             vctrack = (char)value;
             return;
         case 23:
             SetMusicVolume(value);
-            return;  // sound.volume=value; return;
+            return; // sound.volume=value; return;
         case 26:
             input.last_pressed = value;
-            return;  // key_lastpress=value; return;
+            return; // key_lastpress=value; return;
         case 29:
-            return;  // vsync=value; return;
+            return; // vsync=value; return;
         }
     case op_HVAR1:
         switch (loc) {
@@ -975,7 +985,7 @@ void WriteInt(char category, int loc, int ofs, int value) {
                 return;
             }
             if (gfx.bpp > 1)
-                ((word *)gfx.screen)[ofs] = (word)value;
+                ((word*)gfx.screen)[ofs] = (word)value;
             else
                 gfx.screen[ofs] = (byte)value;
             return;
@@ -1022,9 +1032,8 @@ void WriteInt(char category, int loc, int ofs, int value) {
         case 5:
             if (ofs < 0 || ofs >= entities) {
                 if (v2_touchy)
-                    Sys_Error(
-                        "WriteInt: bad offset to entity.facing[]: %d (%d "
-                        "total)",
+                    Sys_Error("WriteInt: bad offset to entity.facing[]: %d (%d "
+                              "total)",
                         ofs, entities);
                 return;
             }
@@ -1051,9 +1060,8 @@ void WriteInt(char category, int loc, int ofs, int value) {
         case 6:
             if (ofs < 0 || ofs >= entities) {
                 if (v2_touchy)
-                    Sys_Error(
-                        "WriteInt: bad offset to entity.moving[]: %d (%d "
-                        "total)",
+                    Sys_Error("WriteInt: bad offset to entity.moving[]: %d (%d "
+                              "total)",
                         ofs, entities);
                 return;
             }
@@ -1113,13 +1121,13 @@ void WriteInt(char category, int loc, int ofs, int value) {
             return;
 
         case 13:
-            (*(byte *)ofs) = (byte)value;
+            (*(byte*)ofs) = (byte)value;
             return;
         case 14:
-            (*(word *)ofs) = (word)value;
+            (*(word*)ofs) = (word)value;
             return;
         case 15:
-            (*(quad *)ofs) = (quad)value;
+            (*(quad*)ofs) = (quad)value;
             return;
 
         case 16:
@@ -1132,13 +1140,13 @@ void WriteInt(char category, int loc, int ofs, int value) {
             return;
 
         case 17:
-            (*(char *)ofs) = (byte)value;
+            (*(char*)ofs) = (byte)value;
             return;
         case 18:
-            (*(short *)ofs) = (word)value;
+            (*(short*)ofs) = (word)value;
             return;
         case 19:
-            (*(int *)ofs) = (quad)value;
+            (*(int*)ofs) = (quad)value;
             return;
 
         case 20:
@@ -1206,7 +1214,7 @@ void WriteInt(char category, int loc, int ofs, int value) {
                         "WriteInt: bad offset to zone.event: %d (%d total)",
                         ofs, numzones);
             }
-            zones[ofs].script = value;  // Zara made me add it!
+            zones[ofs].script = value; // Zara made me add it!
             return;
 
         case 30:
@@ -1224,7 +1232,7 @@ void WriteInt(char category, int loc, int ofs, int value) {
         }
 #ifdef NEW_LOCALS
         int_stack[int_stack_base + loc] = value;
-#else  // OLD LOCALS
+#else // OLD LOCALS
         lvar.nargs[loc] = value;
 #endif
         return;
@@ -1240,7 +1248,7 @@ int ResolveOperand() {
     int d = 0;
     byte c = 0;
 
-    cr = ProcessOperand();  // Get base number
+    cr = ProcessOperand(); // Get base number
     while (1) {
         c = GrabC();
         switch (c) {
@@ -1436,13 +1444,15 @@ string_k ResolveString() {
 }
 
 void vcpush(quad info) {
-    if (vcsp >= vcstack + 1500) Sys_Error("VC stack overflow.");
+    if (vcsp >= vcstack + 1500)
+        Sys_Error("VC stack overflow.");
 
     *vcsp++ = info;
 }
 
 quad vcpop() {
-    if (vcsp <= vcstack) Sys_Error("VC stack underflow.");
+    if (vcsp <= vcstack)
+        Sys_Error("VC stack underflow.");
 
     return *--vcsp;
 }
@@ -1459,15 +1469,16 @@ void ReadVCVar() {
 
     // Search the int list
     for (i = 0; i <= numvars; i++)
-        if (!strcmp(vars[i].vname, arg1.c_str())) break;
+        if (!strcmp(vars[i].vname, arg1.c_str()))
+            break;
 
     if (i < numvars) {
         j = vars[i].varstartofs;
 
-        if (vars[i].arraylen > 1)  // if it's an array
+        if (vars[i].arraylen > 1) // if it's an array
         {
-            ofs = V_atoi(Con_GetArg(2).c_str());  // get the next argument, and
-                                                  // use it as an offset
+            ofs = V_atoi(Con_GetArg(2).c_str()); // get the next argument, and
+                                                 // use it as an offset
             j = globalint[j + ofs];
             sprintf(strbuf, "%s[%d]=%d", vars[i].vname, ofs, j);
         } else {
@@ -1509,7 +1520,8 @@ void WriteVCVar() {
     string_k arg1 = Con_GetArg(1).lower();
 
     for (i = 0; i <= numvars; i++)
-        if (!strcmp(vars[i].vname, arg1.c_str())) break;
+        if (!strcmp(vars[i].vname, arg1.c_str()))
+            break;
 
     if (i < numvars) {
         j = vars[i].varstartofs;
@@ -1543,17 +1555,18 @@ void WriteVCVar() {
 
 // ===================== New file stuff --tSB ==========================
 
-int OpenVCFile(const char *fname)
+int OpenVCFile(const char* fname)
 // Opens a VC file for reading, and returns the index to vcfiles[], or 0 on fail
 // note that vcfiles[0] is a dummy, and isn't actually used anywhere
 {
-    int i;  // counter :P
+    int i; // counter :P
 
     for (i = 1; i < MAXVCFILES; i++) {
         if (vcfiles[i].mode == 0) {
             vcfiles[i].readp = vopen(fname);
 
-            if (!vcfiles[i].readp) return 0;  // file ain't there?
+            if (!vcfiles[i].readp)
+                return 0; // file ain't there?
 
             vcfiles[i].mode = 1;
             return i;
@@ -1562,17 +1575,18 @@ int OpenVCFile(const char *fname)
     return 0;
 }
 
-int OpenWriteVCFile(const char *fname)
+int OpenWriteVCFile(const char* fname)
 // Opens a VC file for writing, and returns the index to vcfiles[], or -1 if
 // fail
 {
-    int i;  // counter
+    int i; // counter
 
     for (i = 1; i < MAXVCFILES; i++) {
         if (vcfiles[i].mode == 0) {
             vcfiles[i].writep = fopen(fname, "wb");
 
-            if (!vcfiles[i].writep) return 0;  // dunno, sharing violation?
+            if (!vcfiles[i].writep)
+                return 0; // dunno, sharing violation?
 
             vcfiles[i].mode = 2;
             return i;
@@ -1591,7 +1605,7 @@ void CloseVCFile(int index)
     vcfiles[index].mode = 0;
 }
 
-VFILE *GetReadFilePtr(int idx)
+VFILE* GetReadFilePtr(int idx)
 // returns the VFILE, if idx is open for reading, returns an error otherwise
 {
     if (idx < 0 || idx >= MAXVCFILES)
@@ -1606,7 +1620,7 @@ VFILE *GetReadFilePtr(int idx)
     return vcfiles[idx].readp;
 }
 
-FILE *GetWriteFilePtr(int idx)
+FILE* GetWriteFilePtr(int idx)
 // returns the FILE, if idx is open for writing, returns an error otherwise
 {
     if (idx < 0 || idx >= MAXVCFILES)
@@ -1714,7 +1728,7 @@ void HandleStdLib() {
 
     case 20:
         Con_AllowConsole(ResolveOperand());
-        break;  // allowconsole=ResolveOperand(); break;
+        break; // allowconsole=ResolveOperand(); break;
 
     case 21:
         vc_ScaleSprite();
@@ -1725,11 +1739,12 @@ void HandleStdLib() {
         break;
 
     case 23:
-        input.Update();  // Key_SendKeys();
-        if (input.key[DIK_LMENU] && input.key[DIK_X]) Sys_Error("");
+        input.Update(); // Key_SendKeys();
+        if (input.key[DIK_LMENU] && input.key[DIK_X])
+            Sys_Error("");
         CheckHookTimer();
         CheckMessages();
-        break;  // UpdateControls(); break;
+        break; // UpdateControls(); break;
 
     case 24:
         vc_UnPress();
@@ -1781,7 +1796,7 @@ void HandleStdLib() {
 
     case 36:
         ResolveOperand();
-        break;  // CD_Play(ResolveOperand()); break;
+        break; // CD_Play(ResolveOperand()); break;
 
     case 37:
         vc_FontWidth();
@@ -1806,7 +1821,8 @@ void HandleStdLib() {
     case 42:
         vcreturn = 0;
         x = ResolveOperand();
-        if (x) vcreturn = rand() % x;
+        if (x)
+            vcreturn = rand() % x;
         break;
 
     case 43:
@@ -1847,19 +1863,22 @@ void HandleStdLib() {
 
     case 52: {
         int n = ResolveOperand();
-        if (n < 0 || n >= 360) Sys_Error("HandleStdLib: bad offset to sintbl");
+        if (n < 0 || n >= 360)
+            Sys_Error("HandleStdLib: bad offset to sintbl");
         vcreturn = sintbl[n];
     } break;
 
     case 53: {
         int n = ResolveOperand();
-        if (n < 0 || n >= 360) Sys_Error("HandleStdLib: bad offset to costbl");
+        if (n < 0 || n >= 360)
+            Sys_Error("HandleStdLib: bad offset to costbl");
         vcreturn = costbl[n];
     } break;
 
     case 54: {
         int n = ResolveOperand();
-        if (n < 0 || n >= 360) Sys_Error("HandleStdLib: bad offset to tantbl");
+        if (n < 0 || n >= 360)
+            Sys_Error("HandleStdLib: bad offset to tantbl");
         vcreturn = tantbl[n];
     } break;
 
@@ -2123,7 +2142,7 @@ void HandleStdLib() {
     case 121:
         vc_fwritequad();
         break;
-    case 122:  // ResolveOperand();
+    case 122: // ResolveOperand();
         gfx.CalcLucentLUT(ResolveOperand());
         break;
     case 123:
@@ -2139,7 +2158,7 @@ void HandleStdLib() {
 int ProcessIf() {
     byte exec, c;
 
-    exec = (byte)ProcessIfOperand();  // Get base value;
+    exec = (byte)ProcessIfOperand(); // Get base value;
     while (1) {
         c = GrabC();
         switch (c) {
@@ -2215,42 +2234,44 @@ int ProcessIfOperand() {
 }
 
 void HandleIf() {
-    char *d;
+    char* d;
 
     if (ProcessIf()) {
         GrabD();
         return;
     }
-    d = (char *)GrabD();
-    code = (char *)(int)basevc + (int)d;
+    d = (char*)GrabD();
+    code = (char*)(int)basevc + (int)d;
 }
 
-#if !defined(NEW_LOCALS)  // *****
+#if !defined(NEW_LOCALS) // *****
 
 // assumes arguments are valid pointers
-inline void CopyLocal(lvars *dest, lvars *source) {
+inline void CopyLocal(lvars* dest, lvars* source) {
     int n;
 
     V_memcpy(dest->nargs, source->nargs, MAX_ARGS * 4);
 
-    for (n = MAX_LOCAL_STRINGS - 1; n >= 0; n--) dest->s[n] = source->s[n];
+    for (n = MAX_LOCAL_STRINGS - 1; n >= 0; n--)
+        dest->s[n] = source->s[n];
 }
 
 // assumes a valid pointer
-inline void ClearLocal(lvars *dest) {
+inline void ClearLocal(lvars* dest) {
     int n;
 
     V_memset(dest->nargs, 0, MAX_ARGS * 4);
 
-    for (n = MAX_LOCAL_STRINGS - 1; n >= 0; n--) dest->s[n] = "";
+    for (n = MAX_LOCAL_STRINGS - 1; n >= 0; n--)
+        dest->s[n] = "";
 }
 
-#endif  // !def NEW_LOCALS
+#endif // !def NEW_LOCALS
 
 static int routine_depth = 0;
 
 void HandleExternFunc() {
-    funcdecl *pfunc;
+    funcdecl* pfunc;
     int n;
     int ilb = 0, slb = 0;
 
@@ -2261,7 +2282,7 @@ void HandleExternFunc() {
     }
     pfunc = funcs + n;
 
-#ifdef NEW_LOCALS  // *****
+#ifdef NEW_LOCALS // *****
     ilb = int_last_base;
     slb = str_last_base;
     PushBase(int_last_base, str_last_base);
@@ -2306,7 +2327,7 @@ void HandleExternFunc() {
     // now we're safe to set the bases
     int_stack_base = int_last_base = isp;
     str_stack_base = str_last_base = ssp;
-#else   // OLD LOCALS
+#else  // OLD LOCALS
     lvars temp, ob;
 
     // save lvar
@@ -2328,16 +2349,17 @@ void HandleExternFunc() {
     }
     // copy in ob
     CopyLocal(&lvar, &ob);
-#endif  // OLD LOCALS
+#endif // OLD LOCALS
 
     vcpush((quad)basevc);
     vcpush((quad)code);
 
     basevc = sysvc;
-    code = (char *)(basevc + pfunc->syscodeofs);
+    code = (char*)(basevc + pfunc->syscodeofs);
 
     if (vctrack) {
-        for (n = 0; n < routine_depth; n++) Logp("  ");
+        for (n = 0; n < routine_depth; n++)
+            Logp("  ");
         Log(va(" --> Entering user func %s, codeofs %d", pfunc->fname,
             pfunc->syscodeofs));
         routine_depth++;
@@ -2345,10 +2367,10 @@ void HandleExternFunc() {
 
     ExecuteBlock();
 
-    basevc = (char *)vcpop();
+    basevc = (char*)vcpop();
 
-#ifdef NEW_LOCALS  // *****
-                   // restore previous base
+#ifdef NEW_LOCALS // *****
+                  // restore previous base
     PopBase();
     int_last_base = ilb;
     str_last_base = slb;
@@ -2369,14 +2391,15 @@ void HandleExternFunc() {
 #ifdef DEBUG_LOCALS
     Log("<<< HandleExternFunc");
 #endif
-#else   // OLD LOCALS
+#else  // OLD LOCALS
     // restore lvar
     CopyLocal(&lvar, &temp);
-#endif  // OLD LOCALS
+#endif // OLD LOCALS
 
     if (vctrack) {
         routine_depth--;
-        for (n = 0; n < routine_depth; n++) Logp("  ");
+        for (n = 0; n < routine_depth; n++)
+            Logp("  ");
         Log(va(" --> Returned from %s", pfunc->fname));
     }
 }
@@ -2420,13 +2443,13 @@ void HandleAssign() {
         if (c != a_SET) {
             Sys_Error("VC execution error: Corrupt string assignment");
         }
-        if (offset >= 0 && offset < 20)  // MAX_LOCAL_STRINGS)
+        if (offset >= 0 && offset < 20) // MAX_LOCAL_STRINGS)
         {
 #ifdef NEW_LOCALS
             str_stack[str_stack_base + offset] = ResolveString();
-#else   // OLD LOCALS
+#else  // OLD LOCALS
             lvar.s[offset] = ResolveString();
-#endif  // OLD LOCALS
+#endif // OLD LOCALS
         } else
             Sys_Error("HandleAssign: bad offset to local strings: %d", c);
         return;
@@ -2485,15 +2508,15 @@ void HandleSwitch() {
     int realvalue = 0;
     int compvalue = 0;
     byte c = 0;
-    byte *next = 0;
+    byte* next = 0;
 
     realvalue = ResolveOperand();
     c = GrabC();
     while (c != opRETURN) {
         compvalue = ResolveOperand();
-        next = (byte *)GrabD();
+        next = (byte*)GrabD();
         if (compvalue != realvalue) {
-            code = (char *)(int)basevc + (int)next;
+            code = (char*)(int)basevc + (int)next;
             c = GrabC();
             continue;
         }
@@ -2506,9 +2529,11 @@ void ExecuteVC() {
     byte c = 0;
 
     while (1) {
-        if (kill) break;
+        if (kill)
+            break;
         CheckMessages();
-        if (input.key[DIK_LMENU] && input.key['x']) Sys_Error("");
+        if (input.key[DIK_LMENU] && input.key['x'])
+            Sys_Error("");
 
         c = GrabC();
         switch (c) {
@@ -2535,7 +2560,7 @@ void ExecuteVC() {
             HandleAssign();
             break;
         case opRETURN:
-            code = (char *)vcpop();
+            code = (char*)vcpop();
             break;
         case opSETRETVAL:
             vcreturn = ResolveOperand();
@@ -2560,9 +2585,11 @@ void ExecuteBlock() {
     byte c = 0;
 
     while (1) {
-        if (kill) break;
+        if (kill)
+            break;
         CheckMessages();
-        if (input.key[DIK_LMENU] && input.key[DIK_X]) Sys_Error("");
+        if (input.key[DIK_LMENU] && input.key[DIK_X])
+            Sys_Error("");
 
         c = GrabC();
         switch (c) {
@@ -2589,7 +2616,7 @@ void ExecuteBlock() {
             HandleAssign();
             break;
         case opRETURN:
-            code = (char *)vcpop();
+            code = (char*)vcpop();
             break;
         case opSETRETVAL:
             vcreturn = ResolveOperand();
@@ -2607,7 +2634,8 @@ void ExecuteBlock() {
                                 continue;
                         else
                                 break;*/
-        if (c == opRETURN) break;
+        if (c == opRETURN)
+            break;
     }
 }
 
@@ -2615,9 +2643,11 @@ void ExecuteSection() {
     byte c = 0;
 
     while (1) {
-        if (kill) break;
+        if (kill)
+            break;
         CheckMessages();
-        if (input.key[DIK_LMENU] && input.key[DIK_X]) Sys_Error("");
+        if (input.key[DIK_LMENU] && input.key[DIK_X])
+            Sys_Error("");
 
         c = GrabC();
         switch (c) {
@@ -2679,8 +2709,8 @@ void ExecuteEvent(int ev) {
     vcpush((quad)-1);
     ExecuteVC();
 
-    basevc = (char *)vcpop();
-    code = (char *)vcpop();
+    basevc = (char*)vcpop();
+    code = (char*)vcpop();
 
     --invc;
 
@@ -2689,14 +2719,14 @@ void ExecuteEvent(int ev) {
 
 void ExecuteUserFunc(int ufunc) {
     int ilb = 0, slb = 0;
-    funcdecl *pfunc;
+    funcdecl* pfunc;
 
     if (ufunc < 0 || ufunc >= numfuncs) {
         Sys_Error("VC sys script out of bounds (%d)", ufunc);
     }
     pfunc = funcs + ufunc;
 
-#ifdef NEW_LOCALS  // *****
+#ifdef NEW_LOCALS // *****
 #ifdef DEBUG_LOCALS
     Log(">>> ExecuteUserFunc");
 #endif
@@ -2722,29 +2752,29 @@ void ExecuteUserFunc(int ufunc) {
             }
         }
     }
-#else   // OLD LOCALS
+#else  // OLD LOCALS
     lvars temp;
     // save lvar
     CopyLocal(&temp, &lvar);
     // now wipe it
     ClearLocal(&lvar);
-#endif  // OLD LOCALS
+#endif // OLD LOCALS
 
     vcpush((quad)code);
     vcpush((quad)basevc);
 
     basevc = sysvc;
-    code = (char *)(basevc + pfunc->syscodeofs);
+    code = (char*)(basevc + pfunc->syscodeofs);
 
     vcpush((quad)-1);
 
     ExecuteVC();
 
-    basevc = (char *)vcpop();
-    code = (char *)vcpop();
+    basevc = (char*)vcpop();
+    code = (char*)vcpop();
 
-#ifdef NEW_LOCALS  // *****
-                   // restore previous base
+#ifdef NEW_LOCALS // *****
+                  // restore previous base
     PopBase();
     int_last_base = ilb;
     str_last_base = slb;
@@ -2765,16 +2795,18 @@ void ExecuteUserFunc(int ufunc) {
 #ifdef DEBUG_LOCALS
     Log("<<< ExecuteUserFunc");
 #endif
-#else   // OLD LOCALS
+#else  // OLD LOCALS
     // restore lvar
     CopyLocal(&lvar, &temp);
-#endif  // OLD LOCALS
+#endif // OLD LOCALS
 }
 
 void HookRetrace() {
-    if (!hookretrace) return;
+    if (!hookretrace)
+        return;
 
-    if (hookretrace < USERFUNC_MARKER) ExecuteEvent(hookretrace);
+    if (hookretrace < USERFUNC_MARKER)
+        ExecuteEvent(hookretrace);
     if (hookretrace >= USERFUNC_MARKER)
         ExecuteUserFunc(hookretrace - USERFUNC_MARKER);
 }
@@ -2787,16 +2819,21 @@ void CheckHookTimer() {
 }
 
 void HookTimer() {
-    if (!hooktimer) return;
+    if (!hooktimer)
+        return;
 
-    if (hooktimer < USERFUNC_MARKER) ExecuteEvent(hooktimer);
+    if (hooktimer < USERFUNC_MARKER)
+        ExecuteEvent(hooktimer);
     if (hooktimer >= USERFUNC_MARKER)
         ExecuteUserFunc(hooktimer - USERFUNC_MARKER);
 }
 
 void HookKey(int script) {
-    if (!script) return;
+    if (!script)
+        return;
 
-    if (script < USERFUNC_MARKER) ExecuteEvent(script);
-    if (script >= USERFUNC_MARKER) ExecuteUserFunc(script - USERFUNC_MARKER);
+    if (script < USERFUNC_MARKER)
+        ExecuteEvent(script);
+    if (script >= USERFUNC_MARKER)
+        ExecuteUserFunc(script - USERFUNC_MARKER);
 }
