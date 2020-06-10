@@ -15,10 +15,11 @@
 // + <tSB> 11.16.00 - Mouse code added
 // + <tSB> 12.05.00 - Mouse code rehashed, using DInput again.
 
-#define DIRECTINPUT_VERSION 0X0500
-#include "w_input.h" // woo!  no dependencies! :D
-#include <dinput.h>
+#include <cstdint>
 
+#include "w_input.h"
+
+#include "keyboard.h"
 #include "verge.h" // for log :P
 
 static byte key_ascii_tbl[128] = {0, 0, '1', '2', '3', '4', '5', '6', '7', '8',
@@ -37,144 +38,37 @@ static byte key_shift_tbl[128] = {0, 0, '!', '@', '#', '$', '%', '^', '&', '*',
     1, 127, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, '/', 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '/', 0, 0, 0, 0, 0};
 
-Input::Input() {
-    lpdi = NULL;
-    keybd = NULL;
-    mouse = NULL;
-}
+Input::Input() {}
 
-Input::~Input() {
-    if (lpdi != NULL)
-        ShutDown();
-}
+Input::~Input() {}
 
-inline int Input::Test(HRESULT result, char* errmsg) {
-    if (result != DI_OK) {
-        Log(errmsg);
-        return 0;
-    }
-    return 1;
-}
-
-int Input::Init(HINSTANCE hinst, HWND hwnd) {
-    HRESULT result;
-    DIPROPDWORD dipdw;
-
-    hInst = hinst;
-    hWnd = hwnd;
-
-    result = DirectInputCreate(hinst, DIRECTINPUT_VERSION, &lpdi, NULL);
-    if (!Test(result, "DI:DInputCreate"))
-        return 0;
-    /* if (result!=DI_OK)
-      {
-       Log("DI:DInputcreate");
-       return 0;
-      }*/
-
-    // -------------keyboard initizlization------------
-    result = lpdi->CreateDevice(GUID_SysKeyboard, &keybd, NULL);
-    if (result != DI_OK) {
-        Log("DI:CreateDevice");
-        ShutDown();
-        return 0;
-    }
-
-    result = keybd->SetDataFormat(&c_dfDIKeyboard);
-    if (result != DI_OK) {
-        Log("DI:SetDataFormat");
-        ShutDown();
-        return 0;
-    }
-
-    result =
-        keybd->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-    if (result != DI_OK) {
-        Log("DI:SetCo-opLevel");
-        ShutDown();
-        return 0;
-    }
-
-    dipdw.diph.dwSize = sizeof(DIPROPDWORD);
-    dipdw.diph.dwHeaderSize = sizeof(DIPROPHEADER);
-    dipdw.diph.dwObj = 0;
-    dipdw.diph.dwHow = DIPH_DEVICE;
-    dipdw.dwData = 128;
-    result = keybd->SetProperty(DIPROP_BUFFERSIZE, &dipdw.diph);
-    if (result != DI_OK) {
-        Log("DI:SetProperty");
-        ShutDown();
-        return 0;
-    }
-
-    keybd->Acquire();
+int Input::Init() {
     kb_start = kb_end = 0;
 
-    // ---------------mouse-----------------
-    result = lpdi->CreateDevice(GUID_SysMouse, &mouse, NULL);
-    if (!Test(result, "DI:CreateMouseDevice"))
-        return 0;
-
-    result = mouse->SetDataFormat(&c_dfDIMouse);
-    if (!Test(result, "DI:SetMouseDataFormat"))
-        return 0;
-
-    result =
-        mouse->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-    if (!Test(result, "DI:SetMouseCoOpLevel"))
-        return 0;
-
-    mclip.top = mclip.left = 0;
-    mclip.right = 320;
-    mclip.bottom = 200;
+    // mclip.top = mclip.left = 0;
+    // mclip.right = 320;
+    // mclip.bottom = 200;
 
     return 1;
 }
 
-void Input::ShutDown() {
-    if (lpdi == NULL)
-        return;
-    if (keybd != NULL) {
-        keybd->Unacquire();
-        keybd->Release();
-        keybd = NULL;
-    }
-    if (mouse != NULL) {
-        mouse->Unacquire();
-        mouse->Release();
-        mouse = NULL;
-    }
-    // etc... for mouse/joystick/etc...
-    lpdi->Release();
-    lpdi = NULL;
-}
+void Input::ShutDown() {}
 
 void Input::Poll() // updates the key[] array.  This is called in winproc in
                    // response to WM_KEYDOWN and WM_KEYUP
 {
-    HRESULT result;
-    DIDEVICEOBJECTDATA didata[128];
-    DWORD numentries;
+    uint16_t numentries;
 
-    numentries = 128;
-    // read from the keyboard (buffered mode this time!
-    result = keybd->GetDeviceData(
-        sizeof(DIDEVICEOBJECTDATA), didata, &numentries, 0);
-    if (result != DI_OK && result != DI_BUFFEROVERFLOW) // HEY! D:<
-    {
-        keybd->Acquire(); // re-acquire it
-        result = keybd->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), didata,
-            &numentries, 0); // and try again!
-    }
+    numentries = 0;
 
-    if (!numentries || result == DIERR_OTHERAPPHASPRIO)
+    if (!numentries)
         return; // TODO: joystick?
 
     unsigned int i, k; // loop counter, key index
     bool kdown;        // is the key down?
     for (i = 0; i < numentries; i++) {
-        k = didata[i].dwOfs;
-        kdown = didata[i].dwData & 0x80 ? true : false;
+        k = 0;
+        kdown = false;
 
         // First off, DX has separate codes for the control keys, and alt keys,
         // etc...
@@ -371,16 +265,8 @@ void Input::MoveMouse(int x, int y) {
 }
 
 void Input::UpdateMouse() {
-    DIMOUSESTATE dims;
-    HRESULT result;
-
-    mouse->Acquire();
-    result = mouse->GetDeviceState(sizeof(dims), &dims);
-    if (!Test(result, "DirectInput Error: Error reading the mouse"))
-        return;
-
-    mousex += dims.lX;
-    mousey += dims.lY;
+    // mousex += dims.lX;
+    // mousey += dims.lY;
 
     if (mousex < mclip.left)
         mousex = mclip.left;
@@ -392,14 +278,14 @@ void Input::UpdateMouse() {
         mousey = mclip.bottom;
 
     mouseb = 0;
-    if (dims.rgbButtons[0] & 0x80)
-        mouseb |= 1;
-    if (dims.rgbButtons[1] & 0x80)
-        mouseb |= 2;
-    if (dims.rgbButtons[2] & 0x80)
-        mouseb |= 4;
-    if (dims.rgbButtons[3] & 0x80)
-        mouseb |= 8;
+    // if (dims.rgbButtons[0] & 0x80)
+    //     mouseb |= 1;
+    // if (dims.rgbButtons[1] & 0x80)
+    //     mouseb |= 2;
+    // if (dims.rgbButtons[2] & 0x80)
+    //     mouseb |= 4;
+    // if (dims.rgbButtons[3] & 0x80)
+    //     mouseb |= 8;
 }
 
 void Input::ClipMouse(int x1, int y1, int x2, int y2) {

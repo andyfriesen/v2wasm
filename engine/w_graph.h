@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 struct RECT {
     int left;
     int top;
@@ -9,18 +11,18 @@ struct RECT {
 
 class GrDriver {
   protected:
-    byte* truescreen; // pointer to real screen data
+    uint8_t* truescreen; // pointer to real screen data
     int xres, yres;
     bool fullscreen;      // fullscreen/windowed flag
     char driverdesc[255]; // string carrying the name of the driver
 
     // Look at all the look up tables! @_@
-    char* lucentlut8;  // table for 8bit lucency
-    word* lucentlut16; // hicolour lucency table
-    word* morphlut;    // hicolour PaletteMorph emulation table
+    char* lucentlut8;      // table for 8bit lucency
+    uint16_t* lucentlut16; // hicolour lucency table
+    uint16_t* morphlut;    // hicolour PaletteMorph emulation table
 
     // precalculated stuff for tSB's Supafast Lucency Stuff(tm)
-    quad lucentmask;
+    uint32_t lucentmask;
     int rpos, gpos, bpos;    // pixel format information
     int rsize, gsize, bsize; // ditto
 
@@ -35,11 +37,11 @@ class GrDriver {
     ~GrDriver();
 
     unsigned short trans_mask;
-    int bpp;      // BYTES per pixel
-    byte* screen; // the virual screen.  Can be changed with SetRenderDest()
+    int bpp;         // BYTES per pixel
+    uint8_t* screen; // the virual screen.  Can be changed with SetRenderDest()
 
-    byte gamepal[768]; // the current palette, unmorphed
-    byte pal[768];     // the current palette, post-PaletteMorph
+    uint8_t gamepal[768]; // the current palette, unmorphed
+    uint8_t pal[768];     // the current palette, post-PaletteMorph
 
     // initialization/etc...
     bool Init(int x, int y, int bpp); // starts the whole thing up
@@ -57,11 +59,11 @@ class GrDriver {
     void UnPackPixel(int c,
         int& r,
         int& g,
-        int& b);                     // screen pixel -> 8:8:8 pixel
-    int SetPalette(byte* p);         // char[768]
-    int GetPalette(byte* p);         // ditto
-    int InitLucentLUT(byte* data);   // initializes the 8bit lookup table
-    void CalcLucentLUT(int lucency); // set the lucency table up
+        int& b);                      // screen pixel -> 8:8:8 pixel
+    int SetPalette(uint8_t* p);       // char[768]
+    int GetPalette(uint8_t* p);       // ditto
+    int InitLucentLUT(uint8_t* data); // initializes the 8bit lookup table
+    void CalcLucentLUT(int lucency);  // set the lucency table up
 
     // accessors
     int BPP();
@@ -77,47 +79,47 @@ class GrDriver {
 
     //   blits
     // opaque blits
-    void CopySprite(int x, int y, int width, int height, byte* src);
-    void TCopySprite(int x, int y, int width, int height, byte* src);
+    void CopySprite(int x, int y, int width, int height, uint8_t* src);
+    void TCopySprite(int x, int y, int width, int height, uint8_t* src);
     void ScaleSprite(int x,
         int y,
         int iwidth,
         int iheight,
         int dwidth,
         int dheight,
-        byte* src);
+        uint8_t* src);
     void TScaleSprite(int x,
         int y,
         int iwidth,
         int iheight,
         int dwidth,
         int dheight,
-        byte* src);
+        uint8_t* src);
     void RotScale(int posx,
         int posy,
         int width,
         int height,
         float angle,
         float scale,
-        byte* src);
-    void WrapBlit(int x, int y, int width, int height, byte* src);
-    void TWrapBlit(int x, int y, int width, int height, byte* src);
+        uint8_t* src);
+    void WrapBlit(int x, int y, int width, int height, uint8_t* src);
+    void TWrapBlit(int x, int y, int width, int height, uint8_t* src);
     void BlitStipple(int x, int y, int colour);
     // silhouette
 
-    inline void SetPixelLucent(word* dest, int c, int lucentmode);
+    inline void SetPixelLucent(uint16_t* dest, int c, int lucentmode);
     // translucent blits
     void CopySpriteLucent(
-        int x, int y, int width, int height, byte* src, int lucentmode);
+        int x, int y, int width, int height, uint8_t* src, int lucentmode);
     void TCopySpriteLucent(
-        int x, int y, int width, int height, byte* src, int lucentmode);
+        int x, int y, int width, int height, uint8_t* src, int lucentmode);
     void ScaleSpriteLucent(int x,
         int y,
         int iwidth,
         int iheight,
         int dwidth,
         int dheight,
-        byte* src,
+        uint8_t* src,
         int lucent);
     void TScaleSpriteLucent(int x,
         int y,
@@ -125,7 +127,7 @@ class GrDriver {
         int iheight,
         int dwidth,
         int dheight,
-        byte* src,
+        uint8_t* src,
         int lucent);
     void RotScaleLucent(int posx,
         int posy,
@@ -133,12 +135,12 @@ class GrDriver {
         int height,
         float angle,
         float scale,
-        byte* src,
+        uint8_t* src,
         int lucent);
     void WrapBlitLucent(
-        int x, int y, int width, int height, byte* src, int lucent);
+        int x, int y, int width, int height, uint8_t* src, int lucent);
     void TWrapBlitLucent(
-        int x, int y, int width, int height, byte* src, int lucent);
+        int x, int y, int width, int height, uint8_t* src, int lucent);
 
     // Primatives
     void SetPixel(int x, int y, int colour, int lucent);
@@ -164,7 +166,7 @@ class GrDriver {
         int ty2,
         int texw,
         int texh,
-        byte* image);
+        uint8_t* image);
 
   public:
     void TMapPoly(int x1,
@@ -181,19 +183,21 @@ class GrDriver {
         int ty3,
         int tw,
         int th,
-        byte* img);
+        uint8_t* img);
 
-    void Mask(byte* src, byte* mask, int width, int height, byte* dest);
-    void Silhouette(int width, int height, byte* src, byte* dest, int colour);
+    void Mask(
+        uint8_t* src, uint8_t* mask, int width, int height, uint8_t* dest);
+    void Silhouette(
+        int width, int height, uint8_t* src, uint8_t* dest, int colour);
     void ChangeAll(
-        int width, int height, byte* src, int srccolour, int destcolour);
+        int width, int height, uint8_t* src, int srccolour, int destcolour);
 
     void ShowPage();
 
     // weird rendering magic stuff ;)
     void SetClipRect(RECT clip);
     void RestoreRenderSettings();
-    void SetRenderDest(int x, int y, byte* dest);
+    void SetRenderDest(int x, int y, uint8_t* dest);
 
   protected:
     int morph_step(int S, int D, int mix, int light);

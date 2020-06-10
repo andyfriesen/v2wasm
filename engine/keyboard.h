@@ -106,16 +106,18 @@ enum {
     DIK_F12 = 0x58,
 
     // TODO fill these in
-    DIK_HOME = 0x100,
-    DIK_END = 0x101,
-    DIK_PRIOR = 0x102,
-    DIK_UP = 0x104,
-    DIK_DOWN = 0x105,
-    DIK_LEFT = 0x106,
-    DIK_RIGHT = 0x107,
-    DIK_DIVIDE = 0x108,
-    DIK_RMENU = 0x109,
-    DIK_NEXT = 0x10a,
+    DIK_HOME = 0x59,
+    DIK_END = 0x5a,
+    DIK_PRIOR = 0x5b,
+    DIK_UP = 0x5c,
+    DIK_DOWN = 0x5d,
+    DIK_LEFT = 0x5e,
+    DIK_RIGHT = 0x5f,
+    DIK_DIVIDE = 0x60,
+    DIK_RMENU = 0x61,
+    DIK_NEXT = 0x62,
+    DIK_ESCAPE = 0x63,
+    DIK_RCONTROL = 0x64,
 
     DIK_BACKSPACE = DIK_BACK,       /* backspace */
     DIK_NUMPADSTAR = DIK_MULTIPLY,  /* * on numeric keypad */

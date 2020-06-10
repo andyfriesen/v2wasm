@@ -7,6 +7,8 @@
 
 #include <cstdint>
 
+#include "w_graph.h" // for RECT
+
 class Input {
   private:
     // key buffer
@@ -15,7 +17,7 @@ class Input {
                                     // they're bytes, they automaticly wrap
                                     // around.
 
-    // RECT mclip;
+    RECT mclip;
 
     // for UnPress
     uint8_t unpress[9];

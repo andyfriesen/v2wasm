@@ -109,8 +109,7 @@ static unsigned char vergepal[] = {0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x03,
     0x00, 0x2f, 0x17, 0x00, 0x32, 0x12, 0x00, 0x35, 0x0c, 0x00, 0x38, 0x06,
     0x00, 0x3c, 0x3f, 0x3f, 0x3f, 0x3f}; // gah!
 
-int hicolour = 0;           // bleh --tSB
-bool fullscreenmode = true; // ditto
+int hicolour = 0; // bleh --tSB
 
 char* strbuf = 0; // Universal temporary string buffer. :)
 
@@ -456,12 +455,11 @@ void ParseStartupFiles() {
         }
         // sound lib setting
         else if (parse_match("mixrate")) {
-            sfx_mixrate = (word)V_atoi(parse_cfg_token());
+            parse_cfg_token();
             continue;
         }
         // sound lib setting
         else if (parse_match("safemode")) {
-            sfx_safemode = 1;
             continue;
         } else if (parse_match("dmabufsize")) {
             parse_cfg_token();
@@ -478,7 +476,6 @@ void ParseStartupFiles() {
             hicolour = 1;
             continue;
         } else if (parse_match("window")) {
-            fullscreenmode = 0;
             continue;
         } else if (parse_match("vsync")) {
             gfx.VSync(true);
@@ -519,6 +516,8 @@ void ParseAutoCFG() {
     vclose(vf);
 }
 
+int CheckMessages() { return 0; }
+
 void InitSystems() {
     InitLog();
 
@@ -558,8 +557,6 @@ int main(int argc, char** argv) {
     ParseStartupFiles();
 
     InitSystems();
-
-    bActive = true;
 
     return VMain();
 }
