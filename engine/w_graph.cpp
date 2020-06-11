@@ -22,47 +22,39 @@
 // Note: All of the clipping coords are inclusive.  (0,0)-(319,199) means that
 // 319 is the last pixel to write on the X axis, etc...
 
-#define DIRECTDRAW_VERSION 0X0200
-
-#include "verge.h"
-
 #include <math.h> // for RotScale
 
-GrDriver::GrDriver() {
-    screen = NULL;
-    truescreen = NULL;
+#include "verge.h"
+#include "wasm.h"
 
-    morphlut = NULL;
-    lucentlut16 = NULL;
-    lucentlut8 = NULL;
+GrDriver::GrDriver() {
+    screen = nullptr;
+
+    morphlut = nullptr;
+    lucentlut16 = nullptr;
+    lucentlut8 = nullptr;
 }
 
 GrDriver::~GrDriver() { ShutDown(); }
 
-// if we're fullscreen, then offsurf is attached to the main surface, and we
-// simply flip() in ShowPage.
-// if not, then offsurf is just another surface (at the requested colour depth)
-// then, we can blit it to
-// the primary and not have to worry about the desktop colour depth. ^_^
-// returns 1 on success
-// x and y are the resolution, c is the colour depth (in bits per pixel) fullscr
-// is true if we aren't running windowed
 bool GrDriver::Init(int x, int y, int c) {
-    return 0; // :(
+    xres = x;
+    yres = y;
+    bpp = c;
+
+    truescreen.resize(x * y * c);
+    screen32.resize(x * y * c);
+    screen = truescreen.data();
+
+    wasm_initvga(x, y);
+    return true;
 }
 
-int GrDriver::SetMode(int x, int y, int c, bool fs) {
-    // This is completely different depending on whether the engine is running
-    // in
-    // a window or not
-    // FullScreen: Resize the screen, change a few variables, voila!
-    // Windowed:   Delete the off surface, recreate it, and resize the client
-    // window to fit.
-    // TODO: add support for switching bit depths in mid-run
+int GrDriver::SetMode(int x, int y) {
+    wasm_vgaresize(x, y);
 
-    // if x and y are null, then the resolution stays the same.  Useful for
-    // switching to/from windowed mode.
-    // TODO: Why doesn't switching to/from windowed mode work?
+    truescreen.resize(x * y * bpp);
+    screen32.resize(x * y * bpp);
 
     return 1;
 }
@@ -70,79 +62,43 @@ int GrDriver::SetMode(int x, int y, int c, bool fs) {
 void GrDriver::ShutDown() {}
 
 void GrDriver::ShowPage() {
-    uint8_t *s, *d;
     quad srcinc, destinc; // incrememt values for the copy loop
     int yl;
 
     RenderGUI(); // gah! --tSB
 
     cpubyte = PFLIP;
+    uint32_t* d = screen32.data();
 
-#if 0
-    s = screen;
-    d = (uint8_t *)(ddsd.lpSurface);
-    yl = yres;
-    if (!morphlut || bpp == 1) {
-        srcinc = xres * bpp;
-        destinc = ddsd.lPitch;
+    if (bpp == 1) {
+        uint8_t* s = screen;
 
-        for (; yl; yl--)
-        {
-            memcpy(d, s, xres * bpp);
-            s += srcinc;
-            d += destinc;
-        }  // straight copy
-    } else {
-        srcinc = xres * bpp;
-        destinc = ddsd.lPitch;
-        word *s16 = (word *)s;
-        word *d16 = (word *)d;
-        // colour blending for hicolour palettemorph emulation
-        for (; yl; yl--) {
-            for (int x = 0; x < xres; x++) {
-                d16[x] = morphlut[s16[x]];
+        // Convert 8bpp to 32bpp
+        for (int y = 0; y < yres; ++y) {
+            for (int x = 0; x < xres; ++x) {
+                auto e = *s * 3;
+                *d = pal[e + 0] << 0 | pal[e + 1] << 8 | pal[e + 2] << 16;
+                ++s;
+                ++d;
             }
-            s16 += srcinc / 2;
-            d16 += destinc / 2;
-        }
-    }
-
-    HRESULT result;
-
-    if (fullscreen) {
-        result = mainsurf->Flip(NULL, vsync);
-        if (result != DD_OK && result != DDERR_WASSTILLDRAWING) {
-            Log("Flipping error");
-            LogDDErr(result);
         }
     } else {
-        // TODO; add windowed showpage
-        RECT ClientRect, source;
-        HRESULT result;
-        POINT pt;
+        uint16_t* s = reinterpret_cast<uint16_t*>(screen);
 
-        if (mainsurf == NULL) return;
-        if (offsurf == NULL) return;
-        GetClientRect(hWnd, &ClientRect);
-        pt.x = pt.y = 0;
+        for (int y = 0; y < yres; ++y) {
+            for (int x = 0; x < xres; ++x) {
+                uint32_t src = *s;
+                *d = (src & 0b0000000000011111) << 3 |
+                     (src & 0b0000011111100000) << 6 |
+                     (src & 0b1111100000000000) << 8;
 
-        source.left = 0;
-        source.top = 0;
-        source.right = xres;
-        source.bottom = yres;  // TODO: zoom? @_@
-
-        ClientRect.right = ClientRect.left + xres;
-        ClientRect.bottom = ClientRect.top + yres;
-        ClientToScreen(hWnd, &pt);
-        OffsetRect(&ClientRect, pt.x, pt.y);
-        result = mainsurf->Blt(&ClientRect, offsurf, &source, DDBLT_WAIT, NULL);
-        if (result != DD_OK) {
-            Log("Flipping error (windowed mode)");
-            LogDDErr(result);
+                ++d;
+                ++s;
+            }
         }
     }
-    cpubyte = ETC;
-#endif
+
+    wasm_vgadump(screen32.data(), screen32.size() * sizeof(uint32_t));
 }
 
 // accessors
@@ -150,7 +106,7 @@ int GrDriver::XRes() { return xres; }
 
 int GrDriver::YRes() { return yres; }
 
-bool GrDriver::IsFullScreen() { return fullscreen; }
+bool GrDriver::IsFullScreen() { return true; }
 
 char* GrDriver::DriverDesc() { return driverdesc; }
 
@@ -161,9 +117,7 @@ void GrDriver::VSync(bool on) {}
 // ===================================== OPAQUE BLITS
 // =====================================
 
-void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t* src)
-// Assumes the surface is locked!!!
-{
+void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t* src) {
     int xl, yl, xs, ys;
 
     if (screen == NULL)
@@ -277,9 +231,6 @@ void GrDriver::TCopySprite(int x, int y, int width, int height, uint8_t* src) {
     cpubyte = ETC;
 }
 
-// Seeing as how I spent the day I got off thanks to Rememberance day porting
-// this code segment,
-// I hereby dedicate ScaleSprite to all who died in the War(s).
 void GrDriver::ScaleSprite(int x,
     int y,
     int iwidth,
@@ -2191,7 +2142,7 @@ void GrDriver::RestoreRenderSettings() {
     clip.top = clip.left = 0;
     clip.right = xres - 1;
     clip.bottom = yres - 1;
-    screen = truescreen;
+    screen = truescreen.data();
 }
 
 inline int GrDriver::morph_step(int S, int D, int mix, int light) {

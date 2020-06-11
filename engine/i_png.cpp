@@ -4,6 +4,10 @@
 #include "i_png.h"
 #include "verge.h"
 
+#if 1
+png_image* Import_PNG(const char* filename) { return nullptr; }
+#else
+
 // ----------------- PNG ---------------------
 // I think this was originally in the Sphere source, so, give Aegis credit for
 // this.  I just hacked it up a bit. --tSB
@@ -273,3 +277,5 @@ static void CDECL PNG_read_function(
     VFILE* file = (VFILE*)png_get_io_ptr(png_ptr);
     vread(data, length, file);
 }
+
+#endif

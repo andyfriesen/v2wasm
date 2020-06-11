@@ -239,8 +239,7 @@ static void Conlib_Vid_Mode_Syntax() {
 static void Conlib_Vid_Mode() {
     switch (Con_NumArgs()) {
     case 3:
-        if (gfx.SetMode(Con_GetArg(1).toint(), Con_GetArg(2).toint(),
-                gfx.bpp * 8, gfx.IsFullScreen())) {
+        if (gfx.SetMode(Con_GetArg(1).toint(), Con_GetArg(2).toint())) {
             input.ClipMouse(0, 0, Con_GetArg(1).toint(), Con_GetArg(2).toint());
             Console_Printf("{||||||||||||}");
             Console_Printf("Loading new video driver...");
@@ -313,32 +312,32 @@ static void Conlib_Map() {
     case 1:
         Console_Printf("{||||||||||||||||||||}");
 
-        // sprintf(strbuf,"MAP stats for Ä%s~ - Å%d~ layers",mapname,numlayers);
+        // sprintf(strbuf,"MAP stats for ÔøΩ%s~ - ÔøΩ%d~ layers",mapname,numlayers);
         // Console_Printf(strbuf);
         Console_Printf(va("MAP stats for %s - %d layers", mapname, numlayers));
 
-        // sprintf(strbuf,"Base dimensions Å%d~ x Å%d~", layer[0].sizex,
+        // sprintf(strbuf,"Base dimensions ÔøΩ%d~ x ÔøΩ%d~", layer[0].sizex,
         // layer[0].sizey);
         // Console_Printf(strbuf);
         Console_Printf(
             va("Base dimensions %dx%d", layer[0].sizex, layer[0].sizey));
 
         // a=layer[0].sizex*layer[0].sizey;
-        // sprintf(strbuf,"MAP using Å%d~ bytes of memory",
+        // sprintf(strbuf,"MAP using ÔøΩ%d~ bytes of memory",
         //	a*(2+(numlayers*2))); Console_Printf(strbuf);
         Console_Printf(va("MAP using %d bytes of memory",
             (layer[0].sizex * layer[0].sizey) * (2 + (numlayers * 2))));
 
-        // sprintf(strbuf,"Å%d~ active zones.",numzones);
+        // sprintf(strbuf,"ÔøΩ%d~ active zones.",numzones);
         // Console_Printf(strbuf);
         Console_Printf(va("%d active zones.", numzones));
 
         Console_Printf("{||||||||||||||||||||}");
 
-        // sprintf(strbuf,"VSP file: Ä%s~",vspname); Console_Printf(strbuf);
+        // sprintf(strbuf,"VSP file: ÔøΩ%s~",vspname); Console_Printf(strbuf);
         Console_Printf(va("VSP file: %s", vspname));
 
-        // sprintf(strbuf,"VSP has Å%d~ tiles using Å%d~ bytes",numtiles,
+        // sprintf(strbuf,"VSP has ÔøΩ%d~ tiles using ÔøΩ%d~ bytes",numtiles,
         //	(numtiles*256)+800+(numtiles*3)); Console_Printf(strbuf);
         Console_Printf(va("VSP has %d tiles using %d bytes", numtiles,
             (numtiles * 256) + 800 + (numtiles * 3)));
@@ -590,11 +589,11 @@ static void Conlib_EntityStat_Syntax() {
 static void Conlib_EntityStat() {
     switch (Con_NumArgs()) {
     case 1:
-        // sprintf(strbuf,"There are Ç%d~ entities on this map.",entities);
+        // sprintf(strbuf,"There are ÔøΩ%d~ entities on this map.",entities);
         // Console_Printf(strbuf);
         Console_Printf(va("There are %d entities on this map.", entities));
 
-        // sprintf(strbuf,"Ç%d~ of those are onscreen / active.",cc);
+        // sprintf(strbuf,"ÔøΩ%d~ of those are onscreen / active.",cc);
         // Console_Printf(strbuf);
         Console_Printf(va("%d of those are onscreen/active.", cc));
         Console_Printf("");
@@ -617,7 +616,7 @@ static void Conlib_ActiveEnts() {
     case 1: {
         Console_Printf("Active entities:");
         for (int n = 0; n < cc; n++) {
-            // sprintf(strbuf,"Ç%d~",entidx[i]);
+            // sprintf(strbuf,"ÔøΩ%d~",entidx[i]);
             // Console_Printf(strbuf);
             Console_Printf(va("%d", entidx[n]));
         }
@@ -646,9 +645,9 @@ static void Conlib_Entity() {
             return;
         }
 
-        // sprintf(strbuf,"Desc: Ç%s~", entity[i].desc); Console_Printf(strbuf);
+        // sprintf(strbuf,"Desc: ÔøΩ%s~", entity[i].desc); Console_Printf(strbuf);
         Console_Printf(va("Desc: %s", entity[n].desc));
-        // sprintf(strbuf,"tx: Ç%d~ ty: Ç%d~", entity[i].tx, entity[i].ty);
+        // sprintf(strbuf,"tx: ÔøΩ%d~ ty: ÔøΩ%d~", entity[i].tx, entity[i].ty);
         // Console_Printf(strbuf);
         Console_Printf(va("tx: %d ty: %d", entity[n].tx, entity[n].ty));
         // sprintf(strbuf,"CHR index: %d", entity[i].chrindex);
@@ -672,10 +671,10 @@ static void Conlib_CurPos_Syntax() {
 static void Conlib_CurPos() {
     switch (Con_NumArgs()) {
     case 1:
-        // sprintf(strbuf,"xwc: Ç%d~ ywc: Ç%d~", player->x, player->y);
+        // sprintf(strbuf,"xwc: ÔøΩ%d~ ywc: ÔøΩ%d~", player->x, player->y);
         // Console_Printf(strbuf);
         Console_Printf(va("xwc: %d ywc: %d", player->x, player->y));
-        // sprintf(strbuf,"xtc: Ç%d~ ytc: Ç%d~", player->x>>4, player->y>>4);
+        // sprintf(strbuf,"xtc: ÔøΩ%d~ ytc: ÔøΩ%d~", player->x>>4, player->y>>4);
         // Console_Printf(strbuf);
         Console_Printf(va("xtc: %d ytc: %d", player->x / 16, player->y / 16));
         Console_Printf("");
@@ -702,7 +701,7 @@ static void Conlib_PlayerSpeed() {
 
     switch (Con_NumArgs()) {
     case 1:
-        // sprintf(strbuf,"speed is is Å%d~", player->speed);
+        // sprintf(strbuf,"speed is is ÔøΩ%d~", player->speed);
         // Console_Printf(strbuf);
         Console_Printf(va("speed is is %d", player->speed));
         Console_Printf("");
@@ -832,7 +831,7 @@ static void Conlib_ShowZones_Syntax() {
 static void Conlib_ShowZones() {
     switch (Con_NumArgs()) {
     case 1:
-        // sprintf(strbuf,"showzones is Å%d~", showzone);
+        // sprintf(strbuf,"showzones is ÔøΩ%d~", showzone);
         // Console_Printf(strbuf);
         Console_Printf(va("showzones is %d", showzone));
         Console_Printf("");

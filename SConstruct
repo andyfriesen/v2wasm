@@ -108,7 +108,7 @@ def EmscriptenEnvironment():
 sources = [
     'a_memory.cpp',
     'entity.cpp',
-    # 'i_png.cpp',
+    'i_png.cpp',
     'message.cpp',
     'startup.cpp',
     'timer.cpp',
@@ -128,6 +128,8 @@ sources = [
     'strk.cpp',
     'verge.cpp',
     'w_input.cpp',
+
+    'wasm.cpp',
 ]
 sources = ['engine/' + s for s in sources]
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
 
 struct RECT {
     int left;
@@ -11,9 +12,10 @@ struct RECT {
 
 class GrDriver {
   protected:
-    uint8_t* truescreen; // pointer to real screen data
+    std::vector<uint32_t>
+        screen32; // upsampled 32bpp screen.  Transferred to the HTML canvas
+    std::vector<uint8_t> truescreen; // pointer to real screen data
     int xres, yres;
-    bool fullscreen;      // fullscreen/windowed flag
     char driverdesc[255]; // string carrying the name of the driver
 
     // Look at all the look up tables! @_@
@@ -45,10 +47,7 @@ class GrDriver {
 
     // initialization/etc...
     bool Init(int x, int y, int bpp); // starts the whole thing up
-    int SetMode(int x,
-        int y,
-        int bpp,
-        bool fullscreen); // changes the resolution/full-screenedness
+    int SetMode(int x, int y);
     void ShutDown();
     void VSync(bool on); // turns vsync on/off
 

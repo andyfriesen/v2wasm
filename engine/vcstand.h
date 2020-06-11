@@ -519,7 +519,7 @@ void vc_SetResolution() {
     xres = ResolveOperand();
     yres = ResolveOperand();
 
-    vcreturn = gfx.SetMode(xres, yres, gfx.bpp * 8, gfx.IsFullScreen());
+    vcreturn = gfx.SetMode(xres, yres);
     if (!vcreturn)
         Sys_Error("vc_SetResolution failed");
     gfx.Clear();

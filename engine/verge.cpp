@@ -37,9 +37,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // + cleaned up USER.CFG parsing
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-#define WIN32_LEAN_AND_MEAN
-#include "verge.h"
 #include <stdarg.h> // va_*
+
+#include "verge.h"
+#include "wasm.h"
 
 // gah!
 extern void ParseAutoCFG();
@@ -209,6 +210,7 @@ int VMain() {
 
     while (true) {
         vmainloop();
+        wasm_nextFrame();
     }
 
     return 0;
