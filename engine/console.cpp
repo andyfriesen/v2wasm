@@ -336,7 +336,7 @@ void Con_Key(int key) {
 void Console_Init(void) {
     int slot = 0;
 
-    Logp("Initialize console.");
+    Log("Initialize console.");
 
     // returns -1 if it does not exist; otherwise slot #
     slot = Font_Load("system.fnt");
@@ -383,8 +383,6 @@ void Console_Init(void) {
     Con_AddCommand("EDIT", Conlib_EditScript);
     // we can send this command... *after* we've added the commands. d'oh.
     Console_SendCommand("consolebg console.gif");
-
-    LogDone();
 }
 
 void Console_Printf(string_k s) {

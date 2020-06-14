@@ -15,7 +15,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
-extern int InitTimer();
-extern void ShutdownTimer();
+void InitTimer();
+void ShutdownTimer();
 
 extern unsigned int systemtime, timer_count, vctimer, hktimer;

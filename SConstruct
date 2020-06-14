@@ -63,9 +63,13 @@ def EmscriptenEnvironment():
 
         cflags.append('-g')
 
+        env.Append(CPPDEFINES=[
+            'DEBUG_LOCALS',
+        ])
+
         env.Append(LINKFLAGS=[
             '-g',
-            '--source-map-base', 'https://localhost/',
+            '--source-map-base', 'http://localhost/',
         ])
 
     else:

@@ -12,16 +12,16 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                          The VERGE Engine                           Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                        VFile (VRG) module                           Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                          The VERGE Engine                           О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                        VFile (VRG) module                           О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
-//#define VFILE_H
-//#define VC_H
+#include <string.h>
 
 #include "verge.h"
+#include "wasm.h"
 
 // ================================= Data ====================================
 
@@ -32,15 +32,33 @@ char headertag[] = "VRGPACK\0";
 
 // ================================= Code ====================================
 
+FILE* _fopen(const char* filename, const char* mode) {
+    std::string s = gameRoot + "persist/" + filename;
+    FILE* f = fopen(s.c_str(), mode);
+    if (f) {
+        printf("_fopen %s ok\n", s.c_str());
+        return f;
+    }
+
+    s = gameRoot + filename;
+    f = fopen(s.c_str(), mode);
+    if (!f)
+        printf("Unable to open %s\n", s.c_str());
+    else
+        printf("_fopen %s ok\n", s.c_str());
+    return f;
+}
+
 int Exist(const char* filename) {
     FILE* f;
 
-    f = fopen(filename, "rb");
-    if (!f)
-        return 0;
+    f = _fopen(filename, "rb");
+    if (f) {
+        fclose(f);
+        return 1;
+    }
 
-    fclose(f);
-    return 1;
+    return 0;
 }
 
 void DecryptHeader() {
@@ -63,7 +81,7 @@ void DecryptHeader() {
 void MountVFile(const char* filename) {
     char buffer[10] = {0};
 
-    pack[filesmounted].vhandle = fopen(filename, "rb");
+    pack[filesmounted].vhandle = _fopen(filename, "rb");
     if (!pack[filesmounted].vhandle) {
         Sys_Error("*error* Unable to mount %s; file not found.\n", filename);
     }
@@ -131,11 +149,9 @@ int V_strcasecmp(const char* s1, const char* s2) {
 }
 
 VFILE* vopen(const char* filename) {
-    VFILE* tmp;
     char rf, vf;
     int i, j;
 
-    tmp = 0L;
     rf = vf = 0;
     i = j = 0;
 
@@ -164,7 +180,7 @@ VFILE* vopen(const char* filename) {
     if (!vf && !rf)
         return 0;
 
-    tmp = (VFILE*)valloc(sizeof(VFILE), "vopen:tmp", OID_VFILE);
+    VFILE* tmp = (VFILE*)valloc(sizeof(VFILE), "vopen:tmp", OID_VFILE);
 
     if (vf && rf) {
         if (pack[i].files[j].override)
@@ -184,7 +200,7 @@ VFILE* vopen(const char* filename) {
         return tmp;
     }
 
-    tmp->fp = fopen(filename, "rb");
+    tmp->fp = _fopen(filename, "rb");
     tmp->s = 0;
     tmp->v = 0;
     tmp->i = 0;

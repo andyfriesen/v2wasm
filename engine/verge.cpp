@@ -66,7 +66,7 @@ void InitLog() {
 static FILE* Log_OpenLog() {
     FILE* f;
 
-    f = fopen("VERGE.LOG", "aw");
+    f = fopen("persist/verge.log", "aw");
     if (!f)
         Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
 
@@ -74,52 +74,7 @@ static FILE* Log_OpenLog() {
 }
 
 void Log(const char* message) {
-    FILE* f;
-
-    if (!logoutput)
-        return;
-
-    f = Log_OpenLog();
-
-    if (!f)
-        Sys_Error("Error logging!");
-
-    fprintf(f, "%s\n", message);
-    fflush(f);
-
-    fclose(f);
-}
-
-// used in conjunction with LogDone()
-void Logp(const char* message) {
-    FILE* f;
-
-    if (!logoutput)
-        return;
-
-    f = Log_OpenLog();
-
-    if (!f)
-        Sys_Error("Error logging!");
-
-    fprintf(f, "%s", message);
-    fflush(f);
-
-    fclose(f);
-}
-
-void LogDone() {
-    FILE* f;
-
-    if (!logoutput)
-        return;
-
-    f = Log_OpenLog();
-
-    fprintf(f, "... OK\n");
-    fflush(f);
-
-    fclose(f);
+    printf("%s\n", message);
 }
 
 // InitSystems moved to startup.cpp, where it can have access to Win32
@@ -187,13 +142,12 @@ int VMain() {
 
     ParseAutoCFG();
 
-    Logp("Loading 8 bit translucency table");
+    Log("Loading 8 bit translucency table");
     LoadTransTable();
-    LogDone();
 
-    Logp("Loading system VC");
+    Log("Loading system VC");
     LoadSystemVC();
-    LogDone();
+
     // startmap override?
     if (startmap.length())
         LoadMAP(startmap.c_str());

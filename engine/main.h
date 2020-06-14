@@ -13,27 +13,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef MAIN_H
-#define MAIN_H
+#pragma once
+
+#include <string>
 
 extern void* valloc(int amount, char* desc, int owner);
 
 extern char* va(char* format, ...);
 
-extern void err(char* message);
 extern int sgn(int x);
 extern void ver();
 extern int CheckMessages();
 extern void Log(const char* message);
-extern void Logp(const char* message);
-extern void LogDone();
 
 extern string_k startmap;
 extern char nocdaudio;
-
-#ifndef DJGPP
-#define strncasecmp strnicmp
-#define strcasecmp strcmpi
-#endif
-
-#endif

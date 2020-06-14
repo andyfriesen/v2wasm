@@ -58,6 +58,10 @@ void vc_Free() {
 
     ptr = ResolveOperand();
 
+    if (0 == ptr) {
+        return;
+    }
+
     vfree((void*)ptr);
 
     Log(va("VC freeing allocated heap at 0x%08X.", ptr));

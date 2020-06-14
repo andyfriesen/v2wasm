@@ -247,6 +247,48 @@ static char* absolute_sys = 0;
 
 static char xvc_sig[8] = "VERGE2X";
 
+void LoadSystemIdxAndVcs() {
+    VFILE* f = 0;
+    int i = 0;
+
+    Log("Initializing VC interpreter");
+    f = vopen("system.idx");
+    if (!f) {
+        Sys_Error("Could not open system.idx.");
+    }
+    vread(&numvars, 4, f);
+    vars = (vardecl*)valloc(
+        numvars * sizeof(vardecl), "LoadSystemVC:vars", OID_VC);
+    vread(vars, numvars * 48, f);
+    vread(&numfuncs, 4, f);
+    funcs = (funcdecl*)valloc(
+        numfuncs * sizeof(funcdecl), "LoadSystemVC:funcs", OID_VC);
+    vread(funcs, numfuncs * 76, f);
+    vread(&numstr, 4, f);
+    str =
+        (strdecl*)valloc(numstr * sizeof(strdecl), "LoadSystemVC:str", OID_VC);
+    vread(str, numstr * 44, f);
+    vclose(f);
+
+    f = vopen("system.vcs");
+    if (!f) {
+        Sys_Error("Could not open system.vcs");
+    }
+
+    i = filesize(f);
+    sysvc = (char*)valloc(i, "LoadSystemVC:sysvc", OID_VC);
+    vread(&numfuncs, 4, f);
+    vread(&maxint, 4, f);
+    vread(&stralloc, 4, f);
+
+    globalint = (int*)valloc(maxint ? maxint * 4 : 4, "globalint", OID_VC);
+    if (stralloc) {
+        vc_strings = new string_k[stralloc];
+    }
+    vread(sysvc, i, f);
+    vclose(f);
+}
+
 void LoadSystemIndex() {
     char buf[8];
     VFILE* f;
@@ -312,7 +354,7 @@ void LoadSystemCode() {
 
     // open system script code file
     f = vopen("system.xvc");
-    if (!f) {
+   if (!f) {
         // Sys_Error("Could not open system.vcs");
         sys_codesize = 0;
         sysvc = 0;
@@ -330,7 +372,7 @@ void LoadSystemCode() {
 
     vread(&code_offset, 4, f);
     vseek(f, 0, SEEK_END);
-    sys_codesize = vtell(f) - code_offset + 1;
+    sys_codesize = vtell(f) - code_offset + 1;    
     // see if there's actually code present
     if (sys_codesize < 1) {
         vclose(f);
@@ -389,8 +431,12 @@ void RunSystemAutoexec() {
 void LoadSystemVC() {
     Log("Initializing VC interpreter");
 
-    LoadSystemIndex();
-    LoadSystemCode();
+    if (Exist("system.xvc")) {
+        LoadSystemIndex();
+        LoadSystemCode();
+    } else {
+        LoadSystemIdxAndVcs();
+    }
 
     // initialize VC stack
     vcstack = (quad*)valloc(6000, "vcstack", OID_VC);
@@ -429,104 +475,23 @@ void LoadMapVC(VFILE* f) {
 }
 
 byte GrabC() {
-    /*
-    if (basevc==absolute_map)
-    {
-            if (code<absolute_map || code>=absolute_map+map_codesize)
-            {
-                    if (code<absolute_map)
-                            Sys_Error("mapvc: GrabC: out of range by -%d;
-    (%08X:%08X)", absolute_map-code, absolute_map, code);
-                    else
-                            Sys_Error("mapvc: GrabC: out of range by +%d;
-    (%08X:%08X)", code-absolute_map, absolute_map, code);
-            }
-    }
-    else if (basevc==absolute_sys)
-    {
-            if (code<absolute_sys || code>=absolute_sys+sys_codesize)
-            {
-                    if (code<absolute_sys)
-                            Sys_Error("sysvc: GrabC: out of range by -%d;
-    (%08X:%08X)", absolute_sys-code, absolute_sys, code);
-                    else
-                            Sys_Error("sysvc: GrabC: out of range by +%d;
-    (%08X:%08X)", code-absolute_sys, absolute_sys, code);
-            }
-    }
-    else
-            Sys_Error("GrabC: foul things afoot");
-    */
-
     return *code++;
 }
 
-word GrabW(void) {
-    /*
-    if (basevc==absolute_map)
-    {
-            if (code+2-1<absolute_map || code+2-1>=absolute_map+map_codesize)
-            {
-                    if (code+2-1<absolute_map)
-                            Sys_Error("mapvc: GrabW: out of range by -%d;
-    (%08X:%08X)", absolute_map-(code+2-1), absolute_map, code);
-                    else
-                            Sys_Error("mapvc: GrabW: out of range by +%d;
-    (%08X:%08X)", (code+2-1)-absolute_map, absolute_map, code);
-            }
-    }
-    else if (basevc==absolute_sys)
-    {
-            if (code+2-1<absolute_sys || code+2-1>=absolute_sys+sys_codesize)
-            {
-                    if (code+2-1<absolute_sys)
-                            Sys_Error("sysvc: GrabW: out of range by -%d;
-    (%08X:%08X)", absolute_sys-(code+2-1), absolute_sys, code);
-                    else
-                            Sys_Error("sysvc: GrabW: out of range by +%d;
-    (%08X:%08X)", (code+2-1)-absolute_sys, absolute_sys, code);
-            }
-    }
-    else
-            Sys_Error("GrabW: foul things afoot");
-    */
-
+word GrabW() {
+    word result;
+    memcpy(&result, code, 2);
     code += 2;
-    return *(word*)(code - 2);
+
+    return result;
 }
 
-quad GrabD(void) {
-    /*
-    if (basevc==absolute_map)
-    {
-            if (code+4-1<absolute_map || code+4-1>=absolute_map+map_codesize)
-            {
-                    if (code+4-1<absolute_map)
-                            Sys_Error("mapvc: GrabD: out of range by -%d;
-    (%d:%d)", absolute_map-(code+4-1), absolute_map, code);
-                    else
-                            Sys_Error("mapvc: GrabD: out of range by +%d;
-    (%d:%d)", (code+4-1)-absolute_map, absolute_map, code);
-            }
-    }
-    else if (basevc==absolute_sys)
-    {
-            if (code+4-1<absolute_sys || code+4-1>=absolute_sys+sys_codesize)
-            {
-                    if (code+4-1<absolute_sys)
-                            Sys_Error("sysvc: GrabD: out of range by -%d;
-    (%d:%d)", absolute_sys-(code+4-1), absolute_sys, code);
-                    else
-                            Sys_Error("sysvc: GrabD: out of range by +%d;
-    (%d:%d)", (code+4-1)-absolute_sys, absolute_sys, code);
-            }
-    }
-    else
-            Sys_Error("GrabD: foul things afoot");
-    */
-
+quad GrabD() {
+    quad result;
+    memcpy(&result, code, 4);
     code += 4;
-    return *(quad*)(code - 4);
+
+    return result;
 }
 
 string_k GrabString() {
@@ -2270,6 +2235,10 @@ inline void ClearLocal(lvars* dest) {
 
 static int routine_depth = 0;
 
+#ifdef DEBUG_LOCALS
+std::string indent;
+#endif
+
 void HandleExternFunc() {
     funcdecl* pfunc;
     int n;
@@ -2288,7 +2257,8 @@ void HandleExternFunc() {
     PushBase(int_last_base, str_last_base);
 
 #ifdef DEBUG_LOCALS
-    Log(">>> HandleExternFunc");
+    Log(va("%s HandleExternFunc %s", indent.c_str(), pfunc->fname));
+    indent += ' ';
 #endif
     int isp, ssp;
 
@@ -2358,9 +2328,8 @@ void HandleExternFunc() {
     code = (char*)(basevc + pfunc->syscodeofs);
 
     if (vctrack) {
-        for (n = 0; n < routine_depth; n++)
-            Logp("  ");
-        Log(va(" --> Entering user func %s, codeofs %d", pfunc->fname,
+        std::string prefix(' ', routine_depth);
+        Log(va("%s --> Entering user func %s, codeofs %d", prefix.c_str(), pfunc->fname,
             pfunc->syscodeofs));
         routine_depth++;
     }
@@ -2389,7 +2358,8 @@ void HandleExternFunc() {
         }
     }
 #ifdef DEBUG_LOCALS
-    Log("<<< HandleExternFunc");
+    indent.pop_back();
+    Log(va("%s <<< HandleExternFunc", indent.c_str()));
 #endif
 #else  // OLD LOCALS
     // restore lvar
@@ -2398,9 +2368,8 @@ void HandleExternFunc() {
 
     if (vctrack) {
         routine_depth--;
-        for (n = 0; n < routine_depth; n++)
-            Logp("  ");
-        Log(va(" --> Returned from %s", pfunc->fname));
+        std::string prefix(' ', routine_depth);
+        Log(va("%s --> Returned from %s", prefix.c_str(), pfunc->fname));
     }
 }
 

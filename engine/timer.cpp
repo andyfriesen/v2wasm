@@ -26,12 +26,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "timer.h"
 #include "verge.h"
 
+#include <emscripten.h>
+#include <emscripten/html5.h>
+
+namespace {
+    long globalTimer = 0;
+}
+
 // ================================= Data ====================================
 
 unsigned int systemtime = 0, timer_count = 0, hktimer = 0, vctimer = 0;
 
 // ================================= Code ====================================
 
-void ShutdownTimer() {}
+void incTimerCount(void*) {
+    printf("incTimerCount\n");
+    ++systemtime;
+    ++timer_count;
+    ++hktimer;
+    ++vctimer;
 
-int InitTimer() { return 0; }
+    if (cpu_watch) {
+        CPUTick();
+    }
+
+    CheckTileAnimation();
+}
+
+void InitTimer() {
+    globalTimer = emscripten_set_interval(&incTimerCount, 10, nullptr);
+}
+
+void ShutdownTimer() {
+    emscripten_clear_interval(globalTimer);
+    globalTimer = 0;
+}

@@ -314,7 +314,7 @@ void LoadMAP(const char* fname) {
 
     // No matter where you go, you're there.
 
-    Logp(va("Loading MAP %s.", fname));
+    Log(va("Loading MAP %s.", fname));
     V_strncpy(mapname, fname, 60);
     mapname[60] = '\0';
 
@@ -324,8 +324,10 @@ void LoadMAP(const char* fname) {
 
     vread(sig, 6, f);
     sig[6] = '\0';
-    if (V_strcmp(sig, "MAP�5"))
+    static const char header[] = { 'M', 'A', 'P', char(0xF9), '5', 0 };
+    if (V_strcmp(sig, header)) {
         Sys_Error("%s is not a recognized MAP file.", fname);
+    }
 
     // Lalala! Can you find Waldo hiding in the code? Here's a hint, he likes to
     // dress like a candy-cane.
@@ -430,10 +432,9 @@ void LoadMAP(const char* fname) {
     V_memset(chr, 0, sizeof chr);
     LoadVSP(vspname);
     LoadCHRList();
-    Logp(va(" [%d] ", mapevents));
+    Log(va("Loaded %d map events ", mapevents));
     if (V_strlen(musname))
         PlayMusic(musname);
-    LogDone();
     ExecuteEvent(0);
     timer_count = 0;
 }

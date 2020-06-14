@@ -443,7 +443,6 @@ static void V2SE_Main() {
         Console_Printf(va("Unable to load script %s.", Con_GetArg(1)));
         return;
     }
-    LogDone();
 
     cursor_timer = 0;
     editor_processing = 1;

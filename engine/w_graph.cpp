@@ -54,7 +54,9 @@ int GrDriver::SetMode(int x, int y) {
     wasm_vgaresize(x, y);
 
     truescreen.resize(x * y * bpp);
-    screen32.resize(x * y * bpp);
+    screen32.resize(x * y);
+
+    wasm_vgaresize(x, y);
 
     return 1;
 }
@@ -99,6 +101,7 @@ void GrDriver::ShowPage() {
     }
 
     wasm_vgadump(screen32.data(), screen32.size() * sizeof(uint32_t));
+    wasm_nextFrame();
 }
 
 // accessors

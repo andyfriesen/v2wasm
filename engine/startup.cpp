@@ -31,6 +31,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <time.h>
 
 #include "verge.h"
+#include "wasm.h"
 
 #define TITLE "VERGE v2.6"
 #define NAME "MainWindow"
@@ -38,7 +39,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // in VERGE.CPP
 extern int VMain();
 extern void Log(const char* message);
-extern void Logp(const char* message);
 extern void InitLog();
 
 extern char logoutput;
@@ -332,9 +332,9 @@ void Sys_Error(const char* format, ...) {
     vsprintf(string, format, argptr);
     va_end(argptr);
 
-    // <aen> why can't I nest another va() in here?
-    Logp("Sys: Exiting with message: ");
-    Log(string);
+    std::string s = "Sys: Exiting with message: ";
+    s += string;
+    Log(s.c_str());
 
     ShutdownTimer();
     input.ShutDown();
@@ -523,31 +523,29 @@ void InitSystems() {
 
     Log("v2.6 startup. Logfile initialized.");
 
-    Logp("Sys: Initializing keyboard handler.");
+    Log("Sys: Initializing keyboard handler.");
     if (!input.Init())
         Sys_Error("Error initializing keyboard handler");
     memset(bindarray, 0, 256); // no keys bound yet
     input.ClipMouse(0, 0, vidxres, vidyres);
-    LogDone();
 
-    Logp("Sys: Initializing timer. Set 100hz.");
-    if (!InitTimer())
-        Sys_Error("Error initing timer");
-    LogDone();
+    Log("Sys: Initializing timer. Set 100hz.");
+    InitTimer();
 
-    Logp("Sys: Initializing music system.");
+    Log("Sys: Initializing music system.");
     InitMusicSystem();
-    LogDone();
 
-    Logp("Sys: Initializing graphics.");
+    Log("Sys: Initializing graphics.");
     if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8))
         Sys_Error("Error initizlizing graphics");
     if (!gfx.SetPalette(vergepal))
         Sys_Error("Error setting the palette");
-    LogDone();
 }
 
 int main(int argc, char** argv) {
+    const char* gameRoot = argv[1];
+    initFileSystem(gameRoot);
+
     InitLog();
 
     // srand(timeGetTime());

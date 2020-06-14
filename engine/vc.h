@@ -13,8 +13,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#ifndef VC_H
-#define VC_H
+#pragma once
 
 struct VFILE;
 
@@ -29,13 +28,14 @@ extern int stralloc;
 
 extern void RunSystemAutoexec();
 
-typedef struct {
+struct funcdecl {
     char fname[40];
     char argtype[20];
-    int numargs, numlocals;
-    int returntype;
-    int syscodeofs;
-} funcdecl;
+    int32_t numargs;
+    int32_t numlocals;
+    int32_t returntype;
+    int32_t syscodeofs;
+};
 
 extern funcdecl* funcs;
 extern int numfuncs;
@@ -45,20 +45,20 @@ extern int mapevents;
 extern int hookretrace, hooktimer;
 */
 
-typedef struct {
+struct strdecl {
     char vname[40];
     int vsofs;
     int arraylen;
-} strdecl;
+};
 
 extern strdecl* str;
 extern int numstr;
 
-typedef struct {
+struct vardecl {
     char vname[40];
-    int varstartofs;
-    int arraylen;
-} vardecl;
+    int32_t varstartofs;
+    int32_t arraylen;
+};
 
 extern vardecl* vars;
 extern int numvars;
@@ -81,5 +81,3 @@ extern void CheckHookTimer();
 extern void HookRetrace();
 extern void HookTimer();
 extern void HookKey(int script);
-
-#endif // VC_H
