@@ -44,11 +44,16 @@ def EmscriptenEnvironment():
     cflags = ['-fcolor-diagnostics']
 
     asmjs = ARGUMENTS.get('asmjs', 0)
-    debug = ARGUMENTS.get('debug', 0)
+    debug = int(ARGUMENTS.get('debug', 0))
     asan = ARGUMENTS.get('asan', 0)
     ubsan = ARGUMENTS.get('ubsan', 0)
 
-    if debug:
+    if debug > 0:
+        env.Append(CPPDEFINES=[
+            'DEBUG_LOCALS',
+        ])
+
+    if debug > 1:
         if not asan:
             emscriptenOpts += [
                 '-s', 'SAFE_HEAP=1',
@@ -62,10 +67,6 @@ def EmscriptenEnvironment():
         ]
 
         cflags.append('-g')
-
-        env.Append(CPPDEFINES=[
-            'DEBUG_LOCALS',
-        ])
 
         env.Append(LINKFLAGS=[
             '-g',

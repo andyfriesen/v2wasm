@@ -38,9 +38,14 @@ GrDriver::GrDriver() {
 GrDriver::~GrDriver() { ShutDown(); }
 
 bool GrDriver::Init(int x, int y, int c) {
-    xres = x;
-    yres = y;
-    bpp = c;
+    xres = scrx = x;
+    yres = scry = y;
+    bpp = c == 16 ? 2 : 1;
+
+    clip.left = 0;
+    clip.top = 0;
+    clip.right = xres;
+    clip.bottom = yres;
 
     truescreen.resize(x * y * c);
     screen32.resize(x * y * c);
@@ -57,6 +62,14 @@ int GrDriver::SetMode(int x, int y) {
     screen32.resize(x * y);
 
     wasm_vgaresize(x, y);
+
+    xres = scrx = x;
+    yres = scry = y;
+
+    clip.left = 0;
+    clip.top = 0;
+    clip.right = xres;
+    clip.bottom = yres;
 
     return 1;
 }
@@ -79,7 +92,7 @@ void GrDriver::ShowPage() {
         for (int y = 0; y < yres; ++y) {
             for (int x = 0; x < xres; ++x) {
                 auto e = *s * 3;
-                *d = pal[e + 0] << 0 | pal[e + 1] << 8 | pal[e + 2] << 16;
+                *d = 0xFF000000 | pal[e + 0] << 2 | pal[e + 1] << 10 | pal[e + 2] << 18;
                 ++s;
                 ++d;
             }
@@ -130,6 +143,7 @@ void GrDriver::CopySprite(int x, int y, int width, int height, uint8_t* src) {
     xl = width;
     yl = height;
     xs = ys = 0;
+
     if (x >= clip.right || y >= clip.bottom || x + xl <= clip.left ||
         y + yl <= clip.top)
         return;
@@ -2032,11 +2046,9 @@ void GrDriver::UnPackPixel(int c, int& r, int& g, int& b) {
 
 int GrDriver::SetPalette(uint8_t* p) // p is a char[768]
 {
-#if 0
-    HRESULT result;
-    PALETTEENTRY ddp[256];
-    int i;
     static int beenhere = 0;
+
+    memcpy(pal, p, 768);
 
     if (!beenhere) {
         memcpy(
@@ -2044,54 +2056,12 @@ int GrDriver::SetPalette(uint8_t* p) // p is a char[768]
         beenhere = 1;
     }
 
-    if (p != pal)
-        memcpy(pal, p,
-            768);  // we'll keep the pal member updated while we're at it.
-
-    if (bpp > 1) return 1;  // non-palettized graphics mode
-
-    // copy the pal array into ddp
-    for (i = 0; i < 256; i++) {
-        ddp[i].peRed = pal[i * 3] << 2;
-        ddp[i].peGreen = pal[i * 3 + 1] << 2;
-        ddp[i].peBlue = pal[i * 3 + 2] << 2;
-        ddp[i].peFlags = 0;
-    }
-
-    if (ddpal == NULL) return 0;
-    result = ddpal->SetEntries(0, 0, 256, ddp);
-    if (result != DD_OK) {
-        Log("uh oh, palette problem");
-        LogDDErr(result);
-        return 0;
-    }
-#endif
     return 1;
 }
 
 int GrDriver::GetPalette(uint8_t* p) // p is a char[768]
 {
-#if 0
-    HRESULT result;
-    PALETTEENTRY ddp[256];
-    int i;
-
-    if (bpp > 1) return 1;
-
-    result = ddpal->GetEntries(0, 0, 256, ddp);
-    if (result != DD_OK) {
-        LogDDErr(result);
-        return 0;
-    }
-
-    for (i = 0; i < 256; i++) {
-        pal[i * 3] = ddp[i].peRed >> 2;
-        pal[i * 3 + 1] = ddp[i].peGreen >> 2;
-        pal[i * 3 + 2] = ddp[i].peBlue >> 2;
-    }
-
     memcpy(p, pal, 768);
-#endif
     return 1;
 }
 

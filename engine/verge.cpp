@@ -89,7 +89,7 @@ void LoadTransTable() {
     /*    if (translucency_table)
           Sys_Error("Foul things are afoot."); */
 
-    vf = vopen("TRANS.TBL");
+    vf = vopen("trans.tbl");
     if (!vf && gfx.bpp == 1) {
         Sys_Error("trans.tbl not found");
     }
