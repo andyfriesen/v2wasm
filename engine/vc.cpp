@@ -53,7 +53,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "mouse.h"
 #include "sincos.h"
 #include "vccode.h"
-//#include "mikmod.h"
+#include "wasm.h"
 
 #define USERFUNC_MARKER 10000
 
@@ -2496,10 +2496,21 @@ void HandleSwitch() {
 
 void ExecuteVC() {
     byte c = 0;
+    
+    static const int BREAK_INTERVAL = 50;
+    static int breakTime;
+    breakTime = BREAK_INTERVAL;
 
     while (1) {
         if (kill)
             break;
+
+        --breakTime;
+        if (breakTime < 0) {
+            wasm_nextFrame();
+            breakTime = BREAK_INTERVAL;
+        }
+
         CheckMessages();
         if (input.key[DIK_LMENU] && input.key['x'])
             Sys_Error("");
@@ -2553,11 +2564,22 @@ void ExecuteVC() {
 void ExecuteBlock() {
     byte c = 0;
 
+    static const int BREAK_INTERVAL = 50;
+    static int breakTime;
+    breakTime = BREAK_INTERVAL;
+
     while (1) {
         if (kill)
             break;
+
+        --breakTime;
+        if (breakTime < 0) {
+            wasm_nextFrame();
+            breakTime = BREAK_INTERVAL;
+        }
+
         CheckMessages();
-        if (input.key[DIK_LMENU] && input.key[DIK_X])
+        if (input.key[DIK_LMENU] && input.key['x'])
             Sys_Error("");
 
         c = GrabC();
@@ -2599,10 +2621,6 @@ void ExecuteBlock() {
                 "Internal VC execution error. (%d)", (int)code - (int)basevc);
         }
 
-        /*		if (c != opRETURN)
-                                continue;
-                        else
-                                break;*/
         if (c == opRETURN)
             break;
     }
@@ -2611,11 +2629,22 @@ void ExecuteBlock() {
 void ExecuteSection() {
     byte c = 0;
 
+    static const int BREAK_INTERVAL = 50;
+    static int breakTime;
+    breakTime = BREAK_INTERVAL;
+
     while (1) {
         if (kill)
             break;
+
+        --breakTime;
+        if (breakTime < 0) {
+            wasm_nextFrame();
+            breakTime = BREAK_INTERVAL;
+        }
+
         CheckMessages();
-        if (input.key[DIK_LMENU] && input.key[DIK_X])
+        if (input.key[DIK_LMENU] && input.key['x'])
             Sys_Error("");
 
         c = GrabC();
