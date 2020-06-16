@@ -48,7 +48,7 @@ EM_JS(void, wasm_initFileSystem, (const char* c), {
     FS.mkdir("/persist");
     FS.mkdir(sgr);
     // Then mount with IDBFS type
-    FS.mount(IDBFS, {}, "persist/" + sgr);
+    FS.mount(IDBFS, {}, sgr);
 
     // Then sync
     FS.syncfs(true, function (err) {
