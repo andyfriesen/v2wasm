@@ -36,17 +36,28 @@ FILE* _fopen(const char* filename, const char* mode) {
     std::string s = gameRoot + "persist/" + filename;
     FILE* f = fopen(s.c_str(), mode);
     if (f) {
-        printf("_fopen %s ok\n", s.c_str());
+        return f;
+    }
+
+    V_strlwr(const_cast<char*>(s.data()));
+    f = fopen(s.c_str(), mode);
+    if (f) {
         return f;
     }
 
     s = gameRoot + filename;
     f = fopen(s.c_str(), mode);
-    if (!f)
-        printf("Unable to open %s\n", s.c_str());
-    else
-        printf("_fopen %s ok\n", s.c_str());
-    return f;
+    if (f) {
+        return f;
+    }
+
+    V_strlwr(const_cast<char*>(s.data()));
+    f = fopen(s.c_str(), mode);
+    if (f) {
+        return f;
+    }
+
+    return 0;
 }
 
 int Exist(const char* filename) {

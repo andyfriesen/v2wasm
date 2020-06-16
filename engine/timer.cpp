@@ -40,7 +40,6 @@ unsigned int systemtime = 0, timer_count = 0, hktimer = 0, vctimer = 0;
 // ================================= Code ====================================
 
 void incTimerCount(void*) {
-    printf("incTimerCount\n");
     ++systemtime;
     ++timer_count;
     ++hktimer;

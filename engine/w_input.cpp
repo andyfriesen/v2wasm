@@ -16,6 +16,10 @@
 // + <tSB> 12.05.00 - Mouse code rehashed, using DInput again.
 
 #include <cstdint>
+#include <vector>
+#include <unordered_map>
+#include <set>
+#include <emscripten/html5.h>
 
 #include "w_input.h"
 
@@ -38,6 +42,71 @@ static byte key_shift_tbl[128] = {0, 0, '!', '@', '#', '$', '%', '^', '&', '*',
     1, 127, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, '/', 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '/', 0, 0, 0, 0, 0};
 
+static const std::unordered_map<int, int> scanMap = {
+    { 13, DIK_ENTER },
+    { 17, DIK_LCONTROL },
+    { 37, DIK_LEFT },
+    { 38, DIK_UP },
+    { 39, DIK_RIGHT },
+    { 40, DIK_DOWN },
+
+};
+
+namespace {
+    enum class EventType {
+        None,
+        KeyUp,
+        KeyDown,
+    };
+
+    struct InputEvent {
+        EventType type;
+        int keyCode;
+    };
+
+    std::vector<InputEvent> inputEvents;
+    std::set<int> connectedGamepads;
+
+    bool shouldStopPropagation(int keyCode) {
+        return 9 == keyCode;
+    }
+
+    EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
+        int code = e->keyCode;
+        auto it = scanMap.find(code);
+        if (it != scanMap.end())
+            code = it->second;
+
+        printf("Key down %d %s\n", code, e->key);
+        inputEvents.push_back(InputEvent{ EventType::KeyDown, code });
+        return shouldStopPropagation(code);
+    }
+
+    EM_BOOL onKeyUp(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
+        int code = e->keyCode;
+        auto it = scanMap.find(code);
+        if (it != scanMap.end())
+            code = it->second;
+
+        printf("Key up %d %s\n", code, e->key);
+        inputEvents.push_back(InputEvent{ EventType::KeyUp, code });
+        return shouldStopPropagation(code);
+    }
+
+    EM_BOOL onGamepadConnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+        printf("Gamepad connected idx='%s' mapping='%s' index=%ld\n", gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
+        connectedGamepads.insert(gamepadEvent->index);
+        return true;
+    }
+
+    EM_BOOL onGamepadDisonnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+        printf("Gamepad disconnected\n");
+        connectedGamepads.erase(gamepadEvent->index);
+        return true;
+    }
+
+}
+
 Input::Input() {}
 
 Input::~Input() {}
@@ -49,26 +118,46 @@ int Input::Init() {
     // mclip.right = 320;
     // mclip.bottom = 200;
 
+    EMSCRIPTEN_RESULT result;
+    result = emscripten_set_keydown_callback(
+        "body",
+        nullptr,
+        true,
+        &onKeyDown
+    );
+    // TEST_RESULT(result);
+
+    result = emscripten_set_keyup_callback(
+        "body",
+        nullptr,
+        true,
+        &onKeyUp
+    );
+    // TEST_RESULT(result);
+
+    auto res = emscripten_sample_gamepad_data();
+    if (res == EMSCRIPTEN_RESULT_NOT_SUPPORTED) {
+        printf("no gamepad support?\n");
+    }
+    // EMSCRIPTEN_RESULT_NOT_SUPPORTED means that the browser does not support gamepads at all
+
+    emscripten_set_gamepadconnected_callback(0, true, &onGamepadConnected);
+    emscripten_set_gamepaddisconnected_callback(0, true, &onGamepadDisonnected);
+
     return 1;
 }
 
-void Input::ShutDown() {}
+void Input::ShutDown() {
+}
 
 void Input::Poll() // updates the key[] array.  This is called in winproc in
                    // response to WM_KEYDOWN and WM_KEYUP
 {
-    uint16_t numentries;
-
-    numentries = 0;
-
-    if (!numentries)
-        return; // TODO: joystick?
-
     unsigned int i, k; // loop counter, key index
     bool kdown;        // is the key down?
-    for (i = 0; i < numentries; i++) {
-        k = 0;
-        kdown = false;
+    for (const InputEvent& evt: inputEvents) {
+        k = evt.keyCode;
+        kdown = evt.type == EventType::KeyDown;
 
         // First off, DX has separate codes for the control keys, and alt keys,
         // etc...
