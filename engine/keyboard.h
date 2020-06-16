@@ -15,6 +15,65 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+
+/* Constants for keyboard scan-codes */
+
+enum DOMScanCode {
+    VK_UNDEFINED = 0x0,
+    VK_RIGHT_ALT = 0x12,
+    VK_LEFT_ALT = 0x12,
+    VK_LEFT_CONTROL = 0x11,
+    VK_RIGHT_CONTROL = 0x11,
+    VK_LEFT_SHIFT = 0x10,
+    VK_RIGHT_SHIFT = 0x10,
+    VK_META = 0x9D,
+    VK_BACK_SPACE = 0x08,
+    VK_CAPS_LOCK = 0x14,
+    VK_DELETE = 0x7F,
+    VK_END = 0x23,
+    VK_ENTER = 0x0D,
+    VK_ESCAPE = 0x1B,
+    VK_HOME = 0x24,
+    VK_NUM_LOCK = 0x90,
+    VK_PAUSE = 0x13,
+    VK_PRINTSCREEN = 0x9A,
+    VK_SCROLL_LOCK = 0x91,
+    VK_SPACE = 0x20,
+    VK_TAB = 0x09,
+    VK_LEFT = 0x25,
+    VK_RIGHT = 0x27,
+    VK_UP = 0x26,
+    VK_DOWN = 0x28,
+    VK_PAGE_DOWN = 0x22,
+    VK_PAGE_UP = 0x21,
+    VK_F1 = 0x70,
+    VK_F2 = 0x71,
+    VK_F3 = 0x72,
+    VK_F4 = 0x73,
+    VK_F5 = 0x74,
+    VK_F6 = 0x75,
+    VK_F7 = 0x76,
+    VK_F8 = 0x77,
+    VK_F9 = 0x78,
+    VK_F10 = 0x79,
+    VK_F11 = 0x7A,
+    VK_F12 = 0x7B,
+    VK_F13 = 0xF000,
+    VK_F14 = 0xF001,
+    VK_F15 = 0xF002,
+    VK_F16 = 0xF003,
+    VK_F17 = 0xF004,
+    VK_F18 = 0xF005,
+    VK_F19 = 0xF006,
+    VK_F20 = 0xF007,
+    VK_F21 = 0xF008,
+    VK_F22 = 0xF009,
+    VK_F23 = 0xF00A,
+    VK_F24 = 0xF00B,
+
+    VK_TILDE = 0xC0,
+};
+
 // Constants for keyboard scan-codes -- copied from dinput.h
 
 enum {

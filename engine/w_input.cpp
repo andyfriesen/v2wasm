@@ -43,13 +43,57 @@ static byte key_shift_tbl[128] = {0, 0, '!', '@', '#', '$', '%', '^', '&', '*',
     0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '/', 0, 0, 0, 0, 0};
 
 static const std::unordered_map<int, int> scanMap = {
-    { 13, DIK_ENTER },
-    { 17, DIK_LCONTROL },
-    { 37, DIK_LEFT },
-    { 38, DIK_UP },
-    { 39, DIK_RIGHT },
-    { 40, DIK_DOWN },
-
+    { VK_RIGHT_ALT, DIK_RMENU },
+    { VK_LEFT_ALT, DIK_LMENU },
+    { VK_LEFT_CONTROL, DIK_LCONTROL },
+    { VK_RIGHT_CONTROL, DIK_RCONTROL },
+    { VK_LEFT_SHIFT, DIK_LSHIFT },
+    { VK_RIGHT_SHIFT, DIK_RSHIFT },
+    // { VK_META, DIK_META },
+    { VK_BACK_SPACE, DIK_BACK },
+    { VK_CAPS_LOCK, DIK_CAPSLOCK },
+    // { VK_DELETE, DIK_DELETE },
+    { VK_END, DIK_END },
+    { VK_ENTER, DIK_ENTER },
+    { VK_ESCAPE, DIK_ESCAPE },
+    { VK_HOME, DIK_HOME },
+    // { VK_NUM_LOCK, DIK_NUM_LOCK },
+    // { VK_PAUSE, DIK_PAUSE },
+    // { VK_PRINTSCREEN, DIK_PRINTSCREEN },
+    // { VK_SCROLL_LOCK, DIK_SCROLL_LOCK },
+    { VK_SPACE, DIK_SPACE },
+    { VK_TAB, DIK_TAB },
+    { VK_LEFT, DIK_LEFT },
+    { VK_RIGHT, DIK_RIGHT },
+    { VK_UP, DIK_UP },
+    { VK_DOWN, DIK_DOWN },
+    { VK_PAGE_DOWN, DIK_PGDN },
+    { VK_PAGE_UP, DIK_PGUP },
+    { VK_F1, DIK_F1 },
+    { VK_F2, DIK_F2 },
+    { VK_F3, DIK_F3 },
+    { VK_F4, DIK_F4 },
+    { VK_F5, DIK_F5 },
+    { VK_F6, DIK_F6 },
+    { VK_F7, DIK_F7 },
+    { VK_F8, DIK_F8 },
+    { VK_F9, DIK_F9 },
+    { VK_F10, DIK_F10 },
+    { VK_F11, DIK_F11 },
+    { VK_F12, DIK_F12 },
+    // { VK_F13, DIK_F13 },
+    // { VK_F14, DIK_F14 },
+    // { VK_F15, DIK_F15 },
+    // { VK_F16, DIK_F16 },
+    // { VK_F17, DIK_F17 },
+    // { VK_F18, DIK_F18 },
+    // { VK_F19, DIK_F19 },
+    // { VK_F20, DIK_F20 },
+    // { VK_F21, DIK_F21 },
+    // { VK_F22, DIK_F22 },
+    // { VK_F23, DIK_F23 },
+    // { VK_F24, DIK_F24 },
+    { VK_TILDE, DIK_GRAVE },
 };
 
 namespace {
@@ -68,7 +112,7 @@ namespace {
     std::set<int> connectedGamepads;
 
     bool shouldStopPropagation(int keyCode) {
-        return 9 == keyCode;
+        return DIK_TAB == keyCode;
     }
 
     EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
