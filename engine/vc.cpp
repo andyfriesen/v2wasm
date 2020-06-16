@@ -1544,11 +1544,9 @@ int OpenWriteVCFile(const char* fname)
 // Opens a VC file for writing, and returns the index to vcfiles[], or -1 if
 // fail
 {
-    int i; // counter
-
-    for (i = 1; i < MAXVCFILES; i++) {
+    for (int i = 1; i < MAXVCFILES; i++) {
         if (vcfiles[i].mode == 0) {
-            vcfiles[i].writep = fopen(fname, "wb");
+            vcfiles[i].writep = _fopen(fname, "wb");
 
             if (!vcfiles[i].writep)
                 return 0; // dunno, sharing violation?

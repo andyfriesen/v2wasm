@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548496,
+    STACK_BASE = 6548560,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305616,
-    DYNAMIC_BASE = 6548496,
-    DYNAMICTOP_PTR = 1305440;
+    STACK_MAX = 1305680,
+    DYNAMIC_BASE = 6548560,
+    DYNAMICTOP_PTR = 1305504;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,14 +1819,14 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  15904: function() {window.verge.setLoadingProgress(100);}
+  15973: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   var args = readAsmConstArgs(sigPtr, argbuf);
   return ASM_CONSTS[code].apply(null, args);
 }function wasm_nextFrame(){ return Asyncify.handleSleep(requestAnimationFrame); }
-function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("/persist"); FS.mkdir(sgr); FS.mount(IDBFS, {}, sgr); FS.syncfs(true, function (err) { if (err) console.error('wasm_initFileSystem failed!', err); }); }
+function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("/persist"); FS.mkdir(sgr); FS.mkdir("/persist/" + sgr); FS.mount(IDBFS, {}, sgr); FS.mount(IDBFS, {}, "/persist/" + sgr); FS.syncfs(true, function (err) { if (err) console.error('wasm_initFileSystem failed!', err); }); }
 function fetchSync(pathPtr,size,data){ return Asyncify.handleSleep(resume => { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; resume(); return; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); HEAP32[size >> 2] = bytes.length; const dataPtr = _malloc(bytes.length); HEAP32[data >> 2] = dataPtr; HEAP8.set(bytes, dataPtr); resume(); }); }); }
 function wasm_vgaresize(width,height){ console.log("wasm_vgaresize", width, height); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
 function wasm_vgadump(frameBuffer,frameBufferSize){ const fb = HEAPU8.subarray(frameBuffer, frameBuffer + frameBufferSize); window.vergeImageArray.set(fb); window.vergeContext.putImageData(window.vergeImageData, 0, 0); }
@@ -1835,7 +1835,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
 
 
 
-// STATICTOP = STATIC_BASE + 1304592;
+// STATICTOP = STATIC_BASE + 1304656;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4812,7 +4812,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 1305440;
+      return 1305504;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {

@@ -47,6 +47,8 @@ struct mountstruct {
 extern mountstruct pack[3];
 extern byte filesmounted;
 
+FILE* _fopen(const char* filename, const char* mode);
+
 extern int Exist(const char* filename);
 extern VFILE* vopen(const char* filename);
 extern void MountVFile(const char* filename);

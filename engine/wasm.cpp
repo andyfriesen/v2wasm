@@ -47,8 +47,10 @@ EM_JS(void, wasm_initFileSystem, (const char* c), {
         sgr = sgr.substr(0, sgr.length - 1);
     FS.mkdir("/persist");
     FS.mkdir(sgr);
+    FS.mkdir("/persist/" + sgr);
     // Then mount with IDBFS type
     FS.mount(IDBFS, {}, sgr);
+    FS.mount(IDBFS, {}, "/persist/" + sgr);
 
     // Then sync
     FS.syncfs(true, function (err) {
@@ -167,6 +169,9 @@ void downloadGame() {
     stuff[files.size()] = nullptr;
 
     downloadAll((const char**)stuff, [](char* filename, size_t size, char* data) {
+        for (char* c = filename; *c; ++c)
+            *c = tolower(*c);
+
         printf("Writing %s (%zu bytes)\n", filename, size);
         FILE* outFile = fopen(filename, "wb");
         fwrite(data, 1, size, outFile);
