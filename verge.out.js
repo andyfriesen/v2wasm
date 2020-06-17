@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548544,
+    STACK_BASE = 6548672,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305664,
-    DYNAMIC_BASE = 6548544,
-    DYNAMICTOP_PTR = 1305488;
+    STACK_MAX = 1305792,
+    DYNAMIC_BASE = 6548672,
+    DYNAMICTOP_PTR = 1305616;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,7 +1819,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  15973: function() {window.verge.setLoadingProgress(100);}
+  16078: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
@@ -1829,13 +1829,14 @@ function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
 function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("/persist"); FS.mkdir(sgr); FS.mkdir("/persist/" + sgr); FS.mount(IDBFS, {}, sgr); FS.mount(IDBFS, {}, "/persist/" + sgr); FS.syncfs(true, function (err) { if (err) console.error('wasm_initFileSystem failed!', err); }); }
 function fetchSync(pathPtr,size,data){ return Asyncify.handleSleep(resume => { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; resume(); return; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); HEAP32[size >> 2] = bytes.length; const dataPtr = _malloc(bytes.length); HEAP32[data >> 2] = dataPtr; HEAP8.set(bytes, dataPtr); resume(); }); }); }
 function wasm_vgaresize(width,height){ console.log("wasm_vgaresize", width, height); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
+function wasm_syncFileSystem(){ FS.syncfs(false, err => { if (err) { console.error("wasm_syncFileSystem failed!!", err); } }); }
 function wasm_vgadump(frameBuffer,frameBufferSize){ const fb = HEAPU8.subarray(frameBuffer, frameBuffer + frameBufferSize); window.vergeImageArray.set(fb); window.vergeContext.putImageData(window.vergeImageData, 0, 0); }
 function downloadAll(manifest,putFile){ return Asyncify.handleSleep(resume => { let promises = []; let count = 0; function download(pathPtr) { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; throw 'fetchSync failed'; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); const dataPtr = _malloc(bytes.length); HEAP8.set(bytes, dataPtr); Module.dynCall_viii(putFile, pathPtr, bytes.length, dataPtr); ++count; verge.setLoadingProgress((100 * count / promises.length) | 0) }); } while (true) { let pathPtr = HEAPU32[manifest >> 2]; if (pathPtr == 0) { break; } manifest += 4; promises.push(download(pathPtr)); } Promise.all(promises).then(() => { resume(); }); }); }
 function wasm_initvga(width,height){ window.vergeCanvas = document.getElementById('vergeCanvas'); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeContext = window.vergeCanvas.getContext('2d'); window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
 
 
 
-// STATICTOP = STATIC_BASE + 1304640;
+// STATICTOP = STATIC_BASE + 1304768;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4812,7 +4813,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 1305488;
+      return 1305616;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -6734,7 +6735,7 @@ function intArrayToString(array) {
 // ASM_LIBRARY EXTERN PRIMITIVES: Int8Array,Int32Array
 
 var asmGlobalArg = {};
-var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
+var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_syncFileSystem": wasm_syncFileSystem, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
 Asyncify.instrumentWasmImports(asmLibraryArg);
 var asm = createWasm();
 Module["asm"] = asm;

@@ -60,6 +60,14 @@ EM_JS(void, wasm_initFileSystem, (const char* c), {
     });
 });
 
+EM_JS(void, wasm_syncFileSystem, (), {
+    FS.syncfs(false, err => {
+        if (err) {
+            console.error("wasm_syncFileSystem failed!!", err);
+        }
+    });
+});
+
 using DownloadCB = void(*)(char* filename, size_t size, char* data);
 
 EM_JS(void, downloadAll, (const char** manifest, DownloadCB putFile), {

@@ -46,7 +46,7 @@ class GrDriver {
     uint8_t pal[768];     // the current palette, post-PaletteMorph
 
     // initialization/etc...
-    bool Init(int x, int y, int bpp); // starts the whole thing up
+    bool Init(int x, int y, bool bpp16); // starts the whole thing up
     int SetMode(int x, int y);
     void ShutDown();
     void VSync(bool on); // turns vsync on/off

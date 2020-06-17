@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 #include "verge.h"
+#include "wasm.h"
 
 // ================================= Data ====================================
 
@@ -680,7 +681,7 @@ void WriteBMP24(void) // the Speed Bump
     n = 0;
     do {
         sprintf(fnamestr, "%d.bmp", n);
-        bmpf = fopen(fnamestr, "r");
+        bmpf = _fopen(fnamestr, "r");
         i = (int)bmpf;
         if (bmpf)
             fclose(bmpf);
@@ -691,7 +692,7 @@ void WriteBMP24(void) // the Speed Bump
     // Takes a snapshot of the current screen.
 
     sprintf(fnamestr, "%d.bmp", n);
-    bmpf = fopen(fnamestr, "wb");
+    bmpf = _fopen(fnamestr, "wb");
 
     w = 19778;
     fwrite(&w, 1, 2, bmpf); // file marker, always = 'BM'
@@ -747,6 +748,7 @@ void WriteBMP24(void) // the Speed Bump
     //  gfx.UnLock();
 
     fclose(bmpf);
+    wasm_syncFileSystem();
 }
 
 static int ss = 0;
@@ -766,7 +768,7 @@ void ScreenShot() {
     n = 0;
     do {
         sprintf(fnamestr, "%d.pcx", n);
-        pcxf = fopen(fnamestr, "r");
+        pcxf = _fopen(fnamestr, "r");
         i = (int)pcxf;
         if (pcxf)
             fclose(pcxf);
@@ -778,7 +780,7 @@ void ScreenShot() {
 
     sprintf(fnamestr, "%d.pcx", n);
 
-    pcxf = fopen(fnamestr, "wb");
+    pcxf = _fopen(fnamestr, "wb");
     ss++;
 
     // Write PCX header
@@ -824,6 +826,8 @@ void ScreenShot() {
 
     WritePalette(pcxf);
     fclose(pcxf);
+
+    wasm_syncFileSystem();
     // timer_count=0;
 }
 //---

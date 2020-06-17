@@ -113,10 +113,8 @@ int hicolour = 0; // bleh --tSB
 
 char* strbuf = 0; // Universal temporary string buffer. :)
 
-char joyflag = 0;
-
-int vidxres = 0;
-int vidyres = 0;
+int vidxres = 320;
+int vidyres = 240;
 
 char nocdaudio = 0; // do not use CD audio
 
@@ -357,23 +355,6 @@ int sgn(int x) {
 }
 
 void InitializeDefaults() {
-    /*	kb1=K_ENTER;                         // default keyboard controls
-	kb2=K_ALT;
-	kb3=K_ESC;
-	kb4=' ';
-
-	jb1=1;                               // joystick aliases
-	jb2=2;
-	jb3=3;
-	jb4=4;
-	joyflag=0;       */ // joystick
-    // defaults
-    // to
-    // disabled
-
-    vidxres = 320; // default res is 320x240
-    vidyres = 240;
-
     logoutput = 0; // Don't be annoyingly verbose
 
     V_memset(bindarray, 0, sizeof(bindarray)); // clear this here so we don't
@@ -537,7 +518,7 @@ void InitSystems() {
     InitMusicSystem();
 
     Log("Sys: Initializing graphics.");
-    if (!gfx.Init(vidxres, vidyres, hicolour ? 16 : 8))
+    if (!gfx.Init(vidxres, vidyres, hicolour))
         Sys_Error("Error initizlizing graphics");
     if (!gfx.SetPalette(vergepal))
         Sys_Error("Error setting the palette");

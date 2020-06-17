@@ -666,7 +666,7 @@ ZEXTERN gzFile ZEXPORT gzdopen OF((int fd, const char* mode));
 /*
      gzdopen() associates a gzFile with the file descriptor fd.  File
    descriptors are obtained from calls like open, dup, creat, pipe or
-   fileno (in the file has been previously opened with fopen).
+   fileno (in the file has been previously opened with _fopen).
    The mode parameter is as in gzopen.
      The next call of gzclose on the returned gzFile will also close the
    file descriptor fd, just like fclose(fdopen(fd), mode) closes the file

@@ -1561,10 +1561,12 @@ int OpenWriteVCFile(const char* fname)
 void CloseVCFile(int index)
 // closes the specified file, if it's open
 {
-    if (vcfiles[index].mode == 1)
+    if (vcfiles[index].mode == 1) {
         vclose(vcfiles[index].readp);
-    else if (vcfiles[index].mode == 2)
+        wasm_syncFileSystem();
+    } else if (vcfiles[index].mode == 2) {
         fclose(vcfiles[index].writep);
+    }
     vcfiles[index].mode = 0;
 }
 

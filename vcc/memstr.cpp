@@ -168,7 +168,7 @@ int memorystream_t::loadfromfile(const char* filename)
 // self-explanatory ^_^
 {
 	if (!filename) return -1;
-	FILE* fp = fopen(filename, "rb");
+	FILE* fp = _fopen(filename, "rb");
 	if (!fp) return -2;
 	fseek(fp, 0, SEEK_END);
 	setsize(ftell(fp));
@@ -187,7 +187,7 @@ int memorystream_t::savetofile(const char* filename) const
 // self-explanatory ^_^
 {
 	if (!filename) return -1;
-	FILE* fp = fopen(filename, "wb");
+	FILE* fp = _fopen(filename, "wb");
 	if (!fp) return -2;
 	if (fwrite(F_data, 1, F_size, fp) != F_size)
 	{

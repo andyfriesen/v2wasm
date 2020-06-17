@@ -18,11 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                  The VergeC Compiler version 2.01                   Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                       Code Generation module                        Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                  The VergeC Compiler version 2.01                   О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                       Code Generation module                        О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1191,7 +1191,7 @@ void DumpSystemIdx()
 	vprint("Dumping index portion of system.xvc.");
 
 // does SYSTEM.XVC already exist?
-	f = fopen("system.xvc", "rb");
+	f = _fopen("system.xvc", "rb");
 	if (f)
 	{
 	// check signature
@@ -1217,7 +1217,7 @@ void DumpSystemIdx()
 		fclose(f);
 	}
 
-	f = fopen("system.xvc", "wb");
+	f = _fopen("system.xvc", "wb");
 	if (!f)
 	{
 		err("DumpSystemIDX: error opening system.xvc for writing index");
@@ -1309,7 +1309,7 @@ void ReadSystemIdx()
 
 	DestroyLists();
 
-	f = fopen("system.xvc","rb");
+	f = _fopen("system.xvc","rb");
 	if (!f)
 	{
 		err("ReadSystemIdx: could not open system.xvc to access index");
@@ -2018,7 +2018,7 @@ void LoadSource()
 {
 	FILE*	f;
 
-	f=fopen("vcctemp.$$$","rb");
+	f=_fopen("vcctemp.$$$","rb");
 	if (!f)
 	{
 		err("Could not open source file.");

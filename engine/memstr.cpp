@@ -1,5 +1,6 @@
 
 #include "verge.h"
+#include "wasm.h"
 
 using std::ostream;
 using std::endl;
@@ -132,7 +133,7 @@ int memorystream_t::loadfromfile(const char* filename)
 {
     if (!filename)
         return -1;
-    FILE* fp = fopen(filename, "rb");
+    FILE* fp = _fopen(filename, "rb");
     if (!fp)
         return -2;
     fseek(fp, 0, SEEK_END);
@@ -152,7 +153,7 @@ int memorystream_t::savetofile(const char* filename) const
 {
     if (!filename)
         return -1;
-    FILE* fp = fopen(filename, "wb");
+    FILE* fp = _fopen(filename, "wb");
     if (!fp)
         return -2;
     if (fwrite(F_data, 1, F_size, fp) != F_size) {
@@ -160,6 +161,8 @@ int memorystream_t::savetofile(const char* filename) const
         return -3;
     }
     fclose(fp);
+    wasm_syncFileSystem();
+
     return 1;
 }
 

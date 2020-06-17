@@ -66,7 +66,7 @@ void InitLog() {
 static FILE* Log_OpenLog() {
     FILE* f;
 
-    f = fopen("persist/verge.log", "aw");
+    f = _fopen("persist/verge.log", "aw");
     if (!f)
         Sys_Error("Log_OpenLog: unable to open VERGE.LOG");
 

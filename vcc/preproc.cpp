@@ -18,11 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                  The VergeC Compiler version 2.01                   Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                        Pre Processor module                         Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                  The VergeC Compiler version 2.01                   О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                        Pre Processor module                         О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // CHANGELOG:
@@ -173,7 +173,7 @@ struct include_t
 		FILE*	in;
 		int		z;
 
-		in = fopen(fname, "rb");
+		in = _fopen(fname, "rb");
 		if (!in)
 			pp_error("unable to open %s", fname);
 
@@ -220,7 +220,7 @@ void pp_log(char* str)
 
 	if (!logging) return;
 
-	fp	=fopen("error.log", "a");
+	fp	=_fopen("error.log", "a");
 	if (!fp)
 	{
 		pp_error("pp_log: unable to open error.log");
@@ -1039,7 +1039,7 @@ void PreProcess(char* filename)
 
 	init_pp_chr_table();
 
-	pp_out	=fopen("VCCTEMP.$$$", "wb");
+	pp_out	=_fopen("VCCTEMP.$$$", "wb");
 	if (!pp_out)
 	{
 		pp_error("PreProcess: unable to open VCCTEMP.$$$ for writing");

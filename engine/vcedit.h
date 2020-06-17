@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
+#include "wasm.h"
+
 static linked_list* lines = 0;
 static linked_node* current_line = 0;
 static int current_line_n = 0;
@@ -43,7 +45,7 @@ static int V2SE_Rows() {
 static int V2SE_Columns() { return (gfx.XRes() - 2) / Font_GetWidth(0); }
 
 static int V2SE_LoadFile(string_k filename) {
-    FILE* fp = fopen(filename.c_str(), "rb");
+    FILE* fp = _fopen(filename.c_str(), "rb");
     if (!fp) {
         return 0;
     }
@@ -366,7 +368,7 @@ static void V2SE_Backspace() {
 }
 
 static void V2SE_Save() {
-    FILE* fp = fopen("crap.dat", "wt");
+    FILE* fp = _fopen("crap.dat", "wt");
 
     lines->go_head();
     do {
@@ -379,6 +381,7 @@ static void V2SE_Save() {
     } while (lines->current() != lines->head());
 
     fclose(fp);
+    wasm_syncFileSystem();
 }
 
 static int editor_processing = 0;

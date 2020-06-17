@@ -18,11 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// зддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддд©
-// Ё                  The VergeC Compiler version 2.01                   Ё
-// Ё              Copyright (C)1998 BJ Eirich (aka vecna)                Ё
-// Ё                           Lexical Parser                            Ё
-// юддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддддды
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫д©
+// О©╫                  The VergeC Compiler version 2.01                   О©╫
+// О©╫              Copyright (C)1998 BJ Eirich (aka vecna)                О©╫
+// О©╫                           Lexical Parser                            О©╫
+// О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,7 +93,7 @@ char*	hardfuncs[] =
 
 	// E
         "hookkey",                      "playmusic",                    "stopmusic",
-        "palettemorph",                 "fopen",                        "fclose",
+        "palettemorph",                 "_fopen",                        "fclose",
         "quickread",                    "addfollower",                  "killfollower",
         "killallfollowers",             "resetfollowers",               "flatpoly",
         "tmappoly",                     "cachesound",                   "freeallsounds",

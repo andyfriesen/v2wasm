@@ -16,9 +16,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef CONTROL_H
 #define CONTROL_H
 
-extern int kb1, kb2, kb3, kb4;
-extern int jb1, jb2, jb3, jb4;
-
 extern int b1, b2, b3, b4;
 extern int up, down, left, right;
 

@@ -18,11 +18,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-// ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
-// ³                        The VergeC Compiler                          ³
-// ³              Copyright (C)1998 BJ Eirich (aka vecna)                ³
-// ³                            Main module                              ³
-// ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
+// ï¿½                        The VergeC Compiler                          ï¿½
+// ï¿½              Copyright (C)1998 BJ Eirich (aka vecna)                ï¿½
+// ï¿½                            Main module                              ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 #define VERSION "2.5 beta 5.5 (experimental)"
 
@@ -108,7 +108,7 @@ void err(char *message, ...)
 	va_end   (lst);
 
 	if (quiet) {
-		FILE *efile = fopen("ERROR.TXT", "w");
+		FILE *efile = _fopen("ERROR.TXT", "w");
 		fprintf(efile, "%s \n", string);
 		fclose(efile);
 	} else {
@@ -144,7 +144,7 @@ void log(char* message, ...)
 	vsprintf(temp, message, lst);
 	va_end(lst);
 
-	fp=fopen("VCC.LOG", "a+");
+	fp=_fopen("VCC.LOG", "a+");
 	if (!fp)
 	{
 		err("log: unable to open VCC.LOG for writing");
@@ -181,7 +181,7 @@ void vcc_compile_mode_map(char *filename)
 	CompileMAP(filename);
 
 // append map extension and open
-	infile = fopen(va("%s.map", filename), "rb+");
+	infile = _fopen(va("%s.map", filename), "rb+");
 	if (!infile)
 	{
 		err("unable to open %s.", va("%s.map", filename));
@@ -194,7 +194,7 @@ void vcc_compile_mode_map(char *filename)
 	fread(&z, 1, 4, infile);
 	fseek(infile, 0, SEEK_SET);
 
-	outfile = fopen("outtemp.$$$", "wb");
+	outfile = _fopen("outtemp.$$$", "wb");
 	if (!outfile)
 	{
 		err("unable to open outtemp.$$$");
@@ -248,11 +248,11 @@ void DumpSystemVCS()
 	n = 0;
 	buf[0] = '\0';
 
-	f = fopen("system.xvc", "rb");
+	f = _fopen("system.xvc", "rb");
 // ensure system.xvc exists; if not at this point, just create empty one
 	if (!f)
 	{
-		f = fopen("system.xvc", "wb");
+		f = _fopen("system.xvc", "wb");
 		if (!f)
 			err("DumpSystemVCS: error opening system.xvc for writing.");
 		fwrite(xvc_sig, 1, 8, f);
@@ -261,7 +261,7 @@ void DumpSystemVCS()
 	}
 	fclose(f);
 
-	f = fopen("system.xvc", "rb");
+	f = _fopen("system.xvc", "rb");
 	if (!f)
 	{
 		err("DumpSystemVCS: unable to open system.xvc");
@@ -288,7 +288,7 @@ void DumpSystemVCS()
 
 	fclose(f);
 
-	f = fopen("system.xvc", "wb");
+	f = _fopen("system.xvc", "wb");
 	if (!f)
 	{
 		err("DumpSystemVCS: unable to open system.xvc for code append");

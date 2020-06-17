@@ -1426,7 +1426,6 @@ void vc_fwopen() {
     filename = ResolveString();
     filename = EnforceNoDirectories(filename);
 
-    //	vcreturn=(int)fopen((const char*)filename,"wb");
     vcreturn = OpenWriteVCFile(filename.c_str());
 
     Log(va(" --> VC opened %s for writing, handle %i.", filename.c_str(),
@@ -1434,7 +1433,6 @@ void vc_fwopen() {
 }
 
 void vc_fwclose() {
-    // f=(FILE *)ResolveOperand();
     int idx = ResolveOperand();
     CloseVCFile(idx);
 

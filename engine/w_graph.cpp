@@ -37,18 +37,18 @@ GrDriver::GrDriver() {
 
 GrDriver::~GrDriver() { ShutDown(); }
 
-bool GrDriver::Init(int x, int y, int c) {
+bool GrDriver::Init(int x, int y, bool bpp16) {
     xres = scrx = x;
     yres = scry = y;
-    bpp = c == 16 ? 2 : 1;
+    bpp = bpp16 ? 2 : 1;
 
     clip.left = 0;
     clip.top = 0;
     clip.right = xres;
     clip.bottom = yres;
 
-    truescreen.resize(x * y * c);
-    screen32.resize(x * y * c);
+    truescreen.resize(x * y * bpp);
+    screen32.resize(x * y);
     screen = truescreen.data();
 
     wasm_initvga(x, y);
@@ -60,8 +60,6 @@ int GrDriver::SetMode(int x, int y) {
 
     truescreen.resize(x * y * bpp);
     screen32.resize(x * y);
-
-    wasm_vgaresize(x, y);
 
     xres = scrx = x;
     yres = scry = y;
