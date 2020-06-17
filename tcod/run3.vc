@@ -1,0 +1,371 @@
+event //autoexec
+{
+ freeallsounds();
+ runpoints=rpoints;
+ rupoints=str(runpoints);
+ run[12]=0;
+ hookretrace(6);
+ ent1=entityspawn(6,6,"djoe.chr");
+ entity.specframe[ent1]=10;
+ entity.speed[ent1]=6;
+ fadein(100,100);
+ cameratracking=1;
+ setplayer(ent1);
+ wait(200);
+ alterftile(6,3,20,0);
+ wait(50);
+ alterftile(6,3,21,0);
+ wait(50);
+ alterftile(6,3,22,0);
+ wait(10);
+ alterftile(6,3,19,0);
+ entitymove(0,"R235");
+ entitymove(1,"R235");
+ entitymove(2,"R235");
+ entitymove(3,"R235");
+ entity.specframe[ent1]=0;
+ partymove("R1");
+}
+event//1 speed up
+{
+ entity.speed[0]=6;
+ entity.speed[1]=6;
+ entity.speed[2]=6;
+ entity.speed[3]=6;
+}
+
+event//2 slow down
+{
+ entity.speed[0]=5;
+ entity.speed[1]=5;
+ entity.speed[2]=5;
+ entity.speed[3]=5;
+}
+event//3 hit
+{
+ entlocx=entity.tx[ent1];
+ entlocy=entity.ty[ent1];
+ soundeffect[1]=cachesound("heal1.wav");
+ playsound(soundeffect[1],128,128);
+ entity.specframe[ent1]=24;
+ runlives=runlives-1;
+ died[3]=died[3]+1;
+ die=die+1;
+ cameratracking=0;
+ wait(200);
+ if(runlives=0)
+ {
+ run[1]=1;
+ while(run[1]=1)
+ {
+  render();
+  gotoxy(100,150);
+  printstring(1,"GAME OVER!!");
+  gotoxy(100,170);
+  printstring(font3,"Do you want to play again?");
+  gotoxy(100,180);
+  printstring(font3,"It's only five crowns");
+  gotoxy(100,200);
+  printstring(1,"Yes");
+  gotoxy(100,220);
+  printstring(1,"No");
+  switch(apnt)
+  {
+  case 1: tscaleSprite(80,200,7,9,14,18,pointer1);
+  case 2: tscaleSprite(80,220,7,9,14,18,pointer1);
+  }
+  showpage();
+  updatecontrols();
+  If(key[80]) { apnt++; del(10,0,0,0);  }
+  if(key[72]) { apnt--; del(10,0,0,0);   }
+  If(apnt<1) { apnt = 2; }
+  If(apnt>2) { apnt = 1; }
+ switch(apnt)
+  {
+  case 1: if(key[28])
+  {
+  unpress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  playmusic("sil.s3m");
+  crowns=crowns-5;
+   if(crowns<0)
+  {
+   crowns=0;
+   fadeout(100,100);
+  musicfade(10);
+  run[3]=0;
+  run[4]=1;
+  run[15]=1;
+  checkscore();  
+ died[1]=0;
+  died[2]=0;
+  died[3]=0;
+  died[4]=0;
+  die=0;
+  mapswitch("dalari4.map",0,0,0);
+  }
+  run[4]=0;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  
+  run[8]=1;
+  runlives=5;
+  runpoints=0;
+  mapswitch("stages.map",0,0,0);
+  }
+     case 2: if(key[28])
+          { 
+           unpress(key[28]);
+           fadeout(100,100);
+  musicfade(10);
+  run[4]=1;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[5]=0;
+  run[6]=0;
+  run[7]=0;
+  run[8]=0;
+  run[9]=0;
+  run[10]=0;
+  run[11]=0;
+  run[12]=0;
+  run[13]=0;
+  runlives=5;
+  died[1]=0;
+  died[2]=0;
+  died[3]=0;
+  died[4]=0;
+  die=0;
+  checkscore();
+  mapswitch("dalari4.map",0,0,0);
+
+
+     }
+}
+ }
+ }
+
+ runpoints=rpoints;
+ rupoints=str(runpoints);
+ mapswitch("run3.map",0,0,0);
+}
+event//4 victory
+{
+ entity.x[0]=0;
+ entity.y[0]=0;
+ entity.x[1]=0;
+ entity.y[1]=0;
+ entity.x[2]=0;
+ entity.y[2]=0;
+ entity.x[3]=0;
+ entity.y[3]=0;
+ partymove("R1");
+ runlives=runlives+1;
+ if(runlives>8)
+ {
+  runlives=8;
+ }
+ musicfade(0);
+ playmusic("sil.s3m");
+ playmusic("djoe1c.s3m");
+ musicfadein(1);
+ wait(30);
+ entity.specframe[ent1]=20;
+ wait(10);
+ entity.specframe[ent1]=21;
+ wait(10);
+ entity.specframe[ent1]=22;
+ wait(10);
+ entity.specframe[ent1]=23;
+ wait(10);
+ apnt=1;
+ while(run[4]=0)
+ {
+  render();
+  gotoxy(100,160);
+  printstring(1,"STAGE CLEAR!!");
+  gotoxy(100,180);
+  printstring(font3,"Got "+rupoints+" points!!");
+if(died[3]=0)
+  {
+  gotoxy(100,190);
+  printstring(font3,"Zero casualities bonus!!!");
+  if(run[12]=0)
+  {
+  runpoints=runpoints+runpoints;
+  rupoints=str(runpoints);
+  run[12]=1;
+  }
+  }
+  gotoxy(100,200);
+  printstring(1,"Next stage");
+  gotoxy(100,220);
+  printstring(1,"End game");
+  switch(apnt)
+  {
+  case 1: tscaleSprite(80,200,7,9,14,18,pointer1);
+  case 2: tscaleSprite(80,220,7,9,14,18,pointer1);
+  }
+  showpage();
+  updatecontrols();
+  If(key[80]) { apnt++; del(10,0,0,0);  }
+  if(key[72]) { apnt--; del(10,0,0,0);   }
+  If(apnt<1) { apnt = 2; }
+  If(apnt>2) { apnt = 1; }
+ switch(apnt)
+  {
+  case 1: if(key[28])
+  {
+  unpress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  playmusic("sil.s3m");
+  run[4]=0;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[10]=1;
+  rpoints=runpoints;
+  mapswitch("stages.map",0,0,0);
+  }
+     case 2: if(key[28])
+          { 
+           UnPress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  run[3]=0;
+  run[4]=1;
+    died[1]=0;
+  died[2]=0;
+  died[3]=0;
+  died[4]=0;
+  die=0;
+  checkscore();
+  mapswitch("dalari4.map",0,0,0);
+
+     }
+}
+}
+
+}
+
+event //5 crystal1
+{
+ point(35,5);
+}
+event// 6 showpoints
+{
+ gotoxy(240,10);
+ printstring(font3,"Points: "+rupoints);
+ switch(runlives)
+ {
+  case 1:
+         tscalesprite(5,5,32,30,16,15,im2);
+  case 2:
+         tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+  case 3:
+        tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+  case 4:
+          tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+        tscalesprite(53,5,32,30,16,15,im2);
+  case 5:
+         tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+        tscalesprite(53,5,32,30,16,15,im2);
+         tscalesprite(69,5,32,30,16,15,im2);
+  case 6:
+         tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+         tscalesprite(53,5,32,30,16,15,im2);
+         tscalesprite(69,5,32,30,16,15,im2);
+         tscalesprite(85,5,32,30,16,15,im2);
+  case 7:
+         tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+         tscalesprite(53,5,32,30,16,15,im2);
+         tscalesprite(69,5,32,30,16,15,im2);
+         tscalesprite(85,5,32,30,16,15,im2);
+         tscalesprite(101,5,32,30,16,15,im2);
+ case 8:
+         tscalesprite(5,5,32,30,16,15,im2);
+         tscalesprite(21,5,32,30,16,15,im2);
+         tscalesprite(37,5,32,30,16,15,im2);
+         tscalesprite(53,5,32,30,16,15,im2);
+         tscalesprite(69,5,32,30,16,15,im2);
+         tscalesprite(85,5,32,30,16,15,im2);
+         tscalesprite(101,5,32,30,16,15,im2);
+         tscalesprite(117,5,32,30,16,15,im2);
+
+ }
+} 
+event //7 crystal2
+{
+ point(56,6);
+}
+event //8 crystal3
+{
+ point(85,7);
+}
+event //9 crystal4
+{
+ point3(103,6);
+}
+event //10 crystal5
+{
+ point2(104,5);
+}
+event //11 crystal6
+{
+ point(124,7);
+}
+event //12 crystal7
+{
+ point(137,5);
+}
+event //13 crystal8
+{
+ point(150,7);
+}
+event //14 crystal9
+{
+ point2(150,5);
+}
+event //15 crystal10
+{
+ point(166,6);
+}
+event //16 crystal11
+{
+ point(177,6);
+}
+event //17 crystal12
+{
+ point2(186,7);
+}
+event //18 crystal13
+{
+ point(212,6);
+}
+event //19 crystal14
+{
+ point(237,5);
+}
+event //20 crystal15
+{
+ point(238,5);
+}
+event //21 crystal16
+{
+ point(239,5);
+}

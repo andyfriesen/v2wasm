@@ -1,0 +1,132 @@
+
+void question(int qnum,string a,string b,string c,string d,string answer1,string answer2,string answer3,string answer4)
+{
+ qpnt=1;
+ //font4=loadfont("text5.fnt");
+ textbox = loadimage("prtbox.pcx");
+ while(questio=1)
+ {
+   while (timer)
+    {
+      ProcessEntities();
+      timer--;
+    }
+    Render();
+    if(battlegoing=0)
+    {
+    TscaleSprite(0, 160, 320, 64,360,80, textbox); 
+    GotoXY(10,165);  PrintString(1,a); GotoXY(10,181); PrintString(1,b);
+      GotoXY(10,197); PrintString(1,c); GotoXY(10,213); PrintString(1,d);
+      GotoXY(305,213);  PrintString(1,answer4); gotoXY(305,165);  PrintString(1,answer1);
+      GotoXY(305,181); PrintString(1,answer2); GotoXY(305,197);    PrintString(1,answer3);
+    }
+   if(battlegoing=1)
+    {
+    GotoXY(10,405);  PrintString(1,a); GotoXY(10,421); PrintString(1,b);
+      GotoXY(10,437); PrintString(1,c); GotoXY(10,453); PrintString(1,d);
+      GotoXY(305,453);  PrintString(1,answer4); gotoXY(305,405);  PrintString(1,answer1);
+      GotoXY(305,421); PrintString(1,answer2); GotoXY(305,437);    PrintString(1,answer3);
+    }
+      updatecontrols();
+      If(key[80]) { qpnt++; del(10,0,0,0);  }
+          If(key[72]) { qpnt--; del(10,0,0,0);   }
+           If(qpnt<1) { qpnt = qnum; }
+           If(qpnt>qnum) { qpnt = 1; }
+       switch(qpnt)
+       {
+       case 1: 
+               if(battlegoing=0)
+               {
+               GotoXY(290,165); 
+               PrintString(1,">"); 
+               } 
+               if(battlegoing=1)
+               {
+               GotoXY(295,405); 
+               PrintString(1,">"); 
+               }
+               if(key[28])
+                {
+                 problem=1;
+                 questio=0;
+                } 
+       case 2: 
+               if(battlegoing=0)
+               {
+               GotoXY(290,181); 
+               PrintString(1,">"); 
+               }
+                if(battlegoing=1)
+               {
+               GotoXY(295,421); 
+               PrintString(1,">"); 
+               }
+                if(key[28])
+                {
+                 problem=2;
+                 questio=0;
+                } 
+
+       case 3: 
+               if(battlegoing=0)
+               {
+               GotoXY(290,197); 
+               PrintString(1,">");
+               }
+               if(battlegoing=1)
+               {
+               GotoXY(295,437); 
+               PrintString(1,">");
+               }
+               if(key[28])
+                {
+                 problem=3;
+                 questio=0;
+                } 
+ 
+       case 4: 
+               if(battlegoing=0)
+               {
+               GotoXY(290,213); 
+               PrintString(1,">");
+               }
+                if(battlegoing=1)
+               {
+               GotoXY(295,453); 
+               PrintString(1,">");
+               }
+               if(key[28])
+                {
+                 problem=4;
+                 questio=0;
+                } 
+ 
+       }
+      showpage();
+   }
+   free(textbox);
+}
+void Save()
+  {
+   int filex;
+  filex = fwopen("TCOD"+str(menupnt[40])+".SAV");
+  WriteVars(filex);
+  fwclose(filex);
+  }  
+void Loadsaved()
+  {
+  int break;
+  break = fopen("TCOD"+str(menupnt[40])+".SAV");
+  ReadVars(break);
+  fclose(break);
+}  
+void end()
+{
+ map("alku.map");
+}
+
+void restart()
+{
+ map("nashga.map");
+}
+

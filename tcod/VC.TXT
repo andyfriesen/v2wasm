@@ -1,0 +1,215 @@
+//----------------------------------------------------
+// Zingoshi Quake effect
+// More at: www.homestead.com/zingoshi/
+//----------------------------------------------------
+// #include in system.vc
+//----------------------------------------------------
+
+//----------------------------------------------------
+// 'Quakes' the screen for 'dur' with 'in' intensity
+
+void Zquake(int dur, int in)
+{
+int a, ox, oy;
+	ox=xwin;
+	oy=ywin;
+	cameratracking = 0;
+	for(a=0;a<dur;a++)
+	{
+		processentities();
+		render();
+		xwin = ox + (random(2*in)-in);
+		ywin = oy + (random(2*in)-in);
+		showpage();
+		wait(2);
+	}
+	xwin=ox;
+	ywin=oy;
+	cameratracking = 1;
+}
+
+//----------------------------------------------------
+// Please mention Zingoshi/Dave Probert as the creator if you use this :-)
+
+//----------------------------------------------------
+// Zingoshi Zappy effect
+// More at: www.homestead.com/zingoshi/
+//----------------------------------------------------
+// #include in system.vc
+//----------------------------------------------------
+
+//----------------------------------------------------
+// Mosaic effect Global table variable
+
+int Zmostable;
+
+//----------------------------------------------------
+// Call this from a startup routine to initialise a Mosaic table
+// For use with Zappy / Unzappy functions
+// Uses a pause routine
+
+void Zappy_Set()
+{
+	Zmostable = initmosaictable();
+}
+
+//----------------------------------------------------
+// Zappy mosaic thing
+// Note: Does not do a render(), because it can be used 
+// after other drawing has been done.
+
+void Zappy()
+{
+	mosaic(4,4,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	mosaic(8,8,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	mosaic(16,16,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	mosaic(32,32,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+}
+
+//----------------------------------------------------
+// Does the opposite of Zappy, except that it Does do a render()
+// Alter it to suit your needs.
+
+void UnZappy()
+{
+	render();
+	mosaic(32,32,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	render();
+	mosaic(16,16,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	render();
+	mosaic(8,8,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	render();
+	mosaic(4,4,Zmostable,0,0,screenx,screeny);
+	showpage();
+	pause(10);
+	render();
+	showpage();
+}
+
+// Please mention Zingoshi/Dave Probert as the creator if you use this :-)
+
+//----------------------------------------------------
+// Zingoshi Zoom effect
+// More at: www.homestead.com/zingoshi/
+//----------------------------------------------------
+// #include in system.vc
+//----------------------------------------------------
+
+//----------------------------------------------------
+// 'Zooms' the screen - Zelda style effect
+
+void Zzoom()
+{
+int zoomr, zt, zm;
+	zoomr = malloc(screenx*screeny);
+	zm = screenx/64;
+	for(zt=0;zt<zm; zt++)
+	{
+		grabregion(0,0,screenx-1,screeny-1,zoomr);
+		tscalesprite(0-32,0-32,screenx-1,screeny-1,screenx+64,screeny+64,zoomr);
+		showpage();
+	}
+	free(zoomr);
+}
+
+//----------------------------------------------------
+// Please mention Zingoshi/Dave Probert as the creator if you use this :-)
+
+//----------------------------------------------------
+// Zingoshi Lantern effect
+// More at: www.homestead.com/zingoshi/
+//----------------------------------------------------
+// #include in system.vc
+//----------------------------------------------------
+
+//----------------------------------------------------
+// creates a lantern light effect -- not great at the moment!!
+// call from hookretrace
+// Set a Global varaible called 'Zlantern_flag' to a value which 
+// is the radius of the lantern. Set to 0 to switch it off.
+// Use after drawing other things - does not do Render(), Showpage().
+
+void Zlantern()
+{
+int px, py, a, r, r2;
+	if(Zlantern_flag!=0)
+	{
+		r = Zlantern_flag;
+		px = entity.x[player]-xwin;				// gets the screen location of the player
+		py = entity.y[player]-ywin;
+		rectfill(0,0,screenx,py-r,0);				// top rect
+		rectfill(0,py+r,screenx,screeny,0);		// bot rect
+		rectfill(0,py-r,px-r,py+r,0);			// left rect
+		rectfill(px+r,py-r,screenx,py+r,0);	// right rect
+
+		r2 = r/2;
+		for(a=0;a<r2;a++)
+		{
+			//circle(px,py,r+a,0);
+			circle(px+1,py+1,r+a,0);
+			circle(px-1,py+1,r+a,0);
+			circle(px-1,py-1,r+a,0);
+			circle(px+1,py-1,r+a,0);
+		}
+	}
+}
+
+//----------------------------------------------------
+// Please mention Zingoshi/Dave Probert as the creator if you use this :-)
+
+//----------------------------------------------------
+// Zingoshi Burst Explosion Effect
+// More at: www.homestead.com/zingoshi/
+//----------------------------------------------------
+// #include in system.vc
+//----------------------------------------------------
+
+//----------------------------------------------------
+// Burst effect - screen centered
+// Draws random circles and lines to create an explosion effect
+// assumes the standard verge palette for colours
+// position is x,y on screen.
+
+void Zburst(int x, int y, int maxsize)
+{
+int r,a,m2,m3;
+	m2 = maxsize/2;
+	m3 = m2/2;
+	setlucent(1);
+	for(a=0;a<40;a++)
+	{
+		render();
+		circlefill(x,y,m2+random(m3),223+random(15));
+		for(r=0;r<15;r++)
+		{
+			// the 223 is the start colour reference
+			circlefill(x+(m2-random(maxsize)),y+(m2-random(maxsize)),random(m3),223+random(15));
+			line(x,y,x+(m2-random(maxsize)),y+(m2-random(maxsize)),223+random(15));
+		}
+		circlefill(x,y,2+random(m3),223+random(15));
+		showpage();
+	}
+	setlucent(0);
+}
+
+//----------------------------------------------------
+// Burst effect - tile centered
+void Zburst_T(int x, int y, int maxsize)
+{
+	Zburst((x*16)+8,(y*16)+8,maxsize)
+}
+// Please mention Zingoshi/Dave Probert as the creator if you use this :-)

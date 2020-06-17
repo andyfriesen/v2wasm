@@ -1,0 +1,355 @@
+int run[400],runpoints,rpoints,runlives,died[4],die,score[5];
+string rupoints,scores[5],scorer[5];
+void startingscores()
+{
+ scorer[1]="E.T. Gullivar";
+ score[1]=5000;
+ scores[1]=str(score[1]);
+ scorer[2]="Eldrich Smith";
+  score[2]=3000;
+ scores[2]=str(score[2]);
+ scorer[3]="Steve McCleaver";
+  score[3]=1500;
+ scores[3]=str(score[3]);
+ scorer[4]="Babyface Bob";
+  score[4]=750;
+ scores[4]=str(score[4]); 
+ scorer[5]="J.Samuel";
+  score[5]=10;
+ scores[5]=str(score[5]);
+}
+ void checkscore()
+{
+   if(runpoints>score[5] && runpoints<score[4] && runpoints<score[3] && runpoints<score[2] && runpoints<score[1])
+  {
+   score[5]=runpoints;
+   scores[1]=str(score[1]);
+   scores[2]=str(score[2]);
+   scores[3]=str(score[3]);
+   scores[4]=str(score[4]);
+   scores[5]=str(score[5]);
+   scorer[5]="Elliot Drake";
+  }
+  if(runpoints>score[5] && runpoints>score[4] && runpoints<score[3] && runpoints<score[2] && runpoints<score[1])
+  {
+   temp[5003]=score[4];
+   tempstring[5003]=scorer[4];
+   score[5]=temp[5003];
+   scorer[5]=tempstring[5003];
+   score[4]=runpoints;
+      scores[1]=str(score[1]);
+   scores[2]=str(score[2]);
+   scores[3]=str(score[3]);
+   scores[4]=str(score[4]);
+   scores[5]=str(score[5]);
+   scorer[4]="Elliot Drake";
+  }
+  if(runpoints>score[5] && runpoints>score[4] && runpoints>score[3] && runpoints<score[2] && runpoints<score[1])
+  {
+   temp[5002]=score[3];
+   tempstring[5002]=scorer[3];
+   temp[5003]=score[4];
+   tempstring[5003]=scorer[4];
+   score[4]=temp[5002];
+   scorer[4]=tempstring[5002];
+   score[5]=temp[5003];
+   scorer[5]=tempstring[5003];
+   score[3]=runpoints;
+      scores[1]=str(score[1]);
+   scores[2]=str(score[2]);
+   scores[3]=str(score[3]);
+   scores[4]=str(score[4]);
+   scores[5]=str(score[5]);
+   scorer[3]="Elliot Drake";
+  }
+ if(runpoints>score[5] && runpoints>score[4] && runpoints>score[3] && runpoints>score[2] && runpoints<score[1])
+  {
+   temp[5001]=score[2];
+   tempstring[5001]=scorer[2];
+   temp[5002]=score[3];
+   tempstring[5002]=scorer[3];
+   temp[5003]=score[4];
+   tempstring[5003]=scorer[4];
+   temp[5004]=score[5];
+   tempstring[5004]=scorer[5];
+   score[3]=temp[5001];
+   scorer[3]=tempstring[5001];
+   score[4]=temp[5002];
+   scorer[4]=tempstring[5002];
+   score[5]=temp[5003];
+   scorer[5]=tempstring[5003];
+   score[2]=runpoints;
+      scores[1]=str(score[1]);
+   scores[2]=str(score[2]);
+   scores[3]=str(score[3]);
+   scores[4]=str(score[4]);
+   scores[5]=str(score[5]);
+   scorer[2]="Elliot Drake";
+  }
+   if(runpoints>score[5] && runpoints>score[4] && runpoints>score[3] && runpoints>score[2] && runpoints>score[1])
+  {
+   temp[5000]=score[1];
+   tempstring[5000]=scorer[1];
+   temp[5001]=score[2];
+   tempstring[5001]=scorer[2];
+   temp[5002]=score[3];
+   tempstring[5002]=scorer[3];
+   temp[5003]=score[4];
+   tempstring[5003]=scorer[4];
+   score[2]=temp[5000];
+   scorer[2]=tempstring[5000];
+   score[3]=temp[5001];
+   scorer[3]=tempstring[5001];
+   score[4]=temp[5002];
+   scorer[4]=tempstring[5002];
+   score[5]=temp[5003];
+   scorer[5]=tempstring[5003];
+   score[1]=runpoints;
+   scores[1]=str(score[1]);
+   scores[2]=str(score[2]);
+   scores[3]=str(score[3]);
+   scores[4]=str(score[4]);
+   scores[5]=str(score[5]);
+   scorer[1]="Elliot Drake";
+  }
+ }
+void showscores()
+{
+ gotoxy(100,20);
+ printstring(1,"HIGHSCORES");
+ gotoxy(10,50);
+ printstring(1,scores[1]+" Points "+"By "+scorer[1]);
+ gotoxy(10,70);
+ printstring(1,scores[2]+" Points "+"By "+scorer[2]);
+ gotoxy(10,90);
+ printstring(1,scores[3]+" Points "+"By "+scorer[3]);
+ gotoxy(10,110);
+ printstring(1,scores[4]+" Points "+"By "+scorer[4]);
+ gotoxy(10,130);
+ printstring(1,scores[5]+" Points "+"By "+scorer[5]);
+}
+void explode()
+{
+ entlocx=entity.tx[ent1];
+ entlocy=entity.ty[ent1];
+ if(entity.ty[ent1]=a)
+ {
+  soundeffect[3]=cachesound("xplosion2.wav");
+  playsound(soundeffect[3],128,128);
+  entity.specframe[b]=4;
+  wait(5);
+  entity.specframe[b]=3;
+  wait(5);
+  entity.specframe[b]=2;
+  wait(5);
+  entity.specframe[b]=5;
+  wait(5);
+  entity.specframe[ent1]=24;
+ runlives=runlives-1;
+ died[4]=died[4]+1;
+ die=die+1;
+ cameratracking=0;
+ wait(200);
+ if(runlives=0)
+ {
+ run[1]=1;
+ while(run[1]=1)
+ {
+  render();
+  gotoxy(100,150);
+  printstring(1,"GAME OVER!!");
+  gotoxy(100,170);
+  printstring(font3,"Do you want to play again?");
+  gotoxy(100,180);
+  printstring(font3,"It's only five crowns");
+  gotoxy(100,200);
+  printstring(1,"Yes");
+  gotoxy(100,220);
+  printstring(1,"No");
+  switch(apnt)
+  {
+  case 1: tscaleSprite(80,200,7,9,14,18,pointer1);
+  case 2: tscaleSprite(80,220,7,9,14,18,pointer1);
+  }
+  showpage();
+  updatecontrols();
+  If(key[80]) { apnt++; del(10,0,0,0);  }
+  if(key[72]) { apnt--; del(10,0,0,0);   }
+  If(apnt<1) { apnt = 2; }
+  If(apnt>2) { apnt = 1; }
+ switch(apnt)
+  {
+  case 1: if(key[28])
+  {
+  unpress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  playmusic("sil.s3m");
+  crowns=crowns-5;
+  run[4]=0;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[10]=1;
+  runlives=5;
+  runpoints=0;
+  mapswitch("stages.map",0,0,0);
+  }
+     case 2: if(key[28])
+          { 
+           UnPress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  run[3]=0;
+  run[4]=1;
+   run[4]=1;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[5]=0;
+  run[6]=0;
+  run[7]=0;
+  run[8]=0;
+  run[9]=0;
+  run[10]=0;
+  run[11]=0;
+  run[12]=0;
+  run[13]=0;
+  runlives=5;
+  died[1]=0;
+  died[2]=0;
+  died[3]=0;
+  died[4]=0;
+  die=0;
+  runpoints=0;
+  checkscore();
+  mapswitch("dalari4.map",0,0,0);
+
+     }
+   }
+ }
+ }
+ runpoints=rpoints;
+ rupoints=str(runpoints);
+ mapswitch("run4.map",0,0,0);
+}
+}
+
+void explode2(int c, int d)
+{
+  soundeffect[3]=cachesound("xplosion2.wav");
+  playsound(soundeffect[3],128,128);
+  b=entityspawn(c,d,"bllet.chr");
+  entity.specframe[b]=4;
+  wait(5);
+  entity.specframe[b]=3;
+  wait(5);
+  entity.specframe[b]=2;
+  wait(5);
+  entity.specframe[b]=5;
+  wait(5);
+  entity.specframe[ent1]=24;
+ runlives=runlives-1;
+ died[4]=died[4]+1;
+ die=die+1;
+ cameratracking=0;
+ wait(200);
+ if(runlives=0)
+ {
+ run[1]=1;
+ while(run[1]=1)
+ {
+  render();
+  gotoxy(100,150);
+  printstring(1,"GAME OVER!!");
+  gotoxy(100,170);
+  printstring(font3,"Do you want to play again?");
+  gotoxy(100,180);
+  printstring(font3,"It's only five crowns");
+  gotoxy(100,200);
+  printstring(1,"Yes");
+  gotoxy(100,220);
+  printstring(1,"No");
+  switch(apnt)
+  {
+  case 1: tscaleSprite(80,200,7,9,14,18,pointer1);
+  case 2: tscaleSprite(80,220,7,9,14,18,pointer1);
+  }
+  showpage();
+  updatecontrols();
+  If(key[80]) { apnt++; del(10,0,0,0);  }
+  if(key[72]) { apnt--; del(10,0,0,0);   }
+  If(apnt<1) { apnt = 2; }
+  If(apnt>2) { apnt = 1; }
+ switch(apnt)
+  {
+  case 1: if(key[28])
+  {
+  unpress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  playmusic("sil.s3m");
+  crowns=crowns-5;
+  run[4]=0;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[10]=1;
+  runlives=5;
+  runpoints=0;
+  mapswitch("stages.map",0,0,0);
+  }
+     case 2: if(key[28])
+          { 
+           UnPress(key[28]);
+  fadeout(100,100);
+  musicfade(10);
+  run[3]=0;
+  run[4]=1;
+   run[4]=1;
+  run[3]=0;
+  run[1]=0;
+  run[2]=0;
+  run[5]=0;
+  run[6]=0;
+  run[7]=0;
+  run[8]=0;
+  run[9]=0;
+  run[10]=0;
+  run[11]=0;
+  run[12]=0;
+  run[13]=0;
+  runlives=5;
+  died[1]=0;
+  died[2]=0;
+  died[3]=0;
+  died[4]=0;
+  die=0;
+  runpoints=0;
+  checkscore();
+  mapswitch("dalari4.map",0,0,0);
+
+     }
+   }
+ }
+ }
+ runpoints=rpoints;
+ rupoints=str(runpoints);
+ mapswitch("run4.map",0,0,0);
+}
+
+void explode3(int c, int d)
+{
+  soundeffect[3]=cachesound("xplosion2.wav");
+  playsound(soundeffect[3],128,128);
+  b=entityspawn(c,d,"bllet.chr");
+  entity.specframe[b]=4;
+  wait(5);
+  entity.specframe[b]=3;
+  wait(5);
+  entity.specframe[b]=2;
+  wait(5);
+  entity.specframe[b]=5;
+  wait(5);
+  entity.specframe[b]=6;
+}

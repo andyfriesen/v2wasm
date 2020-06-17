@@ -1,0 +1,242 @@
+THE CURSE OF DRAGMORIA		MANUAL		
+-Chapters 1 & 2 
+-Diamond Joe			3.1.2001
+Author: Ratgash
+
+
+
+
+
+
+Chapter 1. The Slums
+
+The story of Elliot Drake begins with this prologue. Three friends, Elliot, Tanya and Jack try to collect money for Elliot's father. However, they confront different dangers during the task, and the temptation to spend money isn't the least of them. 
+
+
+Chapter 2. The Lords of Decay
+	
+The second chapter naturally continues from where the first one ended. It's much more story-based than the first chapter. It's also more straightforward so there's not as much fooling around as earlier. We tried to include as interesting battles as possible: all the bosses are unique and challenging (I hope!). 
+
+Perhaps one thing should be mentioned: TCoD: Odysseia is not going to be an incredibly long game, the finished version should last 5 hours at most. Indeed, the next chapter is the last one for the Odysseia. I hope, that by doing so, we can avoid the game becoming boring and repetitive. 
+
+Special attention has been given to the dungeons, which should offer diversity in challenges as well as interesting characters to meet (and do battle with). 
+
+
+Overall
+
+This version (1 & 2:nd chapters) should last about two hours, depending on how it's played, of course. Most of the locations should offer extra for those diligent enough to look.
+
+As for the playability; the game tends to crash now and then, so remember to save often, especially in the dungeons where there are battles.
+
+I apologize for our ill sense of humor (When you meet Oggruck, you know what I mean...).  
+
+Okay, time for me to shut up, I hope you enjoy playing TCoD.                 
+
+
+
+CONTROLS
+
+Mapscreen:
+
+Key:
+
+
+L-Shift  	 Left shift is used for running...
+
+Ctrl   	 ...for stopping the running, (yeah, I know it's a bit unpractical, it's only temporary... 	
+
+Enter    	 is the action button, and is used most often. Use it to open doors, boxes, talk to people etc. Note that you              can only see doors that are in the north. Doors in other directions are marked with small arrows. Use enter              when facing the arrow to, well, enter.
+   
+space    	 calls the menuscreen.
+
+
+Menuscreen:
+
+Key:
+
+Enter   	 is used to activate different commands.
+        
+Alt       	 exits menuscreen
+
+Ctrl     	 Takes one step back, for example exits the item screen into menuscreen.
+
+
+Itemscreen:
+
+To use an item, select it and press enter. Then select the character you want to use it on and                                                      press enter. Now you can see the character's status. Press enter again and the item is used,                                                              and then press once more enter to exit the status screen. Exit the itemscreen by ctrl. 
+
+Battle:
+Key:
+Enter     	 is used to select and activate different commands.
+
+Ctrl      	 is used to return to the command select.
+
+
+
+
+
+
+
+
+COMBAT
+
+If you've played our previous releases, you'll notice the battlesystem has been completely remade. Instead of PCX-images we now use chrs, which are much more convenient. The maximum number of enemies is eight and you can control up to four partymembers of your own. 
+
+You'll also note that TCoD's battlesystem is somewhat different from other battlesystems. 
+TCoD's BS is built around the mental toughness of the combatants. The mental condition is measured by SPIRIT. Low Spirit means the enemy/party is tired and unmotivated to fight. High Spirit stands for high motivation and physical condition. The Spirit drops when a character receives damage. Pain makes him to hesitate and if he sees the situation is hopeless, he panics. Thus, a strong party/enemy can cause terror to the opposing side by making continuous attacks and thus overwhelming the enemy. 
+
+
+All this represents a real combat situation. In real life, combats are rarely fought to the death. At some point, one of the combatants sees he's no mach for the other and tries to flee. Rarely a person or, especially, an animal stands till the end if overwhelmed by the opposition. Only if the character is furious, may he stand whatever comes against him. In TCoD this is represented by Berserk-condition. 
+
+The Spirit can be raised by healing your characters. They begin to feel better and more secure and carry on fighting. 
+
+Different conditions alter Spirit in different ways. Poison slowly lowers your spirit, Berserk can withstand double the damage that normally causes you to mentally break and flee. Zombie makes you immune to the lowering spirit, but makes you twice more vulnerable to attacks.  
+ 
+The battle is over when:
+
+1. The other side is totally wiped out. 
+2. The other side's Spirit drops to zero and is thus forced to flee.
+3. The other side decides to run even if it's not forced to do so.
+
+Because of the limited combat rounds and the Spirit, the fighting in TCoD can be very tactical. Falling of one character is in a significant role. You must take care of your party's wellbeing, otherwise they panic and are forced to flee. Sometimes this can, however, be an advantage. If the enemy is way too strong for you, you can still save yourself from death. Just see that you run out of Spirit before dying. Thus you'll flee and stay alive. However, some bosses won't treat you very nicely afterwards, so be careful. 
+
+There are three types of beginning a battle:
+
+1. Enemy's advantage: Enemy attacks one extra round before you.
+2. Your advantage: You'll attack one extra round before the enemy.
+3. Fight: Normal battle.
+
+The combatants in TCoD don't actually die during the combat, but become unconscious. Thus there's no revive-spell. Unconscious characters can be healed in the same way as standing ones. Note that you can also attack unconscious enemies and thus make them more difficult to heal. This also drops the opponent's Spirit, they become horrified by the bloodlust of their opponent. A character becomes unconscious when his Hp drops below zero.  
+
+When you gain more levels, your maximum Spirit will rise. Also tougher enemies will have higher Spirit maximum.
+
+Regroup
+
+A new feature is called "REGROUP". This represents a sudden move made by the other side of the combatants. Basically, what it does is it randomly gives an  advantage to either side: so the result is either Fight, Enemy's advantage or Your advantage. Regroup always comes after 7 rounds. This is not very  realistic, we wanted to move the battlesystem even more closer to a boardgame, where there are strict rules to represent different challenges.
+
+Regroup also gives you an opportunity to give up the fighting before the advantage is cast, so you don't have to "suffer" the consequences. Of course, you gain no experience by surrendering.    
+
+This also changes the battlesystem a bit from before: all the battles now last until one of the sides is wiped out either physically or mentally. The battle doesn't end after nine rounds as before (in previous releases). 
+
+Personally I think this new feature makes the battles much more exiting than before, especially the bossbattles. It brings the element of surprise to the battle and makes the player uncertain of how the battle will turn out. 
+
+Critical hit
+
+Each combatant has a 10% chance of striking a critical hit, which doubles the damage.
+
+Running from battles
+
+When attempting to run away from battle, you have 70% chance of succeeding. If you fail to run, the opposition gets an advantage. The percentage rises by 10% on each attempt to flee, so it's 100% on the fourth attempt.
+
+Conditions
+
+TCoD contains most of the typical character conditions, like berserk, poison and paralyze. Some of the conditions work differently than usually. 
+
+	
+Blind
+
+Blind halves character's weaponskill. In TCoD, blind is cumulative, so it halves the WS each time the blind is affected. So, WS being 85, the first blind reduces WS to 42 and if the same character is blinded again, his WS is reduced to 21 and so-on.  
+	
+Curse
+
+Like blind, curse is also cumulative. Curse halves the damage the cursed character can inflict. 
+
+Blind can be cured by Eyedrops and curse by Prayer. Check the INFO in the menuscreen to find out the rest of the conditions. 
+
+
+EQUIP/UNEQUIP
+
+Equipping weapons and armor is simple, just select the gear you want to equip and press enter to proceed. Remember, that each and every weapon, armor or special equipment can be used by any of the partymembers.
+
+Unequip is as easy to use: if you want to remove something a character is wearing, select the Unequip -command and proceed by pressing enter. Then you can select the gear you want to remove and press enter again to proceed.
+
+You can use the Ctrl -key to cancel your selections.    
+
+
+MUSIC MENU
+
+You may find a walkman during the play. This gives you the chance to listen most of the over forty pieces of music in the game. When you get the walkman, you can enter the Music menu from the Main menu. Now you can choose the tune you want to play and then continue the game normally.
+Press SHIFT to change pages in the Music menu. Press left or right (with the arrows) to rise or lower the volume. 
+
+
+
+NOTES:
+
+1. In the menuscreen, select INFO for explanations to different conditions (poison, berserk etc.). 
+2. You can skip the text in the start -screen by pressing ENTER.
+3. The saved games from older versions do NOT work with this one, so you have to replay the first chapter. This is due to the various changes in the system. Neither will games saved in this version work in the final version. Sorry about that. 
+4. All music is composed by Immortalowl, except the battle-theme for Arma Gatza, of which you can blame me.  
+
+
+TIPS:
+
+1. Often Bosses attack with a number of their allies. If, however, the leader is killed, the allies may    considerate if it's worth risking their life now that their boss is down.
+2. The most valuable items, like the Wooden Bracelet are somehow hidden, so it's worth talking to as many people as possible. You never know what you could find, and believe me, you need every possible help there is in the second chapter!
+3. Save the Medikits for boss-battles! Use the cure -spell and lesser healing-items in normal healing.
+4. Different weapons work differently against different enemies (!). So, for example, a bowgun is effective against rats and bats. Find out the weaknesses of the enemies!
+5.  REMEMBER TO SAVE OFTEN!!!  
+ 
+
+MINIGAMES
+
+TCoD features a minigame called Diamond Joe. It's made to honor the memory of the golden age of NES. It's really hard to complete, as games usually were back then. TCoD is also made keeping this in mind; its not a walkthrough-game like most of the new RPGs. 
+
+The goal in DJoe is to run through a stage full of different barriers. You're chased by a lazerbeam and if it catches you, you're dead meat. By running through the white finish-line in the far end of the track , you complete the stage. You can get points by collecting diamonds. By clearing a stage without dying, your current points will be doubled. By completing the whole game without dying, your points will also be tripled!
+
+
+Controls for DJoe:
+
+When the stage begins wait for the light to go green. When it does, start running to the right. Keep the right arrow pressed until you've completed the stage (or died). By pressing the other arrows, you can naturally run in different directions and thus avoid traps and dodge barriers.
+
+The arrows are the only keys you need while playing. When the stage is finished, press enter to move forward.
+ 
+
+The next version
+
+The Chapter 3. is set to be released in summer 2001. It's the last chapter of Odysseia then, so it'll be very addictive (well, hopefully)! After that, the story continues in the second part, LEGENDA, but that's still far in the distant future...  
+
+
+Known bugs
+
+- The Cure -spell gives a bit of trouble: when Cure is used for the first time in battles, Elliot doesn't turn yellow when he's selected. However, he can be selected and cured normally, it's just that he doesn't turn yellow...
+- some minor errors (like leeches may act quite weird when unconscious, never mind them...)
+
+About ripping:
+
+All chrs, maps, music and artwork are for TCoD only. However, you can freely use fonts. Also you may take some small objects you find fitting in your game from the VSPs, like water, clocks and chairs; bits of code, soundeffects and such. 
+
+We decided to release all the code from the first chapter with this version as well. Feel free to use them, though I seriously think you'll be confused by our ints, they're pretty terribly organized! Heh, well, we are not the most systematic persons in the World...but that's how we like to work.
+
+You might wonder why we use freeallsounds(); all the time, instead of free();, that's just because when we use free(); for soundeffects, the game most certainly crashes. 
+
+Also, if you find we've done something in the wrong way, or could do something better, please feel free to help us to do so. Thanks.    
+
+Graphics, story:
+Ratgash
+
+Code, music:
+Immortalowl
+
+Note: Your feedback is important. It'll help us to make the upcoming game better so if you have something to comment, complain, ask, or suggest please mail them to:
+     
+Immortalowl@hotmail.com
+
+Or
+
+Ratgash@hotmail.com
+
+Our website:
+http://koti.mbnet.fi/~mayday/index.html
+  
+Thanks:
+
+We've used some bits of public-code from various coders, so special thanks to them:
+
+Zingoshi/Dave Probert (You find his codes in a separate text file: Vc.txt.
+Poon for the Scroll -function.
+Earsoft for the pause-entity -function.
+
+The demo has been tested with P3 450 MHZ with 128 MB memory.
+
+The Curse of Dragmoria, Diamond Joe
+Copyright(c)2001 Risto & Jukka Matikainen

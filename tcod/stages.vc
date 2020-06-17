@@ -1,0 +1,91 @@
+event //autoexec
+{
+ render();
+ if(run[10]=1)
+ {
+  playmusic("djoeb.s3m");
+  }
+ ELSE
+ {
+ playmusic("djoe1.s3m");
+ }
+ palettemorph(0,0,0,0,63);
+ while(run[2]=0 && run[7]=1)
+ {
+  gotoxy(100,160);
+  printstring(1,"STAGE 1:");
+  gotoxy(100,180);
+  printstring(font3,"Presenting Diamond joe");
+  showpage();
+  updatecontrols();
+  if(key[28])
+  {
+   run[2]=1;
+   run[7]=0; 
+   mapswitch("run1.map",0,0,0);
+  }
+ }
+ while(run[2]=0 && run[5]=1)
+ {
+  gotoxy(100,160);
+  printstring(1,"STAGE 2:");
+  gotoxy(100,180);
+  printstring(font3,"The Bridge");
+  showpage();
+  updatecontrols();
+  if(key[28])
+  {
+   run[2]=1;
+   run[5]=0;
+   mapswitch("run2.map",0,0,0);
+  }
+ }
+ while(run[2]=0 && run[8]=1)
+ {
+  gotoxy(100,160);
+  printstring(1,"STAGE 3:");
+  gotoxy(100,180);
+  printstring(font3,"The Speedway");
+  showpage();
+  updatecontrols();
+  if(key[28])
+  {
+   run[2]=1;
+   run[8]=0;
+   mapswitch("run3.map",0,0,0);
+  }
+ }
+ while(run[2]=0 && run[10]=1)
+ {
+  gotoxy(100,160);
+  printstring(1,"STAGE 4:");
+  gotoxy(100,180);
+  printstring(font3,"The Grinder");
+  showpage();
+  updatecontrols();
+  if(key[28])
+  {
+   run[2]=1;
+   run[10]=0;
+   run[14]=0;
+   mapswitch("run4.map",0,0,0);
+  }
+ }
+ while(run[2]=0 && run[11]=1)
+ {
+  gotoxy(100,160);
+  printstring(1,"STAGE 4:");
+  gotoxy(100,180);
+  printstring(font3,"The Woodland");
+  showpage();
+  updatecontrols();
+  if(key[28])
+  {
+   run[2]=1;
+   run[11]=0;
+   mapswitch("run5.map",0,0,0);
+  }
+ }
+
+}
+

@@ -1,0 +1,268 @@
+event //autoexec
+{
+ freeallsounds();
+ playmusic("strange.s3m");
+ setresolution(360,240);
+ location="Open sewer";
+ hookkey(42,statmenu);
+ systemstartup();
+   palettemorph(0,0,0,0,63);
+   ent1=entityspawn(14,16,"camman.chr");
+   setplayer(ent1); 
+   wait(400);
+   while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"August 28.");
+   showpage();
+  dodo++;
+  }
+  while(dodo<200)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"August 28.");
+   gotoXY(20,40);
+   printstring(1,"It's midnight here. It always is.");
+   showpage();
+  dodo++;
+  }
+  while(dodo<250)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"August 28.");
+   gotoXY(20,40);
+   printstring(1,"It's midnight here. It always is.");
+   gotoXY(20,60);
+   printstring(1,"Dark corridors..");
+   showpage();
+  dodo++;
+  }
+   while(dodo=250)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"August 28.");
+   gotoXY(20,40);
+   printstring(1,"It's midnight here. It always is.");
+   gotoXY(20,60);
+   printstring(1,"Dark corridors..");
+   gotoXY(20,80);
+   printstring(1,"I guess they knew all along..");
+   gotoXY(20,100);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+    while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"They beat me up yesterday.");
+   showpage();
+  dodo++;
+  }
+  while(dodo<200)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"They beat me up yesterday.");
+   gotoXY(20,40);
+   printstring(1,"Again.");
+   showpage();
+  dodo++;
+  }
+  while(dodo=200)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  gotoXY(20,20);
+   printstring(1,"They beat me up yesterday.");
+   gotoXY(20,40);
+   printstring(1,"Again.");
+   gotoXY(20,60);
+   printstring(1,"My friend once said:");
+   gotoXY(20,80);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+
+  while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"You'll end up in the");
+   showpage();
+  dodo++;
+  }
+  while(dodo<200)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"You'll end up in the");
+   gotoXY(20,40);
+   printstring(1,"Alcatraz, Heinrich.");
+   showpage();
+  dodo++;
+  }
+  while(dodo=200)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"You'll end up in the");
+   gotoXY(20,40);
+   printstring(1,"Alcatraz, Heinrich.");
+   gotoXY(20,60);
+   printstring(1,"Well, here I am.");
+   gotoXY(20,80);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+   while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"Janet...wish you were dead...");
+   showpage();
+   dodo++;
+   }
+   while(dodo=150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  gotoXY(20,20);
+   printstring(1,"Janet...wish you were dead...");
+   gotoXY(20,40);
+   printstring(1,"I'll be ten this October.");
+   gotoXY(20,60);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+
+   im=loadimage("car.pcx");
+   dodo=0;
+  while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  Tscalesprite(0,0,600,600,360,240,im);
+  gotoXY(20,20);
+   printstring(1,"Will you send me a CARD, Janet?");
+   showpage();
+  dodo++;
+  }
+  while(dodo=150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  Tscalesprite(0,0,600,600,360,240,im);
+ gotoXY(20,20);
+   printstring(1,"Will you send me a CARD, Janet?");
+   gotoXY(20,40);
+   printstring(1,"Did you get the CARD I sent you?");
+   gotoXY(20,60);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+
+  while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  Tscalesprite(0,0,600,600,360,240,im);
+  gotoXY(20,20);
+   printstring(1,"The Ace of Clubs.");
+   showpage();
+  dodo++;
+  }
+  while(dodo=150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  Tscalesprite(0,0,600,600,360,240,im);
+   gotoXY(20,20);
+   printstring(1,"The Ace of Clubs.");
+   gotoXY(20,40);
+   printstring(1,"That was your favourite.");
+   gotoXY(20,60);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+ 
+ while(dodo<150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+  gotoXY(20,20);
+   printstring(1,"Tonight I shall bleed.");
+   showpage();
+  dodo++;
+  }
+  while(dodo=150)
+  {
+  render();
+  palettemorph(0,0,0,0,63);
+   gotoXY(20,20);
+   printstring(1,"Tonight I shall bleed.");
+   gotoXY(20,40);
+   printstring(1,"For my brothers.");
+   gotoXY(20,60);
+   printstring(1,"^");
+   showpage();
+   updatecontrols();  
+   if(key[28])
+   {
+    dodo=0;
+   }
+   }
+fadeout(300,300);
+musicfade(20);
+dalari[2]=3;
+dalari[5]=0;
+mapswitch("palace2.map",0,0,0);
+}
+event//1
+{
+}
+}
