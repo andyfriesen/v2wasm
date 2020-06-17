@@ -400,37 +400,38 @@ void InitializeDefaults() {
 // <aen, apr 21>
 // + added these few static routines and made ParseStartupFiles() use'em
 
-static VFILE* user_cfg_file = 0;
 static char parse_str[256];
 
-static char* parse_cfg_token() {
+static char* parse_cfg_token(VFILE* user_cfg_file) {
     vscanf(user_cfg_file, "%s", parse_str);
     return parse_str;
 }
 
 // compares string against parse_str (grabbed by parse_cfg_token())
 // 0=mismatch, 1=match
-static int parse_match(char* str) { return !strcmp(parse_str, str); }
+static int parse_match(char* str) {
+    return !strcmp(parse_str, str); 
+}
 
 // zero error correcting or detection; fix <aen, apr 21>
 void ParseStartupFiles() {
-    user_cfg_file = vopen("user.cfg");
+    VFILE* user_cfg_file = vopen("user.cfg");
     if (!user_cfg_file) {
         return;
     }
 
     while (1) {
-        parse_cfg_token();
+        parse_cfg_token(user_cfg_file);
 
         // mounts a pack file; up to 3? (perhaps gaurd against more?)
         if (parse_match("mount")) {
-            MountVFile(parse_cfg_token());
+            MountVFile(parse_cfg_token(user_cfg_file));
             continue;
         }
         // set video resolution
         else if (parse_match("vidmode")) {
-            vidxres = V_atoi(parse_cfg_token());
-            vidyres = V_atoi(parse_cfg_token());
+            vidxres = V_atoi(parse_cfg_token(user_cfg_file));
+            vidyres = V_atoi(parse_cfg_token(user_cfg_file));
 
             continue;
         }
@@ -444,25 +445,25 @@ void ParseStartupFiles() {
               { nocdaudio=1; continue; }*/
         // map VERGE.EXE will run first when executed
         else if (parse_match("startmap")) {
-            startmap = parse_cfg_token();
+            startmap = parse_cfg_token(user_cfg_file);
             continue;
         } // --tSB why not?
         // 0=auto detect, 1=???, 2=???, 3=nosound
         else if (parse_match("sound_device")) {
-            parse_cfg_token();
-            //    	md_device = (UWORD)V_atoi(parse_cfg_token());
+            parse_cfg_token(user_cfg_file);
+            //    	md_device = (UWORD)V_atoi(parse_cfg_token(user_cfg_file));
             continue;
         }
         // sound lib setting
         else if (parse_match("mixrate")) {
-            parse_cfg_token();
+            parse_cfg_token(user_cfg_file);
             continue;
         }
         // sound lib setting
         else if (parse_match("safemode")) {
             continue;
         } else if (parse_match("dmabufsize")) {
-            parse_cfg_token();
+            parse_cfg_token(user_cfg_file);
             continue;
         }
         // sound lib setting
