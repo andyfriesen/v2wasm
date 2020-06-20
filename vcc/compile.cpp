@@ -1592,20 +1592,17 @@ void CompileMAP(char* fname) {
 // by hitting another variable dec (fell into global space), or hitting another
 // function.
 void SkipBrackets() {
-    char* saveme = (char*)src;
     while (1) //! NextIs("}"))
     {
         if (NextIs("}") && !TokenIs("\""))
             break;
-        if (!*src) {
-            err("No matching bracket started in %s", saveme);
-        }
+        if (!*src)
+            err("No matching bracket.");
 
         GetToken();
 
-        if (TokenIs("{")) {
+        if (TokenIs("{"))
             SkipBrackets();
-        }
     }
     GetToken();
 }

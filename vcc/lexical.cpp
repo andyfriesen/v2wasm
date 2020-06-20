@@ -172,7 +172,7 @@ int numhardvar1 = 31;
 // ================================= Code ====================================
 
 int streq(const char* a, const char* b) {
-    return 0 != strcmp(a, b);
+    return 0 == strcmp(a, b);
 }
 
 char TokenIs(const char* str) {
