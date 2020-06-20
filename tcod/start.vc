@@ -1,421 +1,469 @@
-event //autoexec
+event // autoexec
 {
- systemstartup();
-  setresolution(640,480);
-  palettemorph(0,0,0,0,63);
-  if(vara[24]=0)
-  { 
-   playmusic("tcod.s3m");   
-  }
-  if(start=0)
-  {   
-  wait(100);
-  alterbtile(15,15,1,0);
-  wait(10);
-  alterbtile(16,15,2,0);
-  wait(10);
-  alterbtile(17,15,3,0);
-  wait(10);
-  alterbtile(18,15,4,0);
-  wait(10);
-  alterbtile(19,15,2,0);
-  wait(100);
-  alterbtile(15,15,0,0);
-  wait(10);
-  alterbtile(16,15,0,0);
-  wait(10);
-  alterbtile(17,15,0,0);
-  wait(10);
-  alterbtile(18,15,0,0);
-  wait(10);
-  alterbtile(19,15,0,0);
-  wait(10);
-  alterbtile(15,15,6,0);
-  wait(10);
-  alterbtile(16,15,7,0);
-  wait(10);
-  alterbtile(17,15,8,0);
-  wait(10);
-  alterbtile(18,15,9,0);
-  wait(10);
-  alterbtile(19,15,7,0);
-  wait(10);
-  alterbtile(20,15,8,0);
-  wait(10);
-  alterbtile(14,17,10,0);
-  wait(10);
-  alterbtile(15,17,3,0);
-  wait(10);
-  alterbtile(16,17,2,0);
-  wait(10);
-  alterbtile(17,17,11,0);
-  wait(10);
-  alterbtile(18,17,2,0);
-  wait(10);
-  alterbtile(19,17,12,0);
-  wait(10);
-  alterbtile(20,17,13,0);
-  wait(10);
-  alterbtile(21,17,11,0);
-  wait(100);
-  fadeout(100,100);
-  alterbtile(15,15,0,0);
-  alterbtile(16,15,0,0);
-  alterbtile(17,15,0,0);
-  alterbtile(18,15,0,0);
-  alterbtile(19,15,0,0);
-  alterbtile(20,15,0,0);
-  alterbtile(14,17,0,0);
-  alterbtile(15,17,0,0);
-  alterbtile(16,17,0,0);
-  alterbtile(17,17,0,0);
-  alterbtile(18,17,0,0);
-  alterbtile(19,17,0,0);
-  alterbtile(20,17,0,0);
-  alterbtile(21,17,0,0);
-  dodo=1;
-  x=0;
-  wait(50);
-  im2=loadimage("tcodl.pcx");
-  dodo=100;
-  addlines("What is destiny?","A path we follow?","Preordained?","Immutable?","Does it have its own will","or is it modified by our","actions.","And what about gods or, God.","Do you believe in God?","Or are you a god of your own.");
-  scrolltext(im2,0,1,2,1);
-  clearscrolltext();
-  addlines("The World is filled with people.","They seem to be free","and yet they are chained.","The Great Jailer walks","in amongst them, with a huge","keyring in hand.","Keys that are either black or white.","Every now and then, he opens a lock","and the prisoner is free.","But sometimes, a jailbreak can happen.");
-  scrolltext(im2,0,1,2,1);
-  clearscrolltext();
- addlines("Thus the chain is broken","and the Great Jailer loses control.","His keys get 'messed up', if you want.","And that, will bring chaos.","War","massacre","...chaos...","But what is important","is the color of the lock.","Black or White.");
-  scrolltext(im2,0,1,2,1);
-  clearscrolltext();
-
-  dodo=1;
-  start=1;
-  }
-  if(dodo=1)
- {
-  pointer1=loadimage("point.pcx");
-  apnt=1;
-  dodo=0;
-  im2=loadimage("tcodl.pcx");
-  while(dodo=0)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(19,0,600,480,im2);
-  gotoXY(110,450);
-  printstring(1,"Copyright(C)2001 Risto & Jukka Matikainen ");
-  gotoXY(85,300);
-  printstring(1,"Newgame");
-  gotoXY(85,330);
-  printstring(1,"Loadgame");
-  gotoXY(85,360);
-  printstring(1,"Options");
-  gotoXY(85,390);
-  printstring(1,"Quit");
-  tscaleSprite(70,270+(30*apnt),7,9,14,18,pointer1);
-  showpage();
-  x=x+1;
-  updatecontrols();
-  If(key[80]) { apnt++; del(10,0,0,0);  }
-  if(key[72]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 4; }
-  If(apnt>4) { apnt = 1; }
-  switch(apnt)
-  {
-  case 3: 
-           if(key[28])
-           {
-            apnt=1;
-  menupnt[30]=1;
-  optionpnt[1]=1;
-  UnPress(key[28]);
-  while(dodo=0)
-  {
-  render();
-  gotoXY(30,20);
-  printstring(1,"Textbox");
-  gotoXY(300,20);
-  printstring(1,"On");
-  gotoXY(350,20);
-  printstring(1,"Off");
-  switch(boxes)
-  {
-   case 0:   gotoXY(450,20);
-  printstring(1,"Textbox on");
-     case 1:   gotoXY(450,20);
-  printstring(1,"Textbox off");
-  }
-  gotoXY(30,455);
-  printstring(1,"Return to main");
-  switch(menupnt[30])
-  {
-   case 1: tscaleSprite(10,15,7,9,14,18,pointer1); 
-   case 2: tscaleSprite(10,450,7,9,14,18,pointer1);  
-  }
-  switch(apnt)
-  {
-   case 1: tscaleSprite(285,15,7,9,14,18,pointer1); 
-   case 2: tscaleSprite(335,15,7,9,14,18,pointer1); 
-  }
-
-  showpage();
-  updatecontrols();
-  If(key[80]) { menupnt[30]++; del(10,0,0,0);  }
-  if(key[72]) { menupnt[30]--; del(10,0,0,0);   }
-  If(menupnt[30]<1) { menupnt[30] = 2; }
-  If(menupnt[30]>2) { menupnt[30] = 1; }
-    if(key[28] && menupnt[30]=1)
-         {
-     unpress(key[28]);
-     dodo=2;
-     while(dodo=2)
-     {
-       render();
-  gotoXY(30,20);
-    printstring(1,"Textbox");
-  gotoXY(300,20);
-  printstring(1,"On");
-  gotoXY(350,20);
-  printstring(1,"Off");
-  switch(boxes)
-  {
-   case 0:   gotoXY(450,20);
-  printstring(1,"Textbox on");
-     case 1:   gotoXY(450,20);
-  printstring(1,"Textbox off");
-  }
-  gotoXY(30,455);
-  printstring(1,"Return to main");
-  switch(menupnt[30])
-  {
-   case 1: tscaleSprite(10,15,7,9,14,18,pointer1); 
-   case 2: tscaleSprite(10,450,7,9,14,18,pointer1); 
-  }
-  switch(apnt)
-  {
-   case 1: tscaleSprite(285,15,7,9,14,18,pointer1); 
-   case 2: tscaleSprite(335,15,7,9,14,18,pointer1); 
-  }
-  showpage();
-  updatecontrols();
-    If(key[77]) { apnt++; del(10,0,0,0);  }
-  if(key[75]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 2; }
-  If(apnt>2) { apnt = 1; }   
-  if(key[28] && apnt=1)
-  {
-   unpress(key[28]);
-   boxes=0;
-   dodo=0;
-  }
-  if(key[28] && apnt=2)
-  {
-   unpress(key[28]);
-   boxes=1;
-   dodo=0;
-  }
-  }
+    systemstartup();
+    setresolution(640, 480);
+    palettemorph(0, 0, 0, 0, 63);
+    if (vara[24] = 0) {
+        playmusic("tcod.s3m");
     }
-   if(key[28] && menupnt[30]=2)
-         {
-     unpress(key[28]);
-     dodo=1;
-     vara[24]=1;
-     mapswitch("start.map",0,0,0);
-    }
-    }
-            
-           }
+    if (start = 0) {
+        wait(100);
+        alterbtile(15, 15, 1, 0);
+        wait(10);
+        alterbtile(16, 15, 2, 0);
+        wait(10);
+        alterbtile(17, 15, 3, 0);
+        wait(10);
+        alterbtile(18, 15, 4, 0);
+        wait(10);
+        alterbtile(19, 15, 2, 0);
+        wait(100);
+        alterbtile(15, 15, 0, 0);
+        wait(10);
+        alterbtile(16, 15, 0, 0);
+        wait(10);
+        alterbtile(17, 15, 0, 0);
+        wait(10);
+        alterbtile(18, 15, 0, 0);
+        wait(10);
+        alterbtile(19, 15, 0, 0);
+        wait(10);
+        alterbtile(15, 15, 6, 0);
+        wait(10);
+        alterbtile(16, 15, 7, 0);
+        wait(10);
+        alterbtile(17, 15, 8, 0);
+        wait(10);
+        alterbtile(18, 15, 9, 0);
+        wait(10);
+        alterbtile(19, 15, 7, 0);
+        wait(10);
+        alterbtile(20, 15, 8, 0);
+        wait(10);
+        alterbtile(14, 17, 10, 0);
+        wait(10);
+        alterbtile(15, 17, 3, 0);
+        wait(10);
+        alterbtile(16, 17, 2, 0);
+        wait(10);
+        alterbtile(17, 17, 11, 0);
+        wait(10);
+        alterbtile(18, 17, 2, 0);
+        wait(10);
+        alterbtile(19, 17, 12, 0);
+        wait(10);
+        alterbtile(20, 17, 13, 0);
+        wait(10);
+        alterbtile(21, 17, 11, 0);
+        wait(100);
+        fadeout(100, 100);
+        alterbtile(15, 15, 0, 0);
+        alterbtile(16, 15, 0, 0);
+        alterbtile(17, 15, 0, 0);
+        alterbtile(18, 15, 0, 0);
+        alterbtile(19, 15, 0, 0);
+        alterbtile(20, 15, 0, 0);
+        alterbtile(14, 17, 0, 0);
+        alterbtile(15, 17, 0, 0);
+        alterbtile(16, 17, 0, 0);
+        alterbtile(17, 17, 0, 0);
+        alterbtile(18, 17, 0, 0);
+        alterbtile(19, 17, 0, 0);
+        alterbtile(20, 17, 0, 0);
+        alterbtile(21, 17, 0, 0);
+        dodo = 1;
+        x = 0;
+        wait(50);
+        im2 = loadimage("tcodl.pcx");
+        dodo = 100;
+        addlines("What is destiny?", "A path we follow?", "Preordained?",
+            "Immutable?", "Does it have its own will",
+            "or is it modified by our", "actions.",
+            "And what about gods or, God.", "Do you believe in God?",
+            "Or are you a god of your own.");
+        scrolltext(im2, 0, 1, 2, 1);
+        clearscrolltext();
+        addlines("The World is filled with people.", "They seem to be free",
+            "and yet they are chained.", "The Great Jailer walks",
+            "in amongst them, with a huge", "keyring in hand.",
+            "Keys that are either black or white.",
+            "Every now and then, he opens a lock", "and the prisoner is free.",
+            "But sometimes, a jailbreak can happen.");
+        scrolltext(im2, 0, 1, 2, 1);
+        clearscrolltext();
+        addlines("Thus the chain is broken",
+            "and the Great Jailer loses control.",
+            "His keys get 'messed up', if you want.",
+            "And that, will bring chaos.", "War", "massacre", "...chaos...",
+            "But what is important", "is the color of the lock.",
+            "Black or White.");
+        scrolltext(im2, 0, 1, 2, 1);
+        clearscrolltext();
 
-  case 4: 
-           if(key[28])
-            {
-             musicfade(10);
-             fadeout(50,50);
-             exit("Thanks for playing TCoD.");
-            }
-  case 1: if(key[28])
-  {
-  apnt=1;
-  UnPress(key[28]);
-  while(dodo=0)
-  {
-  render();
-  photo[1]=0;
-  gotoXY(185,280);
-  printstring(1,"Skip intro?");
-  gotoXY(185,300);
-  printstring(1,"No");
-  gotoXY(185,335);
-  printstring(1,"Yes");
-  gotoXY(185,365);
-  printstring(1,"Cancel");
-  tscaleSprite(170,260+(35*apnt),7,9,14,18,pointer1);
-  showpage();
-  updatecontrols();
-  If(key[80]) { apnt++; del(10,0,0,0);  }
-  if(key[72]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 3; }
-  If(apnt>3) { apnt = 1; }
-   if(key[28] && apnt=3)
-         {
-     unpress(key[28]);
-     dodo=1;
-     vara[24]=1;
-     mapswitch("start.map",0,0,0);
+        dodo = 1;
+        start = 1;
     }
-
-  switch(apnt)
-  {
-  case 1: if(key[28])
-          {
-           dodo=0;
-           charbeginning();
-           Unpress(key[28]);
-           im2=loadimage("sknah2.pcx");
-           palettemorph(0,0,0,0,63);
-            while(dodo=0)
-            {
+    if (dodo = 1) {
+        pointer1 = loadimage("point.pcx");
+        apnt = 1;
+        dodo = 0;
+        im2 = loadimage("tcodl.pcx");
+        while (dodo = 0) {
             render();
-            Tcopysprite(100,100,400,400,im2);
-            gotoXY(185,160);
-            printstring(1,"Chapter 1.");
-            gotoXY(185,180);
-            printstring(1,"The Slums");
-            HLine(185, 194, 290, 130);
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(19, 0, 600, 480, im2);
+            gotoXY(110, 450);
+            printstring(1, "Copyright(C)2001 Risto & Jukka Matikainen ");
+            gotoXY(85, 300);
+            printstring(1, "Newgame");
+            gotoXY(85, 330);
+            printstring(1, "Loadgame");
+            gotoXY(85, 360);
+            printstring(1, "Options");
+            gotoXY(85, 390);
+            printstring(1, "Quit");
+            tscaleSprite(70, 270 + (30 * apnt), 7, 9, 14, 18, pointer1);
             showpage();
+            x = x + 1;
             updatecontrols();
-            if(key[28])
-             {
-             dodo=1;
-             }
+            if (up) {
+                apnt++;
+                del(10, 0, 0, 0);
             }
-            fadeout(100,100);
-           wait(100);
-           musicfade(10);
-           playmusic("sil.s3m");
-           for(x=1; x<90; x++)
-           {
-            slums[x]=0;
-            ichest[x]=0;
-            wochest[x]=0;
-            lever[x]=0;
-           }
-           photo[1]=0;
-           wait(100);
-           free(im2);
-           free(im); 
-           vara[24]=0;
-           map("des.map");
-          }
-   case 2: if(key[28])
-          { 
-           Unpress(key[28]);
-           im2=loadimage("sknah2.pcx");
-           palettemorph(0,0,0,0,63);
-           while(dodo=0)
-            {
-           render();
-            Tcopysprite(100,100,400,400,im2);
-            gotoXY(185,160);
-            printstring(1,"Chapter 1.");
-            gotoXY(185,180);
-            printstring(1,"The Slums");
-            HLine(185, 194, 290, 130);
-            showpage();
-            updatecontrols();
-            if(key[28])
-             {
-             dodo=1;
-             }
+            if (down) {
+                apnt--;
+                del(10, 0, 0, 0);
             }
-           fadeout(100,100);
-           wait(100);
-           free(im);
-           free(im2);
-           musicfade(1);
-           playmusic("sil.s3m");
-           for(x=1; x<90; x++)
-           {
-            slums[x]=0;
-            ichest[x]=0;
-            wochest[x]=0;
-            lever[x]=0;
-           }
-           dodo=0;
-           photo[1]=0;
-           nasgha[4]=0;
-           charbeginning();
-           dalari[2]=11;
-           slums[31]=1;
- 	     vara[24]=0;
-           map("dalari4.map");      
-}    
-}      
-} 
-}
-          
-   case 2: if(key[28])
-          { 
-           apnt=1;
-           unpress(key[28]);
-           dodo=1;
-            while(dodo=1)
-  {
-  render();
-  gotoXY(185,280);
-  printstring(1,"Select slot to load");
-  gotoXY(185,300);
-  printstring(1,"1.");
-  gotoXY(185,335);
-  printstring(1,"2.");
-  gotoXY(185,365);
-  printstring(1,"3.");
-   gotoXY(185,395);
-  printstring(1,"Cancel.");
-  tscaleSprite(170,260+(35*apnt),7,9,14,18,pointer1);
-  showpage();
-  updatecontrols();
-  If(key[80]) { apnt++; del(10,0,0,0);  }
-  if(key[72]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 4; }
-  If(apnt>4) { apnt = 1; }
-   if(key[28])
-   {
-    unpress(key[28]);
-    if(apnt=4)
-    {
-     dodo=1;
-     vara[24]=1;
-     mapswitch("start.map",0,0,0);
+            if (apnt < 1) {
+                apnt = 4;
+            }
+            if (apnt > 4) {
+                apnt = 1;
+            }
+            switch (apnt) {
+            case 3:
+                if (b1) {
+                    apnt = 1;
+                    menupnt[30] = 1;
+                    optionpnt[1] = 1;
+                    UnPress(b1);
+                    while (dodo = 0) {
+                        render();
+                        gotoXY(30, 20);
+                        printstring(1, "Textbox");
+                        gotoXY(300, 20);
+                        printstring(1, "On");
+                        gotoXY(350, 20);
+                        printstring(1, "Off");
+                        switch (boxes) {
+                        case 0:
+                            gotoXY(450, 20);
+                            printstring(1, "Textbox on");
+                        case 1:
+                            gotoXY(450, 20);
+                            printstring(1, "Textbox off");
+                        }
+                        gotoXY(30, 455);
+                        printstring(1, "Return to main");
+                        switch (menupnt[30]) {
+                        case 1:
+                            tscaleSprite(10, 15, 7, 9, 14, 18, pointer1);
+                        case 2:
+                            tscaleSprite(10, 450, 7, 9, 14, 18, pointer1);
+                        }
+                        switch (apnt) {
+                        case 1:
+                            tscaleSprite(285, 15, 7, 9, 14, 18, pointer1);
+                        case 2:
+                            tscaleSprite(335, 15, 7, 9, 14, 18, pointer1);
+                        }
+
+                        showpage();
+                        updatecontrols();
+                        if (up) {
+                            menupnt[30]++;
+                            del(10, 0, 0, 0);
+                        }
+                        if (down) {
+                            menupnt[30]--;
+                            del(10, 0, 0, 0);
+                        }
+                        if (menupnt[30] < 1) {
+                            menupnt[30] = 2;
+                        }
+                        if (menupnt[30] > 2) {
+                            menupnt[30] = 1;
+                        }
+                        if (b1 && menupnt[30] = 1) {
+                            unpress(b1);
+                            dodo = 2;
+                            while (dodo = 2) {
+                                render();
+                                gotoXY(30, 20);
+                                printstring(1, "Textbox");
+                                gotoXY(300, 20);
+                                printstring(1, "On");
+                                gotoXY(350, 20);
+                                printstring(1, "Off");
+                                switch (boxes) {
+                                case 0:
+                                    gotoXY(450, 20);
+                                    printstring(1, "Textbox on");
+                                case 1:
+                                    gotoXY(450, 20);
+                                    printstring(1, "Textbox off");
+                                }
+                                gotoXY(30, 455);
+                                printstring(1, "Return to main");
+                                switch (menupnt[30]) {
+                                case 1:
+                                    tscaleSprite(
+                                        10, 15, 7, 9, 14, 18, pointer1);
+                                case 2:
+                                    tscaleSprite(
+                                        10, 450, 7, 9, 14, 18, pointer1);
+                                }
+                                switch (apnt) {
+                                case 1:
+                                    tscaleSprite(
+                                        285, 15, 7, 9, 14, 18, pointer1);
+                                case 2:
+                                    tscaleSprite(
+                                        335, 15, 7, 9, 14, 18, pointer1);
+                                }
+                                showpage();
+                                updatecontrols();
+                                if (key[77]) {
+                                    apnt++;
+                                    del(10, 0, 0, 0);
+                                }
+                                if (key[75]) {
+                                    apnt--;
+                                    del(10, 0, 0, 0);
+                                }
+                                if (apnt < 1) {
+                                    apnt = 2;
+                                }
+                                if (apnt > 2) {
+                                    apnt = 1;
+                                }
+                                if (b1&& apnt = 1) {
+                                    unpress(b1);
+                                    boxes = 0;
+                                    dodo = 0;
+                                }
+                                if (b1&& apnt = 2) {
+                                    unpress(b1);
+                                    boxes = 1;
+                                    dodo = 0;
+                                }
+                            }
+                        }
+                        if (b1 && menupnt[30] = 2) {
+                            unpress(b1);
+                            dodo = 1;
+                            vara[24] = 1;
+                            mapswitch("start.map", 0, 0, 0);
+                        }
+                    }
+                }
+
+            case 4:
+                if (b1) {
+                    musicfade(10);
+                    fadeout(50, 50);
+                    exit("Thanks for playing TCoD.");
+                }
+            case 1:
+                if (b1) {
+                    apnt = 1;
+                    UnPress(b1);
+                    while (dodo = 0) {
+                        render();
+                        photo[1] = 0;
+                        gotoXY(185, 280);
+                        printstring(1, "Skip intro?");
+                        gotoXY(185, 300);
+                        printstring(1, "No");
+                        gotoXY(185, 335);
+                        printstring(1, "Yes");
+                        gotoXY(185, 365);
+                        printstring(1, "Cancel");
+                        tscaleSprite(
+                            170, 260 + (35 * apnt), 7, 9, 14, 18, pointer1);
+                        showpage();
+                        updatecontrols();
+                        if (up) {
+                            apnt++;
+                            del(10, 0, 0, 0);
+                        }
+                        if (down) {
+                            apnt--;
+                            del(10, 0, 0, 0);
+                        }
+                        if (apnt < 1) {
+                            apnt = 3;
+                        }
+                        if (apnt > 3) {
+                            apnt = 1;
+                        }
+                        if (b1&& apnt = 3) {
+                            unpress(b1);
+                            dodo = 1;
+                            vara[24] = 1;
+                            mapswitch("start.map", 0, 0, 0);
+                        }
+
+                        switch (apnt) {
+                        case 1:
+                            if (b1) {
+                                dodo = 0;
+                                charbeginning();
+                                Unpress(b1);
+                                im2 = loadimage("sknah2.pcx");
+                                palettemorph(0, 0, 0, 0, 63);
+                                while (dodo = 0) {
+                                    render();
+                                    Tcopysprite(100, 100, 400, 400, im2);
+                                    gotoXY(185, 160);
+                                    printstring(1, "Chapter 1.");
+                                    gotoXY(185, 180);
+                                    printstring(1, "The Slums");
+                                    HLine(185, 194, 290, 130);
+                                    showpage();
+                                    updatecontrols();
+                                    if (b1) {
+                                        dodo = 1;
+                                    }
+                                }
+                                fadeout(100, 100);
+                                wait(100);
+                                musicfade(10);
+                                playmusic("sil.s3m");
+                                for (x = 1; x < 90; x++) {
+                                    slums[x] = 0;
+                                    ichest[x] = 0;
+                                    wochest[x] = 0;
+                                    lever[x] = 0;
+                                }
+                                photo[1] = 0;
+                                wait(100);
+                                free(im2);
+                                free(im);
+                                vara[24] = 0;
+                                map("des.map");
+                            }
+                        case 2:
+                            if (b1) {
+                                Unpress(b1);
+                                im2 = loadimage("sknah2.pcx");
+                                palettemorph(0, 0, 0, 0, 63);
+                                while (dodo = 0) {
+                                    render();
+                                    Tcopysprite(100, 100, 400, 400, im2);
+                                    gotoXY(185, 160);
+                                    printstring(1, "Chapter 1.");
+                                    gotoXY(185, 180);
+                                    printstring(1, "The Slums");
+                                    HLine(185, 194, 290, 130);
+                                    showpage();
+                                    updatecontrols();
+                                    if (b1) {
+                                        dodo = 1;
+                                    }
+                                }
+                                fadeout(100, 100);
+                                wait(100);
+                                free(im);
+                                free(im2);
+                                musicfade(1);
+                                playmusic("sil.s3m");
+                                for (x = 1; x < 90; x++) {
+                                    slums[x] = 0;
+                                    ichest[x] = 0;
+                                    wochest[x] = 0;
+                                    lever[x] = 0;
+                                }
+                                dodo = 0;
+                                photo[1] = 0;
+                                nasgha[4] = 0;
+                                charbeginning();
+                                dalari[2] = 11;
+                                slums[31] = 1;
+                                vara[24] = 0;
+                                map("dalari4.map");
+                            }
+                        }
+                    }
+                }
+
+            case 2:
+                if (b1) {
+                    apnt = 1;
+                    unpress(b1);
+                    dodo = 1;
+                    while (dodo = 1) {
+                        render();
+                        gotoXY(185, 280);
+                        printstring(1, "Select slot to load");
+                        gotoXY(185, 300);
+                        printstring(1, "1.");
+                        gotoXY(185, 335);
+                        printstring(1, "2.");
+                        gotoXY(185, 365);
+                        printstring(1, "3.");
+                        gotoXY(185, 395);
+                        printstring(1, "Cancel.");
+                        tscaleSprite(
+                            170, 260 + (35 * apnt), 7, 9, 14, 18, pointer1);
+                        showpage();
+                        updatecontrols();
+                        if (up) {
+                            apnt++;
+                            del(10, 0, 0, 0);
+                        }
+                        if (down) {
+                            apnt--;
+                            del(10, 0, 0, 0);
+                        }
+                        if (apnt < 1) {
+                            apnt = 4;
+                        }
+                        if (apnt > 4) {
+                            apnt = 1;
+                        }
+                        if (b1) {
+                            unpress(b1);
+                            if (apnt = 4) {
+                                dodo = 1;
+                                vara[24] = 1;
+                                mapswitch("start.map", 0, 0, 0);
+                            }
+                            if (apnt = 3) {
+                                fadeout(100, 100);
+                                musicfade(10);
+                                wait(100);
+                                playmusic("sil.s3m");
+                                menupnt[40] = apnt;
+                                loadsaved();
+                                loaded = 1;
+                                vara[24] = 0;
+                                mapswitch("palace2.map", 0, 0, 0);
+                            }
+                            fadeout(100, 100);
+                            musicfade(10);
+                            wait(100);
+                            playmusic("sil.s3m");
+                            menupnt[40] = apnt;
+                            loadsaved();
+                            loaded = 1;
+                            vara[24] = 0;
+                            mapswitch(savemap, 0, 0, 0);
+                        }
+                    }
+                }
+            }
+        }
     }
-     if(apnt=3)
-    {
-     fadeout(100,100);
-      musicfade(10);
-       wait(100);
-           playmusic("sil.s3m");
-           menupnt[40]=apnt;
-           loadsaved();
-           loaded=1;
-           vara[24]=0;
-           mapswitch("palace2.map",0,0,0);
-    }
-           fadeout(100,100);
-           musicfade(10);
-           wait(100);
-           playmusic("sil.s3m");
-           menupnt[40]=apnt;
-           loadsaved();
-           loaded=1;
-           vara[24]=0;
-           mapswitch(savemap,0,0,0);
-           
-}
-}
-}          
-}          
-}
-}
 }
 }

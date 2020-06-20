@@ -1,2849 +1,2819 @@
-event //autoexec
+event // autoexec
 {
- freeallsounds();
- //soundeffect[1]=cachesound("open1.wav");
- //soundeffect[2]=cachesound("close17.wav");
- //soundeffect[3]=cachesound("hit1.wav");
- //soundeffect[4]=cachesound("cat1.wav");
- //soundeffect[5]=cachesound("lfire.wav");
- //soundeffect[6]=cachesound("boxopen.wav");
- //soundeffect[7]=cachesound("crash.wav");
- //soundeffect[8]=cachesound("switch.wav");
- //soundeffect[9]=cachesound("boom.wav");
- //soundeffect[10]=cachesound("point1.wav");
- //soundeffect[11]=cachesound("coins.wav");
- //soundeffect[12]=cachesound("chick.wav");
- setresolution(360,240);
- location="Dalari slums";
- hookkey(57,statmenu);
-hookkey(42,juoksu);
-hookkey(29,juoksu2);
-vara[2]=0;
- systemstartup();
-  palettemorph(0,0,0,0,63);
-  entity.specframe[41]=5;
-  entity.specframe[42]=5;
- cameratracking=1;
- if (slums[7]=1)
- {
- alterftile(127,51,808,1);
- alterftile(127,52,0,1);
+    freeallsounds();
+    // soundeffect[1]=cachesound("open1.wav");
+    // soundeffect[2]=cachesound("close17.wav");
+    // soundeffect[3]=cachesound("hit1.wav");
+    // soundeffect[4]=cachesound("cat1.wav");
+    // soundeffect[5]=cachesound("lfire.wav");
+    // soundeffect[6]=cachesound("boxopen.wav");
+    // soundeffect[7]=cachesound("crash.wav");
+    // soundeffect[8]=cachesound("switch.wav");
+    // soundeffect[9]=cachesound("boom.wav");
+    // soundeffect[10]=cachesound("point1.wav");
+    // soundeffect[11]=cachesound("coins.wav");
+    // soundeffect[12]=cachesound("chick.wav");
+    setresolution(360, 240);
+    location = "Dalari slums";
+    hookkey(57, statmenu);
+    hookkey(42, juoksu);
+    hookkey(29, juoksu2);
+    vara[2] = 0;
+    systemstartup();
+    palettemorph(0, 0, 0, 0, 63);
+    entity.specframe[41] = 5;
+    entity.specframe[42] = 5;
+    cameratracking = 1;
+    if (slums[7] = 1) {
+        alterftile(127, 51, 808, 1);
+        alterftile(127, 52, 0, 1);
+    }
+
+    if (slums[1] = 1) {
+        ent2 = entityspawn(152, 37, "Ltan.chr");
+        entity.specframe[ent2] = 5;
+    }
+
+    if (lever[8] = 1) {
+        alterftile(126, 115, 1739, 1);
+    }
+
+    if (slums[4] = 2) {
+        alterftile(25, 106, 0, 0);
+    }
+
+    if (slums[64] = 1) {
+        alterftile(182, 44, 0, 0);
+    }
+
+    if (slums[71] = 2) {
+        entity.x[44] = 0;
+        entity.y[44] = 0;
+        SetTile(98, 136, 2, 1048);
+        SetTile(98, 135, 2, 1047);
+        SetTile(97, 135, 3, 0);
+    }
+
+    if (slums[71] = 3) {
+        entity.x[44] = 0;
+        entity.y[44] = 0;
+        SetTile(98, 136, 2, 1048);
+        SetTile(98, 135, 2, 1047);
+        SetTile(97, 135, 3, 0);
+        SetTile(77, 114, 2, 1533);
+        SetTile(77, 113, 2, 1300);
+        ent5 = entityspawn(99, 112, "woman2.chr");
+    }
+
+    if (vara[25] = 1) {
+        alterftile(178, 21, 0, 0);
+    }
+
+    if (slums[63] = 1) {
+        alterftile(147, 20, 0, 0);
+    }
+
+    if (slums[60] = 1) {
+        alterftile(76, 113, 0, 1);
+    }
+
+    if (slums[60] = 2) {
+        alterftile(76, 113, 0, 1);
+        alterftile(74, 112, 1584, 1);
+        alterftile(74, 111, 1585, 1);
+    }
+
+    if (slums[59] = 1) {
+        alterftile(22, 148, 1584, 1);
+        settile(22, 147, 4, 1585);
+    }
+
+    if (slums[4] = 1) {
+        alterftile(25, 106, 0, 0);
+    }
+
+    if (slums[8] = 2) {
+        alterftile(20, 127, 1584, 1);
+        alterftile(20, 126, 1585, 1);
+    }
+
+    if (slums[50] = 1) {
+        alterftile(25, 110, 2592, 1);
+        alterftile(25, 111, 2591, 0);
+    }
+
+    if (slums[4] = 2) {
+        alterftile(42, 110, 1584, 1);
+        alterftile(42, 109, 1585, 1);
+    }
+
+    if (slums[48] = 1) {
+        alterftile(124, 111, 2592, 1);
+        alterftile(124, 112, 2591, 0);
+    }
+
+    if (slums[49] = 1) {
+        alterftile(71, 168, 2592, 1);
+        alterftile(71, 169, 2591, 0);
+    }
+
+    if (slums[31] = 2) {
+        setresolution(640, 480);
+        palettemorph(0, 0, 0, 0, 63);
+        ent1 = entityspawn(171, 12, "Lell.chr");
+        ent2 = entityspawn(171, 12, "Ltan.chr");
+        ent3 = entityspawn(171, 12, "Ljack.chr");
+        ent4 = entityspawn(171, 12, "Lfreu.chr");
+        ent5 = entityspawn(171, 14, "camman.chr");
+        ent6 = entityspawn(171, 14, "camman.chr");
+        cameratracking = 2;
+        tracker = ent6;
+        entity.speed[ent1] = 5;
+        entity.speed[ent2] = 5;
+        entity.speed[ent3] = 5;
+        entity.speed[ent4] = 5;
+        entity.speed[ent6] = 5;
+        setplayer(ent5);
+        entitymove(ent1, "D1L175");
+        wait(40);
+        entitymove(ent2, "D1L175");
+        wait(40);
+        entitymove(ent3, "D1L175");
+        wait(40);
+        entitymove(ent4, "D1L175");
+        entitymove(ent6, "L145");
+        wait(40);
+        wait(200);
+        entity.speed[ent2] = 6;
+        entity.speed[ent3] = 6;
+        entity.speed[ent4] = 6;
+        wait(100);
+        entity.speed[ent2] = 5;
+        wait(50);
+        entity.speed[ent3] = 5;
+        wait(50);
+        entity.speed[ent4] = 5;
+        wait(400);
+        entity.speed[ent1] = 6;
+        entity.speed[ent2] = 6;
+        entity.speed[ent3] = 6;
+        entity.speed[ent4] = 6;
+        wait(500);
+        dodo = 0;
+        unpress(key[28]);
+        while (dodo < 600) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            gotoXY(30, 40);
+            printstring(1, "Elliot:");
+            gotoXY(30, 60);
+            printstring(1, "It was like we were released");
+            gotoXY(30, 80);
+            printstring(1, "from a prison. The wind wizled in our");
+            gotoXY(30, 100);
+            printstring(1, "ears and we laughed through the whole runaway!");
+            gotoXY(30, 120);
+            printstring(1, "Finally, we were on an adventure!");
+            ProcessEntities();
+            showpage();
+            dodo++;
+        }
+        while (dodo < 1000) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            gotoXY(30, 40);
+            printstring(1, "Elliot:");
+            gotoXY(30, 60);
+            printstring(1, "It was like we were released");
+            gotoXY(30, 80);
+            printstring(1, "from a prison. The wind wizled in our");
+            gotoXY(30, 100);
+            printstring(1, "ears and we laughed through the whole runaway!");
+            gotoXY(30, 120);
+            printstring(1, "Finally, we were on an adventure!");
+            gotoXY(30, 160);
+            printstring(1, "It's amazing how everything turned out.");
+            gotoXY(30, 180);
+            printstring(1, "How everything changed that summer.");
+            gotoXY(30, 200);
+            printstring(1, "This was our farewell to Dalari, to the Slums.");
+            gotoXY(30, 220);
+            printstring(1, "We would never come back.");
+            gotoXY(30, 240);
+            printstring(
+                1, "And I never saw my father again, I never missed him.");
+            ProcessEntities();
+            showpage();
+            dodo++;
+        }
+        dodo = 0;
+        unpress(key[28]);
+        while (dodo = 0) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            gotoXY(30, 40);
+            printstring(1, "Elliot:");
+            gotoXY(30, 60);
+            printstring(1, "It was like we were released");
+            gotoXY(30, 80);
+            printstring(1, "from a prison. The wind wizled in our");
+            gotoXY(30, 100);
+            printstring(1, "ears and we laughed through the whole runaway!");
+            gotoXY(30, 120);
+            printstring(1, "Finally, we were on an adventure!");
+            gotoXY(30, 160);
+            printstring(1, "It's amazing how everything turned out.");
+            gotoXY(30, 180);
+            printstring(1, "How everything changed that summer.");
+            gotoXY(30, 200);
+            printstring(1, "This was our farewell to Dalari, to the Slums.");
+            gotoXY(30, 220);
+            printstring(1, "We would never come back.");
+            gotoXY(30, 240);
+            printstring(
+                1, "And I never saw my father again, I never missed him.");
+            gotoXY(30, 280);
+            printstring(1, "God, how I have thought about these times.");
+            gotoXY(30, 300);
+            printstring(
+                1, "God, how these memories helped me through my hell.");
+            gotoXY(30, 320);
+            printstring(
+                1, "With these memories I would force myself to sleep,");
+            gotoXY(30, 340);
+            printstring(1, "in my dark prison, when I could no longer cry.");
+            gotoXY(30, 360);
+            printstring(
+                1, "And I do miss them, my friends. God, how I miss them...");
+            gotoXY(30, 380);
+            printstring(1, "^");
+            ProcessEntities();
+            showpage();
+            if (key[28]) {
+                dodo++;
+            }
+        }
+        wait(100);
+        fadeout(300, 300);
+        wait(200);
+        dalari[5] = 6;
+        mapswitch("palace2.map", 0, 0, 0);
+    }
+
+    if (slums[31] = 1) {
+        playmusic("slums.s3m");
+        ent1 = entityspawn(23, 110, "Lell.chr");
+        setplayer(ent1);
+        wait(100);
+        stext(0, "Elliot:", "(Somehow, I gotta find money.",
+            "Two thousand crowns...)");
+        slums[31] = 3;
+    }
+
+    if (run[4] = 1) {
+        playmusic("goblin.s3m");
+        musicfadein(10);
+        ent1 = entityspawn(95, 130, "lell.chr");
+        setplayer(ent1);
+        cameratracking = 1;
+        render();
+        dalari[2] = 7;
+        run[4] = 0;
+        if (run[15] = 1) {
+            stext(0, "Elliot:", "Damn!!", "We're out of cash!");
+            run[15] = 0;
+        }
+    }
+    if (loaded = 1) {
+        freeallsounds();
+        playmusic(savemusic);
+        musicfadein(10);
+        ent1 = entityspawn(savex, savey, savechar);
+        setplayer(ent1);
+        dalari[2] = 7;
+        textbox = LoadImage("textboxi.pcx");
+        speechpic = LoadRaw("speech.spc");
+        loadmenupics();
+        equipmentnames();
+        weaponnames();
+        armornames();
+        relicnames();
+        itemnames();
+        spellnames();
+        loaded = 0;
+    }
+    if (slums[157] = 1) {
+        alterftile(120, 32, 0, 0);
+    }
+    if (wochest[1] = 1) {
+        alterftile(23, 108, 1565, 1);
+    }
+    if (wochest[2] = 1) {
+        alterftile(22, 108, 1565, 1);
+    }
+    if (wochest[3] = 1) {
+        alterftile(112, 52, 1565, 1);
+    }
+    if (slums[151] = 1) {
+        alterftile(x, y, 2592, 1);
+        alterftile(x, y + 1, 2591, 0);
+    }
+    if (dalari[2] = 0) {
+        ent1 = entityspawn(1, 15, "wiza.chr");
+        setplayer(ent1);
+    }
+    if (dalari[2] = 1) {
+        ent1 = entityspawn(18, 11, "wiza.chr");
+        setplayer(ent1);
+    }
+    if (dalari[2] = 3) {
+        ent1 = entityspawn(121, 17, "commandr.chr");
+        ent2 = entityspawn(121, 16, "mofficer.chr");
+        ent3 = entityspawn(121, 15, "wofficer.chr");
+        entity.speed[ent1] = 3;
+        entity.speed[ent2] = 3;
+        entity.speed[ent3] = 3;
+        setplayer(21);
+        entitymove(ent1, "D8R1D29");
+        entitymove(ent2, "D9R1D26");
+        entitymove(ent3, "D10R1D25R1D1");
+        wait(300);
+        partymove("D28");
+        wait(200);
+        entitymove(ent1, "R6U1");
+        wait(250);
+        entity.x[ent1] = 0;
+        entity.y[ent1] = 0;
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 0;
+        soundeffect[1] = cachesound("open1.wav");
+        soundeffect[2] = cachesound("close17.wav");
+        playsound(soundeffect[1], 64, 128);
+        ent1 = entityspawn(23, 112, "commandr.chr");
+        ent2 = entityspawn(25, 109, "efather.chr");
+        entity.specframe[ent2] = 25;
+        entity.specframe[ent1] = 5;
+        playsound(soundeffect[2], 64, 128);
+        warp(23, 109);
+        wait(50);
+        stext(0, "Henrik:", "Drake!!", "");
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "U1");
+        wait(100);
+        entity.specframe[ent2] = 22;
+        wait(20);
+        entity.specframe[ent2] = 23;
+        wait(20);
+        entity.specframe[ent2] = 24;
+        wait(20);
+        stext(0, "Drake:", "Sir Henrik!!", "");
+        entity.specframe[ent2] = 1;
+        entity.specframe[ent1] = 20;
+        stext(0, "Henrik:", "You haven't paid your",
+            "taxes in two months, Drake.");
+        stext(0, "What do you think about THAT!?", "", "");
+        entity.specframe[ent2] = 23;
+        stext(0, "Drake:", "I...I...", "I'm broke.");
+        stext(0, "Henrik:", "Is that all you've got", "to say?");
+        entity.specframe[ent2] = 22;
+        stext(
+            0, "Drake:", "Business is slow, we can", "barely feed ourselves!");
+        stext(0, "Henrik:", "I don't care how you feed", "yourself!");
+        stext(0, "You'll deliver the taxmoney", "to me TOMORROW!", "");
+        stext(0, "Drake:", "But sir, I can't get that",
+            "kind of money so quickly!");
+        stext(0, "Henrik:", "Then I'll send you to the", "Alcatraz...");
+        entity.specframe[ent1] = 5;
+        wait(10);
+        entity.specframe[ent1] = 5;
+        wait(5);
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "D1");
+        stext(0, "Tomorrow, Drake.", "", "");
+        playsound(soundeffect[1], 64, 128);
+        wait(20);
+        entity.x[ent1] = 0;
+        entity.y[ent1] = 0;
+        playsound(soundeffect[2], 64, 128);
+        wait(100);
+        stext(0, "Drake:", "Shit!", "I...have a terrible...");
+        stext(0, "...hangover...", "I...think...I'll puke...", "");
+        entity.specframe[ent2] = 25;
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        musicfade(10);
+        playmusic("sil.s3m");
+        wait(10);
+        playmusic("slums.s3m");
+        musicfadein(10);
+        wait(100);
+        playsound(soundeffect[1], 64, 128);
+        wait(20);
+        playsound(soundeffect[2], 64, 128);
+        ent1 = entityspawn(23, 112, "lell.chr");
+        entity.specframe[ent1] = 5;
+        wait(100);
+        stext(0, "Drake:", "Is that you Elliot?", "");
+        stext(0, "Drake:", "Y'know,...You have...a loysy", "...father..");
+        entity.speed[ent1] = 3;
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "U3");
+        wait(100);
+        entity.specframe[ent1] = 10;
+        stext(0, "Elliot:", "You drank the taxmoney,", "dad, didn't you?");
+        stext(0, "Elliot's father:", "Hee hee, every single penny!", "");
+        stext(0, "Elliot:", "We have to get you some help,",
+            "dad. You have to stop this.");
+        stext(0, "Elliot's father:", "Don't worry, they already",
+            "promised to send me to...");
+        stext(0, "...the Alcatraz.", "", "");
+        stext(0, "Elliot:", "Dad!!", "");
+        stext(0, "Elliot's father:", "Don't worry son.", "You're a smart kid.");
+        stext(0, "You'll do fine without me.", "", "");
+        stext(0, "I'm...I'm so tired of this", "shit! This, LIFE...", "");
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "D1");
+        wait(100);
+        stext(0, "Elliot:", "(Somehow, I gotta find money.",
+            "Two thousand crowns...)");
+        partymove("D1");
+        entity.speed[ent1] = 4;
+        setplayer(ent1);
+    }
+    if (dalari[2] = 4) {
+        ent1 = entityspawn(23, 112, "lell.chr");
+        setplayer(ent1);
+    }
+    if (dalari[2] = 5) {
+        ent1 = entityspawn(299, 26, "lell.chr");
+        setplayer(ent1);
+    }
+    if (dalari[2] = 6) {
+        ent1 = entityspawn(123, 45, "lell.chr");
+        setplayer(ent1);
+    }
+}
+event // 1
+{}
+event // 2 geezer
+{
+    if (slums[46] = 1) {
+        stext(0, "How I would like to go to", "the beautiful Capital...", "");
+    }
+    if (slums[46] = 0) {
+        stext(0, "Old Man:", "......", "");
+        stext(0, "Elliot:", "Mr Donovan?", "");
+        stext(0, "Mr Donovan:", "...Huh?...Oh it's you, Elliot.",
+            "Sorry, I was thinking...");
+        stext(0, "Elliot:", "What were you thinking?", "");
+        stext(0, "Mr Donovan:", "Old times. When the sky was",
+            "blue and the clouds were white.");
+        stext(0, "Elliot:", "It must have been", "beautiful.");
+        stext(0, "Mr Donovan:", "It was a paradise", "compared to this.");
+        stext(
+            0, "Of course we couldn't", "appreciate it properly", "back then.");
+        stext(0, "Elliot:", "What happened?", "");
+        stext(0, "Mr Donovan:", "Young Marquis Efrine started",
+            "the project he called...");
+        stext(0, "...'Industrialism'.", "", "");
+        stext(0, "Due to deforestation and", "erosion we lost the green",
+            "land we once had.");
+        stext(0, "Only miles and miles of", "sand was left for us.", "");
+        stext(0, "The Lake Dalari was", "polluted; all the fishermen",
+            "became unemployed.");
+        stext(0, "People were given jobs in the", "nearby coalmines, where",
+            "accidents were common.");
+        stext(0, "There were riots, talking", "about rebellion, all of which",
+            "Efrine put down by force.");
+        stext(0, "Little by little we ended up", "in this hell...", "");
+        stext(0, "How I would like to go to", "the beautiful Capital...", "");
+        slums[46] = 1;
+    }
 }
 
-
- if(slums[1]=1)
- {
-  ent2=entityspawn(152,37,"Ltan.chr");
-  entity.specframe[ent2]=5;
- }
-
- if(lever[8]=1)
- {
- alterftile(126,115,1739,1);
+event // 3 engaged man
+{
+    pausespecent(30);
+    entfacing(30);
+    if (slums[47] = 5) {
+        stext(0, "Man:", "Have you found it?!", "");
+        stext(0, "Elliot:", "Not yet sir...", "");
+        stext(0, "Man:", "Damn!", "Where could it be?!");
+        stext(0, "Elliot:", "I'll keep on looking.", "");
+    }
+    if (slums[47] = 4) {
+        stext(0, "Man:", "What?", "You found it?");
+        stext(0, "Oh no! That's not mine!", "We have to keep looking...", "");
+        slums[47] = 5;
+    }
+    if (slums[47] = 3) {
+        stext(0, "Man:", "We'll get married soon...", "");
+    }
+    if (slums[47] = 2) {
+        stext(0, "Man:", "Yes! That's it!", "That's my ring! Hurrah!");
+        stext(0, "Elliot:", "It was inside an", "old skull.");
+        stext(0, "A bird must have hidden", "it there.", "");
+        stext(0, "Man:", "Thank you young fella!", "You've saved my skin.");
+        stext(0, "Elliot:", "Glad I was able to help.", "");
+        stext(0, "Man:", "You deserve a reward,", "oh yes.");
+        stext(0, "Here, take this.", "It brings you luck.", "");
+        stext(0, "Got Wooden Bracelet!", "", "");
+        equamount[1] = equamount[1] + 1;
+        stext(0, "Man:", "Take these as well.", "");
+        stext(0, "Got 20 crowns!", "", "");
+        crowns = crowns + 20;
+        stext(0, "Elliot:", "Thank you sir!", "");
+        stext(
+            0, "Man:", "Thank YOU. I've been", "worried sick since yesterday!");
+        stext(0, "Elliot:", "Well, see you around.", "");
+        slums[47] = 3;
+    }
+    if (slums[47] = 1) {
+        stext(0, "Man:", "Have you found it?!", "");
+        stext(0, "Elliot:", "Not yet sir...", "");
+        stext(0, "Man:", "Damn!", "Where could it be?!");
+        stext(0, "Elliot:", "I'll keep on looking.", "");
+    }
+    if (slums[47] = 0) {
+        stext(0, "Man:", "Dammit!", "I've lost my ring!");
+        stext(0, "Elliot:", "What kind of ring was it?", "");
+        stext(0, "Man:", "A simple ring made of brazz.",
+            "Nothing valuable, but it's...");
+        stext(0, "...my engagement ring!", "My fiancee will kill me!", "");
+        stext(0, "Elliot:", "I'll see if I can find it.", "");
+        stext(0, "Man:", "Great! Thanks a lot...",
+            "I really hope we can find it!");
+        alterftile(161, 42, 54, 0);
+        slums[47] = 1;
+    }
+    entity.specframe[30] = 0;
+    unpausespecent(30);
+}
+event // 4 ring
+{
+    if (slums[47] = 1) {
+        alterftile(161, 42, 0, 0);
+        stext(0, "Found a ring!", "", "");
+        slums[47] = 4;
+    }
+}
+event // 5 engaged woman
+{
+    pausespecent(2);
+    entfacing(2);
+    if (slums[47] = 3) {
+        stext(0, "Young woman:", "Now he's happier than ever",
+            "all of a sudden...");
+        stext(0, "He must be very nervous...", "", "");
+    }
+    ELSE {
+        stext(0, "Young woman:", "I wonder what's wrong with",
+            "my fiance? He looks so worried.");
+    }
+    entity.specframe[2] = 0;
+    unpausespecent(2);
 }
 
- if (slums[4]=2)
-  {
-  alterftile(25,106,0,0);
-  }
-
-if(slums[64]=1)
- { 
- alterftile(182,44,0,0);
+event // 6 chest5
+{
+    if (slums[48] = 0) {
+        alterftile(124, 111, 2592, 1);
+        alterftile(124, 112, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[13] + "(s)";
+            stext(0, number, "", "");
+            itemamount[13] = itemamount[13] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        }
+        slums[48] = 1;
+    }
+}
+event // 7 chest6
+{
+    if (slums[49] = 0) {
+        alterftile(71, 168, 2592, 1);
+        alterftile(71, 169, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[13] + "(s)";
+            stext(0, number, "", "");
+            itemamount[13] = itemamount[13] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        }
+        slums[49] = 1;
+    }
 }
 
-if(slums[71]=2)
-  {
-  entity.x[44]=0;
-  entity.y[44]=0;
-  SetTile(98, 136, 2, 1048);
-  SetTile(98, 135, 2, 1047);
-  SetTile(97, 135, 3, 0);
-  }
+event // 8 chicken1
+{
+    soundeffect[12] = cachesound("chick.wav");
+    playsound(soundeffect[12], 128, 128);
+    entity.speed[10] = 5;
+}
 
-if(slums[71]=3)
- {
-  entity.x[44]=0;
-  entity.y[44]=0;
-  SetTile(98, 136, 2, 1048);
-  SetTile(98, 135, 2, 1047);
-  SetTile(97, 135, 3, 0);
- SetTile(77, 114, 2, 1533);
- SetTile(77, 113, 2, 1300);
- ent5=entityspawn(99,112,"woman2.chr");
- }
-
- if(vara[25]=1)
- {
- alterftile(178,21,0,0);
- }
-
- if(slums[63]=1)
- { 
- alterftile(147,20,0,0);
- }
- 
- if (slums[60]=1)
- {
- alterftile(76,113,0,1);
- }
-
-  if (slums[60]=2)
- {
-  alterftile(76,113,0,1);
-  alterftile(74,112,1584,1);
-  alterftile(74,111,1585,1);
-  }
-
-  if (slums[59]=1)
-  {
-  alterftile(22,148,1584,1);
-  settile(22,147,4,1585);
-  }
-
-  if (slums[4]=1)
-  {
-  alterftile(25,106,0,0);
-  }
-
-  if (slums[8]=2)
-  {
-  alterftile(20,127,1584,1);
-  alterftile(20,126,1585,1);
-  }
-
-  if(slums[50]=1)
-  {
-  alterftile(25,110,2592,1);
-  alterftile(25,111,2591,0);
-  }  
-
-  if (slums[4]=2)
-  {
-  alterftile(42,110,1584,1);
-  alterftile(42,109,1585,1);
-  }
-
-   if(slums[48]=1)
-  {
-  alterftile(124,111,2592,1);
-  alterftile(124,112,2591,0);
-  }
-
-  if(slums[49]=1)
-  {
-  alterftile(71,168,2592,1);
-  alterftile(71,169,2591,0);
-  }
-
-if(slums[31]=2)
-  {
-   setresolution(640,480);
-  palettemorph(0,0,0,0,63);
-    ent1=entityspawn(171,12,"Lell.chr");
-    ent2=entityspawn(171,12,"Ltan.chr");
-    ent3=entityspawn(171,12,"Ljack.chr");
-    ent4=entityspawn(171,12,"Lfreu.chr");
-    ent5=entityspawn(171,14,"camman.chr");
-    ent6=entityspawn(171,14,"camman.chr");
-    cameratracking=2;
-    tracker=ent6;
-    entity.speed[ent1]=5;
-entity.speed[ent2]=5;
-entity.speed[ent3]=5;
-entity.speed[ent4]=5;
-entity.speed[ent6]=5;   
- setplayer(ent5);
-    entitymove(ent1,"D1L175");
-    wait(40);
-    entitymove(ent2,"D1L175");
-    wait(40);
-    entitymove(ent3,"D1L175");
-    wait(40);
-    entitymove(ent4,"D1L175"); 
-    entitymove(ent6,"L145"); 
-    wait(40);
-    wait(200);
-    entity.speed[ent2]=6;
-   entity.speed[ent3]=6;
-   entity.speed[ent4]=6;
+event // 9 chicken2
+{
+    soundeffect[12] = cachesound("chick.wav");
+    playsound(soundeffect[12], 128, 128);
+    entity.speed[11] = 5;
+}
+event // 10 chickenb
+{
+    entity.speed[10] = 3;
+    entity.speed[11] = 3;
+}
+event // 11 chickengirl
+{}
+event // 12 stairs 1 down
+{
+    stairs(70, 81);
+}
+event // 13 stairs 1 up
+{
+    stairs(73, 80);
+}
+event // 14 enter hotel
+{}
+event // 15 exit Drakes
+{
+    if (slums[30] = 1) {
+        door(128, 53);
+    }
+    if (slums[30] = 0) {
+        door(128, 53);
+        wait(200);
+        stext(0, "Elliot:", "...but how can you get such",
+            "a large amount of money...");
+        stext(0, "...in the poor slums...", "", "");
+        wait(100);
+        slums[30] = 1;
+    }
+}
+event // 16 enter Drakes
+{
+    door(23, 112);
+}
+event // 17 5 crowns
+{
+    foundmoney(0, 0, 0, 5);
+}
+event // 18 slumguard
+{
+    if (slums[61] = 0) {
+        ent2 = entityspawn(137, 13, "cart.chr");
+        entity.speed[ent2] = 3;
+        entitymove(ent2, "L100");
+        slums[61] = 1;
+    }
+    entity.specframe[22] = 10;
+    stext(0, "Guard:", "HEY stop right there! You scum",
+        "have no business with...");
+    stext(0, "...the better people!", "Go spreading your diseases",
+        "to your own!");
+    entity.specframe[22] = 0;
+    entitymove(22, "U1R1");
     wait(100);
-     entity.speed[ent2]=5;
-   wait(50);
-     entity.speed[ent3]=5;
+    entity.specframe[22] = 2;
+    soundeffect[3] = cachesound("hit1.wav");
+    playsound(soundeffect[3], 128, 128);
+    free(soundeffect[3]);
+    whiteout(1);
+    whitein(1);
+    entity.specframe[ent1] = 5;
+    entity.speed[ent1] = 6;
+    partymove("D5");
     wait(50);
-     entity.speed[ent4]=5;   
-    wait(400);
-   entity.speed[ent1]=6;  
-   entity.speed[ent2]=6;
-   entity.speed[ent3]=6;
-   entity.speed[ent4]=6;
-   wait(500);
-   dodo=0;
-    unpress(key[28]);
-   while(dodo<600)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-   gotoXY(30,40);
-  printstring(1,"Elliot:");
-  gotoXY(30,60);
-  printstring(1,"It was like we were released");
-  gotoXY(30,80);
-  printstring(1,"from a prison. The wind wizled in our");
-  gotoXY(30,100);
-  printstring(1,"ears and we laughed through the whole runaway!");
-  gotoXY(30,120);
-  printstring(1,"Finally, we were on an adventure!");
-  ProcessEntities();
-  showpage();
-  dodo++;
-  }
-   while(dodo<1000)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-   gotoXY(30,40);
-  printstring(1,"Elliot:");
-  gotoXY(30,60);
-  printstring(1,"It was like we were released");
-  gotoXY(30,80);
-  printstring(1,"from a prison. The wind wizled in our");
-  gotoXY(30,100);
-  printstring(1,"ears and we laughed through the whole runaway!");
-  gotoXY(30,120);
-  printstring(1,"Finally, we were on an adventure!");
-   gotoXY(30,160);
-  printstring(1,"It's amazing how everything turned out.");
-  gotoXY(30,180);
-  printstring(1,"How everything changed that summer.");
-  gotoXY(30,200);
-  printstring(1,"This was our farewell to Dalari, to the Slums.");
-  gotoXY(30,220);
-  printstring(1,"We would never come back.");
-  gotoXY(30,240);
-  printstring(1,"And I never saw my father again, I never missed him.");
-  ProcessEntities();
-  showpage();
-  dodo++;
-  }
-dodo=0;
-unpress(key[28]);
-while(dodo=0)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-   gotoXY(30,40);
-  printstring(1,"Elliot:");
-  gotoXY(30,60);
-  printstring(1,"It was like we were released");
-  gotoXY(30,80);
-  printstring(1,"from a prison. The wind wizled in our");
-  gotoXY(30,100);
-  printstring(1,"ears and we laughed through the whole runaway!");
-  gotoXY(30,120);
-  printstring(1,"Finally, we were on an adventure!");
-   gotoXY(30,160);
-  printstring(1,"It's amazing how everything turned out.");
-  gotoXY(30,180);
-  printstring(1,"How everything changed that summer.");
-  gotoXY(30,200);
-  printstring(1,"This was our farewell to Dalari, to the Slums.");
-  gotoXY(30,220);
-  printstring(1,"We would never come back.");
-  gotoXY(30,240);
-  printstring(1,"And I never saw my father again, I never missed him.");
-  gotoXY(30,280);
-  printstring(1,"God, how I have thought about these times.");
-  gotoXY(30,300);
-  printstring(1,"God, how these memories helped me through my hell.");
-  gotoXY(30,320);
-  printstring(1,"With these memories I would force myself to sleep,");
-  gotoXY(30,340);
-  printstring(1,"in my dark prison, when I could no longer cry.");
-  gotoXY(30,360);
-  printstring(1,"And I do miss them, my friends. God, how I miss them...");
-   gotoXY(30,380);
-  printstring(1,"^");
-  ProcessEntities();
-  showpage();
-  if(key[28])
-  {
-   dodo++;
-  }
-  }
-  wait(100);
-  fadeout(300,300);
-  wait(200);
-  dalari[5]=6;
-  mapswitch("palace2.map",0,0,0);
-  }
-  
+    entity.specframe[22] = 0;
+    entitymove(22, "L1D1");
+    stext(0, "Elliot:", "Awwwww...dammit!!", "");
+    entity.specframe[ent1] = 0;
+    entity.speed[ent1] = 4;
+}
+event // 19 note
+{
+    stext(0, "It's a treasure map!", "", "");
+    stext(0, "The treasure is hidden under", "a flagstone on the left of",
+        "the bridge.");
+}
+event // 20 treasure
+{
+    if (key[28]) {
+        stext(0, "There's something hidden", "under the flagstone.", "");
+        stext(0, "Found...an empty wallet!", "", "");
+        stext(0, "Elliot:", "Blaah, kids' play...", "");
+    }
+}
 
-  if(slums[31]=1)
-  {
+event // 21 skull
+{
+    if (slums[47] = 5) {
+        stext(0, "There's something hidden", "inside the rotten skull.", "");
+        stext(0, "Found a brazzring!", "", "");
+        slums[47] = 2;
+    }
+    if (slums[47] = 1) {
+        stext(0, "There's something hidden", "inside the rotten skull.", "");
+        stext(0, "Found a brazzring!", "", "");
+        slums[47] = 2;
+    }
+    alterftile(161, 42, 0, 0);
+}
+event // 22 note2
+{
+    stext(0, "'Dancing with rotten bones,", "dancing till dawn,",
+        "the final dance...");
+    stext(0, "Just give me this final", "rotten dance.'", "");
+}
+event // 23 monk
+{
+    stext(
+        0, "Monk:", "Hey boy, beware of Henrik...", "Lucifer lives near him.");
+    stext(0, "Elliot:", "(A Grimsonmonk,", "better stay clear.)");
+    stext(0, "Uh, yes I will, thank you!", "", "");
+}
+event // 24 ladder
+{
+    stext(0, "Elliot:", "I could use this ladder to", "climp to the city.");
+    stext(0, "If only I had the strenght to", "carry it...", "");
+}
+event // 25 stairs up
+{
+    stairs(42, 107);
+}
+
+event // 26 stairs down
+{
+    stairs(19, 110);
+}
+
+event // 27 nighttable
+{
+    if (slums[5] = 0) {
+        stext(0, "Elliot:", "I remember having 20 Crowns",
+            "in my piggypank. Let's see...");
+        stext(0, "There's a note:", "'Borrowed 20 Crowns. I'll pay",
+            "it back post haste.");
+        stext(0, "Signed 'Daddy'.", "", "");
+        stext(0, "Elliot:", "Bastard!!", "");
+        entity.specframe[ent1] = 10;
+        stext(0, "And what are you looking at", "FATCAT?", "");
+        soundeffect[4] = cachesound("cat1.wav");
+        playsound(soundeffect[4], 64, 128);
+        wait(50);
+        stext(0, "Hmmph!", "", "");
+        entity.specframe[ent1] = 0;
+        slums[5] = 1;
+    }
+}
+
+event // 28 exit house1
+{
+    door(128, 26);
+}
+
+event // 29 enter house1
+{
+    door(23, 131);
+}
+
+event // 30 ironstove
+{
+    stext(0, "It's a bit chilly in the room.", "", "");
+    questio = 1;
+    question(2, "Will you pour some", "gasoiline to", "the ironstove?", "",
+        "yes", "no", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        entity.specframe[ent1] = 5;
+        wait(10);
+        entity.specframe[ent1] = 8;
+        wait(50);
+        soundeffect[5] = cachesound("lfire.wav");
+        playsound(soundeffect[5], 128, 128);
+        alterftile(22, 126, 1504, 1);
+        stext(0, "Elliot:", "Gwaaaaaa!!!", "");
+        entity.specframe[ent1] = 0;
+        entity.speed[ent1] = 6;
+        partymove("D2R2U2L2D2R2U2L2D2");
+        wait(50);
+        stext(0, "Elliot:", "(Now THAT was stupid...)", "");
+        alterftile(22, 126, 0, 1);
+        entity.speed[ent1] = 4;
+    }
+    if (problem = 2) {
+        stext(0, "Elliot:", "Hmmm...perhaps later...", "");
+    }
+}
+
+event // 31 exit Gly Joe
+{
+    door(138, 43);
+}
+
+event // 32 enter Gly Joe
+{
+    door(47, 131);
+}
+
+event // 33 Joe
+{
+    if (slums[6] = 3) {
+        settile(50, 126, 4, 327);
+        stext(0, "Gly Joe:", "OK!! Shall we do business?!", "");
+        gly = itemamount[22] + itemamount[23] + itemamount[24] + itemamount[25];
+        if (gly = 0) {
+            stext(0, "Gly Joe:", "Ya don't have any?!",
+                "Well go get some kiddo!");
+        }
+        if (gly > 0) {
+            number = "I give you " + str(gly) + " crowns for these!";
+            stext(0, "Gly Joe:", number, "");
+            questio = 1;
+            question(
+                2, "Will you take", "his offer?", "", "", "Yes", "No", "", "");
+            free(textbox);
+            textbox = loadimage("textboxi.pcx");
+            if (problem = 1) {
+                itemamount[22] = 0;
+                itemamount[23] = 0;
+                itemamount[24] = 0;
+                itemamount[25] = 0;
+                stext(0, "Gly Joe:", "Exellent kiddo!!", "Here's your money");
+                number = "Got " + str(gly) + " crowns!!";
+                stext(0, number, "", "");
+                settile(50, 126, 4, 326);
+                stext(0, "Gly Joe:", "Now go find some more!", "");
+                settile(50, 126, 4, 309);
+                crowns = crowns + gly;
+            }
+            if (problem = 2) {
+                settile(50, 126, 4, 295);
+                stext(0, "Gly Joe:", "It's the best I can", "do kiddo.");
+                settile(50, 126, 4, 309);
+                stext(0, "Come see me if you change", "your mind!", "");
+            }
+        }
+    }
+    if (slums[6] = 2) {
+        stext(0, "Gly Joe:", "Still here kiddo?", "Hurry up now.");
+    }
+    if (slums[6] = 1) {
+        settile(50, 126, 4, 327);
+        stext(0, "Gly Joe:", "Ya changed yer mind?", "");
+        questio = 1;
+        question(2, "Will you take", "his offer?", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            stext(0, "Gly Joe:", "Exellent kiddo!", "");
+            settile(50, 126, 4, 295);
+            stext(0, "But don't ya even think", "'bout going down there alone!",
+                "");
+            stext(0, "Gather yer stinking friends", "first.", "");
+            settile(50, 126, 4, 309);
+            stext(0, "Elliot:", "Ok Gly!", "");
+            partymove("D1");
+            stext(0, "Elliot:", "(I'll go get Tanya and Jack...)", "");
+            ent2 = entityspawn(152, 37, "Ltan.chr");
+            entity.specframe[ent2] = 5;
+            slums[1] = 1;
+            slums[6] = 2;
+        }
+        if (problem = 2) {
+            slums[6] = 1;
+            stext(0, "Elliot:", "Ummm...I still have some other",
+                "things to deal with...");
+            settile(50, 126, 4, 295);
+            stext(0, "Tell me if ya happen to change", "yer mind kiddo!", "");
+            stext(0, "Elliot:", "Sure Gly.", "");
+            settile(50, 126, 4, 309);
+        }
+    }
+    if (slums[6] = 0) {
+        stext(0, "Gly Joe:", "Whacha want kiddo?", "");
+        stext(0, "Elliot:", "Just came to say 'hi' Gly.", "");
+        settile(50, 126, 4, 327);
+        stext(0, "Gly Joe:", "Weell, 'ts hanging lazily as ", "always, kiddo.");
+        settile(50, 126, 4, 309);
+        stext(0, "Say what, you up to a litl", "venture m'boy?", "Eh?");
+        stext(0, "Elliot:", "Whaddaya mean 'Joe with",
+            "the face like hors's ass'?");
+        settile(50, 126, 4, 295);
+        stext(0, "Gly Joe:", "Waaahhhahhah!! Now where", "did ya hear THAT?");
+        stext(0, "Elliot:", "Heard the guards talk...", "");
+        settile(50, 126, 4, 327);
+        wait(10);
+        settile(50, 126, 4, 309);
+        wait(20);
+        settile(50, 126, 4, 326);
+        stext(0, "Gly Joe:", "Wha...GODDAMNIT!!", "");
+        stext(0, "Y'know, I think some 'guards'", "'re gonna find themselves",
+            "drinking...");
+        stext(0, "...POISON a'la Gly", "Joe m'fiend!", "");
+        settile(50, 126, 4, 327);
+        stext(0, "Anyways, how 'bout it?", "", "");
+        stext(0, "Elliot:", "Whaddaya want 'Joe with the",
+            "face like hors's ass'?");
+        settile(50, 126, 4, 326);
+        stext(0, "Gly Joe:", "Whatch it kiddo, or sommone'll",
+            "find himself 'urt,...");
+        stext(0, "...an that ain't gonna be", "Gly Joe! Gotcha?", "");
+        stext(0, "Elliot:", "Yup, sorry Gly.", "");
+        settile(50, 126, 4, 309);
+        stext(0, "Gly Joe:", "Nah 'ts nothing. Now, I was",
+            "'bout to offer ya a deal!");
+        stext(0, "Ye see, I'm runnin outta", "rats'n stuff.", "Gotcha?");
+        stext(0, "Elliot:", "Can you pay Gly?", "In crowns.");
+        settile(50, 126, 4, 295);
+        stext(0, "Gly Joe:", "Can I...'course Gly Joe can",
+            "'PAY IN CROWNS! Whahhahha.");
+        stext(0, "Elliot:", "About twothousand...", "");
+        settile(50, 126, 4, 327);
+        stext(0, "Gly Joe:", "Say wha?! Whahhahaha! You're",
+            "something else kiddo!");
+        stext(0, "Elliot:", "'t was worth a try.", "");
+        settile(50, 126, 4, 309);
+        stext(
+            0, "Gly Joe:", "Ain't no two thousand, but", "one Crown for each.");
+        stext(0, "Elliot:", "One Crown for each stinking",
+            "rodent or creep I catch.");
+        settile(50, 126, 4, 327);
+        stext(0, "Gly Joe:", "That's right m'boy.", "Take it or leave it.");
+        questio = 1;
+        question(2, "Will you take", "his offer?", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            stext(0, "Elliot:", "It's a deal, Gly.", "");
+            stext(0, "Gly Joe:", "Exellent kiddo!", "");
+            settile(50, 126, 4, 295);
+            stext(0, "But don't ya even think", "'bout going down there alone!",
+                "");
+            stext(0, "Gather yer stinking friends", "first.", "");
+            settile(50, 126, 4, 309);
+            stext(0, "Elliot:", "Ok Gly!", "");
+            partymove("D1");
+            stext(0, "Elliot:", "(I'll go get Tanya and Jack...)", "");
+            ent2 = entityspawn(152, 37, "Ltan.chr");
+            entity.specframe[ent2] = 5;
+            slums[1] = 1;
+            slums[6] = 2;
+        }
+        if (problem = 2) {
+            slums[6] = 1;
+            stext(
+                0, "Elliot:", "Ummm...I'm a bit busy at the", "moment,Gly...");
+            settile(50, 126, 4, 309);
+            stext(0, "Gly Joe:", "Weell that's ok, but think", "'bout it.");
+            settile(50, 126, 4, 295);
+            stext(0, "Tell me if ye happen to change", "your mind kiddo!", "");
+            stext(0, "Elliot:", "Sure Gly.", "");
+            settile(50, 126, 4, 309);
+        }
+    }
+}
+event // 34 Gly stairs
+{
+    stext(0, "Gly Joe:", "Stay outta there kiddo!", "That's Gly's private!");
+}
+
+event // 35 Tanya
+{
+    entlocx = entity.tx[ent1];
+    entlocy = entity.ty[ent1];
+    if (slums[1] = 1) {
+        if (entlocx = 152) {
+            partymove("L1U1");
+        }
+        stext(0, "Elliot:", "Hi Tanya.", "");
+        stext(0, "Tanya:", "Hi...", "");
+        entity.specframe[ent1] = 5;
+        stext(0, "Elliot:", "Your parents fighting again?", "");
+        stext(0, "Tanya:", "Yeah, I couldn't stand it", "anymore.");
+        stext(0, "Elliot:", "I'm sorry.", "");
+        stext(0, "Tanya:", "......", "So, what's up?");
+        stext(0, "Elliot:", "I made a deal with Gly Joe.",
+            "We're gonna get a Crown..");
+        stext(0, "...per rodent we catch", "down the sewers.", "");
+        stext(0, "Tanya:", "I dunno...", "");
+        stext(0, "Elliot:", "Hey, cheer up.", "I can't go alone, y'know.");
+        if (entlocx = 153) {
+            entity.specframe[ent2] = 10;
+        }
+        ELSE { entity.specframe[ent2] = 15; }
+        stext(0, "Tanya:", "You want ME to protect you.", "");
+        if (entlocx = 153) {
+            entity.specframe[ent1] = 15;
+        }
+        ELSE { entity.specframe[ent1] = 10; }
+        stext(0, "Elliot:", "Don't be silly! You know",
+            "it's dangerous down there!");
+        stext(0, "Tanya:", "Hah ha hah I know I know.", "I was just teasing.");
+        stext(0, "Elliot:", "Hmmph.", "Not funny.");
+        entity.specframe[ent2] = 5;
+        stext(0, "Tanya:", "Y'know, someone forgot to",
+            "give you some sense of humour.");
+        stext(
+            0, "Elliot:", "Alright alright it was FUN-NY!", "Shall we go now?");
+        stext(0, "We have to find Jack.", "", "");
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.specframe[ent1] = 0;
+        ent2 = entityspawn(50, 151, "Ljack.chr");
+        addcharacter(6);
+        equippedarmor[6] = 1;
+        equippedweapon[6] = 22;
+        equippedhelmet[6] = 0;
+        equippedlegs[6] = 4;
+        equippedshield[6] = 0;
+        equippedequipment[6] = 0;
+        equippedrelic[6] = 0;
+        deadchar[2] = 1;
+        statistics(6);
+        slums[2] = 1;
+        slums[29] = 2;
+        slums[1] = 2;
+        cameratracking = 1;
+    }
+}
+
+event // 36 exit warehouse2
+{
+    door(173, 36);
+}
+
+event // 37 enter warehouse2
+{
+    if (slums[1] = 2) {
+        alterftile(50, 147, 1686, 0);
+        entity.specframe[ent2] = 5;
+    }
+    door(50, 156);
+}
+
+event // 38 Jack
+{
+    if (slums[2] = 1) {
+        entity.speed[ent1] = 4;
+        entity.specframe[ent1] = 5;
+        cameratracking = 2;
+        tracker = 25;
+        stext(0, "Elliot:", "Jack?", "");
+        entitymove(25, "U4");
+        stext(0, "Jack:", "Shhh!", "");
+        entity.specframe[ent1] = 0;
+        partymove("U3R1U1");
+        stext(0, "Jack:", "I'll get you...", "");
+        entitymove(ent2, "U1");
+        stext(0, "Jack:", "Haaa!", "");
+        entity.speed[ent2] = 6;
+        entitymove(ent2, "U4");
+        wait(10);
+        alterftile(50, 147, 0, 0);
+        wait(50);
+        entity.specframe[ent2] = 1;
+        stext(0, "Jack:", "Hahahaha I cought it!", "");
+        entity.speed[ent2] = 4;
+        wait(50);
+        entity.specframe[ent2] = 0;
+        entitymove(ent2, "D2");
+        partymove("L1U1");
+        wait(100);
+        stext(0, "Elliot:", "Catching bugs again, eh Jack?", "");
+        stext(0, "Jack:", "Just look how big it is!",
+            "Gly Joe'll choke to his beard!");
+        stext(0, "Elliot:", "Yeah, but it's just a bug...", "");
+        stext(0, "Jack:", "Whaddaya mean", "'just a bug'?");
+        stext(0, "Elliot:", "We could go catch", "something bigger.");
+        stext(0, "Jack:", "Oh yeah?", "Like what?");
+        stext(0, "Elliot:", "Y'know, giantrats.", "");
+        stext(0, "Jack:", "Mmmm...yes, that'd be a", "challenge!");
+        stext(0, "Elliot:", "Gly Joe promised a Crown", "per rodent.");
+        stext(0, "Jack:", "WHOA!! A CROWN!", "How about THAT!");
+        stext(0, "Elliot:", "You coming?", "");
+        stext(0, "Jack:", "You bet! What are we", "waiting for? Let's go!");
+        entitymove(ent2, "D1");
+        wait(20);
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        addcharacter(4);
+        equippedweapon[4] = 21;
+        equippedarmor[4] = 8;
+        equippedhelmet[4] = 6;
+        equippedlegs[4] = 4;
+        equippedshield[4] = 0;
+        equippedequipment[4] = 0;
+        equippedrelic[4] = 0;
+        statistics(4);
+        deadchar[3] = 1;
+        slums[2] = 2;
+        slums[1] = 3;
+        cameratracking = 1;
+    }
+}
+
+event // 39 locked door
+{
+    lock();
+}
+
+event // 40 radio
+{
+    if (slums[3] = 0) {
+        stext(0, "There's a radio.", "", "");
+        questio = 1;
+        question(2, "Will you switch it on?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            problem = 0;
+            questio = 1;
+            slums[3] = 2;
+            stext(
+                0, "It seems there are two", "channels programmed here...", "");
+            question(2, "Choose the channel.", "", "", "", "1.", "2.", "", "");
+            free(textbox);
+            textbox = loadimage("textboxi.pcx");
+            if (problem = 1) {
+                stext(0, "Announcer:", "...this gentle tune.", "");
+                musicfade(2);
+                playmusic("sil.s3m");
+                wait(10);
+                playmusic("love.s3m");
+                musicfadein(1);
+            }
+            if (problem = 2) {
+                stext(0, "Announcer:", "...while we listen some", "nostalgy.");
+                musicfade(2);
+                playmusic("sil.s3m");
+                wait(10);
+                playmusic("agony.s3m");
+                musicfadein(1);
+                problem = 0;
+            }
+        }
+        if (problem = 2) {
+            stext(0, "Elliot:", "There's no time for this...", "");
+        }
+    }
+    if (slums[3] = 1) {
+        stext(0, "There's a radio.", "", "");
+        questio = 1;
+        question(2, "Will you switch it off?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            slums[3] = 0;
+            problem = 0;
+            musicfade(1);
+            playmusic("slums.s3m");
+            musicfadein(2);
+        }
+        if (problem = 2) {
+            problem = 0;
+            stext(0, "Elliot:", "Hmmm...not just yet...", "");
+            stext(0, "Elliot:", "I could change the channel", "though...");
+            questio = 1;
+            question(2, "Will you change the", "channel?", "", "", "yes", "no",
+                "", "");
+            free(textbox);
+            textbox = loadimage("textboxi.pcx");
+        }
+        if (problem = 1) {
+            questio = 1;
+            stext(0, "There are two", "channels programmed here...", "");
+            question(2, "Choose the channel.", "", "", "", "1.", "2.", "", "");
+            free(textbox);
+            textbox = loadimage("textboxi.pcx");
+            if (problem = 1) {
+                stext(0, "Announcer:", "...this gentle tune.", "");
+                musicfade(2);
+                playmusic("sil.s3m");
+                wait(10);
+                playmusic("love.s3m");
+                musicfadein(1);
+            }
+            if (problem = 2) {
+                stext(0, "Announcer:", "...while we listen some", "nostalgy.");
+                musicfade(2);
+                playmusic("sil.s3m");
+                wait(10);
+                playmusic("agony.s3m");
+                musicfadein(1);
+                problem = 0;
+            }
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+        }
+    }
+    if (slums[3] = 2) {
+        slums[3] = 1;
+    }
+}
+
+event // 41 chest1
+{
+    if (slums[4] = 0) {
+        lock();
+    }
+    if (slums[4] = 1) {
+        alterftile(42, 110, 1584, 1);
+        alterftile(42, 109, 1585, 1);
+        soundeffect[6] = cachesound("boxopen.wav");
+        playsound(soundeffect[6], 64, 128);
+        stext(0, "Elliot:", "Alright, let's see...", "A pair of old socks...");
+        stext(0, "...underpants...another pair of",
+            "underpants...an old mag...", "...empty jars...");
+        stext(0, "...here it is!", "My Helmet! It'll surely be",
+            "usefull in my quest!");
+        stext(0, "Got Leather Helm!", "", "");
+        armoramount[12] = armoramount[12] + 1;
+        slums[4] = 2;
+    }
+}
+
+event // 42 key1
+{
+    if (slums[4] = 0) {
+        entity.specframe[ent1] = 5;
+        alterftile(25, 107, 0, 0);
+        entity.speed[ent1] = 5;
+        partymove("U1D1");
+        alterftile(25, 106, 0, 0);
+        wait(40);
+        stext(0, "Got a key!", "", "");
+        entity.speed[ent1] = 4;
+        alterftile(25, 107, 0, 1);
+        entity.specframe[ent1] = 0;
+        slums[4] = 1;
+    }
+}
+
+event // 43 open
+{
+    if (slums[7] = 0) {
+        stext(0, "Elliot:", "(Dad's in no condition to work)", "");
+        alterftile(127, 52, 0, 0);
+        entity.speed[ent1] = 5;
+        wait(10);
+        partymove("U1D1");
+        alterftile(127, 51, 808, 1);
+        entity.speed[ent1] = 4;
+        entity.specframe[ent1] = 0;
+        alterftile(127, 52, 0, 1);
+        slums[7] = 1;
+    }
+}
+
+event // 44 dad
+{
+    stext(0, "Elliot's father:", "Go away son...", "Daddy has to sleep now.");
+}
+
+event // 45 chest2
+{
+    if (slums[8] = 0) {
+        alterftile(20, 127, 1584, 1);
+        alterftile(20, 126, 1585, 1);
+        soundeffect[6] = cachesound("boxopen.wav");
+        playsound(soundeffect[6], 64, 128);
+        stext(0, "There are ten Crowns in", "the chest.", "");
+        questio = 1;
+        question(
+            2, "Will you take the money?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            foundmoney(0, 0, 0, 10);
+            slums[8] = 2;
+        }
+        if (problem = 2) {
+            stext(0, "Elliot:", "(Stealing is wrong...)", "");
+            alterftile(20, 127, 1583, 1);
+            alterftile(20, 126, 1586, 1);
+        }
+    }
+}
+
+event // 46 enter house2
+{
+    door(25, 149);
+}
+
+event // 47 exit house2
+{
+    if (slums[44] = 1) {
+        slums[43] = 2;
+    }
+    door(142, 23);
+}
+event // 48 enter bedroom
+{
+    door(22, 166);
+}
+
+event // 49 exit bedroom
+{
+    door(26, 145);
+}
+event // 50 exit house3
+{
+    door(116, 53);
+}
+event // 51 enter house3
+{
+    door(78, 116);
+}
+event // 52 key2
+{
+    if (slums[60] = 0) {
+        entity.specframe[ent1] = 5;
+        alterftile(76, 113, 0, 1);
+        wait(40);
+        stext(0, "Got a key!", "", "");
+        entity.specframe[ent1] = 0;
+        slums[60] = 1;
+    }
+}
+event // 53 chest3
+{
+    if (slums[60] = 0) {
+        lock();
+    }
+    if (slums[60] = 1) {
+        alterftile(74, 112, 1584, 1);
+        alterftile(74, 111, 1585, 1);
+        soundeffect[6] = cachesound("boxopen.wav");
+        playsound(soundeffect[6], 64, 128);
+        stext(0, "There are fifteen Crowns in", "the chest.", "");
+        questio = 1;
+        question(
+            2, "Will you take the money?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            foundmoney(0, 0, 0, 15);
+            slums[60] = 2;
+        }
+        if (problem = 2) {
+            stext(0, "Elliot:", "(Stealing is wrong...)", "");
+            alterftile(74, 112, 1583, 1);
+            alterftile(74, 111, 1586, 1);
+        }
+    }
+}
+event // 54 stairs 3 down
+{
+    stairs(81, 114);
+}
+event // 55 stairs 3 up
+{
+    stairs(104, 112);
+}
+event // 56 nailed shut
+{
+    nailedshut();
+}
+
+event // 57 enter sewers
+{
+    if (slums[2] = 2) {
+        if (key[28]) {
+            musicfade(2);
+            slums[9] = 0;
+            playmusic("sil.s3m");
+            mapswitch("sewers.map", 0, 0, 0);
+        }
+    }
+}
+
+event // 58 enter insomnia
+{
+    musicfade(2);
+    playmusic("sil.s3m");
+    wait(10);
+    door(69, 135);
+    playmusic("goblin.s3m");
+    music_volume = 50;
+}
+
+event // 59 enter insomnia2
+{
+    if (slums[71] = 2) {
+        slums[71] = 3;
+        SetTile(77, 114, 2, 1533);
+        SetTile(77, 113, 2, 1300);
+        slums[72] = 1;
+        ent5 = entityspawn(99, 112, "woman2.chr");
+    }
+    music_volume = 90;
+    door(92, 138);
+}
+
+event // 60 enter toilet1
+{
+    door(114, 135);
+}
+
+event // 61 exit insomnia
+{
+    musicfade(2);
+    playmusic("sil.s3m");
+    wait(10);
+    door(112, 26);
     playmusic("slums.s3m");
-    ent1=entityspawn(23,110,"Lell.chr");
-    setplayer(ent1);
-    wait(100);
-     stext(0,"Elliot:","(Somehow, I gotta find money.","Two thousand crowns...)");
-    slums[31]=3;  
-  }
-
-  if(run[4]=1)
-  {
-  playmusic("goblin.s3m");
-   musicfadein(10);
-   ent1=entityspawn(95,130,"lell.chr");
-   setplayer(ent1); 
-   cameratracking=1;
-   render(); 
-   dalari[2]=7;
-   run[4]=0;
-   if(run[15]=1)
-   {
-    stext(0,"Elliot:","Damn!!","We're out of cash!");
-    run[15]=0;
-   }
-  }
-   if(loaded=1)
-  {
-   freeallsounds();
-   playmusic(savemusic);
-   musicfadein(10);
-   ent1=entityspawn(savex,savey,savechar);
-   setplayer(ent1);  
-   dalari[2]=7;
-   textbox  =LoadImage("textboxi.pcx");
-    speechpic=LoadRaw("speech.spc");
-    loadmenupics();
- equipmentnames();
- weaponnames();
- armornames();
- relicnames();
- itemnames();
- spellnames();
- loaded=0;
- }
-   if(slums[157]=1)
-  {
-   alterftile(120,32,0,0);
-  }
- if(wochest[1]=1)
-  {
-   alterftile(23,108,1565,1);
-  }
-  if(wochest[2]=1)
-  {
-   alterftile(22,108,1565,1);
-  }
-  if(wochest[3]=1)
-  {
-   alterftile(112,52,1565,1);
-  }
-  if(slums[151]=1)
-  {
-   alterftile(x,y,2592,1);
- alterftile(x,y+1,2591,0);
-  }
-   if (dalari[2]=0)
-   {
-   ent1=entityspawn(1,15,"wiza.chr");
-   setplayer(ent1);
-   }
-   if (dalari[2]=1)
-   {
-    ent1=entityspawn(18,11,"wiza.chr");
-    setplayer(ent1);
-   }
-   if (dalari[2]=3)
-   {
-     ent1=entityspawn(121,17,"commandr.chr");
-     ent2=entityspawn(121,16,"mofficer.chr"); 
-     ent3=entityspawn(121,15,"wofficer.chr");
-     entity.speed[ent1]=3;
-     entity.speed[ent2]=3;
-     entity.speed[ent3]=3;
-     setplayer(21);
-     entitymove(ent1,"D8R1D29");
-     entitymove(ent2,"D9R1D26");
-     entitymove(ent3,"D10R1D25R1D1");
-     wait(300);
-     partymove("D28");
-     wait(200);
-     entitymove(ent1,"R6U1");
-     wait(250);
-     entity.x[ent1]=0;
-     entity.y[ent1]=0; 
-     entity.x[ent2]=0;
-     entity.y[ent2]=0;
-     entity.x[ent3]=0;
-     entity.y[ent3]=0;     
-     soundeffect[1]=cachesound("open1.wav");
-     soundeffect[2]=cachesound("close17.wav");
-     playsound(soundeffect[1],64,128);
-     ent1=entityspawn(23,112,"commandr.chr");
-     ent2=entityspawn(25,109,"efather.chr");
-     entity.specframe[ent2]=25;
-     entity.specframe[ent1]=5;
-     playsound(soundeffect[2],64,128);
-     warp(23,109); 
-     wait(50);
-     stext(0,"Henrik:","Drake!!","");
-     entity.specframe[ent1]=0;
-     entitymove(ent1,"U1");
-     wait(100);
-     entity.specframe[ent2]=22;
-     wait(20);
-     entity.specframe[ent2]=23;
-     wait(20);
-     entity.specframe[ent2]=24;
-     wait(20);
-     stext(0,"Drake:","Sir Henrik!!","");
-     entity.specframe[ent2]=1;
-     entity.specframe[ent1]=20;
-     stext(0,"Henrik:","You haven't paid your","taxes in two months, Drake.");
-     stext(0,"What do you think about THAT!?","","");
-     entity.specframe[ent2]=23;
-     stext(0,"Drake:","I...I...","I'm broke.");
-     stext(0,"Henrik:","Is that all you've got","to say?");
-     entity.specframe[ent2]=22;
-     stext(0,"Drake:","Business is slow, we can","barely feed ourselves!");
-     stext(0,"Henrik:","I don't care how you feed","yourself!");
-     stext(0,"You'll deliver the taxmoney","to me TOMORROW!","");
-     stext(0,"Drake:","But sir, I can't get that","kind of money so quickly!");
-     stext(0,"Henrik:","Then I'll send you to the","Alcatraz...");
-     entity.specframe[ent1]=5;
-     wait(10);
-     entity.specframe[ent1]=5;
-     wait(5);
-     entity.specframe[ent1]=0;
-     entitymove(ent1,"D1");
-     stext(0,"Tomorrow, Drake.","","");
-     playsound(soundeffect[1],64,128);
-     wait(20);
-     entity.x[ent1]=0;
-     entity.y[ent1]=0;  
-     playsound(soundeffect[2],64,128);
-     wait(100);
-     stext(0,"Drake:","Shit!","I...have a terrible...");
-     stext(0,"...hangover...","I...think...I'll puke...","");
-     entity.specframe[ent2]=25;
-     entity.x[ent2]=0;
-     entity.y[ent2]=0;
-     musicfade(10);
-     playmusic("sil.s3m");
-     wait(10);
-     playmusic("slums.s3m");
-     musicfadein(10);
-     wait(100);
-     playsound(soundeffect[1],64,128);
-     wait(20);
-     playsound(soundeffect[2],64,128);
-     ent1=entityspawn(23,112,"lell.chr");
-     entity.specframe[ent1]=5;      
-     wait(100);
-     stext(0,"Drake:","Is that you Elliot?","");
-     stext(0,"Drake:","Y'know,...You have...a loysy","...father..");
-     entity.speed[ent1]=3;
-     entity.specframe[ent1]=0;
-     entitymove(ent1,"U3");
-     wait(100);
-     entity.specframe[ent1]=10;
-     stext(0,"Elliot:","You drank the taxmoney,","dad, didn't you?"); 
-     stext(0,"Elliot's father:","Hee hee, every single penny!","");
-     stext(0,"Elliot:","We have to get you some help,","dad. You have to stop this.");
-     stext(0,"Elliot's father:","Don't worry, they already","promised to send me to...");
-     stext(0,"...the Alcatraz.","","");
-     stext(0,"Elliot:","Dad!!","");
-     stext(0,"Elliot's father:","Don't worry son.","You're a smart kid.");
-     stext(0,"You'll do fine without me.","","");
-     stext(0,"I'm...I'm so tired of this","shit! This, LIFE...","");
-     entity.specframe[ent1]=0;
-     entitymove(ent1,"D1");
-     wait(100);
-     stext(0,"Elliot:","(Somehow, I gotta find money.","Two thousand crowns...)");
-     partymove("D1");
-     entity.speed[ent1]=4;
-     setplayer(ent1);
-
-}
-  if (dalari[2]=4)
-   {
-    ent1=entityspawn(23,112,"lell.chr");
-    setplayer(ent1);
-  }
-  if (dalari[2]=5)
-   {
-    ent1=entityspawn(299,26,"lell.chr");
-    setplayer(ent1);
-}
-  if (dalari[2]=6)
-   {
-    ent1=entityspawn(123,45,"lell.chr");
-    setplayer(ent1);
-}
-}
-event//1
-{
-}
-event//2 geezer
-{
- if(slums[46]=1)
- {
- stext(0,"How I would like to go to","the beautiful Capital...","");
- }
- if(slums[46]=0)
- {
- stext(0,"Old Man:","......","");
- stext(0,"Elliot:","Mr Donovan?","");
- stext(0,"Mr Donovan:","...Huh?...Oh it's you, Elliot.","Sorry, I was thinking...");
- stext(0,"Elliot:","What were you thinking?","");
- stext(0,"Mr Donovan:","Old times. When the sky was","blue and the clouds were white.");
- stext(0,"Elliot:","It must have been","beautiful.");
- stext(0,"Mr Donovan:","It was a paradise","compared to this.");
- stext(0,"Of course we couldn't","appreciate it properly","back then.");
- stext(0,"Elliot:","What happened?","");
- stext(0,"Mr Donovan:","Young Marquis Efrine started","the project he called...");
- stext(0,"...'Industrialism'.","","");
- stext(0,"Due to deforestation and","erosion we lost the green","land we once had.");
- stext(0,"Only miles and miles of","sand was left for us.","");
- stext(0,"The Lake Dalari was","polluted; all the fishermen","became unemployed.");
- stext(0,"People were given jobs in the","nearby coalmines, where","accidents were common.");
- stext(0,"There were riots, talking","about rebellion, all of which","Efrine put down by force.");
- stext(0,"Little by little we ended up","in this hell...","");
- stext(0,"How I would like to go to","the beautiful Capital...","");
- slums[46]=1;
-} 
+    wait(10);
+    musicfadein(5);
 }
 
-event//3 engaged man
+event // 62 exit insomnia2
 {
- pausespecent(30);
- entfacing (30);
-  if(slums[47]=5)
- {
-  stext(0,"Man:","Have you found it?!","");
-  stext(0,"Elliot:","Not yet sir...","");
-  stext(0,"Man:","Damn!","Where could it be?!");
-  stext(0,"Elliot:","I'll keep on looking.","");
- }
- if(slums[47]=4)
- {
-  stext(0,"Man:","What?","You found it?");
-  stext(0,"Oh no! That's not mine!","We have to keep looking...","");
-  slums[47]=5; 
- }
- if(slums[47]=3)
- {
-  stext(0,"Man:","We'll get married soon...","");
- }
- if(slums[47]=2)
- {
-  stext(0,"Man:","Yes! That's it!","That's my ring! Hurrah!");
-  stext(0,"Elliot:","It was inside an","old skull.");
-  stext(0,"A bird must have hidden","it there.","");
-  stext(0,"Man:","Thank you young fella!","You've saved my skin.");
-  stext(0,"Elliot:","Glad I was able to help.","");
-  stext(0,"Man:","You deserve a reward,","oh yes.");
-  stext(0,"Here, take this.","It brings you luck.","");
-  stext(0,"Got Wooden Bracelet!","","");
-  equamount[1]=equamount[1]+1;
-  stext(0,"Man:","Take these as well.","");
-  stext(0,"Got 20 crowns!","","");
-  crowns=crowns+20;
-  stext(0,"Elliot:","Thank you sir!","");
-  stext(0,"Man:","Thank YOU. I've been","worried sick since yesterday!");
-  stext(0,"Elliot:","Well, see you around.","");
-  slums[47]=3;
- }
- if(slums[47]=1)
- {
-  stext(0,"Man:","Have you found it?!","");
-  stext(0,"Elliot:","Not yet sir...","");
-  stext(0,"Man:","Damn!","Where could it be?!");
-  stext(0,"Elliot:","I'll keep on looking.","");
- }
- if(slums[47]=0)
- {
- stext(0,"Man:","Dammit!","I've lost my ring!");
- stext(0,"Elliot:","What kind of ring was it?","");
- stext(0,"Man:","A simple ring made of brazz.","Nothing valuable, but it's...");
- stext(0,"...my engagement ring!","My fiancee will kill me!","");
- stext(0,"Elliot:","I'll see if I can find it.","");
- stext(0,"Man:","Great! Thanks a lot...","I really hope we can find it!");
- alterftile(161,42,54,0);
- slums[47]=1;
-}
-entity.specframe[30]=0;
-unpausespecent(30);
-}
-event//4 ring
-{
- if(slums[47]=1)
- {
-  alterftile(161,42,0,0);
-  stext(0,"Found a ring!","","");
-  slums[47]=4;
-}
-}
-event//5 engaged woman
-{
- pausespecent(2);
- entfacing(2);
- if(slums[47]=3)
- {
-  stext(0,"Young woman:","Now he's happier than ever","all of a sudden...");
-  stext(0,"He must be very nervous...","","");
- }
- ELSE
- {
- stext(0,"Young woman:","I wonder what's wrong with","my fiance? He looks so worried.");
-}
-entity.specframe[2]=0;
-unpausespecent(2);
+    door(70, 131);
+    music_volume = 50;
 }
 
-event//6 chest5
+event // 63 exit toilet1
 {
- if(slums[48]=0)
-  {
-  alterftile(124,111,2592,1);
-  alterftile(124,112,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[13]+"(s)";
-          stext(0,number,"","");
-          itemamount[13]=itemamount[13]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
- }
- slums[48]=1;
+    door(97, 129);
 }
-}
-event//7 chest6
+event // 64 cardplayer1
 {
- if(slums[49]=0)
-  {
-  alterftile(71,168,2592,1);
-  alterftile(71,169,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[13]+"(s)";
-          stext(0,number,"","");
-          itemamount[13]=itemamount[13]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
- }
- slums[49]=1;
+    if (cardround = 0 && cardplayer[2] = 1) {
+        stext(0, "Cardplayer:", "Go home boy. This is not",
+            "for children to see.");
+    }
+    if (cardround = 0 && cardplayer[2] = 0) {
+        stext(0, "Elliot:", "Hi.", "");
+        stext(0, "Cardplayer:", "Hello there m'boy.", "How are things?");
+        stext(0, "Elliot:", "You're naked!!!", "");
+        stext(0, "Cardplayer:", "Hah hah hah...so I am. Guess",
+            "I haven't been lucky tonight.");
+        stext(
+            0, "Elliot:", "You're damn right!! Who", "has your your clothes?");
+        stext(0, "Cardplayer:", "Oh he already left,", "but maybe I'll...");
+        stext(0, "...win myself some trousers", "lateron.", "");
+        stext(0, "Elliot:", "I hope you do!!", "I really do!!");
+        stext(0, "Cardplayer:", "Could you do me a small", "favour boy?");
+        stext(0, "Elliot:", "What kinda favour?", "");
+        stext(0, "Cardplayer:", "If I could have your pants...no",
+            "better not. They look so small.");
+        stext(0, "Elliot:", "I certainly wouldn't have given",
+            "them to you anyhow mister!!");
+        stext(0, "Cardplayer:", "Hmmm...well nevermind.",
+            "I guess I'll try my luck then.");
+        cardplayer[2] = 1;
+        cardplayer[1] = cardplayer[1] + 1;
+    }
 }
-}
-
-event//8 chicken1
+event // 65 cardplayer2
 {
- soundeffect[12]=cachesound("chick.wav");
- playsound(soundeffect[12],128,128);
- entity.speed[10]=5;
+    if (cardround = 0 && cardplayer[3] = 1) {
+        stext(0, "Cardplayer:", "I know I'm perfect for the next",
+            "Silence of the lams!");
+    }
+    if (cardround = 0 && cardplayer[3] = 0) {
+        stext(0, "Elliot:", "Hello there!", "");
+        stext(0, "Cardplayer:", "What? Who said that? Oh a",
+            "little...kid. What do you want?");
+        stext(0, "Elliot:", "Nothing sir. I was just",
+            "wondering about the game...");
+        stext(0, "...you're playing.", "", "");
+        stext(0, "Cardplayer:", "So that's you're little game!!!", "");
+        stext(0, "Elliot:", "Wha...?", "");
+        stext(0, "Cardplayer:", "So they're on to me again!!",
+            "Why can't they leave me alone?");
+        stext(0, "Elliot:", "Who?", "What are you talking about?");
+        stext(0, "Cardplayer:", "Like you wouldn't know you",
+            "brat!! The pixies!!!!");
+        stext(0, "Elliot:", "Pixies?", "Isn't there a hospital nearby?");
+        stext(0, "Cardplayer:", "What about a hospital?",
+            "are the pixies there?!!");
+        stext(0, "So they have started their", "plan for world domination!!!",
+            "");
+        stext(0, "Elliot:", "Calm down mister.",
+            "I don't know anything! I swear!");
+        stext(0, "Cardplayer:", "So how did I do?", "Was I any good?");
+        stext(0, "Elliot:", "What?", "");
+        stext(0, "Cardplayer:", "Aren't you Carmime Spilberg",
+            "from Holywood film studios?");
+        stext(0, "Elliot:", "No mister.", "My name is Elliot Drake!");
+        stext(
+            0, "Cardplayer:", "DRAKE!!! Get lost kid!", "Don't waste my time!");
+        cardplayer[3] = 1;
+        cardplayer[1] = cardplayer[1] + 1;
+    }
 }
-
-event//9 chicken2
+event // 66 cardplayer3
 {
- soundeffect[12]=cachesound("chick.wav");
- playsound(soundeffect[12],128,128);
- entity.speed[11]=5;
+    if (cardround = 0 && cardplayer[4] = 1) {
+        stext(0, "Samuel:", "Still here little Elliot?",
+            "Run home now to your father.");
+        stext(0, "Elliot:", "Yes mr. Samuel", "(You lousy drunk).");
+        stext(0, "Samuel:", "Good.", "(Nowsy little weezel)");
+        if (slums[71] = 1) {
+            slums[71] = 2;
+        }
+    }
+    if (cardround = 0 && cardplayer[4] = 0) {
+        stext(0, "Elliot:", "Good afternoon mr. Samuel.", "");
+        stext(0, "Samuel:", "Well if it isn't little Elliot",
+            "Drake. And how's your father?");
+        stext(0, "Still with the bottle?", "", "");
+        stext(0, "Elliot:", "I'm afraid so mr. Samuel.",
+            "He's not sober like you...!");
+        stext(0, "Samuel:", "He he he...the whisky is for",
+            "medicine. I'm a very sick man.");
+        stext(0, "Elliot:", "Are you in pain mr. Samuel?", "");
+        stext(0, "Samuel:", "...yes it's hurting everywhere.", "");
+        stext(0, "Elliot:", "I better go get mrs. Samuel.",
+            "She can take you to a hospital.");
+        stext(0, "Samuel:", "No!!!You see Elliot...",
+            "I can call you Elliot right?");
+        stext(0, "Elliot:", "Of course mr. Samuel.", "");
+        stext(0, "Samuel:", "You see Elliot...", "");
+        stext(0, "Bartender:", "Do you want your double",
+            "scotch on the rocks or without?");
+        stext(0, "Elliot:", ".......", "");
+        stext(0, "Samuel:", ".......", "");
+        stext(0, "Samuel:", "Elliot. This can be our little",
+            "secret? Can't it?");
+        stext(0, "Elliot:", "I better go now. It was",
+            "nice meeting you mr. Samuel!");
+        stext(0, "Samuel:", "He he he...", "");
+        stext(0, "Elliot:", "Bye mr. Samuel (DRUNK)", "");
+        stext(0, "Samuel:", "Bye bye little Elliot!",
+            "(Lousy no good son of a bitch)");
+        stext(0, "Hey bartender!!", "Two more of the same", "first ones!");
+        stext(0, "Bartender:", "Pure alcohol with a little kiwi",
+            "fruit in the middle coming up!");
+        if (slums[71] = 0) {
+            slums[73] = 1;
+        }
+        if (slums[71] = 1) {
+            slums[71] = 2;
+        }
+        cardplayer[4] = 1;
+        cardplayer[1] = cardplayer[1] + 1;
+    }
 }
-event//10 chickenb
+event // 67 cardplayer4
 {
- entity.speed[10]=3;
- entity.speed[11]=3;
+    if (cardround = 0 && cardplayer[5] = 1) {
+        stext(0, "Cardplayer:", ".....", "");
+        stext(0, "Elliot:", "Excuse...", "");
+        stext(0, "Cardplayer:", "Shht!", "");
+        stext(0, "Elliot:", "Right.", "");
+    }
+    if (cardround = 0 && cardplayer[5] = 0) {
+        stext(0, "Elliot:", "Hello there stranger.", "");
+        stext(0, "Cardplayer:", "Shhh!", "");
+        stext(0, "Elliot:", "From where do you come from?",
+            "You're not from Dalari?");
+        stext(0, "Cardplayer:", "Shhht!", "");
+        stext(0, "Elliot:", "How's the world around Dalari?",
+            "I have never been out of here.");
+        stext(0, "Cardplayer:", "SHHHH!!!", "");
+        stext(0, "Elliot:", "Sorry I didn't quite catch",
+            "that. Could you repeat?");
+        stext(0, "Cardplayer:", "Oh for heavens sake!!",
+            "My NAME is Zanzibar,...");
+        stext(0, "...I COME from the desert and", "the WORLD is BIG AROUND ",
+            "DALARI!!!");
+        stext(0, "There! Are you happy now!", "", "");
+        stext(0, ".........", "", "");
+        stext(0, "Cardplayer:", "SHHH!!", "");
+        cardplayer[5] = 1;
+        cardplayer[1] = cardplayer[1] + 1;
+    }
 }
-event//11 chickengirl
+event // 68 cardguy
 {
-}
-event //12 stairs 1 down
-{
- stairs(70,81);
-}
-event //13 stairs 1 up
-{
- stairs(73,80);
-}
-event //14 enter hotel
-{
-}
-event//15 exit Drakes
-{
- if(slums[30]=1) 
-{
- door(128,53);
-}
- if(slums[30]=0)
- {
-  door(128,53);
-  wait(200);
-  stext(0,"Elliot:","...but how can you get such","a large amount of money...");
-  stext(0,"...in the poor slums...","","");
-  wait(100);
-  slums[30]=1;
-}
-}
-event//16 enter Drakes
-{
- door(23,112);
-}
-event//17 5 crowns
-{
- foundmoney(0,0,0,5);
-}
-event//18 slumguard
-{
- if(slums[61]=0)
- {
- ent2=entityspawn(137,13,"cart.chr");
- entity.speed[ent2]=3;
- entitymove(ent2,"L100");
- slums[61]=1;
- }
- entity.specframe[22]=10;
- stext(0,"Guard:","HEY stop right there! You scum","have no business with...");
- stext(0,"...the better people!","Go spreading your diseases","to your own!");
- entity.specframe[22]=0;
- entitymove(22,"U1R1");
- wait(100);
- entity.specframe[22]=2;
- soundeffect[3]=cachesound("hit1.wav");
- playsound(soundeffect[3],128,128);
- free(soundeffect[3]);
- whiteout(1);
- whitein(1);
- entity.specframe[ent1]=5;
- entity.speed[ent1]=6;
- partymove("D5");
- wait(50);
- entity.specframe[22]=0;
- entitymove(22,"L1D1");
- stext(0,"Elliot:","Awwwww...dammit!!","");
- entity.specframe[ent1]=0;
- entity.speed[ent1]=4;
-}
-event//19 note
-{
- stext(0,"It's a treasure map!","","");
- stext(0,"The treasure is hidden under","a flagstone on the left of","the bridge."); 
-}
-event//20 treasure
-{
-if(key[28])
- {
-  stext(0,"There's something hidden","under the flagstone.","");
-  stext(0,"Found...an empty wallet!","","");
-  stext(0,"Elliot:","Blaah, kids' play...","");
-}
+    if (cardround = 0) {
+        if (cardplayer[1] < 4) {
+            stext(0, "", "", "");
+        }
+        if (cardplayer[1] = 4) {
+            stext(0, "", "", "");
+            cardplayer[1] = 0;
+            cardround = cardround + 1;
+        }
+    }
 }
 
-event//21 skull
+event // 69 enter Tanya's house
 {
-  if(slums[47]=5)
- {
- stext(0,"There's something hidden","inside the rotten skull.","");
- stext(0,"Found a brazzring!","","");
- slums[47]=2; 
-}
- if(slums[47]=1)
- {
- stext(0,"There's something hidden","inside the rotten skull.","");
- stext(0,"Found a brazzring!","","");
- slums[47]=2; 
-}
-alterftile(161,42,0,0);
-}
-event//22 note2
-{
- stext(0,"'Dancing with rotten bones,","dancing till dawn,","the final dance...");
- stext(0,"Just give me this final","rotten dance.'","");
-}
-event//23 monk
-{
- stext(0,"Monk:","Hey boy, beware of Henrik...","Lucifer lives near him.");
- stext(0,"Elliot:","(A Grimsonmonk,","better stay clear.)");
- stext(0,"Uh, yes I will, thank you!","","");
-}
-event//24 ladder
-{
- stext(0,"Elliot:","I could use this ladder to","climp to the city.");
- stext(0,"If only I had the strenght to","carry it...","");  
-}
-event//25 stairs up
-{
- stairs(42,107);
+    if (slums[28] = 1) {
+        stext(0, "Elliot:", "(Tanya's parents are",
+            "fighting...better stay clear.)");
+    }
+    if (slums[29] = 0) {
+        setplayer(35);
+        stext(0, "Woman's voice:", "...told you not to do it,",
+            "but no, when would you listen!");
+        stext(0, "Man's voice:", "Don't raise your voice", "at me Martha!");
+        stext(0, "Woman's voice.", "Ha! You lazy no-good...", "");
+        soundeffect[7] = cachesound("crash.wav");
+        playsound(soundeffect[7], 128, 128);
+        partymove("L1R1L1R1L1R1L1R1L1R1L1R1L1R1");
+        wait(200);
+        setplayer(ent1);
+        stext(0, "Elliot:", "(Tanya's parents are",
+            "fighting...better stay clear.)");
+        slums[29] = 1;
+    }
+    if (slums[1] > 1) {
+        door(72, 156);
+    }
 }
 
-event//26 stairs down
+event // 70 exit Tanya's house
 {
- stairs(19,110);
+    door(140, 53);
 }
 
-event//27 nighttable
+event // 71 enter Tanya's room
 {
- if (slums[5]=0)
- {
- stext(0,"Elliot:","I remember having 20 Crowns","in my piggypank. Let's see...");
- stext(0,"There's a note:","'Borrowed 20 Crowns. I'll pay","it back post haste.");
-stext(0,"Signed 'Daddy'.","","");
-stext(0,"Elliot:","Bastard!!","");
-entity.specframe[ent1]=10;
-stext(0,"And what are you looking at","FATCAT?","");
-soundeffect[4]=cachesound("cat1.wav");
-playsound(soundeffect[4],64,128);
-wait(50);
-stext(0,"Hmmph!","","");
-entity.specframe[ent1]=0;
-slums[5]=1;
-}
+    door(94, 155);
 }
 
-event//28 exit house1
+event // 72 exit Tanya's room
 {
- door(128,26);
+    door(75, 156);
 }
 
-event//29 enter house1
+event // 73 stairs4 up
 {
- door(23,131);
+    stairs(75, 169);
 }
 
-event//30 ironstove
+event // 74 stairs4 down
 {
- stext(0,"It's a bit chilly in the room.","","");
-questio=1;
-question(2,"Will you pour some","gasoiline to","the ironstove?","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- entity.specframe[ent1]=5;
- wait(10);
- entity.specframe[ent1]=8;
- wait(50);
- soundeffect[5]=cachesound("lfire.wav");
- playsound(soundeffect[5],128,128);
- alterftile(22,126,1504,1);
- stext(0,"Elliot:","Gwaaaaaa!!!","");
- entity.specframe[ent1]=0;
- entity.speed[ent1]=6;
- partymove("D2R2U2L2D2R2U2L2D2");
- wait(50);
- stext(0,"Elliot:","(Now THAT was stupid...)","");
- alterftile(22,126,0,1);
- entity.speed[ent1]=4;
-}
-if(problem=2)
-{
- stext(0,"Elliot:","Hmmm...perhaps later...","");
-}
+    stairs(77, 154);
 }
 
-event//31 exit Gly Joe
+event // 75 enter Jack's house
 {
- door(138,43);
+    door(123, 116);
 }
 
-event//32 enter Gly Joe
+event // 76 exit Jack's house
 {
- door(47,131);
+    door(145, 35);
 }
 
-event//33 Joe
+event // 77 lever7
 {
- if(slums[6]=3)
- {
-  settile(50,126,4,327);
-  stext(0,"Gly Joe:","OK!! Shall we do business?!","");
-  gly=itemamount[22]+itemamount[23]+itemamount[24]+itemamount[25];
-   if(gly=0)
- {
-  stext(0,"Gly Joe:","Ya don't have any?!","Well go get some kiddo!");
-}
- if(gly>0)
- {
-  number="I give you "+str(gly)+" crowns for these!";
-  stext(0,"Gly Joe:",number,"");
-    questio=1;
-question(2,"Will you take","his offer?","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- itemamount[22]=0;
- itemamount[23]=0;
- itemamount[24]=0;
- itemamount[25]=0;
- stext(0,"Gly Joe:","Exellent kiddo!!","Here's your money");
- number="Got "+str(gly)+ " crowns!!";
- stext(0,number,"","");
- settile(50,126,4,326);
- stext(0,"Gly Joe:","Now go find some more!","");
- settile(50,126,4,309);
- crowns=crowns+gly;
- }
- if(problem=2)
-{
- settile(50,126,4,295);
- stext(0,"Gly Joe:","It's the best I can","do kiddo.");
- settile(50,126,4,309);
- stext(0,"Come see me if you change","your mind!","");
- }
-}
-}
- if (slums[6]=2)
- { 
-  stext(0,"Gly Joe:","Still here kiddo?","Hurry up now.");
- }
- if (slums[6]=1)
- { 
-  settile(50,126,4,327);
-  stext(0,"Gly Joe:","Ya changed yer mind?","");
-  questio=1;
-question(2,"Will you take","his offer?","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- stext(0,"Gly Joe:","Exellent kiddo!","");
- settile(50,126,4,295);
- stext(0,"But don't ya even think","'bout going down there alone!","");
- stext(0,"Gather yer stinking friends","first.","");
- settile(50,126,4,309);
- stext(0,"Elliot:","Ok Gly!","");
- partymove("D1");
- stext(0,"Elliot:","(I'll go get Tanya and Jack...)","");
- ent2=entityspawn(152,37,"Ltan.chr");
- entity.specframe[ent2]=5;
- slums[1]=1;
- slums[6]=2;
-}
-if(problem=2)
-{
- slums[6]=1;
- stext(0,"Elliot:","Ummm...I still have some other","things to deal with...");
-settile(50,126,4,295);
- stext(0,"Tell me if ya happen to change","yer mind kiddo!","");
- stext(0,"Elliot:","Sure Gly.","");
- settile(50,126,4,309);
- } 
- }
- if (slums[6]=0)
- {
- stext(0,"Gly Joe:","Whacha want kiddo?","");
- stext(0,"Elliot:","Just came to say 'hi' Gly.","");
- settile(50,126,4,327);
- stext(0,"Gly Joe:","Weell, 'ts hanging lazily as ","always, kiddo.");
- settile(50,126,4,309);
- stext(0,"Say what, you up to a litl","venture m'boy?","Eh?");
- stext(0,"Elliot:","Whaddaya mean 'Joe with","the face like hors's ass'?");
- settile(50,126,4,295);
- stext(0,"Gly Joe:","Waaahhhahhah!! Now where","did ya hear THAT?");
- stext(0,"Elliot:","Heard the guards talk...","");
- settile(50,126,4,327);
- wait(10);
- settile(50,126,4,309);
- wait(20);
- settile(50,126,4,326);
- stext(0,"Gly Joe:","Wha...GODDAMNIT!!","");
- stext(0,"Y'know, I think some 'guards'","'re gonna find themselves","drinking...");
- stext(0,"...POISON a'la Gly","Joe m'fiend!","");
- settile(50,126,4,327);
- stext(0,"Anyways, how 'bout it?","","");
- stext(0,"Elliot:","Whaddaya want 'Joe with the","face like hors's ass'?");
- settile(50,126,4,326);
- stext(0,"Gly Joe:","Whatch it kiddo, or sommone'll","find himself 'urt,...");
- stext(0,"...an that ain't gonna be","Gly Joe! Gotcha?","");
- stext(0,"Elliot:","Yup, sorry Gly.","");
- settile(50,126,4,309);
- stext(0,"Gly Joe:","Nah 'ts nothing. Now, I was","'bout to offer ya a deal!");
- stext(0,"Ye see, I'm runnin outta","rats'n stuff.","Gotcha?");
- stext(0,"Elliot:","Can you pay Gly?","In crowns.");
- settile(50,126,4,295);
- stext(0,"Gly Joe:","Can I...'course Gly Joe can","'PAY IN CROWNS! Whahhahha.");
- stext(0,"Elliot:","About twothousand...","");
- settile(50,126,4,327);
- stext(0,"Gly Joe:","Say wha?! Whahhahaha! You're","something else kiddo!");
- stext(0,"Elliot:","'t was worth a try.","");
- settile(50,126,4,309);
- stext(0,"Gly Joe:","Ain't no two thousand, but","one Crown for each.");
- stext(0,"Elliot:","One Crown for each stinking","rodent or creep I catch.");
- settile(50,126,4,327);
- stext(0,"Gly Joe:","That's right m'boy.","Take it or leave it.");
- questio=1;
-question(2,"Will you take","his offer?","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- stext(0,"Elliot:","It's a deal, Gly.","");
- stext(0,"Gly Joe:","Exellent kiddo!","");
- settile(50,126,4,295);
- stext(0,"But don't ya even think","'bout going down there alone!","");
- stext(0,"Gather yer stinking friends","first.","");
- settile(50,126,4,309);
- stext(0,"Elliot:","Ok Gly!","");
- partymove("D1");
- stext(0,"Elliot:","(I'll go get Tanya and Jack...)","");
- ent2=entityspawn(152,37,"Ltan.chr");
- entity.specframe[ent2]=5;
- slums[1]=1;
- slums[6]=2;
-}
-if(problem=2)
-{
- slums[6]=1;
- stext(0,"Elliot:","Ummm...I'm a bit busy at the","moment,Gly...");
- settile(50,126,4,309);
- stext(0,"Gly Joe:","Weell that's ok, but think","'bout it.");
- settile(50,126,4,295);
- stext(0,"Tell me if ye happen to change","your mind kiddo!","");
- stext(0,"Elliot:","Sure Gly.","");
- settile(50,126,4,309);
-}
-}
-}
-event//34 Gly stairs
-{
- stext(0,"Gly Joe:","Stay outta there kiddo!","That's Gly's private!");
+    if (lever[8] = 0) {
+        soundeffect[8] = cachesound("switch.wav");
+        playsound(soundeffect[8], 128, 128);
+        alterftile(120, 116, 1939, 1);
+        wait(20);
+        alterftile(120, 116, 1938, 1);
+        wait(50);
+        soundeffect[9] = cachesound("boom.wav");
+        playsound(soundeffect[9], 128, 128);
+        alterftile(126, 115, 1739, 1);
+        lever[8] = 1;
+    }
 }
 
-event//35 Tanya
+event // 78 enter cellar
 {
-  entlocx=entity.tx[ent1];
-  entlocy=entity.ty[ent1];
- if (slums[1]=1)
- {
-  if(entlocx=152)
-  {
-   partymove("L1U1");
-  }
- stext(0,"Elliot:","Hi Tanya.","");
- stext(0,"Tanya:","Hi...","");
- entity.specframe[ent1]=5;
- stext(0,"Elliot:","Your parents fighting again?","");
- stext(0,"Tanya:","Yeah, I couldn't stand it","anymore.");
- stext(0,"Elliot:","I'm sorry.","");
- stext(0,"Tanya:","......","So, what's up?");
- stext(0,"Elliot:","I made a deal with Gly Joe.","We're gonna get a Crown..");
- stext(0,"...per rodent we catch","down the sewers.","");
- stext(0,"Tanya:","I dunno...","");
- stext(0,"Elliot:","Hey, cheer up.","I can't go alone, y'know.");
- if(entlocx=153)
-  {
-   entity.specframe[ent2]=10;
-  }
- ELSE
- {
- entity.specframe[ent2]=15;
- }
- stext(0,"Tanya:","You want ME to protect you.","");
-  if(entlocx=153)
-  {
-   entity.specframe[ent1]=15;
-  }
- ELSE
- {
- entity.specframe[ent1]=10;
- }
- stext(0,"Elliot:","Don't be silly! You know","it's dangerous down there!");
- stext(0,"Tanya:","Hah ha hah I know I know.","I was just teasing.");
- stext(0,"Elliot:","Hmmph.","Not funny.");
- entity.specframe[ent2]=5;
- stext(0,"Tanya:","Y'know, someone forgot to","give you some sense of humour.");
- stext(0,"Elliot:","Alright alright it was FUN-NY!","Shall we go now?");
- stext(0,"We have to find Jack.","","");
- entity.x[ent2]=0;
- entity.y[ent2]=0;
- entity.specframe[ent1]=0;
- ent2=entityspawn(50,151,"Ljack.chr");
- addcharacter(6);
- equippedarmor[6]=1;
- equippedweapon[6]=22;
- equippedhelmet[6]=0;
- equippedlegs[6]=4;
- equippedshield[6]=0;
- equippedequipment[6]=0;
- equippedrelic[6]=0; 
- deadchar[2]=1;
- statistics(6);
- slums[2]=1;
- slums[29]=2;
- slums[1]=2;
- cameratracking=1;
-} 
+    if (lever[8] = 1) {
+        stairs(115, 156);
+    }
 }
 
-event//36 exit warehouse2
+event // 79 exit cellar
 {
- door(173,36);
+    stairs(125, 115);
 }
 
-event//37 enter warehouse2
+event // 80 Benjamin
 {
- if(slums[1]=2)
- {
- alterftile(50,147,1686,0);
- entity.specframe[ent2]=5;
- }
- door(50,156);
+    stext(0, "Here sleeps Benjamin Morgan", "May he rest in peace, he",
+        "earned it.");
+    stext(0, "Elliot.", ".......", "");
+    stext(0, "It's always so sad to look at", "the graves of Jack's parents.",
+        "");
+    stext(0, "I can feel the terrible", "sorrow and guilt...", "");
 }
 
-event//38 Jack
+event // 81 Anna
 {
- if (slums[2]=1)
- {
- entity.speed[ent1]=4;
- entity.specframe[ent1]=5;
- cameratracking=2;
- tracker=25;
- stext(0,"Elliot:","Jack?","");
- entitymove(25,"U4");
- stext(0,"Jack:","Shhh!","");
- entity.specframe[ent1]=0;
- partymove("U3R1U1");
- stext(0,"Jack:","I'll get you...","");
- entitymove(ent2,"U1");
- stext(0,"Jack:","Haaa!","");
- entity.speed[ent2]=6;
- entitymove(ent2,"U4");
- wait(10);
- alterftile(50,147,0,0);
- wait(50);
- entity.specframe[ent2]=1;
- stext(0,"Jack:","Hahahaha I cought it!","");
- entity.speed[ent2]=4;
- wait(50);
- entity.specframe[ent2]=0;
- entitymove(ent2,"D2");
- partymove("L1U1");
- wait(100);
- stext(0,"Elliot:","Catching bugs again, eh Jack?","");
- stext(0,"Jack:","Just look how big it is!","Gly Joe'll choke to his beard!");
- stext(0,"Elliot:","Yeah, but it's just a bug...","");
- stext(0,"Jack:","Whaddaya mean","'just a bug'?");
- stext(0,"Elliot:","We could go catch","something bigger.");
- stext(0,"Jack:","Oh yeah?","Like what?");
- stext(0,"Elliot:","Y'know, giantrats.","");
- stext(0,"Jack:","Mmmm...yes, that'd be a","challenge!");
- stext(0,"Elliot:","Gly Joe promised a Crown","per rodent.");
- stext(0,"Jack:","WHOA!! A CROWN!","How about THAT!");
- stext(0,"Elliot:","You coming?","");
- stext(0,"Jack:","You bet! What are we","waiting for? Let's go!");
- entitymove(ent2,"D1");
- wait(20);
- entity.x[ent2]=0;
- entity.y[ent2]=0;
- addcharacter(4);
- equippedweapon[4]=21;
- equippedarmor[4]=8;
- equippedhelmet[4]=6;
- equippedlegs[4]=4;
- equippedshield[4]=0;
- equippedequipment[4]=0;
- equippedrelic[4]=0; 
- statistics(4);
- deadchar[3]=1;
- slums[2]=2;
- slums[1]=3;
- cameratracking=1; 
-}
+    stext(0, "Here sleeps Anna Khristine", "Morgan. May she rest in peace,",
+        "her spirit is free.");
+    stext(0, "Elliot.", "For me, she was a mother I", "never had.");
+    stext(0, "Jack adored her...", "I remember the tears in his",
+        "eyes when we buried her here.");
+    stext(0, "Those tears broke his soul.", "Perhaps he's trying to gather",
+        "the pieces now...");
+    stext(0, "He has changed so much, Jack...", "", "");
 }
 
-event//39 locked door
+event // 82 enter Mary's
 {
- lock();
+    door(134, 159);
 }
 
-event//40 radio
+event // 83 exit Mary's
 {
- if (slums[3]=0)
- {
- stext(0,"There's a radio.","","");
- questio=1;
-question(2,"Will you switch it on?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- problem=0;
- questio=1;
-slums[3]=2;
-stext(0,"It seems there are two","channels programmed here...","");
-question(2,"Choose the channel.","","","","1.","2.","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
- if (problem=1)
- {
- stext(0,"Announcer:","...this gentle tune.","");
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- playmusic("love.s3m");
- musicfadein(1);
-}
-if(problem=2)
-{
- stext(0,"Announcer:","...while we listen some","nostalgy.");
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- playmusic("agony.s3m");
- musicfadein(1);
- problem=0;
-}
-}
-if(problem=2)
-{
- stext(0,"Elliot:","There's no time for this...","");
-}
-}
-if (slums[3]=1)
- {
-   stext(0,"There's a radio.","","");
- questio=1;
-question(2,"Will you switch it off?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- slums[3]=0;
- problem=0;
- musicfade(1);
- playmusic("slums.s3m");
- musicfadein(2);
- }
-if (problem=2)
-{ 
- problem=0;
- stext(0,"Elliot:","Hmmm...not just yet...","");
-stext(0,"Elliot:","I could change the channel","though...");
-questio=1;
-question(2,"Will you change the","channel?","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-}
-if(problem=1)
-{
- questio=1;
- stext(0,"There are two","channels programmed here...","");
-question(2,"Choose the channel.","","","","1.","2.","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
- if (problem=1)
- {
- stext(0,"Announcer:","...this gentle tune.","");
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- playmusic("love.s3m");
- musicfadein(1);
-}
-if(problem=2)
-{
- stext(0,"Announcer:","...while we listen some","nostalgy.");
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- playmusic("agony.s3m");
- musicfadein(1);
- problem=0;
-}
-}
-if(problem=2)
-{
- unpress(key[28]);
-} 
-}
- if (slums[3]=2)
- {
-  slums[3]=1;
- }
+    door(116, 43);
 }
 
-event//41 chest1
+event // 84 enter house4
 {
- if (slums[4]=0)
- {
- lock();
- }
- if (slums[4]=1)
- {
-  alterftile(42,110,1584,1);
-  alterftile(42,109,1585,1);
-  soundeffect[6]=cachesound("boxopen.wav");
-  playsound(soundeffect[6],64,128);
-  stext(0,"Elliot:","Alright, let's see...","A pair of old socks...");
-  stext(0,"...underpants...another pair of","underpants...an old mag...","...empty jars...");
- stext(0,"...here it is!","My Helmet! It'll surely be","usefull in my quest!");
- stext(0,"Got Leather Helm!","","");
- armoramount[12]=armoramount[12]+1;
- slums[4]=2;
-}
+    door(138, 135);
 }
 
-event//42 key1
+event // 85 exit house4
 {
- if (slums[4]=0)
- {
- entity.specframe[ent1]=5;
- alterftile(25,107,0,0);
- entity.speed[ent1]=5;
- partymove("U1D1");
- alterftile(25,106,0,0);
- wait(40); 
- stext(0,"Got a key!","","");
- entity.speed[ent1]=4;
- alterftile(25,107,0,1);
- entity.specframe[ent1]=0;
- slums[4]=1;
-}
+    door(128, 43);
 }
 
-event//43 open
+event // 86 stairs5 up
 {
- if (slums[7]=0)
- {
- stext(0,"Elliot:","(Dad's in no condition to work)","");
- alterftile(127,52,0,0);
- entity.speed[ent1]=5;
- wait(10);
- partymove("U1D1");
- alterftile(127,51,808,1);
- entity.speed[ent1]=4;
- entity.specframe[ent1]=0;
- alterftile(127,52,0,1);
- slums[7]=1; 
-}
+    stairs(92, 172);
 }
 
-event//44 dad
+event // 87 stairs5 down
 {
- stext(0,"Elliot's father:","Go away son...","Daddy has to sleep now.");
+    stairs(135, 133);
 }
 
-event// 45 chest2
+event // 88 policeofficer1
 {
- if (slums[8]=0)
- {
-  alterftile(20,127,1584,1);
-  alterftile(20,126,1585,1);
-  soundeffect[6]=cachesound("boxopen.wav");
-  playsound(soundeffect[6],64,128);
-  stext(0,"There are ten Crowns in","the chest.","");
-   questio=1;
-question(2,"Will you take the money?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- foundmoney(0,0,0,10);
- slums[8]=2;
-}
-if(problem=2)
-{
- stext(0,"Elliot:","(Stealing is wrong...)","");
- alterftile(20,127,1583,1);
- alterftile(20,126,1586,1);
-}
-}
+    stext(0, "Policeofficer:", "Stay out of trouble, kid.", "");
 }
 
-event//46 enter house2
+event // 89 rest
 {
- door(25,149);
+    unpress(key[28]);
+    questio = 1;
+    question(2, "Want to take a nap?", "", "", "", "yes", "no", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        fadeout(100, 100);
+        musicfade(2);
+        wait(100);
+        for (x = 1; x < 9; x++) {
+            deadchar[x] = 1;
+            chahp[inparty[x]] = chamaxhp[inparty[x]];
+            champ[inparty[x]] = chamaxmp[inparty[x]];
+            charhp[inparty[x]] = str(chahp[inparty[x]]);
+            charmp[inparty[x]] = str(champ[inparty[x]]);
+            charpoisoned[inparty[x]] = 0;
+            charsleep[inparty[x]] = 0;
+            charsilence[inparty[x]] = 0;
+            charberserk[inparty[x]] = 0;
+            charzombie[inparty[x]] = 0;
+            charstroke[inparty[x]] = 0;
+            chargrazy[inparty[x]] = 0;
+            charpara[inparty[x]] = 0;
+            charskillness[inparty[x]] = 0;
+            charcurse[inparty[x]] = 0;
+            charblind[inparty[x]] = 0;
+        }
+        fadein(100, 100);
+        musicfadein(10);
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 }
-
-event//47 exit house2
+event // 90 mary's
 {
- if (slums[44]=1)
- {
- slums[43]=2;
-}
-door(142,23);
-}
-event//48 enter bedroom
-{
- door(22,166);
-}
-
-event//49 exit bedroom
-{
- door(26,145);
-}
-event//50 exit house3
-{
- door(116,53);
-}
-event//51 enter house3
-{
- door(78,116);
-}
-event//52 key2
-{
- if (slums[60]=0)
- {
- entity.specframe[ent1]=5;
- alterftile(76,113,0,1);
- wait(40); 
- stext(0,"Got a key!","","");
- entity.specframe[ent1]=0;
- slums[60]=1;
-}
-}
-event// 53 chest3
-{
- if(slums[60]=0)
- {
-  lock();
- }
- if (slums[60]=1)
- {
-  alterftile(74,112,1584,1);
-  alterftile(74,111,1585,1);
-  soundeffect[6]=cachesound("boxopen.wav");
-  playsound(soundeffect[6],64,128);
-  stext(0,"There are fifteen Crowns in","the chest.","");
-   questio=1;
-question(2,"Will you take the money?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- foundmoney(0,0,0,15);
- slums[60]=2;
-}
-if(problem=2)
-{
- stext(0,"Elliot:","(Stealing is wrong...)","");
- alterftile(74,112,1583,1);
- alterftile(74,111,1586,1);
-}
-}
-}
-event //54 stairs 3 down
-{
- stairs(81,114);
-}
-event //55 stairs 3 up
-{
- stairs(104,112);
-}
-event //56 nailed shut
-{
- nailedshut();
-}
-
-event//57 enter sewers
-{
-if(slums[2]=2)
-{ 
-if(key[28])
- {
-  musicfade(2);
-  slums[9]=0;
-  playmusic("sil.s3m");
-  mapswitch("sewers.map",0,0,0);
-  }
-}
-}
-
-event//58 enter insomnia
-{
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- door(69,135);
- playmusic("goblin.s3m");
- music_volume=50;
- }
-
-event//59 enter insomnia2
-{
- if(slums[71]=2)
- {
- slums[71]=3;
- SetTile(77, 114, 2, 1533);
- SetTile(77, 113, 2, 1300);
- slums[72]=1;
- ent5=entityspawn(99,112,"woman2.chr");
- }
- music_volume=90;
- door(92,138);
-}
-
-event//60 enter toilet1
-{
- door(114,135);
-}
-
-event//61 exit insomnia
-{
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- door(112,26);
- playmusic("slums.s3m");
- wait(10);
- musicfadein(5);
-}
-
-event//62 exit insomnia2
-{
- door(70,131);
- music_volume=50;
-}
-
-event//63 exit toilet1
-{
- door(97,129);
-}
-event//64 cardplayer1
-{
- if(cardround=0 && cardplayer[2]=1)
- {
-  stext(0,"Cardplayer:","Go home boy. This is not","for children to see.");
- }
- if(cardround=0 && cardplayer[2]=0)
- {
-  stext(0,"Elliot:","Hi.","");
-  stext(0,"Cardplayer:","Hello there m'boy.","How are things?");
-  stext(0,"Elliot:","You're naked!!!","");
-  stext(0,"Cardplayer:","Hah hah hah...so I am. Guess","I haven't been lucky tonight.");
-  stext(0,"Elliot:","You're damn right!! Who","has your your clothes?");
-  stext(0,"Cardplayer:","Oh he already left,","but maybe I'll...");
-  stext(0,"...win myself some trousers","lateron.","");
-  stext(0,"Elliot:","I hope you do!!","I really do!!");
-  stext(0,"Cardplayer:","Could you do me a small","favour boy?");
-  stext(0,"Elliot:","What kinda favour?","");
-  stext(0,"Cardplayer:","If I could have your pants...no","better not. They look so small."); 
-  stext(0,"Elliot:","I certainly wouldn't have given","them to you anyhow mister!!");
-  stext(0,"Cardplayer:","Hmmm...well nevermind.","I guess I'll try my luck then.");
-  cardplayer[2]=1;
-  cardplayer[1]=cardplayer[1]+1;
- }
-}
-event//65 cardplayer2
-{
- if(cardround=0 && cardplayer[3]=1)
- {
-  stext(0,"Cardplayer:","I know I'm perfect for the next","Silence of the lams!");
- }
- if(cardround=0 && cardplayer[3]=0)
- {
-  stext(0,"Elliot:","Hello there!","");
-  stext(0,"Cardplayer:","What? Who said that? Oh a","little...kid. What do you want?");
-  stext(0,"Elliot:","Nothing sir. I was just","wondering about the game...");
-  stext(0,"...you're playing.","","");
-  stext(0,"Cardplayer:","So that's you're little game!!!","");  
-  stext(0,"Elliot:","Wha...?","");
-  stext(0,"Cardplayer:","So they're on to me again!!","Why can't they leave me alone?");
-  stext(0,"Elliot:","Who?","What are you talking about?");
-  stext(0,"Cardplayer:","Like you wouldn't know you","brat!! The pixies!!!!"); 
-  stext(0,"Elliot:","Pixies?","Isn't there a hospital nearby?");
-  stext(0,"Cardplayer:","What about a hospital?","are the pixies there?!!");
-  stext(0,"So they have started their","plan for world domination!!!","");
-  stext(0,"Elliot:","Calm down mister.","I don't know anything! I swear!");
-  stext(0,"Cardplayer:","So how did I do?","Was I any good?");
-  stext(0,"Elliot:","What?","");
-  stext(0,"Cardplayer:","Aren't you Carmime Spilberg","from Holywood film studios?");
-  stext(0,"Elliot:","No mister.","My name is Elliot Drake!");
-  stext(0,"Cardplayer:","DRAKE!!! Get lost kid!","Don't waste my time!");
-  cardplayer[3]=1; 
-  cardplayer[1]=cardplayer[1]+1;
- }
-}
-event//66 cardplayer3
-{
-if(cardround=0 && cardplayer[4]=1)
- {
-  stext(0,"Samuel:","Still here little Elliot?","Run home now to your father.");
-  stext(0,"Elliot:","Yes mr. Samuel","(You lousy drunk).");
-  stext(0,"Samuel:","Good.","(Nowsy little weezel)");
-   if(slums[71]=1)
-  {
-  slums[71]=2;
-  }
- }
-  if(cardround=0 && cardplayer[4]=0)
- {
-  stext(0,"Elliot:","Good afternoon mr. Samuel.","");
-  stext(0,"Samuel:","Well if it isn't little Elliot","Drake. And how's your father?");
-  stext(0,"Still with the bottle?","","");
-  stext(0,"Elliot:","I'm afraid so mr. Samuel.","He's not sober like you...!");
-  stext(0,"Samuel:","He he he...the whisky is for","medicine. I'm a very sick man.");
-  stext(0,"Elliot:","Are you in pain mr. Samuel?","");
-  stext(0,"Samuel:","...yes it's hurting everywhere.","");
-  stext(0,"Elliot:","I better go get mrs. Samuel.","She can take you to a hospital.");
-  stext(0,"Samuel:","No!!!You see Elliot...","I can call you Elliot right?");
-  stext(0,"Elliot:","Of course mr. Samuel.","");
-  stext(0,"Samuel:","You see Elliot...","");
-  stext(0,"Bartender:","Do you want your double","scotch on the rocks or without?");
-  stext(0,"Elliot:",".......","");
-  stext(0,"Samuel:",".......","");
-  stext(0,"Samuel:","Elliot. This can be our little","secret? Can't it?");
-  stext(0,"Elliot:","I better go now. It was","nice meeting you mr. Samuel!");
-  stext(0,"Samuel:","He he he...","");
-  stext(0,"Elliot:","Bye mr. Samuel (DRUNK)","");
-  stext(0,"Samuel:","Bye bye little Elliot!","(Lousy no good son of a bitch)");
-  stext(0,"Hey bartender!!","Two more of the same","first ones!");
-  stext(0,"Bartender:","Pure alcohol with a little kiwi","fruit in the middle coming up!");
-   if(slums[71]=0)
-  {
-   slums[73]=1;
-  }
-  if(slums[71]=1)
-  {
-  slums[71]=2;
-  }
-  cardplayer[4]=1;   
-  cardplayer[1]=cardplayer[1]+1;
- }
-
-}
-event//67 cardplayer4
-{
- if(cardround=0 && cardplayer[5]=1)
- {
-  stext(0,"Cardplayer:",".....","");
-  stext(0,"Elliot:","Excuse...","");
-  stext(0,"Cardplayer:","Shht!","");
-  stext(0,"Elliot:","Right.","");
- }
- if(cardround=0 && cardplayer[5]=0)
- {
-  stext(0,"Elliot:","Hello there stranger.",""); 
-  stext(0,"Cardplayer:","Shhh!","");
-  stext(0,"Elliot:","From where do you come from?","You're not from Dalari?");
-  stext(0,"Cardplayer:","Shhht!","");
-  stext(0,"Elliot:","How's the world around Dalari?","I have never been out of here.");
-  stext(0,"Cardplayer:","SHHHH!!!","");
-  stext(0,"Elliot:","Sorry I didn't quite catch","that. Could you repeat?");
-  stext(0,"Cardplayer:","Oh for heavens sake!!","My NAME is Zanzibar,...");
-  stext(0,"...I COME from the desert and","the WORLD is BIG AROUND ","DALARI!!!");
-  stext(0,"There! Are you happy now!","","");
-  stext(0,".........","","");
-  stext(0,"Cardplayer:","SHHH!!",""); 
-  cardplayer[5]=1;
-  cardplayer[1]=cardplayer[1]+1;
- }
-}
-event//68 cardguy
-{
- if(cardround=0)
- {
-  if(cardplayer[1]<4)
-  {
-   stext(0,"","","");
-  }
-  if(cardplayer[1]=4)
-  {
-  stext(0,"","","");
-  cardplayer[1]=0;
-  cardround=cardround+1;
-  }
- }
-}
-
-event//69 enter Tanya's house
-{
- if(slums[28]=1)
- {
-   stext(0,"Elliot:","(Tanya's parents are","fighting...better stay clear.)");
- }
- if (slums[29]=0)
- {
- setplayer(35); 
- stext(0,"Woman's voice:","...told you not to do it,","but no, when would you listen!");
- stext(0,"Man's voice:","Don't raise your voice","at me Martha!");
- stext(0,"Woman's voice.","Ha! You lazy no-good...","");
- soundeffect[7]=cachesound("crash.wav");
- playsound(soundeffect[7],128,128);
- partymove("L1R1L1R1L1R1L1R1L1R1L1R1L1R1");
- wait(200);
- setplayer(ent1);
- stext(0,"Elliot:","(Tanya's parents are","fighting...better stay clear.)");
- slums[29]=1;
- }
- if(slums[1]>1)
- { 
- door(72,156);
-}
-}
-
-event//70 exit Tanya's house
-{
- door(140,53);
-}
-
-event//71 enter Tanya's room
-{
- door(94,155);
-}
-
-event//72 exit Tanya's room
-{
- door(75,156);
-}
-
-event//73 stairs4 up
-{
- stairs(75,169);
-}
-
-event//74 stairs4 down
-{
- stairs(77,154);
-}
-
-event//75 enter Jack's house
-{
- door(123,116);
-}
-
-event//76 exit Jack's house
-{
- door(145,35);
-}
-
-event//77 lever7
-{
- if (lever[8]=0)
- {
-  soundeffect[8]=cachesound("switch.wav");
-  playsound(soundeffect[8],128,128);
-  alterftile(120,116,1939,1);
-  wait(20);
-  alterftile(120,116,1938,1);
-  wait(50);
-  soundeffect[9]=cachesound("boom.wav");
-  playsound(soundeffect[9],128,128);
-  alterftile(126,115,1739,1);
-  lever[8]=1;
- }
-}
-
-event//78 enter cellar
-{
- if(lever[8]=1)
- {
-  stairs(115,156);
- }
-}
-
-event//79 exit cellar
-{
-  stairs(125,115);
-}
-
-event//80 Benjamin
-{
- stext(0,"Here sleeps Benjamin Morgan","May he rest in peace, he","earned it.");
- stext(0,"Elliot.",".......","");
- stext(0,"It's always so sad to look at","the graves of Jack's parents.","");
- stext(0,"I can feel the terrible","sorrow and guilt...","");
-}
-
-event//81 Anna
-{
- stext(0,"Here sleeps Anna Khristine","Morgan. May she rest in peace,","her spirit is free.");
- stext(0,"Elliot.","For me, she was a mother I","never had.");
- stext(0,"Jack adored her...","I remember the tears in his","eyes when we buried her here.");
- stext(0,"Those tears broke his soul.","Perhaps he's trying to gather","the pieces now...");
- stext(0,"He has changed so much, Jack...","","");
-}
-
-event//82 enter Mary's
-{
- door(134,159);
-}
-
-event//83 exit Mary's
-{
- door(116,43);
-}
-
-event//84 enter house4
-{
- door(138,135);
-}
-
-event//85 exit house4
-{
- door(128,43);
-}
- 
-event//86 stairs5 up
-{
- stairs(92,172);
-}
-
-event//87 stairs5 down
-{
- stairs(135,133);
-}
-
-event//88 policeofficer1
-{
- stext(0,"Policeofficer:","Stay out of trouble, kid.","");
-}
-
-event//89 rest
-{   
-unpress(key[28]);
-questio=1;
-question(2,"Want to take a nap?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- fadeout(100,100);
- musicfade(2);
- wait(100);
- for(x=1; x<9; x++)
- {
-  deadchar[x]=1;
-  chahp[inparty[x]]=chamaxhp[inparty[x]];
-  champ[inparty[x]]=chamaxmp[inparty[x]];
-  charhp[inparty[x]]=str(chahp[inparty[x]]);
-  charmp[inparty[x]]=str(champ[inparty[x]]);
-  charpoisoned[inparty[x]]=0;
-  charsleep[inparty[x]]=0;
-  charsilence[inparty[x]]=0;
-  charberserk[inparty[x]]=0;
-  charzombie[inparty[x]]=0;
-  charstroke[inparty[x]]=0;
-  chargrazy[inparty[x]]=0;
-  charpara[inparty[x]]=0;
-  charskillness[inparty[x]]=0;
-  charcurse[inparty[x]]=0;
-  charblind[inparty[x]]=0;
-}
- fadein(100,100);
- musicfadein(10);
-}
-if(problem=2)
-{
- unpress(key[28]);
-}
-}
-event// 90 mary's
-{
- entity.specframe[ent1]=5;
- shop=0;
- stext(0,"Mary:","Hi Elliot.","How can I help you today?");
- itemshop(1,10);
- shop=0;
- stext(0,"Mary:","Thank you and","come again!"); 
- entity.specframe[ent1]=0;
+    entity.specframe[ent1] = 5;
+    shop = 0;
+    stext(0, "Mary:", "Hi Elliot.", "How can I help you today?");
+    itemshop(1, 10);
+    shop = 0;
+    stext(0, "Mary:", "Thank you and", "come again!");
+    entity.specframe[ent1] = 0;
 }
 event // 91 founditem
 {
- if(slums[150]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[16]+"(s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[17]+"(s)";
-          stext(0,number,"","");
-          itemamount[17]=itemamount[17]+temp[6001];
- }
- slums[150]=1;
-}
+    if (slums[150] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + "(s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[17] + "(s)";
+            stext(0, number, "", "");
+            itemamount[17] = itemamount[17] + temp[6001];
+        }
+        slums[150] = 1;
+    }
 }
 event // 92 wooden chest 1
 {
- if(wochest[1]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(23,108,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[17]+"(s)";
-          stext(0,number,"","");
-          itemamount[17]=itemamount[17]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[16]+" (s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
- }
+    if (wochest[1] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(23, 108, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[17] + "(s)";
+            stext(0, number, "", "");
+            itemamount[17] = itemamount[17] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + " (s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        }
 
- wochest[1]=1;
-}
+        wochest[1] = 1;
+    }
 }
 event // 93 wooden chest 2
 {
- if(wochest[2]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(22,108,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[13]+" (s)";
-          stext(0,number,"","");
-          itemamount[13]=itemamount[13]+temp[6001];
- }
+    if (wochest[2] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(22, 108, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[13] + " (s)";
+            stext(0, number, "", "");
+            itemamount[13] = itemamount[13] + temp[6001];
+        }
 
-  wochest[2]=1;
+        wochest[2] = 1;
+    }
 }
-}
-event// 94 drakechest
+event // 94 drakechest
 {
- if(slums[50]=0)
-  {
-  alterftile(25,110,2592,1);
-  alterftile(25,111,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[17]+"(s)";
-          stext(0,number,"","");
-          itemamount[17]=itemamount[17]+temp[6001];
- }
- slums[50]=1;
-}
+    if (slums[50] = 0) {
+        alterftile(25, 110, 2592, 1);
+        alterftile(25, 111, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[17] + "(s)";
+            stext(0, number, "", "");
+            itemamount[17] = itemamount[17] + temp[6001];
+        }
+        slums[50] = 1;
+    }
 }
 event // 95 wooden chest 3
 {
- if(wochest[3]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(112,52,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[13]+"(s)";
-          stext(0,number,"","");
-          itemamount[13]=itemamount[13]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[16]+"(s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
- }
+    if (wochest[3] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(112, 52, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[13] + "(s)";
+            stext(0, number, "", "");
+            itemamount[13] = itemamount[13] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + "(s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        }
 
-  wochest[3]=1;
+        wochest[3] = 1;
+    }
 }
-}
- event // 96 founditem2
+event // 96 founditem2
 {
- if(slums[51]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[17]+"(s)";
-          stext(0,number,"","");
-          itemamount[17]=itemamount[17]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[16]+"(s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
- }
- slums[51]=1;
-}
+    if (slums[51] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[17] + "(s)";
+            stext(0, number, "", "");
+            itemamount[17] = itemamount[17] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + "(s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        }
+        slums[51] = 1;
+    }
 }
 event // 97 founditem3
 {
- if(slums[52]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[16]+"(s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[13]+"(s)";
-          stext(0,number,"","");
-          itemamount[13]=itemamount[13]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[52]=1;
+    if (slums[52] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + "(s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[13] + "(s)";
+            stext(0, number, "", "");
+            itemamount[13] = itemamount[13] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[52] = 1;
+    }
 }
+event // 98 chest4
+{
+    if (slums[59] = 0) {
+        alterftile(22, 148, 1584, 1);
+        settile(22, 147, 4, 1585);
+        soundeffect[6] = cachesound("boxopen.wav");
+        playsound(soundeffect[6], 64, 128);
+        number = "Found " + "1" + " " + itemname[6];
+        stext(0, number, "", "");
+        questio = 1;
+        question(
+            2, "Will you take the", "item(s)?", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            slums[44] = 1;
+            itemamount[6] = itemamount[6] + 1;
+            slums[59] = 1;
+        }
+        if (problem = 2) {
+            stext(0, "Elliot:", "(Stealing is wrong...)", "");
+            alterftile(22, 148, 1583, 1);
+            alterftile(22, 147, 1586, 1);
+        }
+    }
 }
-event// 98 chest4
+event // 99 savepoint1 Elliot's room
 {
- if (slums[59]=0)
- {
-  alterftile(22,148,1584,1);
-  settile(22,147,4,1585);
-  soundeffect[6]=cachesound("boxopen.wav");
-  playsound(soundeffect[6],64,128);
- number="Found "+"1"+" "+itemname[6];
-  stext(0,number,"","");
-   questio=1;
-question(2,"Will you take the","item(s)?","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
-slums[44]=1;
- itemamount[6]=itemamount[6]+1;
- slums[59]=1;
+    savemap = "dalari4.map";
+    savemusic = "slums.s3m";
+    savechar = "lell.chr";
+    savex = entity.tx[ent1];
+    savey = entity.ty[ent1];
+    soundeffect[10] = cachesound("point1.wav");
+    playsound(soundeffect[10], 64, 128);
+    questio = 1;
+    question(2, "Do you wish to save?", "", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        unpress(key[28]);
+        questio = 1;
+        question(3, "Select slot to save", "", "", "", "1.", "2.", "Canc.", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            unpress(key[28]);
+            menupnt[40] = 1;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+            menupnt[40] = 2;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 3) {
+            unpress(key[28]);
+        }
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 }
-if(problem=2)
+event // 100
+{}
+
+event // 101 djoe
 {
- stext(0,"Elliot:","(Stealing is wrong...)","");
- alterftile(22,148,1583,1);
- alterftile(22,147,1586,1);
-}
-}
-}
-event//99 savepoint1 Elliot's room
-{
- savemap="dalari4.map";
- savemusic="slums.s3m";
- savechar="lell.chr";
- savex=entity.tx[ent1];
- savey=entity.ty[ent1];
- soundeffect[10]=cachesound("point1.wav");
- playsound(soundeffect[10],64,128);
- questio=1;
-question(2,"Do you wish to save?","","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
-  questio=1;
-question(3,"Select slot to save","","","","1.","2.","Canc.","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
- menupnt[40]=1;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=2)
-{
- unpress(key[28]);
- menupnt[40]=2;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=3)
-{
- unpress(key[28]);
- }
-}
- if(problem=2)
- {
-  unpress(key[28]);
- }
-}
-event//100 
-{
+    stext(0, "Elliot:", "Diamond Joe...", "5 Crowns a game..");
+    stext(0, "Should I...", "", "");
+    questio = 1;
+    question(2, "Will you play the game?", "", "", "", "yes", "no", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        if (crowns > 5) {
+            crowns = crowns - 5;
+            stext(0, "Elliot.", "Just this one go.", "");
+            musicfade(2);
+            playmusic("sil.s3m");
+            run[1] = 0;
+            mapswitch("start3.map", 0, 0, 0);
+        }
+        if (crowns = 5) {
+            crowns = crowns - 5;
+            stext(0, "Elliot.", "Just this one go.", "");
+            musicfade(2);
+            playmusic("sil.s3m");
+            run[1] = 0;
+            mapswitch("start3.map", 0, 0, 0);
+        }
+        if (crowns < 5) {
+            stext(0, "Not enough crowns.", "", "");
+        }
+    }
+    if (problem = 2) {
+        stext(0, "Elliot:", "I can't spent any money", "now...");
+    }
 }
 
-event//101 djoe
+event // 102 Girl1
 {
- stext(0,"Elliot:","Diamond Joe...","5 Crowns a game..");
- stext(0,"Should I...","","");
- questio=1;
-question(2,"Will you play the game?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- if(crowns>5)
-  {
- crowns=crowns-5;
- stext(0,"Elliot.","Just this one go.","");
- musicfade(2);
- playmusic("sil.s3m");
- run[1]=0;
- mapswitch("start3.map",0,0,0);
- }
- if(crowns=5)
-  {
- crowns=crowns-5;
- stext(0,"Elliot.","Just this one go.","");
- musicfade(2);
- playmusic("sil.s3m");
- run[1]=0;
- mapswitch("start3.map",0,0,0);
- }
- if(crowns<5)
- {
-  stext(0,"Not enough crowns.","","");
- }
+    if (slums[56] = 2) {
+        pausespecent(33);
+        entfacing(33);
+        stext(0, "Girl:", "I would like to talk to you",
+            "more Elliot, but I'm...");
+        stext(0, "...very busy at the moment.", "", "");
+        entity.specframe[33] = 0;
+        unpausespecent(33);
+    }
+    if (slums[56] = 1) {
+        pausespecent(33);
+        entfacing(33);
+        stext(0, "Girl:", "Have you been at the dam?", "");
+        stext(0, "my father says they've", "finished building it. It must",
+            "be a great thing to see.");
+        slums[56] = 2;
+        entity.specframe[33] = 0;
+        unpausespecent(33);
+    }
+    if (slums[56] = 0) {
+        pausespecent(33);
+        entfacing(33);
+        stext(0, "Girl:", "Hi Elliot.", "");
+        stext(0, "Elliot:", "Hi.", "");
+        slums[56] = 1;
+        entity.specframe[33] = 0;
+        unpausespecent(33);
+    }
 }
-if(problem=2)
+event // 103 dagger
 {
- stext(0,"Elliot:","I can't spent any money","now...");
+    if (slums[57] = 0) {
+        alterftile(120, 32, 0, 0);
+        stext(0, "Found Dagger!!", "", "");
+        weaponamount[23] = weaponamount[23] + 1;
+        slums[57] = 1;
+    }
 }
+event // 104 leaves
+{
+    if (slums[58] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[14] + "(s)";
+            stext(0, number, "", "");
+            itemamount[14] = itemamount[14] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[16] + "(s)";
+            stext(0, number, "", "");
+            itemamount[16] = itemamount[16] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[17] + "(s)";
+            stext(0, number, "", "");
+            itemamount[17] = itemamount[17] + temp[6001];
+        }
+        slums[58] = 1;
+    }
 }
 
-event  //102 Girl1
+event // 105 watchtower
 {
- if(slums[56]=2)
- {
-  pausespecent(33);
-  entfacing(33);
-  stext(0,"Girl:","I would like to talk to you","more Elliot, but I'm...");
-  stext(0,"...very busy at the moment.","","");
-  entity.specframe[33]=0;
-  unpausespecent(33);
- }
- if(slums[56]=1)
+    if (slums[32] = 0) {
+        musicfade(10);
+        playmusic("sil.s3m");
+        entity.specframe[ent1] = 5;
+        entlocx = entity.tx[ent1];
+        entlocy = entity.ty[ent1];
+        ent4 = entityspawn(entlocx, entlocy, "camman.chr");
+        setplayer(ent4);
+        entity.speed[ent4] = 2;
+        stext(0, "Elliot:", "The Watchtower...", "");
+        playmusic("climb.s3m");
+        musicfadein(2);
+        alterftile(152, 20, 0, 0);
+        alterftile(151, 20, 0, 0);
+        alterftile(152, 21, 0, 1);
+        alterftile(151, 21, 0, 1);
+        partymove("U13");
+        wait(100);
+        stext(0, "Marquise Efrine's guars", "watch our lives", "day'n night.");
+        partymove("R20");
+        wait(100);
+        stext(0, "The Colossal palace of the", "Marquise shadows the city of",
+            "Dalari...");
+        stext(0, "Since this ugly pile of stone",
+            "was built, Dalari has chanced",
+            "from a beautifull, green town...");
+        stext(0, "...to a decaying industrial", "ruins...That's what father",
+            "says anyway...");
+        stext(0, "He says there's a great desert",
+            "around Dalari, and a polluted", "industrial area called...");
+        stext(0, "...the Wasteland.", "", "");
+        stext(0, "Some people claim that the", "Wasteland is cursed, and will",
+            "swallow the city one day.");
+        stext(0, "They say that a dark", "construction stands in the",
+            "edge of the Cursed Land...");
+        stext(0, "...and waits for the moment.", "", "");
+        wait(100);
+        musicfade(10);
+        fadeout(10, 10);
+        setplayer(ent1);
+        fadein(10, 10);
+        playmusic("sil.s3m");
+        playmusic("slums.s3m");
+        musicfadein(10);
+        entity.specframe[ent1] = 0;
+        alterftile(152, 20, 0, 1);
+        alterftile(151, 20, 0, 1);
+        alterftile(152, 21, 0, 0);
+        alterftile(151, 21, 0, 0);
+        slums[32] = 1;
+    }
+}
+
+event // 106 boy1
 {
- pausespecent(33);
- entfacing(33);
- stext(0,"Girl:","Have you been at the dam?","");
- stext(0,"my father says they've","finished building it. It must","be a great thing to see.");
- slums[56]=2;
- entity.specframe[33]=0;
- unpausespecent(33);
- }
- if(slums[56]=0)
- {
- pausespecent(33);
- entfacing(33);
- stext(0,"Girl:","Hi Elliot.","");
- stext(0,"Elliot:","Hi.","");
- slums[56]=1;
- entity.specframe[33]=0;
- unpausespecent(33);
- }
-}
-event //103 dagger
- {
-  if(slums[57]=0)
-  {
-   alterftile(120,32,0,0);
-   stext(0,"Found Dagger!!","","");
-   weaponamount[23]=weaponamount[23]+1;
-   slums[57]=1;
-  }
-}
-event //104 leaves
- {
-  if(slums[58]=0)
-  {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[14]+"(s)";
-          stext(0,number,"","");
-          itemamount[14]=itemamount[14]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[16]+"(s)";
-          stext(0,number,"","");
-          itemamount[16]=itemamount[16]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[17]+"(s)";
-          stext(0,number,"","");
-          itemamount[17]=itemamount[17]+temp[6001];
- }
-   slums[58]=1;
-  }
+    pausespecent(32);
+    entfacing(32);
+    if (slums[33] = 1) {
+        stext(0, "Boy:", "We'll ride the Train", "to the Great Capital!");
+    }
+    if (slums[33] = 0) {
+        stext(0, "Boy:", "Hey, Elliot!", "Guess what I heard!");
+        stext(0, "They're building a RAILWAY", "Through the Desert all the",
+            "way to the Empire!");
+        stext(0, "Elliot:", "A real RAILWAY!?", "That can't be.");
+        stext(0, "Boy:", "It true, and I heard that the",
+            "railway runs through the slums!");
+        stext(0, "Elliot:", "Uh oh...", "");
+        stext(0, "Boy.", "What is it?", "");
+        stext(0, "Elliot:", "You know what happens to",
+            "us, if we're in the way.");
+        stext(0, "We'll be driven off to the", "Desert!", "");
+        stext(0, "We alredy have trouble", "paying the high taxes...",
+            "What will happen to us now...");
+        stext(0, "Boy:", "Don't think so hard Elliot!",
+            "It's great news if you ask me.");
+        stext(
+            0, "Elliot:", "Yaeh...guess I'm being", "a bit too pessimistic...");
+        slums[33] = 1;
+    }
+    entity.specframe[32] = 0;
+    unpausespecent(32);
 }
 
-event//105 watchtower
+event // 107 dead father
 {
- if(slums[32]=0)
- {
- musicfade(10);
- playmusic("sil.s3m");
- entity.specframe[ent1]=5;
- entlocx=entity.tx[ent1];
- entlocy=entity.ty[ent1];
- ent4=entityspawn(entlocx,entlocy,"camman.chr");
- setplayer(ent4);
- entity.speed[ent4]=2;
- stext(0,"Elliot:","The Watchtower...","");
- playmusic("climb.s3m");
- musicfadein(2);
- alterftile(152,20,0,0);
- alterftile(151,20,0,0);
- alterftile(152,21,0,1);
- alterftile(151,21,0,1);
- partymove("U13");
- wait(100);
- stext(0,"Marquise Efrine's guars","watch our lives","day'n night.");
- partymove("R20");
- wait(100);
- stext(0,"The Colossal palace of the","Marquise shadows the city of","Dalari...");
- stext(0,"Since this ugly pile of stone","was built, Dalari has chanced","from a beautifull, green town...");
- stext(0,"...to a decaying industrial","ruins...That's what father","says anyway...");
- stext(0,"He says there's a great desert","around Dalari, and a polluted","industrial area called...");
- stext(0,"...the Wasteland.","","");
- stext(0,"Some people claim that the","Wasteland is cursed, and will","swallow the city one day.");
- stext(0,"They say that a dark","construction stands in the","edge of the Cursed Land...");
- stext(0,"...and waits for the moment.","","");
- wait(100);
- musicfade(10);
- fadeout(10,10);
- setplayer(ent1);
- fadein(10,10);
- playmusic("sil.s3m");
- playmusic("slums.s3m");
- musicfadein(10);
- entity.specframe[ent1]=0;
- alterftile(152,20,0,1);
- alterftile(151,20,0,1);
- alterftile(152,21,0,0);
- alterftile(151,21,0,0);
- slums[32]=1;
-}
+    stext(0, "Girl:", "Will papa come home soon", "mom?");
+    stext(0, "Woman:", "Papa has gone to the", "Crystal Garden, dear.");
 }
 
-event//106 boy1
+event // 108 dead father2
 {
- pausespecent(32);
- entfacing(32);
- if(slums[33]=1)
- {
-  stext(0,"Boy:","We'll ride the Train","to the Great Capital!");
- }
- if(slums[33]=0)
- {
- stext(0,"Boy:","Hey, Elliot!","Guess what I heard!");
- stext(0,"They're building a RAILWAY","Through the Desert all the","way to the Empire!");
- stext(0,"Elliot:","A real RAILWAY!?","That can't be.");
- stext(0,"Boy:","It true, and I heard that the","railway runs through the slums!");
- stext(0,"Elliot:","Uh oh...","");
- stext(0,"Boy.","What is it?","");
- stext(0,"Elliot:","You know what happens to","us, if we're in the way.");
- stext(0,"We'll be driven off to the","Desert!","");
- stext(0,"We alredy have trouble","paying the high taxes...","What will happen to us now...");
- stext(0,"Boy:","Don't think so hard Elliot!","It's great news if you ask me.");
- stext(0,"Elliot:","Yaeh...guess I'm being","a bit too pessimistic...");
-slums[33]=1;
-}
-entity.specframe[32]=0;
-unpausespecent(32);
+    stext(0, "Girl:", "Papa was so tired.", "Is he sleeping well now.");
+    stext(0, "Woman:", "Let's hope so...", "Rest well Harl...");
+    stext(0, "Girl:", "Rest well papa...", "");
 }
 
-event//107 dead father
+event // 109 grave1
 {
- stext(0,"Girl:","Will papa come home soon","mom?");
- stext(0,"Woman:","Papa has gone to the","Crystal Garden, dear.");
+    stext(0, "Will Donowan.", "Was nothing while alive.", "Dead by own hand.");
+    stext(0, "Elliot:", "(Sometimes it would propably be",
+        "wise just to print the name...)");
 }
 
-event//108 dead father2
+event // 110 grave2
 {
- stext(0,"Girl:","Papa was so tired.","Is he sleeping well now.");
- stext(0,"Woman:","Let's hope so...","Rest well Harl...");
- stext(0,"Girl:","Rest well papa...","");
+    stext(0, "Herman Thorin.", "Don't come back, please.", "");
 }
 
-event//109 grave1
+event // 111 grave3
 {
- stext(0,"Will Donowan.","Was nothing while alive.","Dead by own hand.");
- stext(0,"Elliot:","(Sometimes it would propably be","wise just to print the name...)");
+    stext(0, "Belle Farson.", "We miss you mom.", "");
 }
 
-event//110 grave2
+event // 112 grave4
 {
- stext(0,"Herman Thorin.","Don't come back, please.","");
+    stext(0, "Bob Young.", "Your life ended so quick.", "Rest in peace.");
 }
 
-event//111 grave3
+event // 113 grave5
 {
- stext(0,"Belle Farson.","We miss you mom.","");
+    stext(0, "Lolitha Green.", "Long you lived,", "too long...");
 }
 
-event//112 grave4
+event // 114 grave6
 {
- stext(0,"Bob Young.","Your life ended so quick.","Rest in peace.");
+    stext(0, "Tom Killgore.", "Unknown are the roads", "of the Lord.");
 }
 
-event//113 grave5
+event // 115 grave7
 {
- stext(0,"Lolitha Green.","Long you lived,","too long...");
+    stext(0, "Maria Lisa Bonn.", "The Lord needs you for his",
+        "chorus. Serve him well.");
 }
 
-event//114 grave6
+event // 116 stranger
 {
- stext(0,"Tom Killgore.","Unknown are the roads","of the Lord.");
+    stext(0, ".......", "", "");
+    stext(0, "Elliot:", "(Seems to be asleep...)", "");
 }
 
-event//115 grave7
+event // 117 sack
 {
- stext(0,"Maria Lisa Bonn.","The Lord needs you for his","chorus. Serve him well.");
-} 
+    stext(0, "Stranger:", "....", "Don't touch my sack.");
+}
 
-event//116 stranger
+event // 118 newspaper
 {
- stext(0,".......","","");
- stext(0,"Elliot:","(Seems to be asleep...)","");
+    if (slums[34] = 4) {
+        stext(0, "Man:", "To get bitten by a poisoneus", "snake...horrible.");
+    }
+    if (slums[34] = 3) {
+        stext(0, "Man:", "A man died of a snakebite!", "DEAR GOD!!");
+        stext(0, "Where's the world coming to...", "", "");
+        slums[34] = 4;
+    }
+    if (slums[34] = 2) {
+        stext(0, "Man:", "Hmm...thirtythree people dead,",
+            "twelve wounded in a gunfight...");
+        slums[34] = 3;
+    }
+    if (slums[34] = 1) {
+        stext(0, "Man:", "Hmm...twenty miners killed in", "an explosion...");
+        slums[34] = 2;
+    }
+    if (slums[34] = 0) {
+        stext(0, "Man:", "Hmm...ten people drowned in", "a boat accident...");
+        slums[34] = 1;
+    }
 }
 
-event//117 sack
+event // 119 bartender
 {
- stext(0,"Stranger:","....","Don't touch my sack.");
+    if (slums[35] = 1) {
+        stext(0, "Otto:", "Take care Elliot.", "");
+    }
+    if (slums[35] = 0) {
+        stext(0, "Bartender:", "Hi there Elliot!", "Came to play DJoe?");
+        stext(0, "Elliot:", "Mmmm...perhaps... Say...Otto,",
+            "could you do me a favour?");
+        stext(0, "Otto:", "You name it!", "");
+        stext(0, "Elliot:", "Please don't sell alcohol", "to my dad anymore.");
+        stext(0, "He's in trouble.", "", "");
+        stext(0, "Otto:", "I see...actually, I had to",
+            "kick him out last night.");
+        stext(0, "He started a fight and", "would've lost his teeth",
+            "hadn't I taken care of it.");
+        stext(0, "Elliot:", "Thanks Otto.", "");
+        stext(0, "Otto:", "Don't worry, your dad gets",
+            "nothing but water from me.");
+        stext(0, "Elliot:", "Great. Perhaps we can get him",
+            "back on track again.");
+        stext(0, "Otto:", "What's happened?", "");
+        stext(0, "Elliot:", "Dad drunk all of the taxmoney",
+            "and Henrik is pissed off.");
+        stext(0, "He'll send dad to the", "Alcatraz if the money is not ",
+            "delivered to him tomorrow.");
+        stext(0, "So I'm trying to gather the", "taxmoney.", "");
+        stext(0, "Otto:", "You're a brave kid, Elliot.",
+            "You'll grow up to be a...");
+        stext(
+            0, "...great man.", "You've got sparkle in those...", "that, eye.");
+        stext(0, "Y'know, I'm gonna forget the", "bill your dad made last ",
+            "night.");
+        stext(0, "too bad he was a bit too", "generous in bying other",
+            "people drinks...");
+        stext(0, "Elliot:", "You're a great friend, Otto!", "");
+        stext(0, "Otto:", "And take these.", "");
+        stext(0, "Got 100 Crowns!", "", "");
+        crowns = crowns + 100;
+        stext(0, "Elliot:", "What's this medallion?", "");
+        stext(0, "Otto:", "Your father cashed it a",
+            "week ago. It's your mother's.");
+        stext(0, "That's what he said anyway.", "", "");
+        stext(0, "Got Mother's medallion!", "", "");
+        equamount[4] = equamount[4] + 1;
+        stext(0, "Elliot:", "How could I ever thank you?", "");
+        stext(0, "Otto:", "Just take care of yourself.", "");
+        stext(0, "Elliot:", "Ok. I must go now, there's",
+            "a lot of work to be done.");
+        stext(0, "Otto:", "See you around.", "");
+        stext(0, "Elliot:", "Yeah, see ya.", "");
+        slums[35] = 1;
+    }
 }
-
-event//118 newspaper
+event // 120 Man with muscles
 {
- if(slums[34]=4)
- {
- stext(0,"Man:","To get bitten by a poisoneus","snake...horrible.");
- }
- if(slums[34]=3)
- {
- stext(0,"Man:","A man died of a snakebite!","DEAR GOD!!");
- stext(0,"Where's the world coming to...","","");
- slums[34]=4;
- }
- if(slums[34]=2)
- {
- stext(0,"Man:","Hmm...thirtythree people dead,","twelve wounded in a gunfight...");
- slums[34]=3;
- } 
- if(slums[34]=1)
- {
- stext(0,"Man:","Hmm...twenty miners killed in","an explosion...");
- slums[34]=2;
- } 
- if(slums[34]=0)
- {
- stext(0,"Man:","Hmm...ten people drowned in","a boat accident...");
- slums[34]=1;
-}
+    pausespecent(29);
+    entfacing(29);
+    if (slums[40] = 1) {
+        stext(0, "Grungu:", "Does your father have", "my medicine yet?");
+        stext(0, "Elliot:", "Not yet I'm afraid.", "");
+        stext(0, "Grungu:", "Blasted! How am I supposed to", "make it with ");
+        stext(0, "a fire up my arse?", "Tell me little Drake.", "");
+    }
+    if (slums[40] = 0) {
+        stext(0, "Man:", "Heh...little Drake.", "");
+        stext(0, "Will you tell your", "father that I'm running",
+            "out of patience.");
+        stext(0, "It has been four weeks now.", "When is he gonna get",
+            "my medicine?");
+        stext(0, "Elliot:", "I'll go see father, Mr. Grungu.",
+            "For what are them for?");
+        stext(0, "Grungu:", "Well...you know...",
+            "it's for my...hemo...hemorr...");
+        stext(0, "Elliot:", "You mean HEMORROIDS!!?", "");
+        stext(0, "Grungu:", "SHHHH!! The gossips fly",
+            "like eagles around here!");
+        stext(0, "Elliot:", "Sorry Mr.Grungu. I'm sure",
+            "father has your medicine soon.");
+        stext(0, "Grungu:", "He better have.", "I haven't been able to...");
+        stext(
+            0, "...shit...sit in a forthnight!", "It's driving me grazy!!", "");
+        stext(0, "Elliot:", "Worry not Mr Grungu.", "");
+        stext(
+            0, "Grungu:", "You're a good lad little", "Drake. Now run along.");
+        slums[40] = 1;
+    }
+    entity.specframe[29] = 0;
+    unpausespecent(29);
 }
 
-event//119 bartender
+event // 121 Granny
 {
- if(slums[35]=1)
- {
-  stext(0,"Otto:","Take care Elliot.","");
- }
- if(slums[35]=0)
- {
- stext(0,"Bartender:","Hi there Elliot!","Came to play DJoe?");
- stext(0,"Elliot:","Mmmm...perhaps... Say...Otto,","could you do me a favour?"); 
- stext(0,"Otto:","You name it!","");
- stext(0,"Elliot:","Please don't sell alcohol","to my dad anymore.");
- stext(0,"He's in trouble.","","");
- stext(0,"Otto:","I see...actually, I had to","kick him out last night.");
- stext(0,"He started a fight and","would've lost his teeth","hadn't I taken care of it.");
- stext(0,"Elliot:","Thanks Otto.","");
- stext(0,"Otto:","Don't worry, your dad gets","nothing but water from me.");
- stext(0,"Elliot:","Great. Perhaps we can get him","back on track again.");
- stext(0,"Otto:","What's happened?","");
- stext(0,"Elliot:","Dad drunk all of the taxmoney","and Henrik is pissed off.");
- stext(0,"He'll send dad to the","Alcatraz if the money is not ","delivered to him tomorrow.");
- stext(0,"So I'm trying to gather the","taxmoney.","");
- stext(0,"Otto:","You're a brave kid, Elliot.","You'll grow up to be a...");
- stext(0,"...great man.","You've got sparkle in those...","that, eye.");
- stext(0,"Y'know, I'm gonna forget the","bill your dad made last ","night.");
- stext(0,"too bad he was a bit too","generous in bying other","people drinks...");
- stext(0,"Elliot:","You're a great friend, Otto!","");
- stext(0,"Otto:","And take these.","");
- stext(0,"Got 100 Crowns!","","");
- crowns=crowns+100;
- stext(0,"Elliot:","What's this medallion?","");
- stext(0,"Otto:","Your father cashed it a","week ago. It's your mother's.");
- stext(0,"That's what he said anyway.","","");
- stext(0,"Got Mother's medallion!","","");
- equamount[4]=equamount[4]+1;
- stext(0,"Elliot:","How could I ever thank you?","");
- stext(0,"Otto:","Just take care of yourself.","");
- stext(0,"Elliot:","Ok. I must go now, there's","a lot of work to be done.");
- stext(0,"Otto:","See you around.","");
- stext(0,"Elliot:","Yeah, see ya.","");
- slums[35]=1;
+    pausespecent(38);
+    entfacing(38);
+    if (slums[41] = 1) {
+        stext(0, "Talitha:", "I'm praying for you,", "Young Elliot.");
+    }
+    if (slums[41] = 0) {
+        stext(0, "Granny:", "Elliot...", "");
+        stext(0, "Elliot:", "What is it, Old Talitha?", "");
+        stext(0, "Talitha:", "I spoke with the bones", "last night.");
+        stext(0, "I was very curious about one", "particular vision.", "");
+        stext(0, "Elliot:", "What did you see?", "(Just act interested...)");
+        stext(0, "Talitha:", "Again I was able to witness",
+            "the Crusifiction of our Lord.");
+        stext(0, "But this time, one of", "the rogues was gone.", "");
+        stext(0, "The evil one.", "And I saw the Dark Elf.", "");
+        stext(0, "The bones never lie, Young", "Elliot. You were the",
+            "good rogue.");
+        stext(0, "Elliot:", "Huh?", "");
+        stext(0, "'Behind the Crying Mask is", "the face of the New Messiah,",
+            "and my nemesis'");
+        stext(0, "That's what the Dark Elf", "whispered. Remember those",
+            "words young Elliot!");
+        stext(0, "Elliot:", "Ok, Old Talitha.",
+            "(I don't have time for this...)");
+        stext(0, "Talitha:", "Good, good.", "Now let us pray together.");
+        stext(0, "Elliot:", "I...I'm sorry but I gotta run!", "(Dear God!)");
+        slums[41] = 1;
+    }
+    entity.specframe[38] = 0;
+    unpausespecent(38);
 }
-}
-event //120 Man with muscles
+
+event // 122 boy2
 {
- pausespecent(29);
- entfacing(29);
- if(slums[40]=1)
- {
-  stext(0,"Grungu:","Does your father have","my medicine yet?");
-  stext(0,"Elliot:","Not yet I'm afraid.","");
-  stext(0,"Grungu:","Blasted! How am I supposed to","make it with ");
-  stext(0,"a fire up my arse?","Tell me little Drake.","");
- }
- if(slums[40]=0)
-  {
-   stext(0,"Man:","Heh...little Drake.","");
-   stext(0,"Will you tell your","father that I'm running","out of patience.");
-   stext(0,"It has been four weeks now.","When is he gonna get","my medicine?");
-   stext(0,"Elliot:","I'll go see father, Mr. Grungu.","For what are them for?");
-   stext(0,"Grungu:","Well...you know...","it's for my...hemo...hemorr...");
-   stext(0,"Elliot:","You mean HEMORROIDS!!?","");
-   stext(0,"Grungu:","SHHHH!! The gossips fly","like eagles around here!");
-   stext(0,"Elliot:","Sorry Mr.Grungu. I'm sure","father has your medicine soon.");
-  stext(0,"Grungu:","He better have.","I haven't been able to...");
-  stext(0,"...shit...sit in a forthnight!","It's driving me grazy!!","");
-  stext(0,"Elliot:","Worry not Mr Grungu.","");
-  stext(0,"Grungu:","You're a good lad little","Drake. Now run along.");
- slums[40]=1;
-  }
- entity.specframe[29]=0;
- unpausespecent(29); 
+    pausespecent(28);
+    entfacing(28);
+    if (slums[42] = 3) {
+        stext(
+            0, "Boy:", "Perhaps Old Talitha can", "tell me another riddle...");
+    }
+    if (slums[42] = 2) {
+        stext(0, "Boy:", "Hey Elliot!", "I finally got it!");
+        stext(0, "Elliot:", "Tell me.", "");
+        stext(0, "Boy:", "It's SO obvious!", "");
+        stext(0, "Elliot:", "What is it?", "");
+        stext(0, "Boy:", "It's DARKNESS of course!", "");
+        stext(0, "Elliot:", "Oh yeah.", "Funny I didn't realize that...");
+        stext(0, "Boy:", "I'll go ask my friends.", "They'll never guess it!");
+        stext(0, "Elliot:", "See ya.", "");
+        slums[42] = 3;
+    }
+    if (slums[42] = 1) {
+        stext(0, "Boy:", "Got it alredy?!", "");
+        stext(0, "Elliot", "...yes...hmmm..well...hm...no,",
+            "...hm...no..not yet.");
+        stext(0, "Boy:", "Oh...well perhaps later...", "");
+    }
+    if (slums[42] = 0) {
+        stext(0, "Boy:", "Old Talitha asked me a", "riddle yesterday.");
+        stext(0, "I can't figure it out!", "", "");
+        stext(0, "Elliot:", "Let's hear it.", "");
+        stext(0, "It cannot be seen, smelled,", "heard or tasted.", "");
+        stext(0, "It sleeps beyond the stars", "and in the deep caverns",
+            "of the distant mountains.");
+        stext(0, "It stops laughter", "and ends life.", "What could it be?");
+        stext(0, "Elliot:", ".........hmmm...",
+            "...that really is a tough one...");
+        stext(0, "I have to think about", "this...", "");
+        stext(0, "Boy:", "If you figure it out", "tell me.");
+        slums[42] = 1;
+    }
+    entity.specframe[28] = 0;
+    unpausespecent(28);
 }
 
-event//121 Granny
+event // 123 woman1
 {
- pausespecent(38);
- entfacing(38);
- if(slums[41]=1)
- {
-  stext(0,"Talitha:","I'm praying for you,","Young Elliot.");
- }
- if(slums[41]=0)
- {
- stext(0,"Granny:","Elliot...","");
- stext(0,"Elliot:","What is it, Old Talitha?","");
- stext(0,"Talitha:","I spoke with the bones","last night.");
- stext(0,"I was very curious about one","particular vision.","");
- stext(0,"Elliot:","What did you see?","(Just act interested...)");
- stext(0,"Talitha:","Again I was able to witness","the Crusifiction of our Lord.");
- stext(0,"But this time, one of","the rogues was gone.","");
- stext(0,"The evil one.","And I saw the Dark Elf.","");
- stext(0,"The bones never lie, Young","Elliot. You were the","good rogue.");
- stext(0,"Elliot:","Huh?","");
- stext(0,"'Behind the Crying Mask is","the face of the New Messiah,","and my nemesis'");
-  stext(0,"That's what the Dark Elf","whispered. Remember those","words young Elliot!");
- stext(0,"Elliot:","Ok, Old Talitha.","(I don't have time for this...)");
- stext(0,"Talitha:","Good, good.","Now let us pray together.");
- stext(0,"Elliot:","I...I'm sorry but I gotta run!","(Dear God!)");
- slums[41]=1;
-}
-entity.specframe[38]=0;
-unpausespecent(38);
+    pausespecent(36);
+    entfacing(36);
+    if (slums[43] = 2) {
+        stext(0, "Mrs Roberts:", "Hmm...that's funny. I seem",
+            "to have lost my medikit...");
+        stext(0, "I'm sure it was in the chest", "yesterday...", "");
+    }
+    if (slums[43] = 1) {
+        stext(0, "Mrs Roberts:", "Say hi to your father", "Elliot.");
+        stext(0, "Elliot:", "Thanks Mrs Roberts,", "I will.");
+    }
+    if (slums[43] = 0) {
+        stext(0, "Woman:", "Hi Elliot.", "What's up?");
+        stext(
+            0, "Elliot:", "Oh nothing special...", "just came to say that...");
+        stext(0, "...It'll take a bit longer", "till we can deliver",
+            "your medicine.");
+        stext(0, "Woman:", "Oh?", "Anything serious?");
+        stext(0, "Elliot:", "No...dad's just not feeling", "very well...");
+        stext(0, "Woman:", "Mmm...hopefully he gets", "better soon.");
+        stext(0, "Elliot:", "Don't worry mrs Roberts,", "dad's gonna be fine.");
+        slums[43] = 1;
+    }
+    entity.specframe[36] = 0;
+    unpausespecent(36);
 }
 
-event//122 boy2
+event // 124 woman2
 {
- pausespecent(28);
- entfacing(28);
- if(slums[42]=3)
- { 
-  stext(0,"Boy:","Perhaps Old Talitha can","tell me another riddle...");
- }
- if(slums[42]=2)
- { 
-  stext(0,"Boy:","Hey Elliot!","I finally got it!");
-  stext(0,"Elliot:","Tell me.","");
-  stext(0,"Boy:","It's SO obvious!","");
-  stext(0,"Elliot:","What is it?","");
-  stext(0,"Boy:","It's DARKNESS of course!","");
-  stext(0,"Elliot:","Oh yeah.","Funny I didn't realize that...");
-  stext(0,"Boy:","I'll go ask my friends.","They'll never guess it!");
-  stext(0,"Elliot:","See ya.","");
-  slums[42]=3;
- }
- if(slums[42]=1)
- { 
-  stext(0,"Boy:","Got it alredy?!","");
-  stext(0,"Elliot","...yes...hmmm..well...hm...no,","...hm...no..not yet.");
-  stext(0,"Boy:","Oh...well perhaps later...","");
- }
- if(slums[42]=0)
- {
- stext(0,"Boy:","Old Talitha asked me a","riddle yesterday.");
- stext(0,"I can't figure it out!","","");
- stext(0,"Elliot:","Let's hear it.","");
- stext(0,"It cannot be seen, smelled,","heard or tasted.","");
- stext(0,"It sleeps beyond the stars","and in the deep caverns","of the distant mountains.");
- stext(0,"It stops laughter","and ends life.","What could it be?");
- stext(0,"Elliot:",".........hmmm...","...that really is a tough one...");
- stext(0,"I have to think about","this...","");
- stext(0,"Boy:","If you figure it out","tell me.");
- slums[42]=1;
-}
-entity.specframe[28]=0;
-unpausespecent(28);
+    pausespecent(34);
+    entfacing(34);
+    if (slums[45] = 1) {
+        stext(0, "Mrs Bonn:", "Hmm...what should I make", "for dinner...");
+    }
+    if (slums[45] = 0) {
+        stext(0, "Woman:", "Oh Elliot!", "What brings you by?");
+        stext(0, "Elliot:", "Hi Mrs Bonn.", "Is Tim mome?");
+        stext(0, "Mrs Bonn:", "He went out.", "He was very exited about...");
+        stext(0, "...a riddle he had heard.", "", "");
+        stext(0, "Elliot:", "Ok, well, I'll go looking", "for him. Bye.");
+        stext(0, "Mrs Bonn:", "Bye bye.", "");
+        slums[45] = 1;
+    }
+    entity.specframe[34] = 0;
+    unpausespecent(34);
 }
 
-
-event//123 woman1
+event // 125 drinking man
 {
- pausespecent(36);
- entfacing(36);
- if (slums[43]=2)
- {
-  stext(0,"Mrs Roberts:","Hmm...that's funny. I seem","to have lost my medikit...");
-  stext(0,"I'm sure it was in the chest","yesterday...","");
- }
- if (slums[43]=1)
- {
-  stext(0,"Mrs Roberts:","Say hi to your father","Elliot.");
-  stext(0,"Elliot:","Thanks Mrs Roberts,","I will.");
- }
- if (slums[43]=0)
- {
- stext(0,"Woman:","Hi Elliot.","What's up?");
- stext(0,"Elliot:","Oh nothing special...","just came to say that...");
- stext(0,"...It'll take a bit longer","till we can deliver","your medicine.");
- stext(0,"Woman:","Oh?","Anything serious?");
- stext(0,"Elliot:","No...dad's just not feeling","very well...");
- stext(0,"Woman:","Mmm...hopefully he gets","better soon.");
- stext(0,"Elliot:","Don't worry mrs Roberts,","dad's gonna be fine.");
- slums[43]=1;
- }
- entity.specframe[36]=0;
- unpausespecent(36);
-} 
+    if (slums[62] = 1) {
+        stext(0, "Man:", "Life sucks...", "");
+    }
+    if (slums[62] = 0) {
+        stext(0, "Man:", "Don't bother me boy.", "Can't you see I'm drinking?");
+        stext(0, "Elliot:", "Sorry.", "");
+        stext(0, "Man:", ".....", "");
+        stext(0, "Elliot:", "......", "");
+        stext(0, "Man:", "What?!", "");
+        stext(0, "Elliot:", "I was just thinkin...", "");
+        stext(0, "...how pathetic can one", "make himself with booze.", "");
+        stext(0, "Man:", "Yeah...", "");
+        stext(0, "No-one needs an alcoholic...", "No-one want's ya...", "");
+        stext(0, "Elliot:", "Why are you drinking?", "");
+        stext(0, "Man:", "Cause that's all I have...", "");
+        stext(0, "Elliot:", "(Dad...)", "");
+        slums[62] = 1;
+    }
+}
 
-event//124 woman2
+event // 126 leather vest
 {
-  pausespecent(34);
-  entfacing(34);
- if(slums[45]=1)
- {
-  stext(0,"Mrs Bonn:","Hmm...what should I make","for dinner...");
- }
- if(slums[45]=0)
- {
- stext(0,"Woman:","Oh Elliot!","What brings you by?");
- stext(0,"Elliot:","Hi Mrs Bonn.","Is Tim mome?");
- stext(0,"Mrs Bonn:","He went out.","He was very exited about...");
- stext(0,"...a riddle he had heard.","","");
- stext(0,"Elliot:","Ok, well, I'll go looking","for him. Bye.");
- stext(0,"Mrs Bonn:","Bye bye.","");
- slums[45]=1;
- }
-  entity.specframe[34]=0;
-  unpausespecent(34);
+    if (slums[63] = 0) {
+        alterftile(147, 20, 0, 0);
+        stext(0, "Found Leather Vest!", "", "");
+        armoramount[11] = armoramount[11] + 1;
+        slums[63] = 1;
+    }
 }
 
-event//125 drinking man
-{ 
- if(slums[62]=1)
- {
- stext(0,"Man:","Life sucks...","");
- }
- if(slums[62]=0)
- {
- stext(0,"Man:","Don't bother me boy.","Can't you see I'm drinking?");
- stext(0,"Elliot:","Sorry.","");
- stext(0,"Man:",".....","");
- stext(0,"Elliot:","......","");
- stext(0,"Man:","What?!","");
- stext(0,"Elliot:","I was just thinkin...","");
- stext(0,"...how pathetic can one","make himself with booze.","");
- stext(0,"Man:","Yeah...","");
- stext(0,"No-one needs an alcoholic...","No-one want's ya...","");
- stext(0,"Elliot:","Why are you drinking?","");
- stext(0,"Man:","Cause that's all I have...","");
- stext(0,"Elliot:","(Dad...)","");
- slums[62]=1;
-}
-}
-
-event//126 leather vest
+event // 127 geezer2
 {
- if(slums[63]=0)
- { 
- alterftile(147,20,0,0);
- stext(0,"Found Leather Vest!","","");
- armoramount[11]=armoramount[11]+1;
- slums[63]=1;
-}
+    stext(0, "Man:", "Blaah! The only good news in",
+        "the paper is that the old...");
+    stext(0, "...geezer Walter is dead!", "", "");
 }
 
-event//127 geezer2
+event // 128 leather boots
 {
- stext(0,"Man:","Blaah! The only good news in","the paper is that the old...");
- stext(0,"...geezer Walter is dead!","","");
-}  
+    if (slums[64] = 0) {
+        alterftile(182, 44, 0, 0);
+        stext(0, "Found Leather Boots!", "", "");
+        armoramount[10] = armoramount[10] + 1;
+        slums[64] = 1;
+    }
+}
 
-event//128 leather boots
+event // 129 Tanya's father
 {
- if(slums[64]=0)
- { 
- alterftile(182,44,0,0);
- stext(0,"Found Leather Boots!","","");
- armoramount[10]=armoramount[10]+1;
- slums[64]=1;
-}
+    stext(0, "Tanya's father:", "......", "");
+    stext(0, "Elliot:", "(He has a big bump on his", "head...)");
 }
 
-event//129 Tanya's father
+event // 130 Tanya's mother
 {
- stext(0,"Tanya's father:","......","");
- stext(0,"Elliot:","(He has a big bump on his","head...)");
+    pausespecent(43);
+    entfacing(43);
+    stext(0, "Tanya's mother:", "I'm so tired...", "");
+    stext(0, "Elliot:", "(She's been crying...)", "");
+    entity.specframe[43] = 0;
+    unpausespecent(43);
 }
 
-event//130 Tanya's mother
+event // 131 Mrs Samuel
 {
- pausespecent(43);
- entfacing(43);
- stext(0,"Tanya's mother:","I'm so tired...","");
- stext(0,"Elliot:","(She's been crying...)","");
- entity.specframe[43]=0;
- unpausespecent(43);
+    if (slums[71] = 3) {
+        stext(0, "Mrs Roberts:", "Jonathan'll stay home for", "some time now.");
+    }
+    if (slums[71] = 2) {
+        entlocx = entity.tx[ent1];
+        entlocy = entity.ty[ent1];
+        stext(0, "Mrs Samuel:", "You found Jonathan?", "");
+        stext(0, "Elliot:", "Yes, he was drinking in", "the pub.");
+        stext(0, "Mrs Samuel:", "I SEE!!", "Ahem, exuseme...");
+        if (entlocx = 101) {
+            entitymove(44, "D1R3U4R1D1");
+        }
+        ELSE { entitymove(44, "R3U3R1D1"); }
+        wait(250);
+        entity.x[44] = 0;
+        entity.y[44] = 0;
+        SetTile(98, 136, 2, 1048);
+        SetTile(98, 135, 2, 1047);
+        SetTile(97, 135, 3, 0);
+        cardplayer[4] = 2;
+    }
+
+    if (slums[71] = 1) {
+        stext(0, "Mrs Samuel:", "Jonathan is so lazy...", "");
+    }
+
+    if (slums[71] = 0) {
+        entlocx = entity.tx[ent1];
+        entlocy = entity.ty[ent1];
+        stext(0, "Woman:", "Hi Elliot.", "");
+        stext(0, "Elliot:", "Hi Mrs Samuel.", "");
+        stext(0, "Mrs Samuel:", "Elliot, could you do me a", "little favour?");
+        stext(0, "Elliot:", "Of course Mrs Samuel!", "");
+        stext(0, "Mrs Samuel:", "Y'see, my husband's been", "gone all day.");
+        stext(0, "Would you go see where", "he is?", "");
+        if (slums[73] = 1) {
+            stext(0, "Elliot:", "Actually, I saw Mr Samuel",
+                "drinking in the pub.");
+            stext(0, "Mrs Samuel:", "I SEE!!", "Ahem, exuseme...");
+            slums[71] = 2;
+            if (entlocx = 101) {
+                entitymove(44, "D1R3U4R1D1");
+            }
+            ELSE { entitymove(44, "R3U3R1D1"); }
+            wait(250);
+            entity.x[44] = 0;
+            entity.y[44] = 0;
+            SetTile(98, 136, 2, 1048);
+            SetTile(98, 135, 2, 1047);
+            SetTile(97, 135, 3, 0);
+            cardplayer[4] = 2;
+        }
+        if (slums[73] = 0) {
+            stext(0, "Elliot:", "Sure thing!", "I'm on my way.");
+            stext(0, "Mrs Samuel:", "Thanks.", "");
+            slums[71] = 1;
+        }
+    }
 }
 
-event//131 Mrs Samuel
+event // 132 Mr Samuel
 {
-  if(slums[71]=3)
- {
-  stext(0,"Mrs Roberts:","Jonathan'll stay home for","some time now.");
- }   
- if(slums[71]=2)
- {
-  entlocx=entity.tx[ent1];
-  entlocy=entity.ty[ent1];
-  stext(0,"Mrs Samuel:","You found Jonathan?","");
-  stext(0,"Elliot:","Yes, he was drinking in","the pub.");
-  stext(0,"Mrs Samuel:","I SEE!!","Ahem, exuseme...");
-  if(entlocx=101)
-  {
-   entitymove(44,"D1R3U4R1D1");
-  }
-  ELSE
-  {
-   entitymove(44,"R3U3R1D1");
-  }
-  wait(250);
-  entity.x[44]=0;
-  entity.y[44]=0;
-  SetTile(98, 136, 2, 1048);
-  SetTile(98, 135, 2, 1047);
-  SetTile(97, 135, 3, 0);
-  cardplayer[4]=2;
- }
-
- if(slums[71]=1)
- {
-  stext(0,"Mrs Samuel:","Jonathan is so lazy...","");
- }
-
- if(slums[71]=0)
- {
- entlocx=entity.tx[ent1];
- entlocy=entity.ty[ent1];
- stext(0,"Woman:","Hi Elliot.","");
- stext(0,"Elliot:","Hi Mrs Samuel.","");
- stext(0,"Mrs Samuel:","Elliot, could you do me a","little favour?");
- stext(0,"Elliot:","Of course Mrs Samuel!","");
- stext(0,"Mrs Samuel:","Y'see, my husband's been","gone all day.");
- stext(0,"Would you go see where","he is?","");
- if(slums[73]=1)
- { 
-  stext(0,"Elliot:","Actually, I saw Mr Samuel","drinking in the pub.");
-    stext(0,"Mrs Samuel:","I SEE!!","Ahem, exuseme...");
-  slums[71]=2;
-  if(entlocx=101)
-  {
-   entitymove(44,"D1R3U4R1D1");
-  }
-  ELSE
-  {
-   entitymove(44,"R3U3R1D1");
-  }
-  wait(250);
-  entity.x[44]=0;
-  entity.y[44]=0;
-  SetTile(98, 136, 2, 1048);
-  SetTile(98, 135, 2, 1047);
-  SetTile(97, 135, 3, 0);
-  cardplayer[4]=2;
- }
- if(slums[73]=0)
- { 
- stext(0,"Elliot:","Sure thing!","I'm on my way.");
- stext(0,"Mrs Samuel:","Thanks.","");
- slums[71]=1;
-} 
-}
+    if (slums[72] = 1) {
+        stext(0, "Mr Samuel:", "......", "");
+        stext(0, "Elliot:", "(He has a big bump on his", "head...)");
+    }
 }
 
-event//132 Mr Samuel
+event // 133 Mrs Samuel
 {
-  if(slums[72]=1)
-  {
-  stext(0,"Mr Samuel:","......","");
-  stext(0,"Elliot:","(He has a big bump on his","head...)");
-}
+    if (slums[71] = 3) {
+        stext(0, "Mrs Roberts:", "Jonathan'll stay home for", "some time now.");
+    }
 }
 
-event//133 Mrs Samuel
+event // 134 Girl
 {
-  if(slums[71]=3)
- {
-  stext(0,"Mrs Roberts:","Jonathan'll stay home for","some time now.");
- }   
+    stext(0, "Girl:", "Hi Elliot.", "");
 }
 
-event//134 Girl
-{
- stext(0,"Girl:","Hi Elliot.","");
+event {
+    chamaxhp[inparty[1]] = 75;
+    chahp[inparty[1]] = chamaxhp[inparty[1]];
 }
 
-event
+event // 136 dagger
 {
- chamaxhp[inparty[1]]=75;
- chahp[inparty[1]]=chamaxhp[inparty[1]];
-}
-
-event//136 dagger
-{
- if(vara[25]=0)
- {
- alterftile(178,21,0,0);
- stext(0,"Got 'Dagger'!","","");
- weaponamount[23]=weaponamount[23]+1;
- vara[25]=1;
-}
+    if (vara[25] = 0) {
+        alterftile(178, 21, 0, 0);
+        stext(0, "Got 'Dagger'!", "", "");
+        weaponamount[23] = weaponamount[23] + 1;
+        vara[25] = 1;
+    }
 }

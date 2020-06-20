@@ -664,8 +664,8 @@ var wasmMemory;
 // In the wasm backend, we polyfill the WebAssembly object,
 // so this creates a (non-native-wasm) table for us.
 var wasmTable = new WebAssembly.Table({
-  'initial': 412,
-  'maximum': 412 + 0,
+  'initial': 415,
+  'maximum': 415 + 0,
   'element': 'anyfunc'
 });
 
@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548784,
+    STACK_BASE = 6548816,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305904,
-    DYNAMIC_BASE = 6548784,
-    DYNAMICTOP_PTR = 1305728;
+    STACK_MAX = 1305936,
+    DYNAMIC_BASE = 6548816,
+    DYNAMICTOP_PTR = 1305760;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,7 +1819,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  16185: function() {window.verge.setLoadingProgress(100);}
+  16227: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
@@ -1836,7 +1836,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
 
 
 
-// STATICTOP = STATIC_BASE + 1304880;
+// STATICTOP = STATIC_BASE + 1304912;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4813,7 +4813,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 1305728;
+      return 1305760;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -5105,6 +5105,80 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
 
   function _emscripten_set_keyup_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
       __registerKeyEventCallback(target, userData, useCapture, callbackfunc, 3, "keyup", targetThread);
+      return 0;
+    }
+
+  
+  
+  
+  function __getBoundingClientRect(e) {
+      return e.getBoundingClientRect();
+    }function __fillMouseEventData(eventStruct, e, target) {
+      HEAP32[((eventStruct)>>2)]=e.screenX;
+      HEAP32[(((eventStruct)+(4))>>2)]=e.screenY;
+      HEAP32[(((eventStruct)+(8))>>2)]=e.clientX;
+      HEAP32[(((eventStruct)+(12))>>2)]=e.clientY;
+      HEAP32[(((eventStruct)+(16))>>2)]=e.ctrlKey;
+      HEAP32[(((eventStruct)+(20))>>2)]=e.shiftKey;
+      HEAP32[(((eventStruct)+(24))>>2)]=e.altKey;
+      HEAP32[(((eventStruct)+(28))>>2)]=e.metaKey;
+      HEAP16[(((eventStruct)+(32))>>1)]=e.button;
+      HEAP16[(((eventStruct)+(34))>>1)]=e.buttons;
+      var movementX = e["movementX"]
+        || (e.screenX-JSEvents.previousScreenX)
+        ;
+      var movementY = e["movementY"]
+        || (e.screenY-JSEvents.previousScreenY)
+        ;
+  
+      HEAP32[(((eventStruct)+(36))>>2)]=movementX;
+      HEAP32[(((eventStruct)+(40))>>2)]=movementY;
+  
+      var rect = __specialEventTargets.indexOf(target) < 0 ? __getBoundingClientRect(target) : {'left':0,'top':0};
+      HEAP32[(((eventStruct)+(44))>>2)]=e.clientX - rect.left;
+      HEAP32[(((eventStruct)+(48))>>2)]=e.clientY - rect.top;
+  
+      // wheel and mousewheel events contain wrong screenX/screenY on chrome/opera
+        // https://github.com/emscripten-core/emscripten/pull/4997
+      // https://bugs.chromium.org/p/chromium/issues/detail?id=699956
+      if (e.type !== 'wheel' && e.type !== 'mousewheel') {
+        JSEvents.previousScreenX = e.screenX;
+        JSEvents.previousScreenY = e.screenY;
+      }
+    }function __registerMouseEventCallback(target, userData, useCapture, callbackfunc, eventTypeId, eventTypeString, targetThread) {
+      if (!JSEvents.mouseEvent) JSEvents.mouseEvent = _malloc( 64 );
+      target = __findEventTarget(target);
+  
+      var mouseEventHandlerFunc = function(ev) {
+        var e = ev || event;
+  
+        // TODO: Make this access thread safe, or this could update live while app is reading it.
+        __fillMouseEventData(JSEvents.mouseEvent, e, target);
+  
+        if (dynCall_iiii(callbackfunc, eventTypeId, JSEvents.mouseEvent, userData)) e.preventDefault();
+      };
+  
+      var eventHandler = {
+        target: target,
+        allowsDeferredCalls: eventTypeString != 'mousemove' && eventTypeString != 'mouseenter' && eventTypeString != 'mouseleave', // Mouse move events do not allow fullscreen/pointer lock requests to be handled in them!
+        eventTypeString: eventTypeString,
+        callbackfunc: callbackfunc,
+        handlerFunc: mouseEventHandlerFunc,
+        useCapture: useCapture
+      };
+      JSEvents.registerOrRemoveHandler(eventHandler);
+    }function _emscripten_set_mousedown_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerMouseEventCallback(target, userData, useCapture, callbackfunc, 5, "mousedown", targetThread);
+      return 0;
+    }
+
+  function _emscripten_set_mousemove_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerMouseEventCallback(target, userData, useCapture, callbackfunc, 8, "mousemove", targetThread);
+      return 0;
+    }
+
+  function _emscripten_set_mouseup_callback_on_thread(target, userData, useCapture, callbackfunc, targetThread) {
+      __registerMouseEventCallback(target, userData, useCapture, callbackfunc, 6, "mouseup", targetThread);
       return 0;
     }
 
@@ -6735,7 +6809,7 @@ function intArrayToString(array) {
 // ASM_LIBRARY EXTERN PRIMITIVES: Int8Array,Int32Array
 
 var asmGlobalArg = {};
-var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_syncFileSystem": wasm_syncFileSystem, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
+var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "emscripten_set_mousedown_callback_on_thread": _emscripten_set_mousedown_callback_on_thread, "emscripten_set_mousemove_callback_on_thread": _emscripten_set_mousemove_callback_on_thread, "emscripten_set_mouseup_callback_on_thread": _emscripten_set_mouseup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_syncFileSystem": wasm_syncFileSystem, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
 Asyncify.instrumentWasmImports(asmLibraryArg);
 var asm = createWasm();
 Module["asm"] = asm;

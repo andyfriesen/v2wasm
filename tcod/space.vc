@@ -1,125 +1,122 @@
-event //autoexec
+event // autoexec
 {
- systemstartup();
- setresolution(360,240);
- mappi="space.map";
- location="????";
- hookkey(57,statmenu);
- systemstartup();
- palettemorph(0,0,0,0,63);
- cameratracking=1;
- ent1=entityspawn(10,8,"wiza.chr");
- ent2=entityspawn(10,6,"dante.chr");
- entity.specframe[ent1]=5;
- setplayer(ent1);
- wait(100);
-if(dalari[10]=2)
-  {
-   stext(0,"Dante:","Emotion... A gift I never","got from my Creator.");
-   stext(0,"As a supreme being, I cannot","feel like you do.","");
-   stext(0,"Elliot:","So many times I would","have taken your place...");
-   stext(0,"...if you had ever given me","the choice.","");
-   stext(0,"Dante:","But you are strong BECAUSE","you feel.");
-   stext(0,"I am strong because I was","made to be so.","There's a big difference...");
-   stext(0,"...between a machine and","a man.","");
-   stext(0,"But I do not ask more","than I was given.","No-one should.");
-   stext(0,"Elliot:","I did. But my Destiny","walks with me...");
-   stext(0,"...and gives me nothing","I desire.","");
-   stext(0,"Dante:","That Destiny was written","centuries ago...");
-   wait(100);
-   stext(0,"...and that destiny was told","you by Skhisnak.","");
-   wait(100);
-   stext(0,"But, do continue.","","");
-   musicfade(10);
-   hole[9]=10;
-   hole[5]=5;
-   mapswitch("hole5.map",0,0,0);
-  }
-  
-if(dalari[10]=1)
-  {
-   stext(0,"Elliot:","...a demise of life,","The Cursed Land...");
-   stext(0,"Dante:","Little souls eager","for adventure.");
-   stext(0,"Elliot:","An adventure that we never","quite finish.");
-   stext(0,"Dante:","Childhood...","");
-   stext(0,"Elliot:","Our road to hell","begun that day.");
-   stext(0,"I'm still walking it.","","");
-   wait(100);
-   stext(0,"The end of Chapter 2.","","");
-  }
-  if(dalari[10]=0)
-  { 
- stext(0,"Dante:","Quite an adventure for","a little kid...");
- stext(0,"Elliot:","I think I was well prepared","");
- stext(0,"Dante:","Yet, you were not prepared","for Skhisnak.");
- stext(0,"Elliot:","The Ratshaman...","I'll have him stuffed yet...");
- stext(0,"Dante:","Of course.","");
- stext(0,"Elliot:","......","");
- stext(0,"Dante:","When you first met","Freuden Gilron, what did...");
- stext(0,"...you think of him?","","");
- stext(0,"Elliot:","I thought:","I'll become like him.");
- stext(0,"Dante:","Like him?","");
- stext(0,"Elliot:","Yeah. A warrior.","That's what he was.");
- stext(0,"And that's what he is.","","");
- stext(0,"Dante:","A Quara-ma.","Warrior.");
- wait(200);
- stext(0,"Dante:","It's been an interesting","story.");
- stext(0,"Shall we take a break?","","");
- entity.specframe[ent1]=0;
- partymove("D1");
- stext(0,"Elliot:","Yeah...","");
- wait(100);
- stext(0,"The end of Chapter 1.","","");
- }
- dalari[2]=7;
- dalari[5]=3;
- savemap="palace2.map";
- savemusic="moria.s3m";
- savechar="wiza.chr";
- savex=entity.tx[ent1];
- savey=entity.ty[ent1];
- questio=1;
-question(2,"Do you wish to save?","(This game will be saved in","slot 3. and can be loaded","in Chapter 2.","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
- menupnt[40]=3;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=2)
- {
-  unpress(key[28]);
-}
+    systemstartup();
+    setresolution(360, 240);
+    mappi = "space.map";
+    location = "????";
+    hookkey(57, statmenu);
+    systemstartup();
+    palettemorph(0, 0, 0, 0, 63);
+    cameratracking = 1;
+    ent1 = entityspawn(10, 8, "wiza.chr");
+    ent2 = entityspawn(10, 6, "dante.chr");
+    entity.specframe[ent1] = 5;
+    setplayer(ent1);
+    wait(100);
+    if (dalari[10] = 2) {
+        stext(0, "Dante:", "Emotion... A gift I never", "got from my Creator.");
+        stext(0, "As a supreme being, I cannot", "feel like you do.", "");
+        stext(
+            0, "Elliot:", "So many times I would", "have taken your place...");
+        stext(0, "...if you had ever given me", "the choice.", "");
+        stext(0, "Dante:", "But you are strong BECAUSE", "you feel.");
+        stext(0, "I am strong because I was", "made to be so.",
+            "There's a big difference...");
+        stext(0, "...between a machine and", "a man.", "");
+        stext(
+            0, "But I do not ask more", "than I was given.", "No-one should.");
+        stext(0, "Elliot:", "I did. But my Destiny", "walks with me...");
+        stext(0, "...and gives me nothing", "I desire.", "");
+        stext(0, "Dante:", "That Destiny was written", "centuries ago...");
+        wait(100);
+        stext(0, "...and that destiny was told", "you by Skhisnak.", "");
+        wait(100);
+        stext(0, "But, do continue.", "", "");
+        musicfade(10);
+        hole[9] = 10;
+        hole[5] = 5;
+        mapswitch("hole5.map", 0, 0, 0);
+    }
 
-unpress(key[28]);
-questio=1;
-question(2,"Continue to","Chapter 2?","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- wait(50);
- fadeout(100,100);
- musicfade(10);
- wait(10);
- playmusic("sil.s3m");
- dalari[5]=3;
- mapswitch("palace2.map",0,0,0);
-}
+    if (dalari[10] = 1) {
+        stext(0, "Elliot:", "...a demise of life,", "The Cursed Land...");
+        stext(0, "Dante:", "Little souls eager", "for adventure.");
+        stext(0, "Elliot:", "An adventure that we never", "quite finish.");
+        stext(0, "Dante:", "Childhood...", "");
+        stext(0, "Elliot:", "Our road to hell", "begun that day.");
+        stext(0, "I'm still walking it.", "", "");
+        wait(100);
+        stext(0, "The end of Chapter 2.", "", "");
+    }
+    if (dalari[10] = 0) {
+        stext(0, "Dante:", "Quite an adventure for", "a little kid...");
+        stext(0, "Elliot:", "I think I was well prepared", "");
+        stext(0, "Dante:", "Yet, you were not prepared", "for Skhisnak.");
+        stext(0, "Elliot:", "The Ratshaman...", "I'll have him stuffed yet...");
+        stext(0, "Dante:", "Of course.", "");
+        stext(0, "Elliot:", "......", "");
+        stext(0, "Dante:", "When you first met", "Freuden Gilron, what did...");
+        stext(0, "...you think of him?", "", "");
+        stext(0, "Elliot:", "I thought:", "I'll become like him.");
+        stext(0, "Dante:", "Like him?", "");
+        stext(0, "Elliot:", "Yeah. A warrior.", "That's what he was.");
+        stext(0, "And that's what he is.", "", "");
+        stext(0, "Dante:", "A Quara-ma.", "Warrior.");
+        wait(200);
+        stext(0, "Dante:", "It's been an interesting", "story.");
+        stext(0, "Shall we take a break?", "", "");
+        entity.specframe[ent1] = 0;
+        partymove("D1");
+        stext(0, "Elliot:", "Yeah...", "");
+        wait(100);
+        stext(0, "The end of Chapter 1.", "", "");
+    }
+    dalari[2] = 7;
+    dalari[5] = 3;
+    savemap = "palace2.map";
+    savemusic = "moria.s3m";
+    savechar = "wiza.chr";
+    savex = entity.tx[ent1];
+    savey = entity.ty[ent1];
+    questio = 1;
+    question(2, "Do you wish to save?", "(This game will be saved in",
+        "slot 3. and can be loaded", "in Chapter 2.", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        unpress(key[28]);
+        menupnt[40] = 3;
+        save();
+        number = "Game saved to slot" + str(menupnt[40]);
+        stext(0, number, "", "");
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 
-if(problem=2)
-{
-fadeout(100,100);
-musicfade(10);
-wait(10);
-playmusic("sil.s3m");
- start=1;
- dodo=1;
-mapswitch("start.map",0,0,0);
-}
+    unpress(key[28]);
+    questio = 1;
+    question(2, "Continue to", "Chapter 2?", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        wait(50);
+        fadeout(100, 100);
+        musicfade(10);
+        wait(10);
+        playmusic("sil.s3m");
+        dalari[5] = 3;
+        mapswitch("palace2.map", 0, 0, 0);
+    }
+
+    if (problem = 2) {
+        fadeout(100, 100);
+        musicfade(10);
+        wait(10);
+        playmusic("sil.s3m");
+        start = 1;
+        dodo = 1;
+        mapswitch("start.map", 0, 0, 0);
+    }
 }
 }

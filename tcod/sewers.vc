@@ -1,2466 +1,2340 @@
-event //autoexec
+event // autoexec
 {
- freeallsounds();
- //soundeffect[1]=cachesound("atk.wav");
- //soundeffect[2]=cachesound("switch.wav");
- //soundeffect[3]=cachesound("river.wav");
- //soundeffect[4]=cachesound("gun2.wav");
- //soundeffect[5]=cachesound("pump.wav");
- //soundeffect[6]=cachesound("point1.wav");
- //soundeffect[7]=cachesound("buzz.wav");
- //soundeffect[8]=cachesound("boom.wav");
- //soundeffect[9]=cachesound("Click.wav");
- //soundeffect[10]=cachesound("boxopen.wav");
- //soundeffect[11]=cachesound("switch2.wav");
- setresolution(360,240);
- mappi="sewers.map";
- location="Dalari sewers";
- hookkey(57,statmenu);
- hookkey(42,juoksu);
-hookkey(29,juoksu2); 
-vara[2]=0;
- regroup=0;
- systemstartup();
- palettemorph(0,0,0,0,63);
- entity.specframe[0]=21;
- entity.specframe[1]=5;
- cameratracking=1;
- if(loaded=1)
- {
- frombattle=0;
- freeallsounds();
- playmusic(savemusic);
- musicfadein(10);
- ent1=entityspawn(savex,savey,savechar);
- setplayer(ent1);  
- slums[9]=10;
- textbox  =LoadImage("textboxi.pcx");
- speechpic=LoadRaw("speech.spc");
- loadmenupics();
- equipmentnames();
- weaponnames();
- armornames();
- relicnames();
- itemnames();
- spellnames();
- loaded=0;
- }
-
-if(slums[36]=1)
-  {
-  alterftile(27,20,2592,1);
-  alterftile(27,21,2591,0);
-  }
-
-if(slums[11]=2)
-{
- alterftile(169,62,0,0);
-}
-
-if(slums[19]=1)
- {
- SetTile(70, 30, 3, 2586);
- SetTile(71, 30, 3, 2586);
- SetTile(70, 32, 3, 2550);
- SetTile(71, 32, 3, 2549);
- SetTile(70, 31, 3, 2547);
- SetTile(71, 31, 3, 2548);
- alterftile(70,33,0,0);
- alterftile(71,33,0,0);
- alterftile(70,30,0,0);
- alterftile(71,30,0,0);
- alterftile(69,32,0,1);
- alterftile(69,31,0,1);
- alterftile(72,31,0,1);
- alterftile(72,32,0,1);
- alterftile(76,37,1668,0);
- alterftile(75,37,1667,0);
- alterftile(75,36,1649,0);
- alterftile(75,34,1650,0);
- alterftile(74,32,1651,0);
- alterftile(69,32,1652,0);
- alterftile(67,32,1669,0);
- alterftile(67,36,1653,0);
- alterftile(67,39,1670,0);
- alterftile(65,37,1654,0);
- alterftile(64,37,1671,0);
- alterftile(65,39,1664,0);
- alterftile(64,40,1665,0);
- alterftile(62,39,1666,0);
- alterftile(61,40,1669,0);
- alterftile(78,36,0,0);
- alterftile(78,37,0,0);
- alterftile(79,33,2621,1);
- alterftile(79,32,2622,0);
-
-}
-
- if (lever[1]=5)
- {
-   alterftile(131,13,1192,0);
-   alterftile(132,13,1192,1);
-   alterftile(133,13,1192,1);
-   alterftile(134,13,1192,1);
-   alterftile(135,13,1192,1);
-   alterftile(136,13,1192,1);
-   alterftile(131,14,1200,0);
-   alterftile(132,14,1200,0);
-   alterftile(133,14,2444,0);
-   alterftile(134,14,2445,0);
-   alterftile(135,14,1200,0);
-   alterftile(136,14,1200,0);
-   alterftile(131,15,1200,0);
-   alterftile(132,15,1200,0);
-   alterftile(133,15,2442,0);
-   alterftile(134,15,2443,0);
-   alterftile(135,15,1200,0);
-   alterftile(136,15,1200,0);
-   alterftile(131,16,639,1);
-   alterftile(132,16,1200,1);
-   alterftile(133,16,2440,1);
-   alterftile(134,16,2441,1);
-   alterftile(135,16,639,1);
-   alterftile(136,16,639,1);
-   alterftile(131,17,1192,1);
-   alterftile(132,17,1192,1);
-   alterftile(133,17,1192,1);
-   alterftile(134,17,1192,1);
-   alterftile(135,17,1192,1);
-   alterftile(136,17,1192,1);
-   alterftile(131,18,1200,1);
-   alterftile(132,18,1200,1);
-   alterftile(133,18,1200,1);
-   alterftile(134,18,1200,1);
-   alterftile(135,18,1200,1);
-   alterftile(136,18,1200,1);
-   alterftile(131,19,1200,1);
-   alterftile(132,19,1200,1);
-   alterftile(133,19,1200,1);
-   alterftile(134,19,1200,1);
-   alterftile(135,19,1200,1);
-   alterftile(136,19,1200,1);
-}
-
-
- if(slums[22]=2)
- {
-  alterftile(58,54,0,0);
-  alterftile(58,53,0,0);
- }
-
- if(slums[17]=4)
- {
-  alterftile(83,37,2439,1);
- } 
-
- if(slums[19]=1)
- {
-  entity.x[1]=0;
-  entity.y[1]=0;
-  for(x=1; x<19; x++)
-   {
-    alterftile(69,12+x,0,1);
-    alterftile(70,12+x,0,0);
-    alterftile(71,12+x,0,0);
-    alterftile(72,12+x,0,1);
-
-   } 
-   alterftile(70,30,0,1);
-   alterftile(71,30,0,1);
-   alterftile(70,12,0,1);
-   alterftile(71,12,0,1);
-   alterftile(70,33,0,1);
-   alterftile(71,33,0,1);
-   alterbtile(71,28,764,0);
-   for(x=1; x<11; x++)
-   {
-    alterftile(69,33+x,0,1);
-    alterftile(70,33+x,0,0);
-    alterftile(71,33+x,0,0);
-    alterftile(72,33+x,0,1);
-
-  } 
-}
-
-if(slums[11]=1)
-{
- entity.x[1]=0;
- entity.y[1]=0;
- alterftile(76,37,1668,0);
- alterftile(75,37,1667,0);
- alterftile(75,36,1649,0);
- alterftile(75,34,1650,0);
- alterftile(74,32,1651,0);
- alterftile(69,32,1652,0);
- alterftile(67,32,1669,0);
- alterftile(67,36,1653,0);
- alterftile(67,39,1670,0);
- alterftile(65,37,1654,0);
- alterftile(64,37,1671,0);
- alterftile(65,39,1664,0);
- alterftile(64,40,1665,0);
- alterftile(62,39,1666,0);
- alterftile(61,40,1669,0);
- alterftile(78,36,0,0);
- alterftile(78,37,0,0);
- alterftile(79,33,2621,1);
- alterftile(79,32,2622,0);
-}
-
-
-if(slums[42]=2)
-{
- entity.x[0]=0;
- entity.y[0]=0;
-}
-
-if(slums[67]=1)
- { 
- alterftile(131,152,0,0);
-}
-
-if(slums[66]=1)
- { 
- alterftile(148,6,0,0);
-}
-
-if(slums[65]=1)
- { 
- alterftile(160,90,0,0);
-}
-
-if (slums[68]=1)
- {
-  alterftile(68,68,1584,1);
-  alterftile(68,67,1585,1);
-}
-
-if(slums[70]=1)
- { 
- alterftile(166,62,0,0);
-}
-
-   if(slums[69]=1)
-    { 
-     alterftile(29,45,0,0);
-    }
-   
-    if(slums[39]=1)
-   {
-    alterftile(33,168,1585,1);
-    alterftile(33,169,1584,1);
-   }
-  
-   if(slums[38]=1)
-   {
-   alterftile(68,169,2592,1);
-   alterftile(68,170,2591,0);
-   }
-
-  if(wochest[11]=1)
-  {
-  alterftile(72,104,1565,1);
-  }
-
-  if(wochest[10]=1)
-  {
-  alterftile(43,109,1565,1);
-  }
-  
-  if(wochest[9]=1)
-  {
-  alterftile(104,161,1565,1);
-  }
-
-  if(slums[16]=4)
-  {
-  for(x=1; x<19; x++)
-   {
-    alterftile(69,12+x,0,1);
-    alterftile(70,12+x,0,0);
-    alterftile(71,12+x,0,0);
-    alterftile(72,12+x,0,1);
-
-   } 
-   alterftile(70,30,0,1);
-   alterftile(71,30,0,1);
-   alterftile(70,12,0,1);
-   alterftile(71,12,0,1);
-   alterftile(70,33,0,1);
-   alterftile(71,33,0,1);
-   alterbtile(71,28,764,0);
-   for(x=1; x<11; x++)
-   {
-    alterftile(69,33+x,0,1);
-    alterftile(70,33+x,0,0);
-    alterftile(71,33+x,0,0);
-    alterftile(72,33+x,0,1);
-
-   } 
-} 
-
-
-  if(wochest[8]=1)
-  {
-   alterftile(15,117,1565,1);
-  }
-  if(wochest[7]=1)
-  {
-   alterftile(91,74,1565,1);
-  }
-  if(slums[27]=1)
-  {
-  alterftile(55,54,2592,1);
-  alterftile(55,55,2591,0);
-  }
-  if(wochest[6]=1)
-  {
-   alterftile(32,45,1565,1);
-  }
-  if(wochest[5]=1)
-  {
-   alterftile(33,45,1565,1);
-  }
-  if (slums[25]=1)
- {
-  alterftile(163,61,1585,1);
-  alterftile(163,62,1584,1);
-  }
- if(slums[23]=1)
-  {
-  alterftile(134,33,2592,1);
-  alterftile(134,34,2591,0);
- }
- if(wochest[4]=1)
-  {
-   alterftile(132,70,1565,1);
-  }
- if(lever[6]=1)
- {
-  alterftile(46,85,2547,0);
-  alterftile(46,86,2550,0);
-  alterftile(47,85,2548,0);
-  alterftile(47,86,2549,0);
-  alterftile(48,85,2547,0);
-  alterftile(48,86,2550,0);
-  alterftile(49,85,2548,0);
-  alterftile(49,86,2549,0);
- }
-
-  if(lever[7]=1)
- {
-  alterftile(64,72,2547,0);
-  alterftile(64,73,2550,0);
-  alterftile(65,72,2548,0);
-  alterftile(65,73,2549,0);
-  alterftile(64,74,2547,0);
-  alterftile(64,75,2550,0);
-  alterftile(65,74,2548,0);
-  alterftile(65,75,2549,0);
-}
-
- if(frombattle=1)
-    {
-    battlegoing=0;
-    ent1=entityspawn(entlocx,entlocy,"Lell.chr");
-    setplayer(ent1);
+    freeallsounds();
+    // soundeffect[1]=cachesound("atk.wav");
+    // soundeffect[2]=cachesound("switch.wav");
+    // soundeffect[3]=cachesound("river.wav");
+    // soundeffect[4]=cachesound("gun2.wav");
+    // soundeffect[5]=cachesound("pump.wav");
+    // soundeffect[6]=cachesound("point1.wav");
+    // soundeffect[7]=cachesound("buzz.wav");
+    // soundeffect[8]=cachesound("boom.wav");
+    // soundeffect[9]=cachesound("Click.wav");
+    // soundeffect[10]=cachesound("boxopen.wav");
+    // soundeffect[11]=cachesound("switch2.wav");
+    setresolution(360, 240);
+    mappi = "sewers.map";
+    location = "Dalari sewers";
+    hookkey(57, statmenu);
+    hookkey(42, juoksu);
+    hookkey(29, juoksu2);
+    vara[2] = 0;
+    regroup = 0;
+    systemstartup();
+    palettemorph(0, 0, 0, 0, 63);
+    entity.specframe[0] = 21;
+    entity.specframe[1] = 5;
+    cameratracking = 1;
+    if (loaded = 1) {
+        frombattle = 0;
+        freeallsounds();
+        playmusic(savemusic);
+        musicfadein(10);
+        ent1 = entityspawn(savex, savey, savechar);
+        setplayer(ent1);
+        slums[9] = 10;
+        textbox = LoadImage("textboxi.pcx");
+        speechpic = LoadRaw("speech.spc");
+        loadmenupics();
+        equipmentnames();
+        weaponnames();
+        armornames();
+        relicnames();
+        itemnames();
+        spellnames();
+        loaded = 0;
     }
 
- if(slums[9]=0)
- {
-  render();
- ent1=entityspawn(100,76,"Lell.chr");
- setplayer(ent1);
- frombattle=0;
- }
+    if (slums[36] = 1) {
+        alterftile(27, 20, 2592, 1);
+        alterftile(27, 21, 2591, 0);
+    }
 
-if(slums[9]=2)
- {   
-  vara[30]=0;
-  frombattle=0;
-  regroup=0;
-  free(enemypic[4]);
-  entity.specframe[0]=22;
-  ent1=entityspawn(entlocx,entlocy,"Lell.chr");
-  setplayer(ent1);
-  entity.specframe[ent1]=5;
-  ent2=entityspawn(25,23,"Ltan.chr");
-  ent3=entityspawn(27,23,"Ljack.chr");
-  entity.specframe[ent2]=5;
-  entity.specframe[ent3]=5;
-  wait(50);
-  stext(0,"Three fates have been","chosen. Start gambling with","your lives!");
-  stext(0,"The Eve of the Rat shall come","one day...then we will feast!","");
-  entity.x[0]=0;
-  entity.y[0]=0;
-  entity.specframe[ent1]=0;
-  partymove("U1");
-  wait(100);
-  entity.specframe[ent1]=1;
- stext(0,"Elliot:","D...did ya get what he","was saying?");
- stext(0,"Tanya:","What did he mean by all","that?");
- stext(0,"Jack:","Just old fool's gibberish.","There's nothing into it.");
- stext(0,"Tanya:","Let's get outta here.","");
-  entity.x[ent2]=0;
-  entity.y[ent2]=0;
-  entity.x[ent3]=0;
-  entity.y[ent3]=0;
- wait(100);
- cameratracking=1;
- entity.specframe[ent1]=0;
- slums[42]=2;
- }
+    if (slums[11] = 2) {
+        alterftile(169, 62, 0, 0);
+    }
 
-if(slums[9]=3)
- {
- ent1=entityspawn(107,121,"Lell.chr");
- setplayer(ent1);
- frombattle=0;
-}
+    if (slums[19] = 1) {
+        SetTile(70, 30, 3, 2586);
+        SetTile(71, 30, 3, 2586);
+        SetTile(70, 32, 3, 2550);
+        SetTile(71, 32, 3, 2549);
+        SetTile(70, 31, 3, 2547);
+        SetTile(71, 31, 3, 2548);
+        alterftile(70, 33, 0, 0);
+        alterftile(71, 33, 0, 0);
+        alterftile(70, 30, 0, 0);
+        alterftile(71, 30, 0, 0);
+        alterftile(69, 32, 0, 1);
+        alterftile(69, 31, 0, 1);
+        alterftile(72, 31, 0, 1);
+        alterftile(72, 32, 0, 1);
+        alterftile(76, 37, 1668, 0);
+        alterftile(75, 37, 1667, 0);
+        alterftile(75, 36, 1649, 0);
+        alterftile(75, 34, 1650, 0);
+        alterftile(74, 32, 1651, 0);
+        alterftile(69, 32, 1652, 0);
+        alterftile(67, 32, 1669, 0);
+        alterftile(67, 36, 1653, 0);
+        alterftile(67, 39, 1670, 0);
+        alterftile(65, 37, 1654, 0);
+        alterftile(64, 37, 1671, 0);
+        alterftile(65, 39, 1664, 0);
+        alterftile(64, 40, 1665, 0);
+        alterftile(62, 39, 1666, 0);
+        alterftile(61, 40, 1669, 0);
+        alterftile(78, 36, 0, 0);
+        alterftile(78, 37, 0, 0);
+        alterftile(79, 33, 2621, 1);
+        alterftile(79, 32, 2622, 0);
+    }
 
-if(slums[9]=1)
-{
-  if (forceret=1)
-  {
-  musicfade(1);
-  playmusic("sil.s3m");
-  musicfadein(1);
-  playmusic("moment.s3m");
-  frombattle=0;
-  entity.specframe[0]=22;
-  ent1=entityspawn(entlocx,entlocy,"Lell.chr");
-  setplayer(ent1);
-  entity.specframe[ent1]=5;
-  ent2=entityspawn(25,23,"Ltan.chr");
-  ent3=entityspawn(27,23,"Ljack.chr");
-  entity.specframe[ent2]=5;
-  entity.specframe[ent3]=5;
-  wait(50);
-  stext(0,"Skhisnak:","Heh heh heh!","Feel the terror!?");
-  stext(0,"I should","feed you to the rats...","");
+    if (lever[1] = 5) {
+        alterftile(131, 13, 1192, 0);
+        alterftile(132, 13, 1192, 1);
+        alterftile(133, 13, 1192, 1);
+        alterftile(134, 13, 1192, 1);
+        alterftile(135, 13, 1192, 1);
+        alterftile(136, 13, 1192, 1);
+        alterftile(131, 14, 1200, 0);
+        alterftile(132, 14, 1200, 0);
+        alterftile(133, 14, 2444, 0);
+        alterftile(134, 14, 2445, 0);
+        alterftile(135, 14, 1200, 0);
+        alterftile(136, 14, 1200, 0);
+        alterftile(131, 15, 1200, 0);
+        alterftile(132, 15, 1200, 0);
+        alterftile(133, 15, 2442, 0);
+        alterftile(134, 15, 2443, 0);
+        alterftile(135, 15, 1200, 0);
+        alterftile(136, 15, 1200, 0);
+        alterftile(131, 16, 639, 1);
+        alterftile(132, 16, 1200, 1);
+        alterftile(133, 16, 2440, 1);
+        alterftile(134, 16, 2441, 1);
+        alterftile(135, 16, 639, 1);
+        alterftile(136, 16, 639, 1);
+        alterftile(131, 17, 1192, 1);
+        alterftile(132, 17, 1192, 1);
+        alterftile(133, 17, 1192, 1);
+        alterftile(134, 17, 1192, 1);
+        alterftile(135, 17, 1192, 1);
+        alterftile(136, 17, 1192, 1);
+        alterftile(131, 18, 1200, 1);
+        alterftile(132, 18, 1200, 1);
+        alterftile(133, 18, 1200, 1);
+        alterftile(134, 18, 1200, 1);
+        alterftile(135, 18, 1200, 1);
+        alterftile(136, 18, 1200, 1);
+        alterftile(131, 19, 1200, 1);
+        alterftile(132, 19, 1200, 1);
+        alterftile(133, 19, 1200, 1);
+        alterftile(134, 19, 1200, 1);
+        alterftile(135, 19, 1200, 1);
+        alterftile(136, 19, 1200, 1);
+    }
+
+    if (slums[22] = 2) {
+        alterftile(58, 54, 0, 0);
+        alterftile(58, 53, 0, 0);
+    }
+
+    if (slums[17] = 4) {
+        alterftile(83, 37, 2439, 1);
+    }
+
+    if (slums[19] = 1) {
+        entity.x[1] = 0;
+        entity.y[1] = 0;
+        for (x = 1; x < 19; x++) {
+            alterftile(69, 12 + x, 0, 1);
+            alterftile(70, 12 + x, 0, 0);
+            alterftile(71, 12 + x, 0, 0);
+            alterftile(72, 12 + x, 0, 1);
+        }
+        alterftile(70, 30, 0, 1);
+        alterftile(71, 30, 0, 1);
+        alterftile(70, 12, 0, 1);
+        alterftile(71, 12, 0, 1);
+        alterftile(70, 33, 0, 1);
+        alterftile(71, 33, 0, 1);
+        alterbtile(71, 28, 764, 0);
+        for (x = 1; x < 11; x++) {
+            alterftile(69, 33 + x, 0, 1);
+            alterftile(70, 33 + x, 0, 0);
+            alterftile(71, 33 + x, 0, 0);
+            alterftile(72, 33 + x, 0, 1);
+        }
+    }
+
+    if (slums[11] = 1) {
+        entity.x[1] = 0;
+        entity.y[1] = 0;
+        alterftile(76, 37, 1668, 0);
+        alterftile(75, 37, 1667, 0);
+        alterftile(75, 36, 1649, 0);
+        alterftile(75, 34, 1650, 0);
+        alterftile(74, 32, 1651, 0);
+        alterftile(69, 32, 1652, 0);
+        alterftile(67, 32, 1669, 0);
+        alterftile(67, 36, 1653, 0);
+        alterftile(67, 39, 1670, 0);
+        alterftile(65, 37, 1654, 0);
+        alterftile(64, 37, 1671, 0);
+        alterftile(65, 39, 1664, 0);
+        alterftile(64, 40, 1665, 0);
+        alterftile(62, 39, 1666, 0);
+        alterftile(61, 40, 1669, 0);
+        alterftile(78, 36, 0, 0);
+        alterftile(78, 37, 0, 0);
+        alterftile(79, 33, 2621, 1);
+        alterftile(79, 32, 2622, 0);
+    }
+
+    if (slums[42] = 2) {
+        entity.x[0] = 0;
+        entity.y[0] = 0;
+    }
+
+    if (slums[67] = 1) {
+        alterftile(131, 152, 0, 0);
+    }
+
+    if (slums[66] = 1) {
+        alterftile(148, 6, 0, 0);
+    }
+
+    if (slums[65] = 1) {
+        alterftile(160, 90, 0, 0);
+    }
+
+    if (slums[68] = 1) {
+        alterftile(68, 68, 1584, 1);
+        alterftile(68, 67, 1585, 1);
+    }
+
+    if (slums[70] = 1) {
+        alterftile(166, 62, 0, 0);
+    }
+
+    if (slums[69] = 1) {
+        alterftile(29, 45, 0, 0);
+    }
+
+    if (slums[39] = 1) {
+        alterftile(33, 168, 1585, 1);
+        alterftile(33, 169, 1584, 1);
+    }
+
+    if (slums[38] = 1) {
+        alterftile(68, 169, 2592, 1);
+        alterftile(68, 170, 2591, 0);
+    }
+
+    if (wochest[11] = 1) {
+        alterftile(72, 104, 1565, 1);
+    }
+
+    if (wochest[10] = 1) {
+        alterftile(43, 109, 1565, 1);
+    }
+
+    if (wochest[9] = 1) {
+        alterftile(104, 161, 1565, 1);
+    }
+
+    if (slums[16] = 4) {
+        for (x = 1; x < 19; x++) {
+            alterftile(69, 12 + x, 0, 1);
+            alterftile(70, 12 + x, 0, 0);
+            alterftile(71, 12 + x, 0, 0);
+            alterftile(72, 12 + x, 0, 1);
+        }
+        alterftile(70, 30, 0, 1);
+        alterftile(71, 30, 0, 1);
+        alterftile(70, 12, 0, 1);
+        alterftile(71, 12, 0, 1);
+        alterftile(70, 33, 0, 1);
+        alterftile(71, 33, 0, 1);
+        alterbtile(71, 28, 764, 0);
+        for (x = 1; x < 11; x++) {
+            alterftile(69, 33 + x, 0, 1);
+            alterftile(70, 33 + x, 0, 0);
+            alterftile(71, 33 + x, 0, 0);
+            alterftile(72, 33 + x, 0, 1);
+        }
+    }
+
+    if (wochest[8] = 1) {
+        alterftile(15, 117, 1565, 1);
+    }
+    if (wochest[7] = 1) {
+        alterftile(91, 74, 1565, 1);
+    }
+    if (slums[27] = 1) {
+        alterftile(55, 54, 2592, 1);
+        alterftile(55, 55, 2591, 0);
+    }
+    if (wochest[6] = 1) {
+        alterftile(32, 45, 1565, 1);
+    }
+    if (wochest[5] = 1) {
+        alterftile(33, 45, 1565, 1);
+    }
+    if (slums[25] = 1) {
+        alterftile(163, 61, 1585, 1);
+        alterftile(163, 62, 1584, 1);
+    }
+    if (slums[23] = 1) {
+        alterftile(134, 33, 2592, 1);
+        alterftile(134, 34, 2591, 0);
+    }
+    if (wochest[4] = 1) {
+        alterftile(132, 70, 1565, 1);
+    }
+    if (lever[6] = 1) {
+        alterftile(46, 85, 2547, 0);
+        alterftile(46, 86, 2550, 0);
+        alterftile(47, 85, 2548, 0);
+        alterftile(47, 86, 2549, 0);
+        alterftile(48, 85, 2547, 0);
+        alterftile(48, 86, 2550, 0);
+        alterftile(49, 85, 2548, 0);
+        alterftile(49, 86, 2549, 0);
+    }
+
+    if (lever[7] = 1) {
+        alterftile(64, 72, 2547, 0);
+        alterftile(64, 73, 2550, 0);
+        alterftile(65, 72, 2548, 0);
+        alterftile(65, 73, 2549, 0);
+        alterftile(64, 74, 2547, 0);
+        alterftile(64, 75, 2550, 0);
+        alterftile(65, 74, 2548, 0);
+        alterftile(65, 75, 2549, 0);
+    }
+
+    if (frombattle = 1) {
+        battlegoing = 0;
+        ent1 = entityspawn(entlocx, entlocy, "Lell.chr");
+        setplayer(ent1);
+    }
+
+    if (slums[9] = 0) {
+        render();
+        ent1 = entityspawn(100, 76, "Lell.chr");
+        setplayer(ent1);
+        frombattle = 0;
+    }
+
+    if (slums[9] = 2) {
+        vara[30] = 0;
+        frombattle = 0;
+        regroup = 0;
+        free(enemypic[4]);
+        entity.specframe[0] = 22;
+        ent1 = entityspawn(entlocx, entlocy, "Lell.chr");
+        setplayer(ent1);
+        entity.specframe[ent1] = 5;
+        ent2 = entityspawn(25, 23, "Ltan.chr");
+        ent3 = entityspawn(27, 23, "Ljack.chr");
+        entity.specframe[ent2] = 5;
+        entity.specframe[ent3] = 5;
+        wait(50);
+        stext(0, "Three fates have been", "chosen. Start gambling with",
+            "your lives!");
+        stext(0, "The Eve of the Rat shall come",
+            "one day...then we will feast!", "");
+        entity.x[0] = 0;
+        entity.y[0] = 0;
+        entity.specframe[ent1] = 0;
+        partymove("U1");
+        wait(100);
+        entity.specframe[ent1] = 1;
+        stext(0, "Elliot:", "D...did ya get what he", "was saying?");
+        stext(0, "Tanya:", "What did he mean by all", "that?");
+        stext(0, "Jack:", "Just old fool's gibberish.",
+            "There's nothing into it.");
+        stext(0, "Tanya:", "Let's get outta here.", "");
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 0;
+        wait(100);
+        cameratracking = 1;
+        entity.specframe[ent1] = 0;
+        slums[42] = 2;
+    }
+
+    if (slums[9] = 3) {
+        ent1 = entityspawn(107, 121, "Lell.chr");
+        setplayer(ent1);
+        frombattle = 0;
+    }
+
+    if (slums[9] = 1) {
+        if (forceret = 1) {
+            musicfade(1);
+            playmusic("sil.s3m");
+            musicfadein(1);
+            playmusic("moment.s3m");
+            frombattle = 0;
+            entity.specframe[0] = 22;
+            ent1 = entityspawn(entlocx, entlocy, "Lell.chr");
+            setplayer(ent1);
+            entity.specframe[ent1] = 5;
+            ent2 = entityspawn(25, 23, "Ltan.chr");
+            ent3 = entityspawn(27, 23, "Ljack.chr");
+            entity.specframe[ent2] = 5;
+            entity.specframe[ent3] = 5;
+            wait(50);
+            stext(0, "Skhisnak:", "Heh heh heh!", "Feel the terror!?");
+            stext(0, "I should", "feed you to the rats...", "");
   stext(0,"...but instead,","I think
 I'll choose a more...","entertaining option.");
    stext(0,"Let us pick three fates","from the Deck of Destiny.","");
   stext(0,"The first one...","","");
-   map("alku.map"); 
-  }
-  musicfadein(2);
-  playmusic("sil.s3m");
-  wait(10);
-  playmusic("moment.s3m");
-  ent1=entityspawn(entlocx,entlocy,"Lell.chr");
-  setplayer(ent1);
-  entity.specframe[0]=22;
-  entity.specframe[ent1]=5;
-  ent2=entityspawn(25,23,"Ltan.chr");
-  ent3=entityspawn(27,23,"Ljack.chr");
-  entity.specframe[ent2]=5;
-  entity.specframe[ent3]=5;
-  wait(50);
-  stext(0,"Skhisnak:","H...how dare you...!","");
-  stext(0,"How can you beat the","Master of the Rats,","The Lord of Plague...?!");
-  stext(0,".......","","");
-  stext(0,"...But battle is not my game...","Curses are my speciality.","Curses and diseases...");
-  stext(0,"Let us pick three fates","from the Deck of Destiny.","");
-  stext(0,"The first one...","","");
    map("alku.map");
- }
+        }
+        musicfadein(2);
+        playmusic("sil.s3m");
+        wait(10);
+        playmusic("moment.s3m");
+        ent1 = entityspawn(entlocx, entlocy, "Lell.chr");
+        setplayer(ent1);
+        entity.specframe[0] = 22;
+        entity.specframe[ent1] = 5;
+        ent2 = entityspawn(25, 23, "Ltan.chr");
+        ent3 = entityspawn(27, 23, "Ljack.chr");
+        entity.specframe[ent2] = 5;
+        entity.specframe[ent3] = 5;
+        wait(50);
+        stext(0, "Skhisnak:", "H...how dare you...!", "");
+        stext(0, "How can you beat the", "Master of the Rats,",
+            "The Lord of Plague...?!");
+        stext(0, ".......", "", "");
+        stext(0, "...But battle is not my game...", "Curses are my speciality.",
+            "Curses and diseases...");
+        stext(0, "Let us pick three fates", "from the Deck of Destiny.", "");
+        stext(0, "The first one...", "", "");
+        map("alku.map");
+    }
 }
-event//1 battle
+event // 1 battle
 {
-  wait(10);
-  musicfade(1);
-  playmusic("sil.s3m");
-  musicfadein(0);
-  wait(20);
-  Zzoom();
-  temp[9020]=random(150);
- if(temp[9020]<20)
- {
-  battletype=2;
-  playmusic("battle14.s3m");
- }
- if(temp[9020]=20)
- {
-  battletype=2;
-  playmusic("battle14.s3m");
- }
- if(temp[9020]>20 && temp[9020]<40)
- {
-  battletype=3;
-  playmusic("battle13.s3m");
- }
- if(temp[9020]=40)
- {
-  battletype=3;
-  
-  playmusic("battle13.s3m");
- }
- if(temp[9020]>40)
- {
-  battletype=1;
-  playmusic("battle10.s3m");
- }
+    wait(10);
+    musicfade(1);
+    playmusic("sil.s3m");
+    musicfadein(0);
+    wait(20);
+    Zzoom();
+    temp[9020] = random(150);
+    if (temp[9020] < 20) {
+        battletype = 2;
+        playmusic("battle14.s3m");
+    }
+    if (temp[9020] = 20) {
+        battletype = 2;
+        playmusic("battle14.s3m");
+    }
+    if (temp[9020] > 20 && temp[9020] < 40) {
+        battletype = 3;
+        playmusic("battle13.s3m");
+    }
+    if (temp[9020] = 40) {
+        battletype = 3;
 
-  mongroup=1;
-  nummon=random(8);
-  if(nummon=0)
-  {
-   nummon=1;
-  }
-  nummon2=nummon+1;
-  for(x=1; x<nummon2; x++)
-  {
-   temp[9000]=random(100);
-   if(temp[9000]<25)
-   {
-    inbatmon[x]=0;
-   }
-    if(temp[9000]=25)
-   {
-    inbatmon[x]=0;
-   }
-    if(temp[9000]>25 && temp[9000]<50)
-   {
-    inbatmon[x]=1;
-   }
-    if(temp[9000]=50)
-   {
-    inbatmon[x]=1;
-   }
-    if(temp[9000]>50 && temp[9000]<75)
-   {
-    inbatmon[x]=2;
-   }
-    if(temp[9000]=75)
-   {
-    inbatmon[x]=2;
-   }
-    if(temp[9000]>75)
-   {
-    inbatmon[x]=3;
-   }
-  }
-  slums[9]=4;
-  entlocx=entity.tx[ent1];
-  entlocy=entity.ty[ent1];
-  mapswitch("bmap2.map",0,0,0);
-}
+        playmusic("battle13.s3m");
+    }
+    if (temp[9020] > 40) {
+        battletype = 1;
+        playmusic("battle10.s3m");
+    }
 
-event//2 enter room1
-{
-  if (slums[21]=1)
- {
-  entrance(28,30);
- }
-  if (slums[21]=0)
- {
-  entrance(28,30);
-  wait(50);
-  stext(0,"Elliot:","There's someone in here...","");
-  stext(0,"Tanya:","Looks spooky.","");
-  stext(0,"Jack:","Let's go in.","");
-  entity.speed[ent1]=3;
-  partymove("U4L2U3");
-  entity.specframe[ent1]=5;
-  ent2=entityspawn(25,23,"Ltan.chr");
-  ent3=entityspawn(27,23,"Ljack.chr");
-  entity.specframe[ent2]=5;
-  entity.specframe[ent3]=5;
-  wait(50);
-  stext(0,"Elliot:","Ahem...","");
-  entity.specframe[0]=20;
-  stext(0,"Jack:","S...shit...!","");
-  stext(0,"Tanya:","Oh no...","");
-  stext(0,"Elliot:","E...E...evening...","");
-  stext(0,"Creature:","Evening, children...","");
-  wait(200);
-  stext(0,"Elliot:",".....!","");
-  stext(0,"Creature:","Rat took your tong?","");
-  stext(0,"Elliot:","I...I...who're you?","(Shit...shit...)");
-  stext(0,"Creature:","Lord of the Plague.","Skhisnak.");
-  stext(0,"Elliot:","(A Grimson Monk...)","");
-  stext(0,"Skhisnak:","And what is your business","down here, in my realm?");
-  stext(0,"Elliot:","W...we...(don't say rathunt!)","are here to play hide and seek.");
-  stext(0,"Skhisnak:","Ha ha ha!","Liar.");
-  stext(0,"Elliot:","What...!","");
-  wait(100);
-  stext(0,"Skhisnak:","Your eyes tell otherwise.","You want rats?");
-  entity.specframe[0]=22;
-  musicfade(0);
-  playmusic("sil.s3m");
-  musicfadein(2);
-  playmusic("boss11.s3m");
-  stext(0,"By all means have some!","","");
-  Zzoom();
-  dualattack[2]=1;
-  mongroup=1;
-  nummon=8;
-  slums[9]=1;
-    inbatmon[1]=3;
-  inbatmon[2]=4;
-  inbatmon[3]=3;
-  inbatmon[4]=3;
-  inbatmon[5]=3;
-  inbatmon[6]=3;
-  inbatmon[7]=3;
-  inbatmon[8]=3;
-  humanboss=1;
-  entlocx=entity.tx[ent1];
-  entlocy=entity.ty[ent1];
-  slums[21]=1;
-  map("bmap2.map");
-}
-}
-event//3 exit room1
-{
- entrance(36,45);
+    mongroup = 1;
+    nummon = random(8);
+    if (nummon = 0) {
+        nummon = 1;
+    }
+    nummon2 = nummon + 1;
+    for (x = 1; x < nummon2; x++) {
+        temp[9000] = random(100);
+        if (temp[9000] < 25) {
+            inbatmon[x] = 0;
+        }
+        if (temp[9000] = 25) {
+            inbatmon[x] = 0;
+        }
+        if (temp[9000] > 25 && temp[9000] < 50) {
+            inbatmon[x] = 1;
+        }
+        if (temp[9000] = 50) {
+            inbatmon[x] = 1;
+        }
+        if (temp[9000] > 50 && temp[9000] < 75) {
+            inbatmon[x] = 2;
+        }
+        if (temp[9000] = 75) {
+            inbatmon[x] = 2;
+        }
+        if (temp[9000] > 75) {
+            inbatmon[x] = 3;
+        }
+    }
+    slums[9] = 4;
+    entlocx = entity.tx[ent1];
+    entlocy = entity.ty[ent1];
+    mapswitch("bmap2.map", 0, 0, 0);
 }
 
-event//4 lever1
-{ 
- soundeffect[2]=cachesound("switch.wav");
- if (lever[1]=3)
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(124,12,1939,1);
-  wait(50);
-  alterftile(124,12,1938,1);
-  lever[1]=5;
-  wait(50);
-  soundeffect[3]=cachesound("river.wav");
-  playsound(soundeffect[3],128,128);
-   wait(100);
-   alterftile(131,13,1192,0);
-   alterftile(132,13,1192,1);
-   alterftile(133,13,1192,1);
-   alterftile(134,13,1192,1);
-   alterftile(135,13,1192,1);
-   alterftile(136,13,1192,1);
-   alterftile(131,14,1200,0);
-   alterftile(132,14,1200,0);
-   alterftile(133,14,2444,0);
-   alterftile(134,14,2445,0);
-   alterftile(135,14,1200,0);
-   alterftile(136,14,1200,0);
-   alterftile(131,15,1200,0);
-   alterftile(132,15,1200,0);
-   alterftile(133,15,2442,0);
-   alterftile(134,15,2443,0);
-   alterftile(135,15,1200,0);
-   alterftile(136,15,1200,0);
-   alterftile(131,16,639,1);
-   alterftile(132,16,639,1);
-   alterftile(133,16,2440,1);
-   alterftile(134,16,2441,1);
-   alterftile(135,16,639,1);
-   alterftile(136,16,639,1);
-   alterftile(131,17,1192,1);
-   alterftile(132,17,1192,1);
-   alterftile(133,17,1192,1);
-   alterftile(134,17,1192,1);
-   alterftile(135,17,1192,1);
-   alterftile(136,17,1192,1);
-   alterftile(131,18,1200,1);
-   alterftile(132,18,1200,1);
-   alterftile(133,18,1200,1);
-   alterftile(134,18,1200,1);
-   alterftile(135,18,1200,1);
-   alterftile(136,18,1200,1);
-   alterftile(131,19,1200,1);
-   alterftile(132,19,1200,1);
-   alterftile(133,19,1200,1);
-   alterftile(134,19,1200,1);
-   alterftile(135,19,1200,1);
-   alterftile(136,19,1200,1);
-  wait(100);
- }
- ELSE
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(124,12,1939,1);
-  wait(50);
-  alterftile(124,12,1938,1);
-  lever[1]=0;
- }
-}
-event//5 lever2
+event // 2 enter room1
 {
- soundeffect[2]=cachesound("switch.wav");
- if (lever[1]=2)
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(126,12,1939,1);
-  wait(50);
-  alterftile(126,12,1938,1);
-  lever[1]=3;
- }
- ELSE
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(126,12,1939,1);
-  wait(50);
-  alterftile(126,12,1938,1);
-  lever[1]=0;
- }
+    if (slums[21] = 1) {
+        entrance(28, 30);
+    }
+    if (slums[21] = 0) {
+        entrance(28, 30);
+        wait(50);
+        stext(0, "Elliot:", "There's someone in here...", "");
+        stext(0, "Tanya:", "Looks spooky.", "");
+        stext(0, "Jack:", "Let's go in.", "");
+        entity.speed[ent1] = 3;
+        partymove("U4L2U3");
+        entity.specframe[ent1] = 5;
+        ent2 = entityspawn(25, 23, "Ltan.chr");
+        ent3 = entityspawn(27, 23, "Ljack.chr");
+        entity.specframe[ent2] = 5;
+        entity.specframe[ent3] = 5;
+        wait(50);
+        stext(0, "Elliot:", "Ahem...", "");
+        entity.specframe[0] = 20;
+        stext(0, "Jack:", "S...shit...!", "");
+        stext(0, "Tanya:", "Oh no...", "");
+        stext(0, "Elliot:", "E...E...evening...", "");
+        stext(0, "Creature:", "Evening, children...", "");
+        wait(200);
+        stext(0, "Elliot:", ".....!", "");
+        stext(0, "Creature:", "Rat took your tong?", "");
+        stext(0, "Elliot:", "I...I...who're you?", "(Shit...shit...)");
+        stext(0, "Creature:", "Lord of the Plague.", "Skhisnak.");
+        stext(0, "Elliot:", "(A Grimson Monk...)", "");
+        stext(0, "Skhisnak:", "And what is your business",
+            "down here, in my realm?");
+        stext(0, "Elliot:", "W...we...(don't say rathunt!)",
+            "are here to play hide and seek.");
+        stext(0, "Skhisnak:", "Ha ha ha!", "Liar.");
+        stext(0, "Elliot:", "What...!", "");
+        wait(100);
+        stext(0, "Skhisnak:", "Your eyes tell otherwise.", "You want rats?");
+        entity.specframe[0] = 22;
+        musicfade(0);
+        playmusic("sil.s3m");
+        musicfadein(2);
+        playmusic("boss11.s3m");
+        stext(0, "By all means have some!", "", "");
+        Zzoom();
+        dualattack[2] = 1;
+        mongroup = 1;
+        nummon = 8;
+        slums[9] = 1;
+        inbatmon[1] = 3;
+        inbatmon[2] = 4;
+        inbatmon[3] = 3;
+        inbatmon[4] = 3;
+        inbatmon[5] = 3;
+        inbatmon[6] = 3;
+        inbatmon[7] = 3;
+        inbatmon[8] = 3;
+        humanboss = 1;
+        entlocx = entity.tx[ent1];
+        entlocy = entity.ty[ent1];
+        slums[21] = 1;
+        map("bmap2.map");
+    }
 }
-event//6 lever3
+event // 3 exit room1
 {
- soundeffect[2]=cachesound("switch.wav");
- if (lever[1]=0)
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(128,12,1939,1);
-  wait(50);
-  alterftile(128,12,1938,1);
-  lever[1]=1;
- }
- ELSE
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(128,12,1939,1);
-  wait(50);
-  alterftile(128,12,1938,1);
-  lever[1]=0;
- }
-}
-event//7 lever4
-{
- soundeffect[2]=cachesound("switch.wav");
- if (lever[1]=1)
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(130,12,1939,1);
-  wait(50);
-  alterftile(130,12,1938,1);
-  lever[1]=2;
- }
- ELSE
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(130,12,1939,1);
-  wait(50);
-  alterftile(130,12,1938,1);
-  lever[1]=0;
- }
+    entrance(36, 45);
 }
 
-event//8 note1
+event // 4 lever1
 {
- stext(0,"Note:","fi x derpo x eghtrs x ","buyaj x omoca");
- stext(0,"1 x 2 x 4 x 3 x ","si x redro x thgir x eht","");
+    soundeffect[2] = cachesound("switch.wav");
+    if (lever[1] = 3) {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(124, 12, 1939, 1);
+        wait(50);
+        alterftile(124, 12, 1938, 1);
+        lever[1] = 5;
+        wait(50);
+        soundeffect[3] = cachesound("river.wav");
+        playsound(soundeffect[3], 128, 128);
+        wait(100);
+        alterftile(131, 13, 1192, 0);
+        alterftile(132, 13, 1192, 1);
+        alterftile(133, 13, 1192, 1);
+        alterftile(134, 13, 1192, 1);
+        alterftile(135, 13, 1192, 1);
+        alterftile(136, 13, 1192, 1);
+        alterftile(131, 14, 1200, 0);
+        alterftile(132, 14, 1200, 0);
+        alterftile(133, 14, 2444, 0);
+        alterftile(134, 14, 2445, 0);
+        alterftile(135, 14, 1200, 0);
+        alterftile(136, 14, 1200, 0);
+        alterftile(131, 15, 1200, 0);
+        alterftile(132, 15, 1200, 0);
+        alterftile(133, 15, 2442, 0);
+        alterftile(134, 15, 2443, 0);
+        alterftile(135, 15, 1200, 0);
+        alterftile(136, 15, 1200, 0);
+        alterftile(131, 16, 639, 1);
+        alterftile(132, 16, 639, 1);
+        alterftile(133, 16, 2440, 1);
+        alterftile(134, 16, 2441, 1);
+        alterftile(135, 16, 639, 1);
+        alterftile(136, 16, 639, 1);
+        alterftile(131, 17, 1192, 1);
+        alterftile(132, 17, 1192, 1);
+        alterftile(133, 17, 1192, 1);
+        alterftile(134, 17, 1192, 1);
+        alterftile(135, 17, 1192, 1);
+        alterftile(136, 17, 1192, 1);
+        alterftile(131, 18, 1200, 1);
+        alterftile(132, 18, 1200, 1);
+        alterftile(133, 18, 1200, 1);
+        alterftile(134, 18, 1200, 1);
+        alterftile(135, 18, 1200, 1);
+        alterftile(136, 18, 1200, 1);
+        alterftile(131, 19, 1200, 1);
+        alterftile(132, 19, 1200, 1);
+        alterftile(133, 19, 1200, 1);
+        alterftile(134, 19, 1200, 1);
+        alterftile(135, 19, 1200, 1);
+        alterftile(136, 19, 1200, 1);
+        wait(100);
+    }
+    ELSE {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(124, 12, 1939, 1);
+        wait(50);
+        alterftile(124, 12, 1938, 1);
+        lever[1] = 0;
+    }
+}
+event // 5 lever2
+{
+    soundeffect[2] = cachesound("switch.wav");
+    if (lever[1] = 2) {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(126, 12, 1939, 1);
+        wait(50);
+        alterftile(126, 12, 1938, 1);
+        lever[1] = 3;
+    }
+    ELSE {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(126, 12, 1939, 1);
+        wait(50);
+        alterftile(126, 12, 1938, 1);
+        lever[1] = 0;
+    }
+}
+event // 6 lever3
+{
+    soundeffect[2] = cachesound("switch.wav");
+    if (lever[1] = 0) {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(128, 12, 1939, 1);
+        wait(50);
+        alterftile(128, 12, 1938, 1);
+        lever[1] = 1;
+    }
+    ELSE {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(128, 12, 1939, 1);
+        wait(50);
+        alterftile(128, 12, 1938, 1);
+        lever[1] = 0;
+    }
+}
+event // 7 lever4
+{
+    soundeffect[2] = cachesound("switch.wav");
+    if (lever[1] = 1) {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(130, 12, 1939, 1);
+        wait(50);
+        alterftile(130, 12, 1938, 1);
+        lever[1] = 2;
+    }
+    ELSE {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(130, 12, 1939, 1);
+        wait(50);
+        alterftile(130, 12, 1938, 1);
+        lever[1] = 0;
+    }
 }
 
-event//9 Salomo
+event // 8 note1
 {
- if(slums[10]=0)
- {
- slums[13]=10;
- slums[14]=10;
- entity.specframe[1]=15;
- stext(0,"Man:","Hey, kids!","");
- entity.specframe[1]=0;
- entitymove(1,"D3L4U2");
- partymove("R3D1");
- ent2=entityspawn(74,33,"Ltan.chr");
- ent3=entityspawn(76,33,"Ljack.chr");
- wait(250);
- stext(0,"Man:","Hi, I'm Salomo.","I run this sewage.");
- stext(0,"What are you kids doing","down here? It's dangerous","y'know.");
- stext(0,"Elliot:","We are on a RATHUNT, sir.","");
- stext(0,"Salomo:","Whoa ha ha!","On a rathunt! Those cursed..."); 
- stext(0,"...rodents are VERY","dangerous!","Never let them bite ya.");
- stext(0,"I always carry my trusty","shotgun with me, incase","the ratswarms desided...");
- stext(0,"...to feast on old Salomo!","","");
- stext(0,"Anyway, I was just repairing","this waterpump, but I need","a new battery.");
- stext(0,"Could you kids get it","for me?","");
- stext(0,"Elliot:","Sure thing.","Where can we find one?");
- stext(0,"Salomo:","They're in the storage","behind ya.");
- stext(0,"Elliot:","Ok, we're on it.","");
- stext(0,"Salomo:","Thanks guys!","");
- entitymove(1,"D2R4U3");
- stext(0,"Jack:","Can't he get it himself?","");
- stext(0,"Tanya:","Shhh, let's just go get it.","");
- entitymove(ent2,"R1");
- entitymove(ent3,"L1");
- wait(30);
- entity.x[ent2]=0;
- entity.y[ent2]=0;
- entity.x[ent3]=0;
- entity.y[ent3]=0;
- slums[10]=1;
-}
+    stext(0, "Note:", "fi x derpo x eghtrs x ", "buyaj x omoca");
+    stext(0, "1 x 2 x 4 x 3 x ", "si x redro x thgir x eht", "");
 }
 
-event//10 enter storage
+event // 9 Salomo
 {
- door3(170,70);
+    if (slums[10] = 0) {
+        slums[13] = 10;
+        slums[14] = 10;
+        entity.specframe[1] = 15;
+        stext(0, "Man:", "Hey, kids!", "");
+        entity.specframe[1] = 0;
+        entitymove(1, "D3L4U2");
+        partymove("R3D1");
+        ent2 = entityspawn(74, 33, "Ltan.chr");
+        ent3 = entityspawn(76, 33, "Ljack.chr");
+        wait(250);
+        stext(0, "Man:", "Hi, I'm Salomo.", "I run this sewage.");
+        stext(0, "What are you kids doing", "down here? It's dangerous",
+            "y'know.");
+        stext(0, "Elliot:", "We are on a RATHUNT, sir.", "");
+        stext(0, "Salomo:", "Whoa ha ha!", "On a rathunt! Those cursed...");
+        stext(
+            0, "...rodents are VERY", "dangerous!", "Never let them bite ya.");
+        stext(0, "I always carry my trusty", "shotgun with me, incase",
+            "the ratswarms desided...");
+        stext(0, "...to feast on old Salomo!", "", "");
+        stext(0, "Anyway, I was just repairing", "this waterpump, but I need",
+            "a new battery.");
+        stext(0, "Could you kids get it", "for me?", "");
+        stext(0, "Elliot:", "Sure thing.", "Where can we find one?");
+        stext(0, "Salomo:", "They're in the storage", "behind ya.");
+        stext(0, "Elliot:", "Ok, we're on it.", "");
+        stext(0, "Salomo:", "Thanks guys!", "");
+        entitymove(1, "D2R4U3");
+        stext(0, "Jack:", "Can't he get it himself?", "");
+        stext(0, "Tanya:", "Shhh, let's just go get it.", "");
+        entitymove(ent2, "R1");
+        entitymove(ent3, "L1");
+        wait(30);
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 0;
+        slums[10] = 1;
+    }
 }
 
-event//11 exit storage
+event // 10 enter storage
 {
- door3(75,12);
+    door3(170, 70);
 }
 
-event//12 battery
+event // 11 exit storage
 {
-}
-event//13 battery
-{
- if (slums[11]=0)
- {
- slums[12]=1;
- entity.x[1]=0;
- entity.y[1]=0;
- stext(0,"Elliot:","I guess he meant this...","");
- alterftile(169,62,0,0);
- stext(0,"Got Battery.","","");
- slums[11]=1; 
- stext(0,"Salomo's voice:","Who the hell...!","");
- partymove("D1");
- stext(0,"Elliot:","Huh...?","");
- musicfade(1);
- playmusic("sil.s3m");
- wait(20);
- playmusic("demon.s3m");
- musicfadein(1);
- stext(0,"Salomo's voice:","Don't come any closer!","");
- entity.speed[ent1]=5;
- partymove("D1");
- soundeffect[4]=cachesound("gun2.wav");
- playsound(soundeffect[4],128,128);
- wait(30);
- playsound(soundeffect[4],128,128);
- stext(0,"Salomo's voice:","AAAARRGHHH!","What the hell...ARE YOU!!");
- playsound(soundeffect[4],128,128);
- wait(200);
- playsound(soundeffect[4],128,128);
- partymove("D1");
- alterftile(76,37,1668,0);
- alterftile(75,37,1667,0);
- alterftile(75,36,1649,0);
- alterftile(75,34,1650,0);
- alterftile(74,32,1651,0);
- alterftile(69,32,1652,0);
- alterftile(67,32,1669,0);
- alterftile(67,36,1653,0);
- alterftile(67,39,1670,0);
- alterftile(65,37,1654,0);
- alterftile(64,37,1671,0);
- alterftile(65,39,1664,0);
- alterftile(64,40,1665,0);
- alterftile(62,39,1666,0);
- alterftile(61,40,1669,0);
- alterftile(78,36,0,0);
- alterftile(78,37,0,0);
- alterftile(79,33,2621,1);
- alterftile(79,32,2622,0);
-}
-}
-event//14 salomo
-{
- stext(0,"Salomo:","I'm almost finished repairing","the engine...");
- entity.specframe[1]=5;
+    door3(75, 12);
 }
 
-event//15 blood
+event // 12 battery
+{}
+event // 13 battery
 {
- if (slums[11]=1)
- {
- slums[13]=0;
- slums[14]=0;
- musicfade(5);
- playmusic("sil.s3m");
- wait(10);
- playmusic("sewer2.s3m");
- musicfadein(5);
- ent2=entityspawn(74,31,"Ltan.chr");
- ent3=entityspawn(76,31,"Ljack.chr");
- setplayer(2);
- partymove("D6");
- wait(100);
- entity.speed[ent1]=3;
- entity.speed[ent2]=3;
- entity.speed[ent3]=3;
- entitymove(ent3,"D1L1D1");
- wait(200);
- entity.specframe[ent3]=21;
- entitymove(ent2,"D1L4");
- entitymove(ent1,"D2L1D3");
- wait(500);
- entity.specframe[ent1]=0;
- entitymove(ent1,"D4");
- wait(200);
- entity.specframe[ent1]=15;
- stext(0,"Elliot:","There's what's left of him...","");
- entity.specframe[ent3]=22;
- entity.specframe[ent2]=20;
- wait(200);
- entity.specframe[ent3]=21;
- wait(100);
- stext(0,"Jack:","Think if we caught it...","");
- entity.specframe[ent2]=0;
- entitymove(ent2,"U1R4");
- entity.specframe[ent1]=0;
- entitymove(ent1,"U2");
- wait(200);
- entity.specframe[ent3]=20;
- entity.specframe[ent2]=20;
- stext(0,"Jack:","The biggest...thing...we've","ever caught...");
- stext(0,"Elliot:","Don't be silly Jack.","He had a SHOTGUN!");
- stext(0,"Jack:","Yeah...think how famous and","rich we could be...");
- stext(0,"Tanya:","Stop it, Jack!","This is serious.");
- entity.specframe[ent3]=10;
- wait(5);
- entity.specframe[ent3]=5;
- stext(0,"Jack:","I AM serious.","");
- stext(0,"Elliot:","If it killed HIM, it'll","surely kill us too.");
- entity.specframe[ent3]=10;
- wait(5);
- entity.specframe[ent3]=20;
- stext(0,"Jack:","But there are three of us.","");
- stext(0,"Tanya:","Jack! You're grazy if you","think we could ever catch it!");
- stext(0,"Elliot:","Yeah she's right,","let it go.");
- stext(0,"Jack:","If you won't come with me,","chickens, I'll go alone.");
- stext(0,"Elliot:","Yeah, right.","");
- stext(0,"Jack:","I'm serious.","");
- stext(0,"Elliot:","Dammit! If we get killed,","I'll get you in the afterlife!");
- stext(0,"Jack:","Ha ha ha,","that's the spirit man!");
- entitymove(ent1,"U3");
- entitymove(ent2,"D2");
- wait(100);
- entity.x[ent2]=0;
- entity.y[ent2]=0;
- entity.x[ent3]=0;
- entity.y[ent3]=0;
- entity.speed[ent1]=4;
- entity.speed[2]=4;
- slums[11]=2;
- partymove("U3L1");
- setplayer(ent1);
- cameratracking=1;
+    if (slums[11] = 0) {
+        slums[12] = 1;
+        entity.x[1] = 0;
+        entity.y[1] = 0;
+        stext(0, "Elliot:", "I guess he meant this...", "");
+        alterftile(169, 62, 0, 0);
+        stext(0, "Got Battery.", "", "");
+        slums[11] = 1;
+        stext(0, "Salomo's voice:", "Who the hell...!", "");
+        partymove("D1");
+        stext(0, "Elliot:", "Huh...?", "");
+        musicfade(1);
+        playmusic("sil.s3m");
+        wait(20);
+        playmusic("demon.s3m");
+        musicfadein(1);
+        stext(0, "Salomo's voice:", "Don't come any closer!", "");
+        entity.speed[ent1] = 5;
+        partymove("D1");
+        soundeffect[4] = cachesound("gun2.wav");
+        playsound(soundeffect[4], 128, 128);
+        wait(30);
+        playsound(soundeffect[4], 128, 128);
+        stext(0, "Salomo's voice:", "AAAARRGHHH!", "What the hell...ARE YOU!!");
+        playsound(soundeffect[4], 128, 128);
+        wait(200);
+        playsound(soundeffect[4], 128, 128);
+        partymove("D1");
+        alterftile(76, 37, 1668, 0);
+        alterftile(75, 37, 1667, 0);
+        alterftile(75, 36, 1649, 0);
+        alterftile(75, 34, 1650, 0);
+        alterftile(74, 32, 1651, 0);
+        alterftile(69, 32, 1652, 0);
+        alterftile(67, 32, 1669, 0);
+        alterftile(67, 36, 1653, 0);
+        alterftile(67, 39, 1670, 0);
+        alterftile(65, 37, 1654, 0);
+        alterftile(64, 37, 1671, 0);
+        alterftile(65, 39, 1664, 0);
+        alterftile(64, 40, 1665, 0);
+        alterftile(62, 39, 1666, 0);
+        alterftile(61, 40, 1669, 0);
+        alterftile(78, 36, 0, 0);
+        alterftile(78, 37, 0, 0);
+        alterftile(79, 33, 2621, 1);
+        alterftile(79, 32, 2622, 0);
+    }
 }
+event // 14 salomo
+{
+    stext(0, "Salomo:", "I'm almost finished repairing", "the engine...");
+    entity.specframe[1] = 5;
 }
 
-event//16 manual
+event // 15 blood
 {
- stext(0,"Waterpump operation manual:","...to empty the pool, first","make sure the pump is...");
- stext(0,"fully operational. Make sure","that the battery is in place,","and the power is turned on.");
- stext(0,"Then insert code 3,2,4,1 to the","controlboard to select the","proper operation.");
- stext(0,"Now push the button in the","controlboard to empty","the pool."); 
- stext(0,"Note:","Empty batteries are charged","in the 'CHARGE'-unit.");
+    if (slums[11] = 1) {
+        slums[13] = 0;
+        slums[14] = 0;
+        musicfade(5);
+        playmusic("sil.s3m");
+        wait(10);
+        playmusic("sewer2.s3m");
+        musicfadein(5);
+        ent2 = entityspawn(74, 31, "Ltan.chr");
+        ent3 = entityspawn(76, 31, "Ljack.chr");
+        setplayer(2);
+        partymove("D6");
+        wait(100);
+        entity.speed[ent1] = 3;
+        entity.speed[ent2] = 3;
+        entity.speed[ent3] = 3;
+        entitymove(ent3, "D1L1D1");
+        wait(200);
+        entity.specframe[ent3] = 21;
+        entitymove(ent2, "D1L4");
+        entitymove(ent1, "D2L1D3");
+        wait(500);
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "D4");
+        wait(200);
+        entity.specframe[ent1] = 15;
+        stext(0, "Elliot:", "There's what's left of him...", "");
+        entity.specframe[ent3] = 22;
+        entity.specframe[ent2] = 20;
+        wait(200);
+        entity.specframe[ent3] = 21;
+        wait(100);
+        stext(0, "Jack:", "Think if we caught it...", "");
+        entity.specframe[ent2] = 0;
+        entitymove(ent2, "U1R4");
+        entity.specframe[ent1] = 0;
+        entitymove(ent1, "U2");
+        wait(200);
+        entity.specframe[ent3] = 20;
+        entity.specframe[ent2] = 20;
+        stext(0, "Jack:", "The biggest...thing...we've", "ever caught...");
+        stext(0, "Elliot:", "Don't be silly Jack.", "He had a SHOTGUN!");
+        stext(0, "Jack:", "Yeah...think how famous and", "rich we could be...");
+        stext(0, "Tanya:", "Stop it, Jack!", "This is serious.");
+        entity.specframe[ent3] = 10;
+        wait(5);
+        entity.specframe[ent3] = 5;
+        stext(0, "Jack:", "I AM serious.", "");
+        stext(0, "Elliot:", "If it killed HIM, it'll", "surely kill us too.");
+        entity.specframe[ent3] = 10;
+        wait(5);
+        entity.specframe[ent3] = 20;
+        stext(0, "Jack:", "But there are three of us.", "");
+        stext(0, "Tanya:", "Jack! You're grazy if you",
+            "think we could ever catch it!");
+        stext(0, "Elliot:", "Yeah she's right,", "let it go.");
+        stext(0, "Jack:", "If you won't come with me,",
+            "chickens, I'll go alone.");
+        stext(0, "Elliot:", "Yeah, right.", "");
+        stext(0, "Jack:", "I'm serious.", "");
+        stext(0, "Elliot:", "Dammit! If we get killed,",
+            "I'll get you in the afterlife!");
+        stext(0, "Jack:", "Ha ha ha,", "that's the spirit man!");
+        entitymove(ent1, "U3");
+        entitymove(ent2, "D2");
+        wait(100);
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 0;
+        entity.speed[ent1] = 4;
+        entity.speed[2] = 4;
+        slums[11] = 2;
+        partymove("U3L1");
+        setplayer(ent1);
+        cameratracking = 1;
+    }
 }
 
-event//17 power
+event // 16 manual
 {
- if(slums[13]=0)
- {
- stext(0,"Elliot:","This must be where the battery","is placed...");
- questio=1;
-question(2,"Put the battery in?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-  stext(0,"Battery in place.","","");
-  slums[13]=1;
-  problem=0;
-  }
-  if(problem=2)
- {
-  slums[13]=0;
-  unpress(key[28]);
- }
-}
-  if(slums[13]=1)
-  {
-  questio=1;
-  question(2,"Will you turn the","power on?","","","yes","no","","");
-  free(textbox);
-  textbox = loadimage("textboxi.pcx");
-  if(problem=1 && slums[12]=1)
-  {  
-  stext(0,"But there's no power...","The battery must be recharged.","");
-  } 
-    if(problem=1 && slums[12]=2)
-   {  
-   soundeffect[5]=cachesound("pump.wav");
-   playsound(soundeffect[5],128,128);
-   alterftile(87,30,2576,0);
-   alterftile(87,31,2576,0);
-   stext(0,"The power is on.","","");
-   slums[13]=2;
-   slums[15]=1;
-   problem=0;  
- } 
- if(problem=2)
- {
-  slums[13]=0;
-  unpress(key[28]);
- }
-}
+    stext(0, "Waterpump operation manual:", "...to empty the pool, first",
+        "make sure the pump is...");
+    stext(0, "fully operational. Make sure", "that the battery is in place,",
+        "and the power is turned on.");
+    stext(0, "Then insert code 3,2,4,1 to the", "controlboard to select the",
+        "proper operation.");
+    stext(
+        0, "Now push the button in the", "controlboard to empty", "the pool.");
+    stext(0, "Note:", "Empty batteries are charged", "in the 'CHARGE'-unit.");
 }
 
-event//18 charge
+event // 17 power
 {
- if(slums[14]=1)
- {
-  stext(0,"Elliot:","(We alredy have a charged","battery...)");
- }
- if(slums[14]=0)
- {
- slums[13]=0;
- stext(0,"Elliot:","This must be where the battery","is charged...");
- questio=1;
-question(2,"Put the battery in?","","","","yes","no","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-   stext(0,"Battery in place.","","");
-   stext(0,"Charging the battery...","","");
-   wait(100);
-   alterftile(87,33,1436,1);
-   wait(100);
-   alterftile(87,33,1437,1);
-   wait(100);
-   alterftile(87,33,1438,1);
-   wait(100);
-   alterftile(87,34,1439,1);
-   wait(100);
-   alterftile(87,34,1440,1);
-   soundeffect[6]=cachesound("point1.wav");
-   playsound(soundeffect[6],128,128);
-   stext(0,"Battery charged.","","");
-   alterftile(87,33,1371,1);
-   alterftile(87,34,1370,1);
-   slums[12]=2;
-   slums[14]=1;
-   }
-   if(problem=2)
-  {
-   unpress(key[28]);
- }
- }
+    if (slums[13] = 0) {
+        stext(0, "Elliot:", "This must be where the battery", "is placed...");
+        questio = 1;
+        question(2, "Put the battery in?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            stext(0, "Battery in place.", "", "");
+            slums[13] = 1;
+            problem = 0;
+        }
+        if (problem = 2) {
+            slums[13] = 0;
+            unpress(key[28]);
+        }
+    }
+    if (slums[13] = 1) {
+        questio = 1;
+        question(
+            2, "Will you turn the", "power on?", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1 && slums[12] = 1) {
+            stext(0, "But there's no power...",
+                "The battery must be recharged.", "");
+        }
+        if (problem = 1 && slums[12] = 2) {
+            soundeffect[5] = cachesound("pump.wav");
+            playsound(soundeffect[5], 128, 128);
+            alterftile(87, 30, 2576, 0);
+            alterftile(87, 31, 2576, 0);
+            stext(0, "The power is on.", "", "");
+            slums[13] = 2;
+            slums[15] = 1;
+            problem = 0;
+        }
+        if (problem = 2) {
+            slums[13] = 0;
+            unpress(key[28]);
+        }
+    }
 }
 
-event//19 controlboard
+event // 18 charge
 {
- if(slums[15]=1)
- {
- slums[16]=0;
- slums[17]=0;
- slums[18]=0;
- stext(0,"Select the operation,","enter four numbers.","");
- questio=1;
-question(4,"The first number is...","","","","1","2","3","4");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-   slums[18]=1;  
-  }
-   if(problem=2)
-  {
-   slums[17]=1;
-  }
-   if(problem=3)
-  {
-   slums[16]=1;
-  }
-   if(problem=4)
-  {
-  }
-problem=0;
-unpress(key[28]);
-questio=1;
-question(4,"The second number is...","","","","1","2","3","4");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-    if(slums[16]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[17]=slums[17]+1;
-  }
-  }
-  if(problem=2)
-  {
-   if(slums[17]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[16]=slums[16]+1;
-  }
-  }
-   if(problem=3)
-  {
-   slums[18]=1;
-  }
-   if(problem=4)
-  {
-   slums[18]=1;
-  }
-   problem=0;
-  unpress(key[28]);
- questio=1;
- question(4,"The third number is...","","","","1","2","3","4");
- free(textbox);
- textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-   if(slums[16]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[17]=slums[17]+1;
-  }
-  }
-  if(problem=2)
-  {
-   slums[18]=1;
-  }
-   if(problem=3)
-  {
-   slums[18]=1;
-  }
-   if(problem=4)
-  {
-   if(slums[17]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[16]=slums[16]+1;
-  }
-  }
-  problem=0;
- unpress(key[28]);
- questio=1;
- question(4,"The fourth number is...","","","","1","2","3","4");
- free(textbox);
- textbox = loadimage("textboxi.pcx");
-  if(problem=1)
-  {
-    if(slums[17]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[16]=slums[16]+1;
-  }
-  }
-  if(problem=2)
-  {
-   if(slums[16]>1)
-    {
-     slums[18]=1;
-     }
-    ELSE
-    {
-    slums[17]=slums[17]+1;
-  }
-  }
-   if(problem=3)
-  {
-   slums[18]=1;
-  }
-   if(problem=4)
-  {
-   slums[18]=1;
-  }
-  if(slums[18]=1) 
- {
-   soundeffect[7]=cachesound("buzz.wav");
-   playsound(soundeffect[7],128,128);
-  stext(0,"Unknown operation.","","");
-  unpress(key[28]);
- }
-  if(slums[17]=4)
- { 
-  stext(0,"Operation: Salomo.","","");
-  soundeffect[8]=cachesound("boom.wav");
-   playsound(soundeffect[8],128,128);
-   alterftile(83,37,2439,1);
-   slums[74]=1;
-  }
-
- if(slums[16]=4)
- {
-   soundeffect[6]=cachesound("point1.wav");
-   playsound(soundeffect[6],128,128);
-   stext(0,"Operation: empty the pool.","","");
-   wait(50);
-   soundeffect[3]=cachesound("river.wav");
-   playsound(soundeffect[3],128,128);
-   slums[19]=1; 
-   for(x=1; x<19; x++)
-   {
-    alterftile(69,12+x,0,1);
-    alterftile(70,12+x,0,0);
-    alterftile(71,12+x,0,0);
-    alterftile(72,12+x,0,1);
-
-   } 
-   alterftile(70,30,0,1);
-   alterftile(71,30,0,1);
-   alterftile(70,12,0,1);
-   alterftile(71,12,0,1);
-   alterftile(70,33,0,1);
-   alterftile(71,33,0,1);
-   alterbtile(71,28,764,0);
-   for(x=1; x<11; x++)
-   {
-    alterftile(69,33+x,0,1);
-    alterftile(70,33+x,0,0);
-    alterftile(71,33+x,0,0);
-    alterftile(72,33+x,0,1);
-
-   } 
-} 
-}
+    if (slums[14] = 1) {
+        stext(0, "Elliot:", "(We alredy have a charged", "battery...)");
+    }
+    if (slums[14] = 0) {
+        slums[13] = 0;
+        stext(0, "Elliot:", "This must be where the battery", "is charged...");
+        questio = 1;
+        question(2, "Put the battery in?", "", "", "", "yes", "no", "", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            stext(0, "Battery in place.", "", "");
+            stext(0, "Charging the battery...", "", "");
+            wait(100);
+            alterftile(87, 33, 1436, 1);
+            wait(100);
+            alterftile(87, 33, 1437, 1);
+            wait(100);
+            alterftile(87, 33, 1438, 1);
+            wait(100);
+            alterftile(87, 34, 1439, 1);
+            wait(100);
+            alterftile(87, 34, 1440, 1);
+            soundeffect[6] = cachesound("point1.wav");
+            playsound(soundeffect[6], 128, 128);
+            stext(0, "Battery charged.", "", "");
+            alterftile(87, 33, 1371, 1);
+            alterftile(87, 34, 1370, 1);
+            slums[12] = 2;
+            slums[14] = 1;
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+        }
+    }
 }
 
-event//20 settile
+event // 19 controlboard
 {
-  SetTile(70, 30, 3, 2586);
-  SetTile(71, 30, 3, 2586);
-  SetTile(70, 32, 3, 2550);
-  SetTile(71, 32, 3, 2549);
-  SetTile(70, 31, 3, 2547);
-  SetTile(71, 31, 3, 2548);
-  alterftile(70,33,0,0);
-  alterftile(71,33,0,0);
-  alterftile(70,30,0,0);
-  alterftile(71,30,0,0);
-  alterftile(69,32,0,1);
-  alterftile(69,31,0,1);
-  alterftile(72,31,0,1);
-  alterftile(72,32,0,1);
-}
-event//21 stairs1 down
-{
- if(slums[19]=1)
- {
- stairs(71,42);
-}
+    if (slums[15] = 1) {
+        slums[16] = 0;
+        slums[17] = 0;
+        slums[18] = 0;
+        stext(0, "Select the operation,", "enter four numbers.", "");
+        questio = 1;
+        question(4, "The first number is...", "", "", "", "1", "2", "3", "4");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            slums[18] = 1;
+        }
+        if (problem = 2) {
+            slums[17] = 1;
+        }
+        if (problem = 3) {
+            slums[16] = 1;
+        }
+        if (problem = 4) {
+        }
+        problem = 0;
+        unpress(key[28]);
+        questio = 1;
+        question(4, "The second number is...", "", "", "", "1", "2", "3", "4");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            if (slums[16] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[17] = slums[17] + 1; }
+        }
+        if (problem = 2) {
+            if (slums[17] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[16] = slums[16] + 1; }
+        }
+        if (problem = 3) {
+            slums[18] = 1;
+        }
+        if (problem = 4) {
+            slums[18] = 1;
+        }
+        problem = 0;
+        unpress(key[28]);
+        questio = 1;
+        question(4, "The third number is...", "", "", "", "1", "2", "3", "4");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            if (slums[16] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[17] = slums[17] + 1; }
+        }
+        if (problem = 2) {
+            slums[18] = 1;
+        }
+        if (problem = 3) {
+            slums[18] = 1;
+        }
+        if (problem = 4) {
+            if (slums[17] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[16] = slums[16] + 1; }
+        }
+        problem = 0;
+        unpress(key[28]);
+        questio = 1;
+        question(4, "The fourth number is...", "", "", "", "1", "2", "3", "4");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            if (slums[17] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[16] = slums[16] + 1; }
+        }
+        if (problem = 2) {
+            if (slums[16] > 1) {
+                slums[18] = 1;
+            }
+            ELSE { slums[17] = slums[17] + 1; }
+        }
+        if (problem = 3) {
+            slums[18] = 1;
+        }
+        if (problem = 4) {
+            slums[18] = 1;
+        }
+        if (slums[18] = 1) {
+            soundeffect[7] = cachesound("buzz.wav");
+            playsound(soundeffect[7], 128, 128);
+            stext(0, "Unknown operation.", "", "");
+            unpress(key[28]);
+        }
+        if (slums[17] = 4) {
+            stext(0, "Operation: Salomo.", "", "");
+            soundeffect[8] = cachesound("boom.wav");
+            playsound(soundeffect[8], 128, 128);
+            alterftile(83, 37, 2439, 1);
+            slums[74] = 1;
+        }
+
+        if (slums[16] = 4) {
+            soundeffect[6] = cachesound("point1.wav");
+            playsound(soundeffect[6], 128, 128);
+            stext(0, "Operation: empty the pool.", "", "");
+            wait(50);
+            soundeffect[3] = cachesound("river.wav");
+            playsound(soundeffect[3], 128, 128);
+            slums[19] = 1;
+            for (x = 1; x < 19; x++) {
+                alterftile(69, 12 + x, 0, 1);
+                alterftile(70, 12 + x, 0, 0);
+                alterftile(71, 12 + x, 0, 0);
+                alterftile(72, 12 + x, 0, 1);
+            }
+            alterftile(70, 30, 0, 1);
+            alterftile(71, 30, 0, 1);
+            alterftile(70, 12, 0, 1);
+            alterftile(71, 12, 0, 1);
+            alterftile(70, 33, 0, 1);
+            alterftile(71, 33, 0, 1);
+            alterbtile(71, 28, 764, 0);
+            for (x = 1; x < 11; x++) {
+                alterftile(69, 33 + x, 0, 1);
+                alterftile(70, 33 + x, 0, 0);
+                alterftile(71, 33 + x, 0, 0);
+                alterftile(72, 33 + x, 0, 1);
+            }
+        }
+    }
 }
 
-event//22 stairs1 up
+event // 20 settile
 {
- if (slums[19]=1)
- {
-  SetTile(70, 30, 3, 0);
-  SetTile(71, 30, 3, 0);
-  SetTile(70, 32, 3, 0);
-  SetTile(71, 32, 3, 0);
-  SetTile(70, 31, 3, 0);
-  SetTile(71, 31, 3, 0);
-  alterftile(70,33,0,1);
-  alterftile(71,33,0,1);
-  alterftile(70,30,0,1);
-  alterftile(71,30,0,1);
-  alterftile(69,32,0,0);
-  alterftile(69,31,0,0);
-  alterftile(72,31,0,0);
-  alterftile(72,32,0,0);
-  stairs(74,40);
+    SetTile(70, 30, 3, 2586);
+    SetTile(71, 30, 3, 2586);
+    SetTile(70, 32, 3, 2550);
+    SetTile(71, 32, 3, 2549);
+    SetTile(70, 31, 3, 2547);
+    SetTile(71, 31, 3, 2548);
+    alterftile(70, 33, 0, 0);
+    alterftile(71, 33, 0, 0);
+    alterftile(70, 30, 0, 0);
+    alterftile(71, 30, 0, 0);
+    alterftile(69, 32, 0, 1);
+    alterftile(69, 31, 0, 1);
+    alterftile(72, 31, 0, 1);
+    alterftile(72, 32, 0, 1);
 }
+event // 21 stairs1 down
+{
+    if (slums[19] = 1) {
+        stairs(71, 42);
+    }
 }
 
-event//23 to pool2
+event // 22 stairs1 up
 {
- entrance(17,199);
+    if (slums[19] = 1) {
+        SetTile(70, 30, 3, 0);
+        SetTile(71, 30, 3, 0);
+        SetTile(70, 32, 3, 0);
+        SetTile(71, 32, 3, 0);
+        SetTile(70, 31, 3, 0);
+        SetTile(71, 31, 3, 0);
+        alterftile(70, 33, 0, 1);
+        alterftile(71, 33, 0, 1);
+        alterftile(70, 30, 0, 1);
+        alterftile(71, 30, 0, 1);
+        alterftile(69, 32, 0, 0);
+        alterftile(69, 31, 0, 0);
+        alterftile(72, 31, 0, 0);
+        alterftile(72, 32, 0, 0);
+        stairs(74, 40);
+    }
 }
 
-event//24 to pool1
+event // 23 to pool2
 {
- entrance(70,13);
+    entrance(17, 199);
 }
 
-event//25 to stairs
+event // 24 to pool1
 {
- door3(42,115);
+    entrance(70, 13);
 }
 
-event//26 exit stairs
+event // 25 to stairs
 {
- door3(22,103);
+    door3(42, 115);
 }
 
-event//27 locked door
+event // 26 exit stairs
 {
- lock();
+    door3(22, 103);
 }
 
-event//28 to dam1
+event // 27 locked door
 {
- if(slums[28]=1)
- {
-  door3(117,117);
- }
- if(slums[28]=0)
- {
- door3(117,117);
- entity.specframe[ent1]=15;
- wait(20);
- setplayer(6);
- ent2=entityspawn(117,116,"ltan.chr");
- ent3=entityspawn(117,118,"ljack.chr");
- entity.specframe[ent2]=15;
- entity.specframe[ent3]=15;
- partymove("L4");
- entity.specframe[3]=10;
- stext(0,"Guard:","Hey!","");
- entity.specframe[3]=0;
- entitymove(3,"D2R6");
- wait(200);
- stext(0,"From where are you kids","coming from?","");
- stext(0,"Elliot:","We...were playing down in","the sewers.");
- stext(0,"Guard:","Playing? Don't you know","how dangerous that is?");
- stext(0,"The sewage is infested","with all kinds of creeps.","");
- stext(0,"Elliot:","We can manage.","We're tougher than you think!");
- stext(0,"Jack:","Yeah!","We'd beat even you anytime!");
- stext(0,"Guard:","Ho ho ho! You've got some","spirit kid!");
- stext(0,"Anyway, I advise you to stay","out of the sewers, but do ","as you wish.");
- stext(0,"But stay out of the Control","room. The doors are","locked anyway.");
- stext(0,"Elliot:","Ok, thanks mister guard.","");
- entitymove(3,"L2");
- wait(100);
- entity.specframe[3]=10;
- stext(0,"Guard:","Oh yeah! If you see my friend,","Salomo,tell him 'John said hi'.");
- stext(0,"Elliot:","S...sure...o...ok.","");
- stext(0,"Guard:","Ok, now run along.","");
- entity.specframe[3]=0;
- entitymove(3,"L4U2");
- wait(300);
- entity.specframe[3]=20;
- partymove("R4");
- entity.specframe[ent2]=20;
- stext(0,"Tanya:","Thank God he didn't start","asking any questions.");
- stext(0,"Elliot","We'd better get going...","");
- entity.x[ent2]=0;
- entity.y[ent2]=0;
- entity.x[ent3]=0;
- entity.y[ent3]=0;
- entity.specframe[ent1]=0;
- setplayer(ent1);
- cameratracking=1;
- slums[28]=1;
-}
+    lock();
 }
 
-event//29 to dam2
+event // 28 to dam1
 {
- door3(64,105);
+    if (slums[28] = 1) {
+        door3(117, 117);
+    }
+    if (slums[28] = 0) {
+        door3(117, 117);
+        entity.specframe[ent1] = 15;
+        wait(20);
+        setplayer(6);
+        ent2 = entityspawn(117, 116, "ltan.chr");
+        ent3 = entityspawn(117, 118, "ljack.chr");
+        entity.specframe[ent2] = 15;
+        entity.specframe[ent3] = 15;
+        partymove("L4");
+        entity.specframe[3] = 10;
+        stext(0, "Guard:", "Hey!", "");
+        entity.specframe[3] = 0;
+        entitymove(3, "D2R6");
+        wait(200);
+        stext(0, "From where are you kids", "coming from?", "");
+        stext(0, "Elliot:", "We...were playing down in", "the sewers.");
+        stext(0, "Guard:", "Playing? Don't you know", "how dangerous that is?");
+        stext(0, "The sewage is infested", "with all kinds of creeps.", "");
+        stext(0, "Elliot:", "We can manage.", "We're tougher than you think!");
+        stext(0, "Jack:", "Yeah!", "We'd beat even you anytime!");
+        stext(0, "Guard:", "Ho ho ho! You've got some", "spirit kid!");
+        stext(0, "Anyway, I advise you to stay", "out of the sewers, but do ",
+            "as you wish.");
+        stext(0, "But stay out of the Control", "room. The doors are",
+            "locked anyway.");
+        stext(0, "Elliot:", "Ok, thanks mister guard.", "");
+        entitymove(3, "L2");
+        wait(100);
+        entity.specframe[3] = 10;
+        stext(0, "Guard:", "Oh yeah! If you see my friend,",
+            "Salomo,tell him 'John said hi'.");
+        stext(0, "Elliot:", "S...sure...o...ok.", "");
+        stext(0, "Guard:", "Ok, now run along.", "");
+        entity.specframe[3] = 0;
+        entitymove(3, "L4U2");
+        wait(300);
+        entity.specframe[3] = 20;
+        partymove("R4");
+        entity.specframe[ent2] = 20;
+        stext(
+            0, "Tanya:", "Thank God he didn't start", "asking any questions.");
+        stext(0, "Elliot", "We'd better get going...", "");
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 0;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 0;
+        entity.specframe[ent1] = 0;
+        setplayer(ent1);
+        cameratracking = 1;
+        slums[28] = 1;
+    }
 }
 
-event//30 exit dam2
+event // 29 to dam2
 {
- musicfade(1);
- playmusic("sil.s3m");
- entrance(45,104);
- playmusic("sewer2.s3m");
- wait(10);
- musicfadein(1);
+    door3(64, 105);
 }
 
-event//31 enter dam2
+event // 30 exit dam2
 {
- musicfade(5);
- playmusic("sil.s3m");
- wait(10);
- entrance(69,110);
- playmusic("dam.s3m");
- wait(10);
- music_volume=40;
+    musicfade(1);
+    playmusic("sil.s3m");
+    entrance(45, 104);
+    playmusic("sewer2.s3m");
+    wait(10);
+    musicfadein(1);
 }
 
-event//32 stairs2 up
+event // 31 enter dam2
 {
- stairs(44,104);
+    musicfade(5);
+    playmusic("sil.s3m");
+    wait(10);
+    entrance(69, 110);
+    playmusic("dam.s3m");
+    wait(10);
+    music_volume = 40;
 }
 
-event//33 stairs2 down
+event // 32 stairs2 up
 {
- stairs(38,109);
+    stairs(44, 104);
 }
 
-event//34 to dam
+event // 33 stairs2 down
 {
- slums[20]=1;
- mapswitch("dam.map",0,0,0);
+    stairs(38, 109);
 }
 
-event//35 ladder1 down
+event // 34 to dam
 {
- stairs(67,139);
+    slums[20] = 1;
+    mapswitch("dam.map", 0, 0, 0);
 }
 
-event//35 ladder1 up
+event // 35 ladder1 down
 {
- stairs(161,35);
+    stairs(67, 139);
 }
 
-event//37 ladder2 down
+event // 35 ladder1 up
 {
- stairs(105,161);
+    stairs(161, 35);
 }
 
-event//38 ladder2 up
+event // 37 ladder2 down
 {
- stairs(133,155);
+    stairs(105, 161);
 }
 
-event//39 ladder3 down
+event // 38 ladder2 up
 {
- if(lever[5]=1)
- {
- stairs(55,186);
-}
-ELSE
-{
- lock();
-}
+    stairs(133, 155);
 }
 
-event//40 ladder3 up
+event // 39 ladder3 down
 {
- if(lever[5]=1)
- {
- stairs(156,90);
- }
- ELSE
- {
-  stext(0,"The trapdoor in the ceiling","is locked","");
-}
-}
-event//41 lever5
-{
- soundeffect[2]=cachesound("switch.wav");
- if (lever[5]=0)
- {
-  playsound(soundeffect[2],128,128);
-  alterftile(136,152,1939,1);
-  wait(50);
-  alterftile(136,152,1938,1);
-  wait(20);
-  setplayer(4);
-  wait(100);
-  playsound(soundeffect[2],128,128);
-  wait(200);
-  setplayer(ent1);
-  lever[5]=1;
- }
+    if (lever[5] = 1) {
+        stairs(55, 186);
+    }
+    ELSE { lock(); }
 }
 
-event//42 button1
+event // 40 ladder3 up
 {
- soundeffect[9]=cachesound("Click.wav");
- if (lever[6]=0)
- {
-  playsound(soundeffect[9],128,128);
-  wait(20);
-  setplayer(5);
-  wait(100);
-  soundeffect[8]=cachesound("boom.wav");
-  playsound(soundeffect[8],128,128);
-  alterftile(46,85,2547,0);
-  alterftile(46,86,2550,0);
-  alterftile(47,85,2548,0);
-  alterftile(47,86,2549,0);
-  alterftile(48,85,2547,0);
-  alterftile(48,86,2550,0);
-  alterftile(49,85,2548,0);
-  alterftile(49,86,2549,0);
-  wait(100);
-  wait(20);
-  setplayer(ent1);
-  lever[6]=1;
- }
+    if (lever[5] = 1) {
+        stairs(156, 90);
+    }
+    ELSE { stext(0, "The trapdoor in the ceiling", "is locked", ""); }
+}
+event // 41 lever5
+{
+    soundeffect[2] = cachesound("switch.wav");
+    if (lever[5] = 0) {
+        playsound(soundeffect[2], 128, 128);
+        alterftile(136, 152, 1939, 1);
+        wait(50);
+        alterftile(136, 152, 1938, 1);
+        wait(20);
+        setplayer(4);
+        wait(100);
+        playsound(soundeffect[2], 128, 128);
+        wait(200);
+        setplayer(ent1);
+        lever[5] = 1;
+    }
 }
 
-event//43 chest1
+event // 42 button1
 {
- if(slums[36]=0)
-  {
-  alterftile(27,20,2592,1);
-  alterftile(27,21,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  alterftile(147,6,0,0);
-stext(0,"An ancient scroll...","","");
-soundeffect[4]=cachesound("heal1.wav");
-playsound(soundeffect[4],128,128);
-whiteout(1);
-whitein(1);
-stext(0,"Elliot learned 'FIRE'!","","");
- gotspell[2]=1;
- spellsinmenu=2;
- loitsu[1]=1;
-  stext(0,"Found Sewerkey!","","");
-  stext(0,"Found Leather Leggings!","","");
-  armoramount[9]=armoramount[9]+1;
-  foundmoney(0,0,0,200);
- }
- slums[36]=1;
- slums[22]=1;
+    soundeffect[9] = cachesound("Click.wav");
+    if (lever[6] = 0) {
+        playsound(soundeffect[9], 128, 128);
+        wait(20);
+        setplayer(5);
+        wait(100);
+        soundeffect[8] = cachesound("boom.wav");
+        playsound(soundeffect[8], 128, 128);
+        alterftile(46, 85, 2547, 0);
+        alterftile(46, 86, 2550, 0);
+        alterftile(47, 85, 2548, 0);
+        alterftile(47, 86, 2549, 0);
+        alterftile(48, 85, 2547, 0);
+        alterftile(48, 86, 2550, 0);
+        alterftile(49, 85, 2548, 0);
+        alterftile(49, 86, 2549, 0);
+        wait(100);
+        wait(20);
+        setplayer(ent1);
+        lever[6] = 1;
+    }
 }
 
-event//44 Sewergate
+event // 43 chest1
 {
- if(slums[22]=1)
- {
-  soundeffect[11]=cachesound("switch2.wav");
-  playsound(soundeffect[11],128,128);
-  wait(100);
-  soundeffect[8]=cachesound("boom.wav");
-  playsound(soundeffect[8],128,128);
-  alterftile(58,54,0,0);
-  wait(50);
-  playsound(soundeffect[8],128,128);
-  alterftile(58,53,0,0);
-  slums[22]=2;
- }
+    if (slums[36] = 0) {
+        alterftile(27, 20, 2592, 1);
+        alterftile(27, 21, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        alterftile(147, 6, 0, 0);
+        stext(0, "An ancient scroll...", "", "");
+        soundeffect[4] = cachesound("heal1.wav");
+        playsound(soundeffect[4], 128, 128);
+        whiteout(1);
+        whitein(1);
+        stext(0, "Elliot learned 'FIRE'!", "", "");
+        gotspell[2] = 1;
+        spellsinmenu = 2;
+        loitsu[1] = 1;
+        stext(0, "Found Sewerkey!", "", "");
+        stext(0, "Found Leather Leggings!", "", "");
+        armoramount[9] = armoramount[9] + 1;
+        foundmoney(0, 0, 0, 200);
+    }
+    slums[36] = 1;
+    slums[22] = 1;
 }
 
-event//45 lever6
+event // 44 Sewergate
 {
- if (lever[7]=0)
- {
-  soundeffect[2]=cachesound("switch.wav");
-  playsound(soundeffect[2],128,128);
-  alterftile(58,75,2670,1);
-  wait(20);
-  alterftile(58,75,2669,1);
-  wait(50);
-  soundeffect[8]=cachesound("boom.wav");
-  playsound(soundeffect[8],128,128);
-  alterftile(64,72,2547,0);
-  alterftile(64,73,2550,0);
-  alterftile(65,72,2548,0);
-  alterftile(65,73,2549,0);
-  alterftile(64,74,2547,0);
-  alterftile(64,75,2550,0);
-  alterftile(65,74,2548,0);
-  alterftile(65,75,2549,0);
-  lever[7]=1;
- }
+    if (slums[22] = 1) {
+        soundeffect[11] = cachesound("switch2.wav");
+        playsound(soundeffect[11], 128, 128);
+        wait(100);
+        soundeffect[8] = cachesound("boom.wav");
+        playsound(soundeffect[8], 128, 128);
+        alterftile(58, 54, 0, 0);
+        wait(50);
+        playsound(soundeffect[8], 128, 128);
+        alterftile(58, 53, 0, 0);
+        slums[22] = 2;
+    }
 }
 
-event//46 to slums
+event // 45 lever6
 {
- frombattle=0;
- dalari[2]=6;
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- playmusic("slums.s3m");
- mapswitch("dalari4.map",0,0,0);
+    if (lever[7] = 0) {
+        soundeffect[2] = cachesound("switch.wav");
+        playsound(soundeffect[2], 128, 128);
+        alterftile(58, 75, 2670, 1);
+        wait(20);
+        alterftile(58, 75, 2669, 1);
+        wait(50);
+        soundeffect[8] = cachesound("boom.wav");
+        playsound(soundeffect[8], 128, 128);
+        alterftile(64, 72, 2547, 0);
+        alterftile(64, 73, 2550, 0);
+        alterftile(65, 72, 2548, 0);
+        alterftile(65, 73, 2549, 0);
+        alterftile(64, 74, 2547, 0);
+        alterftile(64, 75, 2550, 0);
+        alterftile(65, 74, 2548, 0);
+        alterftile(65, 75, 2549, 0);
+        lever[7] = 1;
+    }
+}
+
+event // 46 to slums
+{
+    frombattle = 0;
+    dalari[2] = 6;
+    musicfade(2);
+    playmusic("sil.s3m");
+    wait(10);
+    playmusic("slums.s3m");
+    mapswitch("dalari4.map", 0, 0, 0);
 }
 
 event // 47 box1
 {
- if(wochest[4]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(132,70,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[4] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(132, 70, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[4]=1;
-}
+        wochest[4] = 1;
+    }
 }
 
- event//48 chest2
+event // 48 chest2
 {
- if(slums[23]=0)
-  {
-  alterftile(134,33,2592,1);
-  alterftile(134,34,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[23]=1;
-}
+    if (slums[23] = 0) {
+        alterftile(134, 33, 2592, 1);
+        alterftile(134, 34, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[23] = 1;
+    }
 }
 
 event // 49 barrel1
 {
- if(slums[24]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[24]=1;
-}
+    if (slums[24] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[24] = 1;
+    }
 }
 
-event// 50 chest3
+event // 50 chest3
 {
- if (slums[25]=0)
- {
-  alterftile(163,61,1585,1);
-  alterftile(163,62,1584,1);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
- number="Found "+"1"+" "+itemname[6];
-  stext(0,number,"","");
-  itemamount[6]=itemamount[6]+1;
-  slums[25]=1;
-}
+    if (slums[25] = 0) {
+        alterftile(163, 61, 1585, 1);
+        alterftile(163, 62, 1584, 1);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        number = "Found " + "1" + " " + itemname[6];
+        stext(0, number, "", "");
+        itemamount[6] = itemamount[6] + 1;
+        slums[25] = 1;
+    }
 }
 
 event // 51 barrel2
 {
- if(slums[26]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[26]=1;
-}
+    if (slums[26] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[26] = 1;
+    }
 }
 
 event // 52 box2
 {
- if(wochest[5]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(33,45,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[5] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(33, 45, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[5]=1;
-}
+        wochest[5] = 1;
+    }
 }
 
 event // 53 box3
 {
- if(wochest[6]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(32,45,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[6] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(32, 45, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[6]=1;
-}
+        wochest[6] = 1;
+    }
 }
 
-event//54 chest4
+event // 54 chest4
 {
- if(slums[27]=0)
-  {
-  alterftile(55,54,2592,1);
-  alterftile(55,55,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[27]=1;
-}
+    if (slums[27] = 0) {
+        alterftile(55, 54, 2592, 1);
+        alterftile(55, 55, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[27] = 1;
+    }
 }
 
 event // 55 box4
 {
- if(wochest[7]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(91,74,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[7] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(91, 74, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[7]=1;
-}
+        wochest[7] = 1;
+    }
 }
 
-event//56 bridge2
+event // 56 bridge2
 {
-  SetTile(17, 165, 3, 2586);
-  SetTile(18, 165, 3, 2586);
-  SetTile(17, 167, 3, 859);
-  SetTile(18, 167, 3, 860);
-  SetTile(17, 166, 3, 857);
-  SetTile(18, 166, 3, 858);
-  alterftile(17,168,0,0);
-  alterftile(18,168,0,0);
-  alterftile(17,165,0,0);
-  alterftile(18,165,0,0);
-  alterftile(16,167,0,1);
-  alterftile(16,166,0,1);
-  alterftile(19,167,0,1);
-  alterftile(19,166,0,1);
+    SetTile(17, 165, 3, 2586);
+    SetTile(18, 165, 3, 2586);
+    SetTile(17, 167, 3, 859);
+    SetTile(18, 167, 3, 860);
+    SetTile(17, 166, 3, 857);
+    SetTile(18, 166, 3, 858);
+    alterftile(17, 168, 0, 0);
+    alterftile(18, 168, 0, 0);
+    alterftile(17, 165, 0, 0);
+    alterftile(18, 165, 0, 0);
+    alterftile(16, 167, 0, 1);
+    alterftile(16, 166, 0, 1);
+    alterftile(19, 167, 0, 1);
+    alterftile(19, 166, 0, 1);
 }
 
-event//57 bridge3
+event // 57 bridge3
 {
-  SetTile(17, 115, 3, 2586);
-  SetTile(18, 115, 3, 2586);
-  SetTile(17, 117, 3, 859);
-  SetTile(18, 117, 3, 860);
-  SetTile(17, 116, 3, 857);
-  SetTile(18, 116, 3, 858);
-  alterftile(17,118,0,0);
-  alterftile(18,118,0,0);
-  alterftile(17,115,0,0);
-  alterftile(18,115,0,0);
-  alterftile(19,117,0,1);
-  alterftile(19,116,0,1);
+    SetTile(17, 115, 3, 2586);
+    SetTile(18, 115, 3, 2586);
+    SetTile(17, 117, 3, 859);
+    SetTile(18, 117, 3, 860);
+    SetTile(17, 116, 3, 857);
+    SetTile(18, 116, 3, 858);
+    alterftile(17, 118, 0, 0);
+    alterftile(18, 118, 0, 0);
+    alterftile(17, 115, 0, 0);
+    alterftile(18, 115, 0, 0);
+    alterftile(19, 117, 0, 1);
+    alterftile(19, 116, 0, 1);
 }
 
-event//58 stairs3 up
- {
-  SetTile(17, 165, 3, 0);
-  SetTile(18, 165, 3, 0);
-  SetTile(17, 167, 3, 0);
-  SetTile(18, 167, 3, 0);
-  SetTile(17, 166, 3, 0);
-  SetTile(18, 166, 3, 0);
-  alterftile(17,168,0,1);
-  alterftile(18,168,0,1);
-  alterftile(17,165,0,1);
-  alterftile(18,165,0,1);
-  alterftile(16,167,0,0);
-  alterftile(16,166,0,0);
-  alterftile(19,167,0,0);
-  alterftile(19,166,0,0);
-  SetTile(17, 115, 3, 0);
-  SetTile(18, 115, 3, 0);
-  SetTile(17, 117, 3, 0);
-  SetTile(18, 117, 3, 0);
-  SetTile(17, 116, 3, 0);
-  SetTile(18, 116, 3, 0);
-  alterftile(17,118,0,1);
-  alterftile(18,118,0,1);
-  alterftile(17,115,0,1);
-  alterftile(18,115,0,1);
-  alterftile(19,117,0,0);
-  alterftile(19,116,0,0);
-  stairs(14,135);
-}
-
-event//59 stairs3 down
+event // 58 stairs3 up
 {
- stairs(17,137);
+    SetTile(17, 165, 3, 0);
+    SetTile(18, 165, 3, 0);
+    SetTile(17, 167, 3, 0);
+    SetTile(18, 167, 3, 0);
+    SetTile(17, 166, 3, 0);
+    SetTile(18, 166, 3, 0);
+    alterftile(17, 168, 0, 1);
+    alterftile(18, 168, 0, 1);
+    alterftile(17, 165, 0, 1);
+    alterftile(18, 165, 0, 1);
+    alterftile(16, 167, 0, 0);
+    alterftile(16, 166, 0, 0);
+    alterftile(19, 167, 0, 0);
+    alterftile(19, 166, 0, 0);
+    SetTile(17, 115, 3, 0);
+    SetTile(18, 115, 3, 0);
+    SetTile(17, 117, 3, 0);
+    SetTile(18, 117, 3, 0);
+    SetTile(17, 116, 3, 0);
+    SetTile(18, 116, 3, 0);
+    alterftile(17, 118, 0, 1);
+    alterftile(18, 118, 0, 1);
+    alterftile(17, 115, 0, 1);
+    alterftile(18, 115, 0, 1);
+    alterftile(19, 117, 0, 0);
+    alterftile(19, 116, 0, 0);
+    stairs(14, 135);
+}
+
+event // 59 stairs3 down
+{
+    stairs(17, 137);
 }
 
 event // 60 box5
 {
- if(wochest[8]=0)
- {
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(15,117,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[8] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(15, 117, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[8]=1;
-}
+        wochest[8] = 1;
+    }
 }
 
 event // 61 box6
 {
- if(wochest[9]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(104,161,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[9] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(104, 161, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[9]=1;
-}
+        wochest[9] = 1;
+    }
 }
 
 event // 62 box7
 {
- if(wochest[10]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(43,109,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[10] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(43, 109, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[10]=1;
-}
+        wochest[10] = 1;
+    }
 }
 
 event // 63 box8
 {
- if(wochest[11]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wchest(72,104,1565);
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
+    if (wochest[11] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wchest(72, 104, 1565);
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
 
-  wochest[11]=1;
-}
+        wochest[11] = 1;
+    }
 }
 
 event // 64 barrel3
 {
- if(slums[37]=0)
- {
- temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[37]=1;
-}
-}
-
-event//65 chest5
-{
- if(slums[38]=0)
-  {
-  alterftile(68,169,2592,1);
-  alterftile(68,170,2591,0);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[38]=1;
-}
+    if (slums[37] = 0) {
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[37] = 1;
+    }
 }
 
-event//66 chest6
+event // 65 chest5
 {
- if (slums[39]=0)
- {
-  alterftile(33,168,1585,1);
-  alterftile(33,169,1584,1);
-  soundeffect[10]=cachesound("boxopen.wav");
-  playsound(soundeffect[10],64,128);
-  temp[6000]=random(4);
- temp[6001]=random(4);
- if(temp[6001]=0)
- {
-  temp[6001]=1;
- }
-  wait(10);
-   switch(temp[6000])
- {
-  case 0: number="Found "+str(temp[6001])+" "+itemname[2]+"(s)";
-          stext(0,number,"","");
-          itemamount[2]=itemamount[2]+temp[6001];
-  case 1: number="Found "+str(temp[6001])+" "+itemname[4]+"(s)";
-          stext(0,number,"","");
-          itemamount[4]=itemamount[4]+temp[6001];
-  case 2: number="Found "+str(temp[6001])+" "+itemname[5]+"(s)";
-          stext(0,number,"","");
-          itemamount[5]=itemamount[5]+temp[6001];
-  case 3: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
-  case 4: number="Found "+str(temp[6001])+" "+itemname[1]+"(s)";
-          stext(0,number,"","");
-          itemamount[1]=itemamount[1]+temp[6001];
- }
- slums[39]=1;
-}
-}
-
-event//67 leather boots
-{
- if(slums[69]=0)
- { 
- alterftile(29,45,0,0);
- stext(0,"Found Leather Boots!","","");
- armoramount[10]=armoramount[10]+1;
- slums[69]=1;
-}
+    if (slums[38] = 0) {
+        alterftile(68, 169, 2592, 1);
+        alterftile(68, 170, 2591, 0);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[38] = 1;
+    }
 }
 
-event//68 Green Ribbon
+event // 66 chest6
 {
- if(slums[65]=0)
- { 
- alterftile(160,90,0,0);
- stext(0,"Found Green Ribbon!","","");
- equamount[3]=equamount[3]+1;
- slums[65]=1;
-}
-}
-
-event//69 Leather Jacket 
-{
- if(slums[66]=0)
- { 
- alterftile(148,6,0,0);
- stext(0,"Found Leather Jacket!","","");
- armoramount[8]=armoramount[8]+1;
- slums[66]=1;
-}
-}
-
-event//70 oak shield
-{
- if(slums[67]=0)
- { 
- alterftile(131,152,0,0);
- stext(0,"Found Oak Shield!","","");
- armoramount[13]=armoramount[13]+1;
- slums[67]=1;
-}
-}
-
-event//71 silver earrings
-{
-if (slums[68]=0)
- {
-  alterftile(68,68,1584,1);
-  alterftile(68,67,1585,1);
-  soundeffect[6]=cachesound("boxopen.wav");
-  playsound(soundeffect[6],64,128);
-  stext(0,"Found Silver Earrings!","","");
-  equamount[2]=equamount[2]+1;
-  slums[68]=1;
-}
+    if (slums[39] = 0) {
+        alterftile(33, 168, 1585, 1);
+        alterftile(33, 169, 1584, 1);
+        soundeffect[10] = cachesound("boxopen.wav");
+        playsound(soundeffect[10], 64, 128);
+        temp[6000] = random(4);
+        temp[6001] = random(4);
+        if (temp[6001] = 0) {
+            temp[6001] = 1;
+        }
+        wait(10);
+        switch (temp[6000]) {
+        case 0:
+            number = "Found " + str(temp[6001]) + " " + itemname[2] + "(s)";
+            stext(0, number, "", "");
+            itemamount[2] = itemamount[2] + temp[6001];
+        case 1:
+            number = "Found " + str(temp[6001]) + " " + itemname[4] + "(s)";
+            stext(0, number, "", "");
+            itemamount[4] = itemamount[4] + temp[6001];
+        case 2:
+            number = "Found " + str(temp[6001]) + " " + itemname[5] + "(s)";
+            stext(0, number, "", "");
+            itemamount[5] = itemamount[5] + temp[6001];
+        case 3:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        case 4:
+            number = "Found " + str(temp[6001]) + " " + itemname[1] + "(s)";
+            stext(0, number, "", "");
+            itemamount[1] = itemamount[1] + temp[6001];
+        }
+        slums[39] = 1;
+    }
 }
 
-event//72 leather helm
+event // 67 leather boots
 {
- if(slums[70]=0)
- { 
- alterftile(166,62,0,0);
- stext(0,"Found Leather Helm!","","");
- armoramount[12]=armoramount[12]+1;
- slums[70]=1;
-}
-}
-
-event//73 savepoint1 
-{
- savemap="sewers.map";
- savemusic="sewer2.s3m";
- savechar="lell.chr";
- savex=entity.tx[ent1];
- savey=entity.ty[ent1];
- soundeffect[6]=cachesound("point1.wav");
- playsound(soundeffect[6],64,128);
- questio=1;
-question(2,"Do you wish to save?","","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
-  questio=1;
-question(3,"Select slot to save","","","","1.","2.","Canc.","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
- menupnt[40]=1;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=2)
-{
- unpress(key[28]);
- menupnt[40]=2;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=3)
-{
- unpress(key[28]);
- }
-}
- if(problem=2)
- {
-  unpress(key[28]);
- }
+    if (slums[69] = 0) {
+        alterftile(29, 45, 0, 0);
+        stext(0, "Found Leather Boots!", "", "");
+        armoramount[10] = armoramount[10] + 1;
+        slums[69] = 1;
+    }
 }
 
-event//74 savepoint2 
+event // 68 Green Ribbon
 {
- savemap="sewers.map";
- savemusic="sewer2.s3m";
- savechar="lell.chr";
- savex=entity.tx[ent1];
- savey=entity.ty[ent1];
- soundeffect[6]=cachesound("point1.wav");
- playsound(soundeffect[6],64,128);
- questio=1;
-question(2,"Do you wish to save?","","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
-  questio=1;
-question(3,"Select slot to save","","","","1.","2.","Canc.","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
- menupnt[40]=1;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=2)
-{
- unpress(key[28]);
- menupnt[40]=2;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=3)
-{
- unpress(key[28]);
- }
-}
- if(problem=2)
- {
-  unpress(key[28]);
- }
+    if (slums[65] = 0) {
+        alterftile(160, 90, 0, 0);
+        stext(0, "Found Green Ribbon!", "", "");
+        equamount[3] = equamount[3] + 1;
+        slums[65] = 1;
+    }
 }
 
-event//75 savepoint3
+event // 69 Leather Jacket
 {
- savemap="sewers.map";
- if(slums[11]=1)
- {
- savemusic="demon.s3m";
- }
- ELSE
- {
- savemusic="sewer2.s3m";
- }
- savechar="lell.chr";
- savex=entity.tx[ent1];
- savey=entity.ty[ent1];
- soundeffect[6]=cachesound("point1.wav");
- playsound(soundeffect[6],64,128);
- questio=1;
-question(2,"Do you wish to save?","","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
-  questio=1;
-question(3,"Select slot to save","","","","1.","2.","Canc.","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- unpress(key[28]);
- menupnt[40]=1;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=2)
-{
- unpress(key[28]);
- menupnt[40]=2;
- save();
- number="Game saved to slot"+str(menupnt[40]);
- stext(0,number,"","");
- }
- if(problem=3)
-{
- unpress(key[28]);
- }
-}
- if(problem=2)
- {
-  unpress(key[28]);
- }
+    if (slums[66] = 0) {
+        alterftile(148, 6, 0, 0);
+        stext(0, "Found Leather Jacket!", "", "");
+        armoramount[8] = armoramount[8] + 1;
+        slums[66] = 1;
+    }
 }
 
-event//76 Salomo's note
+event // 70 oak shield
 {
- stext(0,"There's a note.","","");
- questio=1;
-question(2,"Will you read the note?","","","","Yes","No","","");
-free(textbox);
-textbox = loadimage("textboxi.pcx");
-if(problem=1)
-{
- stext(0,"'We were playing","cards with Brother John and","Sister Janet last night.");
- stext(0,"I didn't have much luck","though...","");
- stext(0,"Janet would leave tomorrow,","to accomplish her mission.","");
- stext(0,"John had just got a promotion,","and we were celebrating.","");
- stext(0,"Can't remember much of it...","","");
- stext(0,"This morning, I found a card","from my pocket.","");
- stext(0,"Guess I had been cheating...","The Ace of Clubs.","");
- stext(0,"Though this one was weird.","It had a dead elk in it.","Never seen that before...");
- stext(0,"The Waterpump is malfunctioning","again. I'll see to it first","thing tomorrow.'");
-}  
-
-if(problem=2)
-{
- unpress(key[28]);
-}
+    if (slums[67] = 0) {
+        alterftile(131, 152, 0, 0);
+        stext(0, "Found Oak Shield!", "", "");
+        armoramount[13] = armoramount[13] + 1;
+        slums[67] = 1;
+    }
 }
 
-event//77 to Salomo's
+event // 71 silver earrings
 {
- if(slums[74]=1)
- {
- stairs(161,152);
-}
+    if (slums[68] = 0) {
+        alterftile(68, 68, 1584, 1);
+        alterftile(68, 67, 1585, 1);
+        soundeffect[6] = cachesound("boxopen.wav");
+        playsound(soundeffect[6], 64, 128);
+        stext(0, "Found Silver Earrings!", "", "");
+        equamount[2] = equamount[2] + 1;
+        slums[68] = 1;
+    }
 }
 
-event//78 exit Salomo's
+event // 72 leather helm
 {
- stairs(82,37);
+    if (slums[70] = 0) {
+        alterftile(166, 62, 0, 0);
+        stext(0, "Found Leather Helm!", "", "");
+        armoramount[12] = armoramount[12] + 1;
+        slums[70] = 1;
+    }
 }
 
-event//79 settile2
+event // 73 savepoint1
 {
- if(slums[19]=1)
- { 
- SetTile(70, 30, 3, 0);
-  SetTile(71, 30, 3, 0);
-  SetTile(70, 32, 3, 0);
-  SetTile(71, 32, 3, 0);
-  SetTile(70, 31, 3, 0);
-  SetTile(71, 31, 3, 0);
-  alterftile(70,33,0,1);
-  alterftile(71,33,0,1);
-  alterftile(70,30,0,1);
-  alterftile(71,30,0,1);
-  alterftile(69,32,0,0);
-  alterftile(69,31,0,0);
-  alterftile(72,31,0,0);
-  alterftile(72,32,0,0);
- }
+    savemap = "sewers.map";
+    savemusic = "sewer2.s3m";
+    savechar = "lell.chr";
+    savex = entity.tx[ent1];
+    savey = entity.ty[ent1];
+    soundeffect[6] = cachesound("point1.wav");
+    playsound(soundeffect[6], 64, 128);
+    questio = 1;
+    question(2, "Do you wish to save?", "", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        unpress(key[28]);
+        questio = 1;
+        question(3, "Select slot to save", "", "", "", "1.", "2.", "Canc.", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            unpress(key[28]);
+            menupnt[40] = 1;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+            menupnt[40] = 2;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 3) {
+            unpress(key[28]);
+        }
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 }
 
-event//80 note
+event // 74 savepoint2
 {
- stext(0,"'2112'","","");
+    savemap = "sewers.map";
+    savemusic = "sewer2.s3m";
+    savechar = "lell.chr";
+    savex = entity.tx[ent1];
+    savey = entity.ty[ent1];
+    soundeffect[6] = cachesound("point1.wav");
+    playsound(soundeffect[6], 64, 128);
+    questio = 1;
+    question(2, "Do you wish to save?", "", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        unpress(key[28]);
+        questio = 1;
+        question(3, "Select slot to save", "", "", "", "1.", "2.", "Canc.", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            unpress(key[28]);
+            menupnt[40] = 1;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+            menupnt[40] = 2;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 3) {
+            unpress(key[28]);
+        }
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 }
 
-event//81 
+event // 75 savepoint3
 {
+    savemap = "sewers.map";
+    if (slums[11] = 1) {
+        savemusic = "demon.s3m";
+    }
+    ELSE { savemusic = "sewer2.s3m"; }
+    savechar = "lell.chr";
+    savex = entity.tx[ent1];
+    savey = entity.ty[ent1];
+    soundeffect[6] = cachesound("point1.wav");
+    playsound(soundeffect[6], 64, 128);
+    questio = 1;
+    question(2, "Do you wish to save?", "", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        unpress(key[28]);
+        questio = 1;
+        question(3, "Select slot to save", "", "", "", "1.", "2.", "Canc.", "");
+        free(textbox);
+        textbox = loadimage("textboxi.pcx");
+        if (problem = 1) {
+            unpress(key[28]);
+            menupnt[40] = 1;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 2) {
+            unpress(key[28]);
+            menupnt[40] = 2;
+            save();
+            number = "Game saved to slot" + str(menupnt[40]);
+            stext(0, number, "", "");
+        }
+        if (problem = 3) {
+            unpress(key[28]);
+        }
+    }
+    if (problem = 2) {
+        unpress(key[28]);
+    }
 }
+
+event // 76 Salomo's note
+{
+    stext(0, "There's a note.", "", "");
+    questio = 1;
+    question(2, "Will you read the note?", "", "", "", "Yes", "No", "", "");
+    free(textbox);
+    textbox = loadimage("textboxi.pcx");
+    if (problem = 1) {
+        stext(0, "'We were playing", "cards with Brother John and",
+            "Sister Janet last night.");
+        stext(0, "I didn't have much luck", "though...", "");
+        stext(
+            0, "Janet would leave tomorrow,", "to accomplish her mission.", "");
+        stext(0, "John had just got a promotion,", "and we were celebrating.",
+            "");
+        stext(0, "Can't remember much of it...", "", "");
+        stext(0, "This morning, I found a card", "from my pocket.", "");
+        stext(0, "Guess I had been cheating...", "The Ace of Clubs.", "");
+        stext(0, "Though this one was weird.", "It had a dead elk in it.",
+            "Never seen that before...");
+        stext(0, "The Waterpump is malfunctioning",
+            "again. I'll see to it first", "thing tomorrow.'");
+    }
+
+    if (problem = 2) {
+        unpress(key[28]);
+    }
+}
+
+event // 77 to Salomo's
+{
+    if (slums[74] = 1) {
+        stairs(161, 152);
+    }
+}
+
+event // 78 exit Salomo's
+{
+    stairs(82, 37);
+}
+
+event // 79 settile2
+{
+    if (slums[19] = 1) {
+        SetTile(70, 30, 3, 0);
+        SetTile(71, 30, 3, 0);
+        SetTile(70, 32, 3, 0);
+        SetTile(71, 32, 3, 0);
+        SetTile(70, 31, 3, 0);
+        SetTile(71, 31, 3, 0);
+        alterftile(70, 33, 0, 1);
+        alterftile(71, 33, 0, 1);
+        alterftile(70, 30, 0, 1);
+        alterftile(71, 30, 0, 1);
+        alterftile(69, 32, 0, 0);
+        alterftile(69, 31, 0, 0);
+        alterftile(72, 31, 0, 0);
+        alterftile(72, 32, 0, 0);
+    }
+}
+
+event // 80 note
+{
+    stext(0, "'2112'", "", "");
+}
+
+event // 81
+{}
 }

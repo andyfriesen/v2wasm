@@ -1,122 +1,140 @@
-#define MAX_LINES 128 
+#define MAX_LINES 128
 
 string scroll_lines[MAX_LINES];
 string lines_buffer[10];
 int cur_lines;
 
-void del_eng(int len){
-        int j;
-        timer=0; 
-        j=0;
-        while (j<len) {  
-                while (timer){  timer--; j++;}
+void del_eng(int len) {
+    int j;
+    timer = 0;
+    j = 0;
+    while (j < len) {
+        while (timer) {
+            timer--;
+            j++;
         }
+    }
 }
 
-/*Clears out the text buffer, for use after ScrollText is called, to prepare for different
+/*Clears out the text buffer, for use after ScrollText is called, to prepare for
+different
 text to be scrolled*/
-void ClearScrollText(){
-        for(i = 0;i < cur_lines; i++){
-                scroll_lines[i]="";
-        }
-        cur_lines = 0;
+void ClearScrollText() {
+    for (i = 0; i < cur_lines; i++) {
+        scroll_lines[i] = "";
+    }
+    cur_lines = 0;
 }
 
-/*Addlines can be called as many times as necessary to put text into the buffer for 
-scrolling text.  Returns 0 if all is well, and returns one if the scroll_lines[] array
+/*Addlines can be called as many times as necessary to put text into the buffer
+for
+scrolling text.  Returns 0 if all is well, and returns one if the scroll_lines[]
+array
 is full.*/
-int Addlines(string line1, string line2, string line3, string line4, string line5, string line6, string line7, string line8, string line9, string line10){
-        
-        int newlines;
-        newlines = 0;
-        if(strcmp(line1, "")){
-                lines_buffer[newlines]=line1;
-                newlines++;
-        }
-        if(strcmp(line2, "")){
-                lines_buffer[newlines]=line2;
-                newlines++;
-        }
-        if(strcmp(line3, "")){
-                lines_buffer[newlines]=line3;
-                newlines++;
-        }
-        if(strcmp(line4, "")){
-                lines_buffer[newlines]=line4;
-                newlines++;
-        }
-        if(strcmp(line5, "")){
-                lines_buffer[newlines]=line5;
-                newlines++;
-        }
-        if(strcmp(line6, "")){
-                lines_buffer[newlines]=line6;
-                newlines++;
-        }
-        if(strcmp(line7, "")){
-                lines_buffer[newlines]=line7;
-                newlines++;
-        }
-        if(strcmp(line8, "")){
-                lines_buffer[newlines]=line8;
-                newlines++;
-        }
-        if(strcmp(line9, "")){
-                lines_buffer[newlines]=line9;
-                newlines++;
-        }
-        if(strcmp(line10, "")){
-                lines_buffer[newlines] = line10;
-                newlines++;
-             }
-                 if( (cur_lines+newlines)>(MAX_LINES)){
-                return(1);
-        }
-        for(i = 0;i <newlines;i++){
-                scroll_lines[cur_lines+i]=lines_buffer[i];
-        }
-        cur_lines+=newlines;
-        return(0);                      
-}               
+int Addlines(string line1,
+    string line2,
+    string line3,
+    string line4,
+    string line5,
+    string line6,
+    string line7,
+    string line8,
+    string line9,
+    string line10) {
 
-/* Scrolls text upwards, centered horizontally.  Lines of text are stored in the 
-scroll_lines[] array, and are prepared by the Addlines function. */     
-void ScrollText(int image,int bgcolour,int font, int del, int can_stop){
-        int j, length;
-        int fh, fw, console;
-        fh = FontHeight(font);
-        fw = FontWidth(font);
-        UpdateControls();
-        while(i<=(screeny+(2*fh*cur_lines))){
-                RectFill(0,0,screenx,screeny,bgcolour);
-                if(image){
-                        CopySprite((screenx-1-image_width)/2,(screeny-1-image_height)/2,image_width,image_height,image);
-                        PaletteMorph(0,0,0,0,63);
-                        }
-                for(j = 0; j < cur_lines; j++){
-                        length = strlen(scroll_lines[j]);
-                        GotoXY( (screenx/2)-(((length+2)*fw)/2),(screeny-i+(2*j*fh)) );
-                        PrintString(font, scroll_lines[j]);
-                }
-                ShowPage();
-                if(del>0){
-                        del_eng(del);
-                }
-                if(del<0){
-                        i+=(0-1)*del;
-                }
-                i+=1;
-                if(can_stop){
-                        UpdateControls();
-                        if(b1){
-                                Unpress(0); 
-                                i+=(screeny+(2*fh*cur_lines));
-                        }
-                }
+    int newlines;
+    newlines = 0;
+    if (strcmp(line1, "")) {
+        lines_buffer[newlines] = line1;
+        newlines++;
+    }
+    if (strcmp(line2, "")) {
+        lines_buffer[newlines] = line2;
+        newlines++;
+    }
+    if (strcmp(line3, "")) {
+        lines_buffer[newlines] = line3;
+        newlines++;
+    }
+    if (strcmp(line4, "")) {
+        lines_buffer[newlines] = line4;
+        newlines++;
+    }
+    if (strcmp(line5, "")) {
+        lines_buffer[newlines] = line5;
+        newlines++;
+    }
+    if (strcmp(line6, "")) {
+        lines_buffer[newlines] = line6;
+        newlines++;
+    }
+    if (strcmp(line7, "")) {
+        lines_buffer[newlines] = line7;
+        newlines++;
+    }
+    if (strcmp(line8, "")) {
+        lines_buffer[newlines] = line8;
+        newlines++;
+    }
+    if (strcmp(line9, "")) {
+        lines_buffer[newlines] = line9;
+        newlines++;
+    }
+    if (strcmp(line10, "")) {
+        lines_buffer[newlines] = line10;
+        newlines++;
+    }
+    if ((cur_lines + newlines) > (MAX_LINES)) {
+        return (1);
+    }
+    for (i = 0; i < newlines; i++) {
+        scroll_lines[cur_lines + i] = lines_buffer[i];
+    }
+    cur_lines += newlines;
+    return (0);
+}
+
+/* Scrolls text upwards, centered horizontally.  Lines of text are stored in the
+scroll_lines[] array, and are prepared by the Addlines function. */
+void ScrollText(int image, int bgcolour, int font, int del, int can_stop) {
+    int j, length;
+    int fh, fw, console;
+    fh = FontHeight(font);
+    fw = FontWidth(font);
+    UpdateControls();
+    while (i <= (screeny + (2 * fh * cur_lines))) {
+        RectFill(0, 0, screenx, screeny, bgcolour);
+        if (image) {
+            CopySprite((screenx - 1 - image_width) / 2,
+                (screeny - 1 - image_height) / 2, image_width, image_height,
+                image);
+            PaletteMorph(0, 0, 0, 0, 63);
         }
-        if(image){
-               /* console = LoadImage("console.gif");
-                PaletteMorph(0,0,0,0,63);
-                free(console);*/
+        for (j = 0; j < cur_lines; j++) {
+            length = strlen(scroll_lines[j]);
+            GotoXY((screenx / 2) - (((length + 2) * fw) / 2),
+                (screeny - i + (2 * j * fh)));
+            PrintString(font, scroll_lines[j]);
         }
+        ShowPage();
+        if (del > 0) {
+            del_eng(del);
+        }
+        if (del < 0) {
+            i += (0 - 1) * del;
+        }
+        i += 1;
+        if (can_stop) {
+            UpdateControls();
+            if (b1) {
+                Unpress(0);
+                i += (screeny + (2 * fh * cur_lines));
+            }
+        }
+    }
+    if (image) {
+        /* console = LoadImage("console.gif");
+         PaletteMorph(0,0,0,0,63);
+         free(console);*/
+    }
 }

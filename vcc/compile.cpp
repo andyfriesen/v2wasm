@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 
 #include "compile.h"
 
@@ -1591,17 +1592,20 @@ void CompileMAP(char* fname) {
 // by hitting another variable dec (fell into global space), or hitting another
 // function.
 void SkipBrackets() {
+    char* saveme = (char*)src;
     while (1) //! NextIs("}"))
     {
         if (NextIs("}") && !TokenIs("\""))
             break;
-        if (!*src)
-            err("No matching bracket.");
+        if (!*src) {
+            err("No matching bracket started in %s", saveme);
+        }
 
         GetToken();
 
-        if (TokenIs("{"))
+        if (TokenIs("{")) {
             SkipBrackets();
+        }
     }
     GetToken();
 }
@@ -1761,18 +1765,19 @@ void ParseFunctionDec() {
         newfunc->numargs++;
     }
 
-    Expect(")");
-    Expect("{");
-
-    SkipBrackets();
-
     const char* ret_type = "void";
     if (1 == newfunc->returntype)
         ret_type = "int";
     else if (2 == newfunc->returntype)
         ret_type = "string";
+
     vprint("Found '%s' declaration for '%s', %i parameters.", ret_type,
         newfunc->fname, newfunc->numargs);
+
+    Expect(")");
+    Expect("{");
+
+    SkipBrackets();
 
     functionlist.insert_tail((linked_node*)newfunc);
 }
@@ -2073,7 +2078,6 @@ void ThirdPass() {
 
 void LoadSource() {
     FILE* f;
-    printf("LoadSource\n");
 
     f = fopen("vcctemp.$$$", "rb");
     if (!f) {

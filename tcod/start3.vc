@@ -1,84 +1,83 @@
-event //autoexec
+event // autoexec
 {
- if(run[16]=0)
-           {
-            startingscores();
-            run[16]=1;
-           }
-freeallsounds();
-playmusic("djoe2.s3m");
- cameratracking=1;
- setresolution(360,240);
- systemstartup();
- palettemorph(0,0,0,0,63);
-  pointer1=loadimage("point.pcx");
-  apnt=1;
-  im2=loadimage("djoe.pcx");
-  while(run[3]=0)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tscalesprite(0,0,500,150,360,150,im2);
-  gotoxy(140,5);
-  printstring(1,"MAYDAY'S");
-  gotoXY(140,140);
-  printstring(1,"Newgame");
-  gotoXY(140,160);
-  printstring(1,"Hi-scores");
-  switch(apnt)
-  {
-  case 1:
-  tscaleSprite(120,140,7,9,14,18,pointer1);
-  case 2:
-   tscaleSprite(120,160,7,9,14,18,pointer1);
- }
-  showpage();
-  updatecontrols();
-  If(key[80]) { apnt++; del(10,0,0,0);  }
-  if(key[72]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 2; }
-  If(apnt>2) { apnt = 1; }
-  switch(apnt)
-  {
-  case 1: if(key[28])
-  {
-  UnPress(key[28]);
-  fadeout(100,100);
-  musicfade(10);
-  run[3]=1;
-systemstartup();
- runlives=5;
- im2=loadimage("djoe2.pcx");
- palettemorph(0,0,0,0,63);
- hooktimer(clock);
- run[1]=1;
- runpoints=0;
- rupoints=str(runpoints);
- run[7]=1;
-   died[1]=0;
-  died[2]=0;
-  died[3]=0;
-  died[4]=0;
-  die=0;
-  mapswitch("stages.map",0,0,0);
-  }
-     case 2: if(key[28])
-          { 
-           unpress(key[28]);
-           run[3]=2; 
-           while(run[3]=2)
-           {
-            render();
-            showscores();
-            showpage();
-            updatecontrols();
-            if(key[28])
-            {
-             unpress(key[28]);
-             run[3]=0;     
-        }  
-      }
-     }
-  }
-}
-
+    if (run[16] = 0) {
+        startingscores();
+        run[16] = 1;
+    }
+    freeallsounds();
+    playmusic("djoe2.s3m");
+    cameratracking = 1;
+    setresolution(360, 240);
+    systemstartup();
+    palettemorph(0, 0, 0, 0, 63);
+    pointer1 = loadimage("point.pcx");
+    apnt = 1;
+    im2 = loadimage("djoe.pcx");
+    while (run[3] = 0) {
+        render();
+        palettemorph(0, 0, 0, 0, 63);
+        Tscalesprite(0, 0, 500, 150, 360, 150, im2);
+        gotoxy(140, 5);
+        printstring(1, "MAYDAY'S");
+        gotoXY(140, 140);
+        printstring(1, "Newgame");
+        gotoXY(140, 160);
+        printstring(1, "Hi-scores");
+        switch (apnt) {
+        case 1:
+            tscaleSprite(120, 140, 7, 9, 14, 18, pointer1);
+        case 2:
+            tscaleSprite(120, 160, 7, 9, 14, 18, pointer1);
+        }
+        showpage();
+        updatecontrols();
+        If(key[80]) {
+            apnt++;
+            del(10, 0, 0, 0);
+        }
+        if (key[72]) {
+            apnt--;
+            del(10, 0, 0, 0);
+        }
+        If(apnt < 1) { apnt = 2; }
+        If(apnt > 2) { apnt = 1; }
+        switch (apnt) {
+        case 1:
+            if (key[28]) {
+                UnPress(key[28]);
+                fadeout(100, 100);
+                musicfade(10);
+                run[3] = 1;
+                systemstartup();
+                runlives = 5;
+                im2 = loadimage("djoe2.pcx");
+                palettemorph(0, 0, 0, 0, 63);
+                hooktimer(clock);
+                run[1] = 1;
+                runpoints = 0;
+                rupoints = str(runpoints);
+                run[7] = 1;
+                died[1] = 0;
+                died[2] = 0;
+                died[3] = 0;
+                died[4] = 0;
+                die = 0;
+                mapswitch("stages.map", 0, 0, 0);
+            }
+        case 2:
+            if (key[28]) {
+                unpress(key[28]);
+                run[3] = 2;
+                while (run[3] = 2) {
+                    render();
+                    showscores();
+                    showpage();
+                    updatecontrols();
+                    if (key[28]) {
+                        unpress(key[28]);
+                        run[3] = 0;
+                    }
+                }
+            }
+        }
+    }

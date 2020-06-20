@@ -41,7 +41,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <string>
 #include <vector>
+#include <algorithm>
 
 #include "preproc.h"
 #include "str.h"
@@ -104,8 +107,8 @@ struct define_t {
 };
 
 struct include_t {
-    char* filename;
-    char* data;
+    std::string filename;
+    std::vector<char> data;
     int line_count;
     char* src;
 
@@ -128,24 +131,16 @@ struct include_t {
         fseek(in, 0, SEEK_SET);
 
         // cache file
-        data = new char[z + 2];
-        if (!data) {
-            pp_error("include_t$ctor: memory exhausted on data");
-        }
-        if (z)
-            fread(data, 1, z, in);
+        data.resize(z + 2);
+        fread(data.data(), 1, z, in);
         fclose(in);
 
         // two byte pad
         data[z] = 0;
         data[z + 1] = 0;
-        src = data;
+        src = data.data();
 
-        filename = new char[strlen(fname) + 1];
-        if (!filename) {
-            pp_error("include_t$ctor: memory exhausted on filename");
-        }
-        strcpy(filename, fname);
+        filename = fname;
         line_count = 1;
     }
 };
@@ -157,14 +152,14 @@ void pp_get_token();
 // DATA ////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
-std::vector<define_t> defines;
+std::vector<define_t*> defines;
 // pp_def *pp_defarr               = NULL;
 
 // int		pp_num_defs			= 0;
 // int		pp_defs_allocated	= 0;
 // int		PP_DEFS_BLOCK		= 25;
 
-std::vector<include_t> includes;
+std::vector<include_t*> includes;
 // pp_include	pp_incarr[100];
 // pp_include *pp_icur       = NULL; // get rid of this
 // char	*cur_filename		= 0;
@@ -301,7 +296,7 @@ void pp_file_marker() {
     // dprint("- file marker: %s", pfile->filename);
 
     fputc(1, pp_out);
-    fwrite(pfile->filename, 1, strlen(pfile->filename) + 1, pp_out);
+    fwrite(pfile->filename.c_str(), 1, pfile->filename.size() + 1, pp_out);
 }
 
 void pp_error(const char* error, ...) {
@@ -326,35 +321,36 @@ void pp_line_error(const char* error, ...) {
     if (!pfile)
         pp_error("pp_line_error: pfile is NULL!");
 
-    printf("%s(%d): ", pfile->filename, pfile->line_count);
+    printf("%s(%d): ", pfile->filename.c_str(), pfile->line_count);
     pp_error(string);
 }
 
 void pp_def_add(char* sym, char* resolve) {
-    defines.push_back({ sym, resolve });
+    defines.push_back(new define_t{ sym, resolve });
 }
 
 void push_file(const char* filename) {
     if (!includes.empty()) {
-        for (const include_t& inc: includes) {
-            if (!stricmp(inc.filename, pp_tok)) {
+        for (include_t* inc: includes) {
+            if (inc->filename == pp_tok) {
                 pp_error("circular dependencies");
             }
         }
     }
 
-    // add the include to the list
-    includes.emplace_back(filename);
+    pfile = new include_t{ filename };
 
-    pfile = &includes.back();
+    // add the include to the list
+    includes.emplace_back(pfile);
 
     // starts fresh for each #include file
     pp_file_marker();
     pp_line_marker();
 
-    // for (int n=0; n<includes.number_nodes()-1; n++)
-    //	printf("  ");
-    // dprint("> push %s", pfile->filename);
+    // for (include_t* inc: includes) {
+    //     putc(' ', stdout);
+    // }
+    // printf("push %s\n", pfile->filename.c_str());
 }
 
 void pop_file() {
@@ -362,32 +358,34 @@ void pop_file() {
         pp_error("pop_file: pfile is null");
     }
 
-    // for (int n=0; n<includes.number_nodes()-1; n++)
-    //	printf("  ");
-    // dprint("< pop %s (%d lines)", pfile->filename, pfile->line_count);
+    // for (include_t* i: includes) {
+    //     putc(' ', stdout);
+    // }
+    // printf("pop %s (%d lines)\n", pfile->filename.c_str(), pfile->line_count);
 
-    if (!strcmp(pfile->filename, "system.vc")) {
+    if (pfile->filename == "system.vc") {
         // dprint("> total lines: %d", pp_total_lines);
         tlines = pp_total_lines;
     }
     pp_total_lines += pfile->line_count;
 
-    if (!includes.unlink((linked_node*)pfile)) {
+    auto it = std::find(includes.begin(), includes.end(), pfile);
+    if (it == includes.end()) {
         pp_error("include list corrupted");
     }
-    // destroy
-    delete[] pfile->data;
-    delete[] pfile->filename;
-    delete pfile;
 
-    pfile = (include_t*)includes.tail(); // don't NULL this... duh.
+    includes.pop_back();
 
     pp_tok[0] = '\0';
 
-    if (includes.number_nodes()) {
+    if (!includes.empty()) {
         pp_file_marker();
         pp_line_marker();
     }
+    
+    delete pfile;
+
+    pfile = includes.empty() ? nullptr : includes.back();
 }
 
 static int newline_okay = 1;
@@ -560,19 +558,15 @@ void define_check_dup(char* sym) {
     define_t* pdef;
 
     // check for duplicate #defines
-    if (defines.number_nodes()) {
+    if (!defines.empty()) {
         len = strlen(sym);
 
-        defines.go_head();
-        do {
-            pdef = (define_t*)defines.current();
+        for (define_t* pdef: defines) {
             if (len == pdef->sym_len) {
                 if (!stricmp(pdef->sym, sym))
                     pp_line_error("duplicate #define symbol found: %s", sym);
             }
-
-            defines.go_next();
-        } while (defines.current() != defines.head());
+        }
     }
 }
 
@@ -869,15 +863,13 @@ void define_check_for_replacement() {
     if (PP_LETTER != pp_toktype)
         return;
 
-    if (!defines.number_nodes())
+    if (defines.empty())
         return;
 
     len = strlen(pp_tok);
 
     // scan symbols in define list
-    defines.go_head();
-    do {
-        pdef = (define_t*)defines.current();
+    for (define_t* pdef: defines) {
         // test further if symbol lengths match
         if (pdef->sym_len == len) {
             // lengths match; are the symbols equal?
@@ -891,8 +883,7 @@ void define_check_for_replacement() {
                 break;
             }
         }
-        defines.go_next();
-    } while (defines.current() != defines.head());
+    }
 }
 
 void Process(const char* filename) {
@@ -961,9 +952,9 @@ void PreProcess(const char* filename) {
 
     init_pp_chr_table();
 
-    pp_out = fopen("VCCTEMP.$$$", "wb");
+    pp_out = fopen("vcctemp.$$$", "wb");
     if (!pp_out) {
-        pp_error("PreProcess: unable to open VCCTEMP.$$$ for writing");
+        pp_error("PreProcess: unable to open vcctemp.$$$ for writing");
     }
 
     Process(filename);

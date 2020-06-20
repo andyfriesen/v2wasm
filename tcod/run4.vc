@@ -1,820 +1,809 @@
-event //autoexec
-{
- run[9]=0;
- freeallsounds();
- runpoints=rpoints;
- rupoints=str(runpoints);
- run[12]=0;
- run[13]=0;
- hookretrace(6);
- ent1=entityspawn(6,6,"djoe.chr");
- entity.specframe[ent1]=10;
- entity.speed[ent1]=5;
- cameratracking=1;
- if(run[14]=0)
- {
- setplayer(6);
- fadein(100,100);
- wait(50);
- alterftile(282,5,0,0);
- alterftile(280,6,0,0);
- alterftile(278,5,0,0);
- alterftile(276,5,0,0); 
-stext(0,"Grinder:","Time to die","Diamond Joe!");
- stext(0,"I'm amazed you were","able to survive the","Speedway,..");
- stext(0,"..but your luck has run out.","Feel the power of","Atlas Grinder!");
- entity.specframe[7]=1;
- wait(5);
- entity.specframe[7]=2;
- wait(5);
- soundeffect[2]=cachesound("xplosion1.wav");
- playsound(soundeffect[2],128,128);
- entity.specframe[7]=3;
- ent2=entityspawn(288,6,"bllet.chr");
- entity.speed[ent2]=5;
- entitymove(ent2,"L100");
- wait(5);
- entity.specframe[7]=4;
- wait(5);
- entity.specframe[7]=5;
- wait(5);
- entity.specframe[7]=1;
- wait(20);
- entitymove(7,"U1");
- wait(20);
- entity.specframe[7]=2;
- wait(5);
- soundeffect[2]=cachesound("xplosion1.wav");
- playsound(soundeffect[2],128,128);
- entity.specframe[7]=3;
- ent3=entityspawn(288,5,"bllet.chr");
- entity.speed[ent3]=5;
- entitymove(ent3,"L100");
- wait(5);
- entity.specframe[7]=4;
- wait(5);
- entity.specframe[7]=5;
- wait(5);
- entity.specframe[7]=1;
- wait(20);
- stext(0,"Grinder:","HA HA HA HA!","");
- alterftile(282,5,0,1);
- alterftile(280,6,0,1);
- alterftile(278,5,0,1);
- alterftile(276,5,0,1); 
- wait(20);
- fadeout(5,5);
- wait(10);
- entity.x[ent2]=0;
- entity.y[ent2]=1000;
- entity.x[ent3]=0;
- entity.y[ent3]=1000;
- }
- setplayer(ent1);
- fadein(5,5);
- run[14]=1;
- wait(200);
- alterftile(6,3,20,0);
- wait(50);
- alterftile(6,3,21,0);
- wait(50);
- alterftile(6,3,22,0);
- wait(10);
- alterftile(6,3,19,0);
- entitymove(2,"R289");
- entitymove(3,"R289");
- entitymove(4,"R289");
- entitymove(5,"R289");
- entity.specframe[ent1]=0;
- partymove("R1");
-}
-event//1 speed up
-{
- entity.speed[2]=5;
- entity.speed[3]=5;
- entity.speed[4]=5;
- entity.speed[5]=5;
-}
-
-event//2 slow down
-{
- entity.speed[2]=4;
- entity.speed[3]=4;
- entity.speed[4]=4;
- entity.speed[5]=4;
-}
-event//3 hit
-{
- entlocx=entity.tx[ent1];
- entlocy=entity.ty[ent1];
- soundeffect[1]=cachesound("heal1.wav");
- playsound(soundeffect[1],128,128);
- entity.specframe[ent1]=24;
- runlives=runlives-1;
- died[4]=died[4]+1;
- die=die+1;
- cameratracking=0;
- wait(200);
- if(runlives=0)
- {
- run[1]=1;
- while(run[1]=1)
- {
-  render();
-  gotoxy(100,150);
-  printstring(1,"GAME OVER!!");
-  gotoxy(100,170);
-  printstring(font3,"Do you want to play again?");
-  gotoxy(100,180);
-  printstring(font3,"It's only five crowns");
-  gotoxy(100,200);
-  printstring(1,"Yes");
-  gotoxy(100,220);
-  printstring(1,"No");
-  switch(apnt)
-  {
-  case 1: tscaleSprite(80,200,7,9,14,18,pointer1);
-  case 2: tscaleSprite(80,220,7,9,14,18,pointer1);
-  }
-  showpage();
-  updatecontrols();
-  If(key[80]) { apnt++; del(10,0,0,0);  }
-  if(key[72]) { apnt--; del(10,0,0,0);   }
-  If(apnt<1) { apnt = 2; }
-  If(apnt>2) { apnt = 1; }
- switch(apnt)
-  {
-  case 1: if(key[28])
-  {
-  unpress(key[28]);
-  fadeout(100,100);
-  musicfade(10);
-  playmusic("sil.s3m");
-  crowns=crowns-5;
-   if(crowns<0)
-  {
-   crowns=0;
-   fadeout(100,100);
-  musicfade(10);
-  run[3]=0;
-  run[4]=1;
-  run[15]=1;
-    died[1]=0;
-  died[2]=0;
-  died[3]=0;
-  died[4]=0;
-  die=0;
-  checkscore();
-  mapswitch("dalari4.map",0,0,0);
-  }
-  run[4]=0;
-  run[3]=0;
-  run[1]=0;
-  run[2]=0;
-  
-  run[10]=1;
-  runlives=5;
-  runpoints=0;
-  mapswitch("stages.map",0,0,0);
-  }
-     case 2: if(key[28])
-          { 
-           unpress(key[28]);
-           fadeout(100,100);
-  musicfade(10);
-  run[4]=1;
-  run[3]=0;
-  run[1]=0;
-  run[2]=0;
-  run[5]=0;
-  run[6]=0;
-  run[7]=0;
-  run[8]=0;
-  run[9]=0;
-  run[10]=0;
-  run[11]=0;
-  run[12]=0;
-  run[13]=0;
-  runlives=5;
-  died[1]=0;
-  died[2]=0;
-  died[3]=0;
-  died[4]=0;
-  die=0;
-  checkscore();
-  mapswitch("dalari4.map",0,0,0);
-     }
-}
- }
- }
-
- runpoints=rpoints;
- rupoints=str(runpoints);
- mapswitch("run4.map",0,0,0);
-}
-event//4 victory
-{
- run[4]=0;
- entity.speed[2]=6;
- entity.speed[3]=6;
- entity.speed[4]=6;
- entity.speed[5]=6;
- entity.specframe[ent1]=15;
- wait(200);
- entity.x[2]=0;
- entity.y[2]=0;
- entity.x[3]=0;
- entity.y[3]=0;
- entity.x[4]=0;
- entity.y[4]=0;
- entity.x[5]=0;
- entity.y[5]=0;
- stext(0,"Grinder:","DIAMOND JOEEEE!!","");
- explode3(289,6);
- wait(200);
- explode3(290,6);
- wait(100);
- explode3(289,5);
- wait(50);
- explode3(289,6);
- wait(10);
- explode3(289,5);
- wait(5);
- explode3(290,6);
- wait(5);
- explode3(290,5);
- whiteout(50);
- entity.x[7]=0;
- entity.y[7]=0;
- wait(100);
- whitein(300);
- musicfade(0);
- playmusic("sil.s3m");
- playmusic("djoe2.s3m");
- musicfadein(1);
- wait(30);
- entity.specframe[ent1]=20;
- wait(10);
- entity.specframe[ent1]=21;
- wait(10);
- entity.specframe[ent1]=22;
- wait(10);
- entity.specframe[ent1]=23;
- wait(10);
- while(run[4]=0)
- {
-  render();
-  gotoxy(100,160);
-  printstring(1,"GAME CLEAR!!");
-  gotoxy(100,180);
-  printstring(font3,"Got "+rupoints+" points!!");
- if(died[4]=0)
-  {
-  gotoxy(100,190);
-  printstring(font3,"Zero casualities bonus!!!");
-  if(run[12]=0)
-  {
-  runpoints=runpoints+runpoints;
-  rupoints=str(runpoints);
-  run[12]=1;
-  }
-  }
-  if(die=0)
-  {
-  gotoxy(100,200);
-  printstring(font3,"Invincible bonus!!! PERFECT PLAY!!!");
-  if(run[13]=0)
-  {
-  runpoints=runpoints+runpoints+runpoints;
-  rupoints=str(runpoints);
-  run[13]=1;
-  }
-  }
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-  fadeout(100,100);
-  musicfade(10);
-  run[4]=1;
-  run[3]=0;
-  run[1]=0;
-  run[2]=0;
-  run[5]=0;
-  run[6]=0;
-  run[7]=0;
-  run[8]=0;
-  run[9]=0;
-  run[10]=0;
-  runlives=5;
-    died[1]=0;
-  died[2]=0;
-  died[3]=0;
-  died[4]=0;
-  die=0;
-  checkscore();
-  mapswitch("dalari4.map",0,0,0);
- }
-}
-}
-
-event //5 crystal1
-{
- point(24,5);
-}
-event// 6 showpoints
-{
- gotoxy(240,10);
- printstring(font3,"Points: "+rupoints);
- switch(runlives)
- {
-  case 1:
-         tscalesprite(5,5,32,30,16,15,im2);
-  case 2:
-         tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-  case 3:
-        tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-  case 4:
-          tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-        tscalesprite(53,5,32,30,16,15,im2);
-  case 5:
-         tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-        tscalesprite(53,5,32,30,16,15,im2);
-         tscalesprite(69,5,32,30,16,15,im2);
-  case 6:
-         tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-         tscalesprite(53,5,32,30,16,15,im2);
-         tscalesprite(69,5,32,30,16,15,im2);
-         tscalesprite(85,5,32,30,16,15,im2);
-  case 7:
-         tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-         tscalesprite(53,5,32,30,16,15,im2);
-         tscalesprite(69,5,32,30,16,15,im2);
-         tscalesprite(85,5,32,30,16,15,im2);
-         tscalesprite(101,5,32,30,16,15,im2);
- case 8:
-         tscalesprite(5,5,32,30,16,15,im2);
-         tscalesprite(21,5,32,30,16,15,im2);
-         tscalesprite(37,5,32,30,16,15,im2);
-         tscalesprite(53,5,32,30,16,15,im2);
-         tscalesprite(69,5,32,30,16,15,im2);
-         tscalesprite(85,5,32,30,16,15,im2);
-         tscalesprite(101,5,32,30,16,15,im2);
-         tscalesprite(117,5,32,30,16,15,im2);
-
- }
-} 
-event //7 crystal2
-{
- point(50,6);
-}
-event //8 crystal3
-{
- point2(69,7);
-}
-event //9 crystal4
-{
- point(90,5);
-}
-event //10 crystal5
-{
- point(109,6);
-}
-event //11 crystal6
-{
- point(114,5);
-}
-event //12 crystal7
-{
- point3(133,7);
-}
-event //13 crystal8
-{
- point(145,5);
-}
-event //14 crystal9
-{
- point(166,6);
-}
-event //15 crystal10
-{
- point(212,6);
-}
-event //16 crystal11
-{
- point(212,5);
-}
-event //17 crystal12
-{
- point(236,7);
-}
-event //18 crystal13
-{
- point(279,5);
-}
-event //19 
-{
-}
-event //20 
-{
-}
-event //21 
-{
-}
-
-event//22 bullet1
-{
- entitymove(0,"L100");
-}
-
-event//23 explosion1
-{
- a=6;
- b=0;
- explode();
- }
-event//24 bullet2
-{
- entitymove(1,"L100");
-}
-event//25 explosion2
-{
- a=5;
- b=1;
- explode();
- }
-
-event//26 bullet3&4
-{
- entitymove(8,"L100");
- entitymove(9,"L100");
-
-}
-event//27 explosion3
-{
- a=5;
- b=8;
- explode();
- }
-
-event//28 explosion4
-{
- a=7;
- b=9;
- explode();
- }
-
-event//29 bullet5&6
-{
- entitymove(10,"L100");
- entitymove(11,"L100");
-}
-
-event//30 explosion5
-{
- a=6;
- b=10;
- explode();
- }
-
-event//31 explosion6
-{
- a=5;
- b=11;
- explode();
-}
-
-event//32 bullet 7,8&9
-{
- entitymove(12,"L100");
- entitymove(13,"L100");
- entitymove(14,"L100");
-}
-
-event//33 explosion7
-{
- a=7;
- b=12;
- explode();
- }
-
-event//34 explosion8
-{
- a=6;
- b=13;
- explode();
-}
-
-event//35 explosion9
-{
- a=5;
- b=14;
- explode();
-}
-
-event//36 bullet 10,11,12,13,&14
-{
- entitymove(15,"L100");
- entitymove(16,"L100");
- entitymove(17,"L100");
- entitymove(18,"L100");
- entitymove(19,"L100");
-}
-
-event//37 explosion10
-{
- a=6;
- b=15;
- explode();
- }
+event // autoexec
+{
+    run[9] = 0;
+    freeallsounds();
+    runpoints = rpoints;
+    rupoints = str(runpoints);
+    run[12] = 0;
+    run[13] = 0;
+    hookretrace(6);
+    ent1 = entityspawn(6, 6, "djoe.chr");
+    entity.specframe[ent1] = 10;
+    entity.speed[ent1] = 5;
+    cameratracking = 1;
+    if (run[14] = 0) {
+        setplayer(6);
+        fadein(100, 100);
+        wait(50);
+        alterftile(282, 5, 0, 0);
+        alterftile(280, 6, 0, 0);
+        alterftile(278, 5, 0, 0);
+        alterftile(276, 5, 0, 0);
+        stext(0, "Grinder:", "Time to die", "Diamond Joe!");
+        stext(0, "I'm amazed you were", "able to survive the", "Speedway,..");
+        stext(0, "..but your luck has run out.", "Feel the power of",
+            "Atlas Grinder!");
+        entity.specframe[7] = 1;
+        wait(5);
+        entity.specframe[7] = 2;
+        wait(5);
+        soundeffect[2] = cachesound("xplosion1.wav");
+        playsound(soundeffect[2], 128, 128);
+        entity.specframe[7] = 3;
+        ent2 = entityspawn(288, 6, "bllet.chr");
+        entity.speed[ent2] = 5;
+        entitymove(ent2, "L100");
+        wait(5);
+        entity.specframe[7] = 4;
+        wait(5);
+        entity.specframe[7] = 5;
+        wait(5);
+        entity.specframe[7] = 1;
+        wait(20);
+        entitymove(7, "U1");
+        wait(20);
+        entity.specframe[7] = 2;
+        wait(5);
+        soundeffect[2] = cachesound("xplosion1.wav");
+        playsound(soundeffect[2], 128, 128);
+        entity.specframe[7] = 3;
+        ent3 = entityspawn(288, 5, "bllet.chr");
+        entity.speed[ent3] = 5;
+        entitymove(ent3, "L100");
+        wait(5);
+        entity.specframe[7] = 4;
+        wait(5);
+        entity.specframe[7] = 5;
+        wait(5);
+        entity.specframe[7] = 1;
+        wait(20);
+        stext(0, "Grinder:", "HA HA HA HA!", "");
+        alterftile(282, 5, 0, 1);
+        alterftile(280, 6, 0, 1);
+        alterftile(278, 5, 0, 1);
+        alterftile(276, 5, 0, 1);
+        wait(20);
+        fadeout(5, 5);
+        wait(10);
+        entity.x[ent2] = 0;
+        entity.y[ent2] = 1000;
+        entity.x[ent3] = 0;
+        entity.y[ent3] = 1000;
+    }
+    setplayer(ent1);
+    fadein(5, 5);
+    run[14] = 1;
+    wait(200);
+    alterftile(6, 3, 20, 0);
+    wait(50);
+    alterftile(6, 3, 21, 0);
+    wait(50);
+    alterftile(6, 3, 22, 0);
+    wait(10);
+    alterftile(6, 3, 19, 0);
+    entitymove(2, "R289");
+    entitymove(3, "R289");
+    entitymove(4, "R289");
+    entitymove(5, "R289");
+    entity.specframe[ent1] = 0;
+    partymove("R1");
+}
+event // 1 speed up
+{
+    entity.speed[2] = 5;
+    entity.speed[3] = 5;
+    entity.speed[4] = 5;
+    entity.speed[5] = 5;
+}
+
+event // 2 slow down
+{
+    entity.speed[2] = 4;
+    entity.speed[3] = 4;
+    entity.speed[4] = 4;
+    entity.speed[5] = 4;
+}
+event // 3 hit
+{
+    entlocx = entity.tx[ent1];
+    entlocy = entity.ty[ent1];
+    soundeffect[1] = cachesound("heal1.wav");
+    playsound(soundeffect[1], 128, 128);
+    entity.specframe[ent1] = 24;
+    runlives = runlives - 1;
+    died[4] = died[4] + 1;
+    die = die + 1;
+    cameratracking = 0;
+    wait(200);
+    if (runlives = 0) {
+        run[1] = 1;
+        while (run[1] = 1) {
+            render();
+            gotoxy(100, 150);
+            printstring(1, "GAME OVER!!");
+            gotoxy(100, 170);
+            printstring(font3, "Do you want to play again?");
+            gotoxy(100, 180);
+            printstring(font3, "It's only five crowns");
+            gotoxy(100, 200);
+            printstring(1, "Yes");
+            gotoxy(100, 220);
+            printstring(1, "No");
+            switch (apnt) {
+            case 1:
+                tscaleSprite(80, 200, 7, 9, 14, 18, pointer1);
+            case 2:
+                tscaleSprite(80, 220, 7, 9, 14, 18, pointer1);
+            }
+            showpage();
+            updatecontrols();
+            If(key[80]) {
+                apnt++;
+                del(10, 0, 0, 0);
+            }
+            if (key[72]) {
+                apnt--;
+                del(10, 0, 0, 0);
+            }
+            If(apnt < 1) { apnt = 2; }
+            If(apnt > 2) { apnt = 1; }
+            switch (apnt) {
+            case 1:
+                if (key[28]) {
+                    unpress(key[28]);
+                    fadeout(100, 100);
+                    musicfade(10);
+                    playmusic("sil.s3m");
+                    crowns = crowns - 5;
+                    if (crowns < 0) {
+                        crowns = 0;
+                        fadeout(100, 100);
+                        musicfade(10);
+                        run[3] = 0;
+                        run[4] = 1;
+                        run[15] = 1;
+                        died[1] = 0;
+                        died[2] = 0;
+                        died[3] = 0;
+                        died[4] = 0;
+                        die = 0;
+                        checkscore();
+                        mapswitch("dalari4.map", 0, 0, 0);
+                    }
+                    run[4] = 0;
+                    run[3] = 0;
+                    run[1] = 0;
+                    run[2] = 0;
+
+                    run[10] = 1;
+                    runlives = 5;
+                    runpoints = 0;
+                    mapswitch("stages.map", 0, 0, 0);
+                }
+            case 2:
+                if (key[28]) {
+                    unpress(key[28]);
+                    fadeout(100, 100);
+                    musicfade(10);
+                    run[4] = 1;
+                    run[3] = 0;
+                    run[1] = 0;
+                    run[2] = 0;
+                    run[5] = 0;
+                    run[6] = 0;
+                    run[7] = 0;
+                    run[8] = 0;
+                    run[9] = 0;
+                    run[10] = 0;
+                    run[11] = 0;
+                    run[12] = 0;
+                    run[13] = 0;
+                    runlives = 5;
+                    died[1] = 0;
+                    died[2] = 0;
+                    died[3] = 0;
+                    died[4] = 0;
+                    die = 0;
+                    checkscore();
+                    mapswitch("dalari4.map", 0, 0, 0);
+                }
+            }
+        }
+    }
+
+    runpoints = rpoints;
+    rupoints = str(runpoints);
+    mapswitch("run4.map", 0, 0, 0);
+}
+event // 4 victory
+{
+    run[4] = 0;
+    entity.speed[2] = 6;
+    entity.speed[3] = 6;
+    entity.speed[4] = 6;
+    entity.speed[5] = 6;
+    entity.specframe[ent1] = 15;
+    wait(200);
+    entity.x[2] = 0;
+    entity.y[2] = 0;
+    entity.x[3] = 0;
+    entity.y[3] = 0;
+    entity.x[4] = 0;
+    entity.y[4] = 0;
+    entity.x[5] = 0;
+    entity.y[5] = 0;
+    stext(0, "Grinder:", "DIAMOND JOEEEE!!", "");
+    explode3(289, 6);
+    wait(200);
+    explode3(290, 6);
+    wait(100);
+    explode3(289, 5);
+    wait(50);
+    explode3(289, 6);
+    wait(10);
+    explode3(289, 5);
+    wait(5);
+    explode3(290, 6);
+    wait(5);
+    explode3(290, 5);
+    whiteout(50);
+    entity.x[7] = 0;
+    entity.y[7] = 0;
+    wait(100);
+    whitein(300);
+    musicfade(0);
+    playmusic("sil.s3m");
+    playmusic("djoe2.s3m");
+    musicfadein(1);
+    wait(30);
+    entity.specframe[ent1] = 20;
+    wait(10);
+    entity.specframe[ent1] = 21;
+    wait(10);
+    entity.specframe[ent1] = 22;
+    wait(10);
+    entity.specframe[ent1] = 23;
+    wait(10);
+    while (run[4] = 0) {
+        render();
+        gotoxy(100, 160);
+        printstring(1, "GAME CLEAR!!");
+        gotoxy(100, 180);
+        printstring(font3, "Got " + rupoints + " points!!");
+        if (died[4] = 0) {
+            gotoxy(100, 190);
+            printstring(font3, "Zero casualities bonus!!!");
+            if (run[12] = 0) {
+                runpoints = runpoints + runpoints;
+                rupoints = str(runpoints);
+                run[12] = 1;
+            }
+        }
+        if (die = 0) {
+            gotoxy(100, 200);
+            printstring(font3, "Invincible bonus!!! PERFECT PLAY!!!");
+            if (run[13] = 0) {
+                runpoints = runpoints + runpoints + runpoints;
+                rupoints = str(runpoints);
+                run[13] = 1;
+            }
+        }
+        showpage();
+        updatecontrols();
+        if (key[28]) {
+            fadeout(100, 100);
+            musicfade(10);
+            run[4] = 1;
+            run[3] = 0;
+            run[1] = 0;
+            run[2] = 0;
+            run[5] = 0;
+            run[6] = 0;
+            run[7] = 0;
+            run[8] = 0;
+            run[9] = 0;
+            run[10] = 0;
+            runlives = 5;
+            died[1] = 0;
+            died[2] = 0;
+            died[3] = 0;
+            died[4] = 0;
+            die = 0;
+            checkscore();
+            mapswitch("dalari4.map", 0, 0, 0);
+        }
+    }
+}
+
+event // 5 crystal1
+{
+    point(24, 5);
+}
+event // 6 showpoints
+{
+    gotoxy(240, 10);
+    printstring(font3, "Points: " + rupoints);
+    switch (runlives) {
+    case 1:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+    case 2:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+    case 3:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+    case 4:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+        tscalesprite(53, 5, 32, 30, 16, 15, im2);
+    case 5:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+        tscalesprite(53, 5, 32, 30, 16, 15, im2);
+        tscalesprite(69, 5, 32, 30, 16, 15, im2);
+    case 6:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+        tscalesprite(53, 5, 32, 30, 16, 15, im2);
+        tscalesprite(69, 5, 32, 30, 16, 15, im2);
+        tscalesprite(85, 5, 32, 30, 16, 15, im2);
+    case 7:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+        tscalesprite(53, 5, 32, 30, 16, 15, im2);
+        tscalesprite(69, 5, 32, 30, 16, 15, im2);
+        tscalesprite(85, 5, 32, 30, 16, 15, im2);
+        tscalesprite(101, 5, 32, 30, 16, 15, im2);
+    case 8:
+        tscalesprite(5, 5, 32, 30, 16, 15, im2);
+        tscalesprite(21, 5, 32, 30, 16, 15, im2);
+        tscalesprite(37, 5, 32, 30, 16, 15, im2);
+        tscalesprite(53, 5, 32, 30, 16, 15, im2);
+        tscalesprite(69, 5, 32, 30, 16, 15, im2);
+        tscalesprite(85, 5, 32, 30, 16, 15, im2);
+        tscalesprite(101, 5, 32, 30, 16, 15, im2);
+        tscalesprite(117, 5, 32, 30, 16, 15, im2);
+    }
+}
+event // 7 crystal2
+{
+    point(50, 6);
+}
+event // 8 crystal3
+{
+    point2(69, 7);
+}
+event // 9 crystal4
+{
+    point(90, 5);
+}
+event // 10 crystal5
+{
+    point(109, 6);
+}
+event // 11 crystal6
+{
+    point(114, 5);
+}
+event // 12 crystal7
+{
+    point3(133, 7);
+}
+event // 13 crystal8
+{
+    point(145, 5);
+}
+event // 14 crystal9
+{
+    point(166, 6);
+}
+event // 15 crystal10
+{
+    point(212, 6);
+}
+event // 16 crystal11
+{
+    point(212, 5);
+}
+event // 17 crystal12
+{
+    point(236, 7);
+}
+event // 18 crystal13
+{
+    point(279, 5);
+}
+event // 19
+{}
+event // 20
+{}
+event // 21
+{}
+
+event // 22 bullet1
+{
+    entitymove(0, "L100");
+}
+
+event // 23 explosion1
+{
+    a = 6;
+    b = 0;
+    explode();
+}
+event // 24 bullet2
+{
+    entitymove(1, "L100");
+}
+event // 25 explosion2
+{
+    a = 5;
+    b = 1;
+    explode();
+}
+
+event // 26 bullet3&4
+{
+    entitymove(8, "L100");
+    entitymove(9, "L100");
+}
+event // 27 explosion3
+{
+    a = 5;
+    b = 8;
+    explode();
+}
+
+event // 28 explosion4
+{
+    a = 7;
+    b = 9;
+    explode();
+}
+
+event // 29 bullet5&6
+{
+    entitymove(10, "L100");
+    entitymove(11, "L100");
+}
+
+event // 30 explosion5
+{
+    a = 6;
+    b = 10;
+    explode();
+}
+
+event // 31 explosion6
+{
+    a = 5;
+    b = 11;
+    explode();
+}
+
+event // 32 bullet 7,8&9
+{
+    entitymove(12, "L100");
+    entitymove(13, "L100");
+    entitymove(14, "L100");
+}
+
+event // 33 explosion7
+{
+    a = 7;
+    b = 12;
+    explode();
+}
+
+event // 34 explosion8
+{
+    a = 6;
+    b = 13;
+    explode();
+}
+
+event // 35 explosion9
+{
+    a = 5;
+    b = 14;
+    explode();
+}
+
+event // 36 bullet 10,11,12,13,&14
+{
+    entitymove(15, "L100");
+    entitymove(16, "L100");
+    entitymove(17, "L100");
+    entitymove(18, "L100");
+    entitymove(19, "L100");
+}
 
-event//38 explosion11
+event // 37 explosion10
 {
- a=5;
- b=16;
- explode();
+    a = 6;
+    b = 15;
+    explode();
 }
 
-event//39 explosion12
+event // 38 explosion11
 {
- a=7;
- b=17;
- explode();
+    a = 5;
+    b = 16;
+    explode();
 }
 
-event//40 explosion13
+event // 39 explosion12
 {
- a=5;
- b=18;
- explode();
+    a = 7;
+    b = 17;
+    explode();
 }
 
-event//41 explosion14
+event // 40 explosion13
 {
- a=6;
- b=18;
- explode();
+    a = 5;
+    b = 18;
+    explode();
 }
 
-event//42 mine1
+event // 41 explosion14
 {
- explode2(142,6);
+    a = 6;
+    b = 18;
+    explode();
 }
 
-event//43 mine2
+event // 42 mine1
 {
- explode2(146,5);
+    explode2(142, 6);
 }
 
-event//44 mine3
+event // 43 mine2
 {
- explode2(146,7);
+    explode2(146, 5);
 }
 
-event//45 mine4
+event // 44 mine3
 {
- explode2(147,7);
+    explode2(146, 7);
 }
 
-event//46 mine5
+event // 45 mine4
 {
- explode2(148,7);
+    explode2(147, 7);
 }
 
-event//47 mine6
+event // 46 mine5
 {
- explode2(148,6);
+    explode2(148, 7);
 }
 
-event//48 mine7
+event // 47 mine6
 {
- explode2(150,5);
+    explode2(148, 6);
 }
 
-event//49 mine8
+event // 48 mine7
 {
- explode2(152,6);
+    explode2(150, 5);
 }
 
-event//50 mine9
+event // 49 mine8
 {
- explode2(152,5);
+    explode2(152, 6);
 }
 
-event//51 mine10
+event // 50 mine9
 {
- explode2(154,6);
+    explode2(152, 5);
 }
 
-event//52 mine11
+event // 51 mine10
 {
- explode2(154,7);
+    explode2(154, 6);
 }
 
-event//53 mine12
+event // 52 mine11
 {
- explode2(156,5);
+    explode2(154, 7);
 }
 
-event//54 mine13
+event // 53 mine12
 {
- explode2(156,6);
+    explode2(156, 5);
 }
 
-event//55 mine14
+event // 54 mine13
 {
- explode2(158,6);
+    explode2(156, 6);
 }
 
-event//56 mine15
+event // 55 mine14
 {
- explode2(158,7);
+    explode2(158, 6);
 }
 
-event//57 mine16
+event // 56 mine15
 {
- explode2(161,6);
+    explode2(158, 7);
 }
 
-event//58 mine17
+event // 57 mine16
 {
- explode2(162,6);
+    explode2(161, 6);
 }
 
-event//59 mine18
+event // 58 mine17
 {
- explode2(163,6);
+    explode2(162, 6);
 }
 
-event//60 mine19
+event // 59 mine18
 {
- explode2(164,6);
+    explode2(163, 6);
 }
 
-event//61 mine20
+event // 60 mine19
 {
- explode2(166,7);
+    explode2(164, 6);
 }
 
-event//62 mine21
+event // 61 mine20
 {
- explode2(167,6);
+    explode2(166, 7);
 }
 
-event//63 bullet 15,16&17
+event // 62 mine21
 {
- entitymove(20,"L100");
- entitymove(21,"L100");
- entitymove(22,"L100");
+    explode2(167, 6);
 }
 
-event//64 explosion15
+event // 63 bullet 15,16&17
 {
- a=5;
- b=20;
- explode();
- }
+    entitymove(20, "L100");
+    entitymove(21, "L100");
+    entitymove(22, "L100");
+}
 
-event//65 explosion16
+event // 64 explosion15
 {
- a=7;
- b=21;
- explode();
+    a = 5;
+    b = 20;
+    explode();
 }
 
-event//66 explosion17
+event // 65 explosion16
 {
- a=6;
- b=22;
- explode();
+    a = 7;
+    b = 21;
+    explode();
 }
 
-event//67 bullet 18,19&20
+event // 66 explosion17
 {
- entitymove(23,"L100");
- entitymove(24,"L100");
- entitymove(25,"L100");
+    a = 6;
+    b = 22;
+    explode();
 }
 
-event//68 explosion18
+event // 67 bullet 18,19&20
 {
- a=6;
- b=23;
- explode();
- }
+    entitymove(23, "L100");
+    entitymove(24, "L100");
+    entitymove(25, "L100");
+}
 
-event//69 explosion19
+event // 68 explosion18
 {
- a=7;
- b=24;
- explode();
+    a = 6;
+    b = 23;
+    explode();
 }
 
-event//70 explosion20
+event // 69 explosion19
 {
- a=5;
- b=25;
- explode();
+    a = 7;
+    b = 24;
+    explode();
 }
 
-event//71 mine22
+event // 70 explosion20
 {
- explode2(241,5);
+    a = 5;
+    b = 25;
+    explode();
 }
 
-event//72 mine23
+event // 71 mine22
 {
- explode2(251,5);
+    explode2(241, 5);
 }
 
-event//73 mine24
+event // 72 mine23
 {
- explode2(251,7);
+    explode2(251, 5);
 }
 
-event//74 mine25
+event // 73 mine24
 {
- explode2(253,7);
+    explode2(251, 7);
 }
 
-event//75 mine26
+event // 74 mine25
 {
- explode2(263,5);
+    explode2(253, 7);
 }
 
-event//76 mine27
+event // 75 mine26
 {
- explode2(265,5);
+    explode2(263, 5);
 }
 
-event//77 mine28
+event // 76 mine27
 {
- explode2(267,5);
+    explode2(265, 5);
 }
 
-event//78 mine29
+event // 77 mine28
 {
- explode2(269,5);
+    explode2(267, 5);
 }
 
-event//79 mine30
+event // 78 mine29
 {
- explode2(274,5);
+    explode2(269, 5);
 }
 
-event//80 mine31
+event // 79 mine30
 {
- explode2(280,7);
+    explode2(274, 5);
 }
 
-event//81 mine32
+event // 80 mine31
 {
- explode2(284,6);
+    explode2(280, 7);
 }
 
-event//82 bullet 21
+event // 81 mine32
 {
- entitymove(26,"L100");
+    explode2(284, 6);
 }
 
-event//83 explosion21
+event // 82 bullet 21
 {
- a=6;
- b=26;
- explode();
+    entitymove(26, "L100");
 }
 
-event//84 bullet 22
+event // 83 explosion21
 {
- entitymove(27,"L100");
+    a = 6;
+    b = 26;
+    explode();
 }
 
-event//85 explosion22
+event // 84 bullet 22
 {
- a=7;
- b=27;
- explode();
+    entitymove(27, "L100");
 }
 
-event//86 mine33
+event // 85 explosion22
 {
- explode2(134,7);
+    a = 7;
+    b = 27;
+    explode();
 }
 
-event//87 mine34
+event // 86 mine33
 {
- explode2(135,5);
+    explode2(134, 7);
 }
-
 
+event // 87 mine34
+{
+    explode2(135, 5);
+}

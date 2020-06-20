@@ -182,6 +182,10 @@ char TokenIs(const char* str) {
 void ParseWhitespace(void) {
 skipwhite:
     while (*src && *src <= ' ' && *src > 2) {
+        if (*src == '\n') {
+            ++tlines;
+        }
+
         src++;
     }
 

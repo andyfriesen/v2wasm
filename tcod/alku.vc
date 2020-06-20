@@ -1,227 +1,217 @@
-event //autoexec
+event // autoexec
 {
-  freeallsounds();
-  systemstartup();
-  cameratracking=0;
-  setresolution(640,480);
-  dodo=0;
-  x=1;
-  y=1;
-  unpress(key[28]);
-  if (dalari[5]=1)
-  {
-  im=loadimage("des.pcx");
-  dodo=0;
-  setresolution(360,240);
-  wait(100);
-  while(dodo<400)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  gotoXY(40,40);
-  printstring(1,"You will never forget,");
-  gotoXY(40,60);
-  printstring(1,"Henrik...");
-  gotoXY(40,80);
-  printstring(1,"Enjoy your eternity.");
-  showpage();
-  updatecontrols();
-  dodo++;
-  }
+    freeallsounds();
+    systemstartup();
+    cameratracking = 0;
+    setresolution(640, 480);
+    dodo = 0;
+    x = 1;
+    y = 1;
+    unpress(key[28]);
+    if (dalari[5] = 1) {
+        im = loadimage("des.pcx");
+        dodo = 0;
+        setresolution(360, 240);
+        wait(100);
+        while (dodo < 400) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            gotoXY(40, 40);
+            printstring(1, "You will never forget,");
+            gotoXY(40, 60);
+            printstring(1, "Henrik...");
+            gotoXY(40, 80);
+            printstring(1, "Enjoy your eternity.");
+            showpage();
+            updatecontrols();
+            dodo++;
+        }
 
-setresolution(640,480); 
-  dodo=100;
-  addlines("Dalari","A silent monument that stands","in the middle of the desert.","Sunset.","Dark clouds cover the beauty of it.","Again darkness brings the cool","breeze that fades away the heat","only to replace it with a freezing night.","","");
-  scrolltext(im,0,1,1,0);
-  clearscrolltext();
-  addlines("In the darkening night","three children enter","the once so great city.","From a distance, someone is","watching, waiting.","At the same time, a fragile soul drops","to the ground once more,","beaten, humiliated.","Cursing his fate he slowly stands up,","beaten, but not dead.");
-  scrolltext(im,0,1,1,0);
-  clearscrolltext();
-  dodo=56;
-  unpress(key[28]);
-  while(dodo=56)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(0,0,640,480,im);
-  gotoXY(250,180);
-  printstring(1,"Chapter 2.");
-  gotoXY(250,200);
-  printstring(1,"The Lords of Decay");
-  HLine(250, 216, 450, 130);
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-   dodo=55;
-  }
-  }
-  unpress(key[28]);
-  free(im);
-  musicfade(10);
-  playmusic("sil.s3m");
-  cameratracking=1;
-  dalari[5]=0;
-  mapswitch("dalari.map",0,0,0);
-  } 
+        setresolution(640, 480);
+        dodo = 100;
+        addlines("Dalari", "A silent monument that stands",
+            "in the middle of the desert.", "Sunset.",
+            "Dark clouds cover the beauty of it.",
+            "Again darkness brings the cool", "breeze that fades away the heat",
+            "only to replace it with a freezing night.", "", "");
+        scrolltext(im, 0, 1, 1, 0);
+        clearscrolltext();
+        addlines("In the darkening night", "three children enter",
+            "the once so great city.", "From a distance, someone is",
+            "watching, waiting.", "At the same time, a fragile soul drops",
+            "to the ground once more,", "beaten, humiliated.",
+            "Cursing his fate he slowly stands up,", "beaten, but not dead.");
+        scrolltext(im, 0, 1, 1, 0);
+        clearscrolltext();
+        dodo = 56;
+        unpress(key[28]);
+        while (dodo = 56) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 640, 480, im);
+            gotoXY(250, 180);
+            printstring(1, "Chapter 2.");
+            gotoXY(250, 200);
+            printstring(1, "The Lords of Decay");
+            HLine(250, 216, 450, 130);
+            showpage();
+            updatecontrols();
+            if (key[28]) {
+                dodo = 55;
+            }
+        }
+        unpress(key[28]);
+        free(im);
+        musicfade(10);
+        playmusic("sil.s3m");
+        cameratracking = 1;
+        dalari[5] = 0;
+        mapswitch("dalari.map", 0, 0, 0);
+    }
 
-if (dalari[5]=6)
-  {
-  im=loadimage("des.pcx");
-  dodo=0;
-  setresolution(360,240);
-  wait(100);
-setresolution(640,480); 
-  dodo=100;
-  addlines("3.1.2001","The Curse of Dragmoria","Chapter 2.","The Lords of Decay","Graphics & story:","Jukka Matikainen","Music & code:","Risto Matikainen","","");
-  scrolltext(im,0,1,1,0);
-  clearscrolltext();
-  dodo=56;
-  unpress(key[28]);
-  while(dodo=56)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(0,0,640,480,im);
-  gotoXY(220,180);
-  printstring(1,"Thank you for playing");
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-   dodo=55;
-  }
-  }
-  unpress(key[28]);
-  free(im);
-  musicfade(10);
-  exit("See you again in chapter 3.");
-  } 
+    if (dalari[5] = 6) {
+        im = loadimage("des.pcx");
+        dodo = 0;
+        setresolution(360, 240);
+        wait(100);
+        setresolution(640, 480);
+        dodo = 100;
+        addlines("3.1.2001", "The Curse of Dragmoria", "Chapter 2.",
+            "The Lords of Decay", "Graphics & story:", "Jukka Matikainen",
+            "Music & code:", "Risto Matikainen", "", "");
+        scrolltext(im, 0, 1, 1, 0);
+        clearscrolltext();
+        dodo = 56;
+        unpress(key[28]);
+        while (dodo = 56) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 640, 480, im);
+            gotoXY(220, 180);
+            printstring(1, "Thank you for playing");
+            showpage();
+            updatecontrols();
+            if (key[28]) {
+                dodo = 55;
+            }
+        }
+        unpress(key[28]);
+        free(im);
+        musicfade(10);
+        exit("See you again in chapter 3.");
+    }
 
-
- 
-  if (slums[9]=1)
-  {
-  im=loadimage("card1.pcx");
-  while(dodo<100)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(0,0,300,500,im);
-  showpage();
-  dodo++;
-  }  
-  dodo=55;
-  while(dodo=55)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(0,0,300,500,im);
-  gotoXY(320,40);
-  printstring(1,"Death.");
-  gotoXY(320,60);
-  printstring(1,"A bad start don't you think?");
-  gotoXY(320,80);
-  printstring(1,"Darkness spreads its wings");
-  gotoXY(320,100);
-  printstring(1,"taking away the one who loved so..");
-  gotoXY(320,120);
-  printstring(1,"It shall be.");
-  gotoXY(320,140);
-  printstring(1,"^");
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-   dodo=56;
-  }
-  }
-  whiteout(50);
-  free(im);
-  wait(50);  
-  whitein(50);
-  dodo=0;
-  im=loadimage("card3.pcx"); 
-  while(dodo<100)
-  {
-   render();
-   palettemorph(0,0,0,0,63);
-   Tcopysprite(0,0,300,500,im);
-   showpage();
-   dodo++;
-  }
-  dodo=56;
-  while(dodo=56)
-  {
-  Tcopysprite(0,0,300,500,im);
-  gotoXY(320,40);
-  printstring(1,"Loneliness.");
-  gotoXY(320,60);
-  printstring(1,"Hmmm...a sad one indeed.");
-  gotoXY(320,80);
-  printstring(1,"A loner");
-  gotoXY(320,100);
-   printstring(1,"who shall never be trusted.");
-  gotoXY(320,120);
-  printstring(1,"It shall be.");
-  gotoXY(320,140);
-  printstring(1,"^");
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-   dodo=57;
-  }
-  }
-  whiteout(50);
-  free(im);
-  wait(50);  
-  whitein(50);
-  dodo=0;
-  im=loadimage("card4.pcx"); 
-  while(dodo<150)
-  {
-   render();
-   palettemorph(0,0,0,0,63);
-   Tcopysprite(0,0,300,500,im);
-   showpage();
-   dodo++;
-   }
-   dodo=57;
-   while(dodo=57)
-  {
-  render();
-  palettemorph(0,0,0,0,63);
-  Tcopysprite(0,0,300,500,im);
-  gotoXY(320,40);
-  printstring(1,"Damnation.");
-  gotoXY(320,60);
-  printstring(1,"Shhh..he he.");
-  gotoXY(320,80);
-  printstring(1,"Ambition and greed shall lead");
-  gotoXY(320,100);
-  printstring(1,"into eternal damnation.");
-  gotoXY(320,120);
-  printstring(1,"It shall be.");
-  gotoXY(320,140);
-  printstring(1,"^");
-  showpage();
-  updatecontrols();
-  if(key[28])
-  {
-   dodo=56;
-  }
-  }
-  whiteout(50);
-  wait(20);
-  free(im);
-  free(im2);
-  slums[9]=2;
-  frombattle=0;
-  musicfade(10);
-  wait(10);
-  playmusic("sil.s3m");
-  wait(10);
-  map("sewers.map");
-  }
- 
+    if (slums[9] = 1) {
+        im = loadimage("card1.pcx");
+        while (dodo < 100) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 300, 500, im);
+            showpage();
+            dodo++;
+        }
+        dodo = 55;
+        while (dodo = 55) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 300, 500, im);
+            gotoXY(320, 40);
+            printstring(1, "Death.");
+            gotoXY(320, 60);
+            printstring(1, "A bad start don't you think?");
+            gotoXY(320, 80);
+            printstring(1, "Darkness spreads its wings");
+            gotoXY(320, 100);
+            printstring(1, "taking away the one who loved so..");
+            gotoXY(320, 120);
+            printstring(1, "It shall be.");
+            gotoXY(320, 140);
+            printstring(1, "^");
+            showpage();
+            updatecontrols();
+            if (key[28]) {
+                dodo = 56;
+            }
+        }
+        whiteout(50);
+        free(im);
+        wait(50);
+        whitein(50);
+        dodo = 0;
+        im = loadimage("card3.pcx");
+        while (dodo < 100) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 300, 500, im);
+            showpage();
+            dodo++;
+        }
+        dodo = 56;
+        while (dodo = 56) {
+            Tcopysprite(0, 0, 300, 500, im);
+            gotoXY(320, 40);
+            printstring(1, "Loneliness.");
+            gotoXY(320, 60);
+            printstring(1, "Hmmm...a sad one indeed.");
+            gotoXY(320, 80);
+            printstring(1, "A loner");
+            gotoXY(320, 100);
+            printstring(1, "who shall never be trusted.");
+            gotoXY(320, 120);
+            printstring(1, "It shall be.");
+            gotoXY(320, 140);
+            printstring(1, "^");
+            showpage();
+            updatecontrols();
+            if (key[28]) {
+                dodo = 57;
+            }
+        }
+        whiteout(50);
+        free(im);
+        wait(50);
+        whitein(50);
+        dodo = 0;
+        im = loadimage("card4.pcx");
+        while (dodo < 150) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 300, 500, im);
+            showpage();
+            dodo++;
+        }
+        dodo = 57;
+        while (dodo = 57) {
+            render();
+            palettemorph(0, 0, 0, 0, 63);
+            Tcopysprite(0, 0, 300, 500, im);
+            gotoXY(320, 40);
+            printstring(1, "Damnation.");
+            gotoXY(320, 60);
+            printstring(1, "Shhh..he he.");
+            gotoXY(320, 80);
+            printstring(1, "Ambition and greed shall lead");
+            gotoXY(320, 100);
+            printstring(1, "into eternal damnation.");
+            gotoXY(320, 120);
+            printstring(1, "It shall be.");
+            gotoXY(320, 140);
+            printstring(1, "^");
+            showpage();
+            updatecontrols();
+            if (key[28]) {
+                dodo = 56;
+            }
+        }
+        whiteout(50);
+        wait(20);
+        free(im);
+        free(im2);
+        slums[9] = 2;
+        frombattle = 0;
+        musicfade(10);
+        wait(10);
+        playmusic("sil.s3m");
+        wait(10);
+        map("sewers.map");
+    }

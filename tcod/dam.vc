@@ -1,271 +1,287 @@
-event //autoexec
+event // autoexec
 {
 
- freeallsounds();
- mappi="dam.map";
- setresolution(640,480);
- location="The Dalari dam";
- systemstartup();
- cameratracking=1;
- palettemorph(0,0,0,0,63);
- 
-if(slums[20]=2)
- {   
-  free(enemypic[5]);
-  regroup=0;
-  playmusic("dam.s3m");
-  music_volume=100;
-  ent1=entityspawn(10,29,"lell.chr");
-  ent2=entityspawn(10,28,"Ltan.chr");
-  ent3=entityspawn(10,30,"Ljack.chr");
-  ent4=entityspawn(8,28,"gmem.chr");
-  ent5=entityspawn(8,29,"lfreu.chr");
-  ent6=entityspawn(8,30,"gmem.chr");
-  entity.specframe[ent1]=15;
-  entity.specframe[ent2]=15;
-  entity.specframe[ent3]=15;
-  entity.specframe[ent4]=10;
-  entity.specframe[ent5]=10;
-  entity.specframe[ent6]=10;
-  setplayer(0);
-  wait(100);   
-  stext(0,"Freuden:","Hmmm, it seems our time is","running out. We've got some...");
-  stext(0,"...business to deal with...","","");
-  stext(0,"Consider yourself lucky.","You'll get off the hook","this time.");
-  entity.specframe[ent4]=0;
-  entity.specframe[ent6]=0;
-  entitymove(ent4,"L10");
-  entitymove(ent6,"L10");
-  wait(120);
-  entity.x[ent4]=1000;
-  entity.y[ent4]=1000;
-  entity.x[ent6]=1000;
-  entity.y[ent6]=1000;
+    freeallsounds();
+    mappi = "dam.map";
+    setresolution(640, 480);
+    location = "The Dalari dam";
+    systemstartup();
+    cameratracking = 1;
+    palettemorph(0, 0, 0, 0, 63);
 
-  if(forceret=0)
-  {
-  entity.specframe[ent5]=0;
-  entitymove(ent5,"L1");
-  entity.specframe[ent3]=0;
-  entitymove(ent3,"L1");
-  stext(0,"Jack:","Hah! You lost LOOSER!!","You were so easy!");
-  stext(0,"Freuden:","I guarantee  that your","future is painfull. You'll see.");
-  entitymove(ent5,"L10");
-  wait(110);
-  entity.x[ent5]=1000;
-  entity.y[ent5]=1000;
-  entitymove(ent3,"L1");
-  stext(0,"Jack:","Yeah run away chicken!","");
-  stext(0,"You won't","get off so easily","next time!");
-  stext(0,"What a jerk.","","");
-  entity.specframe[ent3]=10;
-  stext(0,"Where do you think he","lost his brain?","");
-  entitymove(ent1,"L1"); 
-  stext(0,"Elliot:","That was stupid, Jack.","");
-  stext(0,"Jack:","The hell's wrong with you?","You didn't do anything...");
-  stext(0,"...to defend yourself when","he was insulting us.","");
-  stext(0,"Elliot:","It's not wise to make","unneccessary enemies...");
-  stext(0,"Jack:","That's bullshit! He needed","a lesson, big time.");
-  stext(0,"Elliot:","We're on HIS homeground.","He'll be prepared next time.");
-  stext(0,"Jack:","So what?!","");
-  entitymove(ent2,"L1");
-  entity.specframe[ent2]=1;
-  stext(0,"Tanya:","Stop arguing!","What's done is done.");
-  stext(0,"But you must control yourself","in the future, Jack. Otherwise","you're just like HIM.");
-  stext(0,"Now let's go to the city.","","");
-  stext(0,"Jack:","Fine.","");
-  entity.specframe[ent1]=0;
-  entity.specframe[ent2]=0;
-  entity.specframe[ent3]=0;
-  entitymove(ent1,"L10");
-  entitymove(ent2,"L10");
-  entitymove(ent3,"L10");
-  wait(50);
-  fadeout(150,150);
-  wait(50);
-  musicfade(10);
-  playmusic("Sil.s3m");
-  dalari[2]=5;
-  mapswitch("space.map",0,0,0);
- }
-  if (forceret=1)
-  { 
-   entity.specframe[ent5]=0;
-   entity.specframe[ent3]=0;
-    entitymove(ent5,"L11");
-    entitymove(ent3,"L1");
-    wait(110);
-    entity.x[ent5]=1000;
-    entity.y[ent5]=1000;
-    stext(0,"Jack:","Dammit!!!","");
-    entitymove(ent1,"L1");
-    wait(100);
-    stext(0,"Elliot:","He's tough...","");
-    entitymove(ent2,"L1");
-    wait(50);
-    stext(0,"Tanya:","Come on, let's go.","");
-    entity.specframe[ent1]=0;
-  entity.specframe[ent2]=0;
-  entity.specframe[ent3]=0;
-  entitymove(ent1,"L10");
-  entitymove(ent2,"L10");
-  entitymove(ent3,"L10");
-  wait(50);
-  fadeout(150,150);
-  wait(50);
-  musicfade(10);
-  playmusic("Sil.s3m");
-  dalari[2]=5;
-  mapswitch("space.map",0,0,0);
-  }     
-}
+    if (slums[20] = 2) {
+        free(enemypic[5]);
+        regroup = 0;
+        playmusic("dam.s3m");
+        music_volume = 100;
+        ent1 = entityspawn(10, 29, "lell.chr");
+        ent2 = entityspawn(10, 28, "Ltan.chr");
+        ent3 = entityspawn(10, 30, "Ljack.chr");
+        ent4 = entityspawn(8, 28, "gmem.chr");
+        ent5 = entityspawn(8, 29, "lfreu.chr");
+        ent6 = entityspawn(8, 30, "gmem.chr");
+        entity.specframe[ent1] = 15;
+        entity.specframe[ent2] = 15;
+        entity.specframe[ent3] = 15;
+        entity.specframe[ent4] = 10;
+        entity.specframe[ent5] = 10;
+        entity.specframe[ent6] = 10;
+        setplayer(0);
+        wait(100);
+        stext(0, "Freuden:", "Hmmm, it seems our time is",
+            "running out. We've got some...");
+        stext(0, "...business to deal with...", "", "");
+        stext(0, "Consider yourself lucky.", "You'll get off the hook",
+            "this time.");
+        entity.specframe[ent4] = 0;
+        entity.specframe[ent6] = 0;
+        entitymove(ent4, "L10");
+        entitymove(ent6, "L10");
+        wait(120);
+        entity.x[ent4] = 1000;
+        entity.y[ent4] = 1000;
+        entity.x[ent6] = 1000;
+        entity.y[ent6] = 1000;
 
- if(slums[20]=1)
- {
-  music_volume=100;
-  ent1=entityspawn(24,32,"lell.chr");
-  setplayer(ent1);
-  wait(50);
-  partymove("L12U4");
-  wait(20);
-  entity.specframe[ent1]=5;
-  ent2=entityspawn(11,28,"Ltan.chr");
-  ent3=entityspawn(13,28,"Ljack.chr");
-  entity.specframe[ent2]=5;
-  entity.specframe[ent3]=5;
-  wait(50);
-  setplayer(0);
-  partymove("U20");
-  wait(20);
-  partymove("D20");
-  setplayer(ent1);
-  stext(0,"Tanya:","They've finished it already!","");
-  stext(0,"Elliot:","It's AWESOME!!","");
-  stext(0,"Jack:","Colossal..","");
-  wait(100);
-  stext(0,"Elliot:","God, how the wind feels","good up here.");
-  stext(0,"The air is so fresh!","","");
-  stext(0,"Jack:","See those distant mountains.","");
-  stext(0,"One day we'll travel","beyond them.","");
-  stext(0,"Tanya:","Yeah, to the big world!","");
-  stext(0,"Elliot:","....","");
-  wait(200);
-  stext(0,"Elliot:","Umm...there's something","I should tell you guys.");
-  stext(0,"The reason I went down to the","sewers is that I'm ","collecting money for my father.");
-  stext(0,"He can't pay taxes, and will","be taken to the Alcatraz","tomorrow, if he doesn't pay.");
-  stext(0,"Jack:","Good for him.","");
-  stext(0,"You really should","dumb that drunk oldman","of yours.");
-  stext(0,"Elliot:","Hey! He IS my father. I can't","abandon him when he needs me!");
-  stext(0,"Jack:","He's always causing you","trouble.");
-  stext(0,"Tanya:","Jack, stop it.","Elliot's father is sick.");
-  stext(0,"He can't help it.","","");
-  stext(0,"Elliot:","Anyway, we have to collect two","thousand crowns by tomorrow...");
-  stext(0,"...and deliver the money to","Henrik.","");
-  stext(0,"Jack:","Henrik! Goddamnit!","Oneday guys,...");
-  stext(0,"...you'll see, one day I'll","kill him.","");
-  stext(0,"Tanya:","You can't prove anything.","");
-  stext(0,"Jack:","Now don't you start again!","");
-  stext(0,"I saw what I saw,","and this is personal!","");
-  stext(0,"I'll kill him,","end of subject.","");
-  wait(300);
-  musicfade(10);
-  playmusic("shop1.s3m");
-  musicfadein(10);
-  stext(0,"Elliot:","Hah.","");
-  stext(0,"Tanya:","Mmmm...?","");
-  stext(0,"Elliot:","Let's leave this all.","");
-  stext(0,"Jack:","What?","");
-  stext(0,"Elliot:","After we've paid the taxes.","We'll leave this place.");
-  stext(0,"We'll go to the big world.","","");
-  stext(0,"Jack:","We can do that?","");
-  stext(0,"Elliot:","Sure we can. We'll just pack","our stuff...and go.");
-  stext(0,"Just like that.","","");
-  stext(0,"Tanya:","What about your father?","");
-  stext(0,"Elliot:","He must start managing","by himself for now on.");
-  stext(0,"An adventure, that's what","awaits us out there.","");
-  stext(0,"Tanya:","We'll make it..","");
-  musicfade(30);
-  stext(0,"Voice:","Hmm...lookey here!","Some new loosers.");
-  playmusic("gilron1.s3m");
-  musicfadein(10);
-  entity.specframe[ent1]=0;
-  entity.specframe[ent2]=0;
-  entity.specframe[ent3]=0;
-  entitymove(ent3,"D2L1");
-  entitymove(ent2,"L1");
-  partymove("D1L1");
-  ent4=entityspawn(1,29,"Lfreu.chr");
-  ent5=entityspawn(0,30,"gmem.chr");
-  ent6=entityspawn(0,28,"gmem.chr");
-  entity.speed[ent4]=3;
-  entity.speed[ent5]=3;
-  entity.speed[ent6]=3;
-  entitymove(ent4,"R4");
-  entitymove(ent5,"R4");
-  entitymove(ent6,"R4");
-  wait(300);
-  stext(0,"Jack:","The hell are you?","");
-  entity.specframe[ent4]=1;
-  entity.specframe[ent4]=10;
-  stext(0,"Boy:","I...am Freuden Gilron,","and THIS...is MY...territory.");
-  entitymove(ent3,"L1");
-  stext(0,"Jack:","Oh get lost sucker.","");
-  wait(200);
-  stext(0,"Gilron:","'D ya hear that boys?","");
-  stext(0,"The pretty boy's a","troublemaker.","");
-  entity.specframe[ent4]=0;
-  entitymove(ent4,"R1");
-  stext(0,"Gilron:","THAT...is NOT...healthy.","");
-  stext(0,"Jack:","Oh yeah?","THEN...FUCK...OFF.");
-  wait(100);
-  stext(0,"Gilron:","Hmph..","");
-  entitymove(ent4,"R2U1R1");
-  wait(300);
-  stext(0,"Gilron:","Hey, beauty, what are you","doing with these loosers?");
-  stext(0,"You need a real man.","Like me.","");
-  stext(0,"Tanya:","Don't try so hard, Freuden.","You're just a little boy.");
-  stext(0,"Your act is pathetic.","","");
-  wait(200);
-  stext(0,"Gilron:","Hmph...","");
-  entity.specframe[ent2]=20;
-  entitymove(ent4,"D1R1");
-  wait(200);
-  stext(0,"Gilron:","How about this then.","I bet you still wear dipers.");
-  entitymove(ent3,"L1");
-  entity.specframe[ent3]=5;
-  wait(100);
-  stext(0,"Jack:","Alright you son of a bitch.","I've had enough of ya.");
-  entity.specframe[ent4]=1;
-  stext(0,"Time for you to go.","Its up to you whether you leave","dead or alive.");
-  stext(0,"Gilron:","If you want trouble so hard,","I'll be happy to get you some.");
-  musicfade(5);
-  playmusic("sil.s3m");
-  wait(10);
-  whitein(2);
-  wait(20);
-  musicfadein(5);
-  playmusic("boss13.s3m");
-  mongroup=1;
-  nummon=3;
-  inbatmon[1]=6;
-  inbatmon[2]=5;
-  inbatmon[3]=6;
-  slums[20]=2;
-  map("bmap3.map");
+        if (forceret = 0) {
+            entity.specframe[ent5] = 0;
+            entitymove(ent5, "L1");
+            entity.specframe[ent3] = 0;
+            entitymove(ent3, "L1");
+            stext(0, "Jack:", "Hah! You lost LOOSER!!", "You were so easy!");
+            stext(0, "Freuden:", "I guarantee  that your",
+                "future is painfull. You'll see.");
+            entitymove(ent5, "L10");
+            wait(110);
+            entity.x[ent5] = 1000;
+            entity.y[ent5] = 1000;
+            entitymove(ent3, "L1");
+            stext(0, "Jack:", "Yeah run away chicken!", "");
+            stext(0, "You won't", "get off so easily", "next time!");
+            stext(0, "What a jerk.", "", "");
+            entity.specframe[ent3] = 10;
+            stext(0, "Where do you think he", "lost his brain?", "");
+            entitymove(ent1, "L1");
+            stext(0, "Elliot:", "That was stupid, Jack.", "");
+            stext(0, "Jack:", "The hell's wrong with you?",
+                "You didn't do anything...");
+            stext(0, "...to defend yourself when", "he was insulting us.", "");
+            stext(0, "Elliot:", "It's not wise to make",
+                "unneccessary enemies...");
+            stext(0, "Jack:", "That's bullshit! He needed",
+                "a lesson, big time.");
+            stext(0, "Elliot:", "We're on HIS homeground.",
+                "He'll be prepared next time.");
+            stext(0, "Jack:", "So what?!", "");
+            entitymove(ent2, "L1");
+            entity.specframe[ent2] = 1;
+            stext(0, "Tanya:", "Stop arguing!", "What's done is done.");
+            stext(0, "But you must control yourself",
+                "in the future, Jack. Otherwise", "you're just like HIM.");
+            stext(0, "Now let's go to the city.", "", "");
+            stext(0, "Jack:", "Fine.", "");
+            entity.specframe[ent1] = 0;
+            entity.specframe[ent2] = 0;
+            entity.specframe[ent3] = 0;
+            entitymove(ent1, "L10");
+            entitymove(ent2, "L10");
+            entitymove(ent3, "L10");
+            wait(50);
+            fadeout(150, 150);
+            wait(50);
+            musicfade(10);
+            playmusic("Sil.s3m");
+            dalari[2] = 5;
+            mapswitch("space.map", 0, 0, 0);
+        }
+        if (forceret = 1) {
+            entity.specframe[ent5] = 0;
+            entity.specframe[ent3] = 0;
+            entitymove(ent5, "L11");
+            entitymove(ent3, "L1");
+            wait(110);
+            entity.x[ent5] = 1000;
+            entity.y[ent5] = 1000;
+            stext(0, "Jack:", "Dammit!!!", "");
+            entitymove(ent1, "L1");
+            wait(100);
+            stext(0, "Elliot:", "He's tough...", "");
+            entitymove(ent2, "L1");
+            wait(50);
+            stext(0, "Tanya:", "Come on, let's go.", "");
+            entity.specframe[ent1] = 0;
+            entity.specframe[ent2] = 0;
+            entity.specframe[ent3] = 0;
+            entitymove(ent1, "L10");
+            entitymove(ent2, "L10");
+            entitymove(ent3, "L10");
+            wait(50);
+            fadeout(150, 150);
+            wait(50);
+            musicfade(10);
+            playmusic("Sil.s3m");
+            dalari[2] = 5;
+            mapswitch("space.map", 0, 0, 0);
+        }
+    }
 
- }
- if(slums[20]=0)
- {
- ent1=entityspawn(1,33,"lell.chr");
- setplayer(ent1);
+    if (slums[20] = 1) {
+        music_volume = 100;
+        ent1 = entityspawn(24, 32, "lell.chr");
+        setplayer(ent1);
+        wait(50);
+        partymove("L12U4");
+        wait(20);
+        entity.specframe[ent1] = 5;
+        ent2 = entityspawn(11, 28, "Ltan.chr");
+        ent3 = entityspawn(13, 28, "Ljack.chr");
+        entity.specframe[ent2] = 5;
+        entity.specframe[ent3] = 5;
+        wait(50);
+        setplayer(0);
+        partymove("U20");
+        wait(20);
+        partymove("D20");
+        setplayer(ent1);
+        stext(0, "Tanya:", "They've finished it already!", "");
+        stext(0, "Elliot:", "It's AWESOME!!", "");
+        stext(0, "Jack:", "Colossal..", "");
+        wait(100);
+        stext(0, "Elliot:", "God, how the wind feels", "good up here.");
+        stext(0, "The air is so fresh!", "", "");
+        stext(0, "Jack:", "See those distant mountains.", "");
+        stext(0, "One day we'll travel", "beyond them.", "");
+        stext(0, "Tanya:", "Yeah, to the big world!", "");
+        stext(0, "Elliot:", "....", "");
+        wait(200);
+        stext(
+            0, "Elliot:", "Umm...there's something", "I should tell you guys.");
+        stext(0, "The reason I went down to the", "sewers is that I'm ",
+            "collecting money for my father.");
+        stext(0, "He can't pay taxes, and will", "be taken to the Alcatraz",
+            "tomorrow, if he doesn't pay.");
+        stext(0, "Jack:", "Good for him.", "");
+        stext(0, "You really should", "dumb that drunk oldman", "of yours.");
+        stext(0, "Elliot:", "Hey! He IS my father. I can't",
+            "abandon him when he needs me!");
+        stext(0, "Jack:", "He's always causing you", "trouble.");
+        stext(0, "Tanya:", "Jack, stop it.", "Elliot's father is sick.");
+        stext(0, "He can't help it.", "", "");
+        stext(0, "Elliot:", "Anyway, we have to collect two",
+            "thousand crowns by tomorrow...");
+        stext(0, "...and deliver the money to", "Henrik.", "");
+        stext(0, "Jack:", "Henrik! Goddamnit!", "Oneday guys,...");
+        stext(0, "...you'll see, one day I'll", "kill him.", "");
+        stext(0, "Tanya:", "You can't prove anything.", "");
+        stext(0, "Jack:", "Now don't you start again!", "");
+        stext(0, "I saw what I saw,", "and this is personal!", "");
+        stext(0, "I'll kill him,", "end of subject.", "");
+        wait(300);
+        musicfade(10);
+        playmusic("shop1.s3m");
+        musicfadein(10);
+        stext(0, "Elliot:", "Hah.", "");
+        stext(0, "Tanya:", "Mmmm...?", "");
+        stext(0, "Elliot:", "Let's leave this all.", "");
+        stext(0, "Jack:", "What?", "");
+        stext(0, "Elliot:", "After we've paid the taxes.",
+            "We'll leave this place.");
+        stext(0, "We'll go to the big world.", "", "");
+        stext(0, "Jack:", "We can do that?", "");
+        stext(0, "Elliot:", "Sure we can. We'll just pack",
+            "our stuff...and go.");
+        stext(0, "Just like that.", "", "");
+        stext(0, "Tanya:", "What about your father?", "");
+        stext(0, "Elliot:", "He must start managing", "by himself for now on.");
+        stext(0, "An adventure, that's what", "awaits us out there.", "");
+        stext(0, "Tanya:", "We'll make it..", "");
+        musicfade(30);
+        stext(0, "Voice:", "Hmm...lookey here!", "Some new loosers.");
+        playmusic("gilron1.s3m");
+        musicfadein(10);
+        entity.specframe[ent1] = 0;
+        entity.specframe[ent2] = 0;
+        entity.specframe[ent3] = 0;
+        entitymove(ent3, "D2L1");
+        entitymove(ent2, "L1");
+        partymove("D1L1");
+        ent4 = entityspawn(1, 29, "Lfreu.chr");
+        ent5 = entityspawn(0, 30, "gmem.chr");
+        ent6 = entityspawn(0, 28, "gmem.chr");
+        entity.speed[ent4] = 3;
+        entity.speed[ent5] = 3;
+        entity.speed[ent6] = 3;
+        entitymove(ent4, "R4");
+        entitymove(ent5, "R4");
+        entitymove(ent6, "R4");
+        wait(300);
+        stext(0, "Jack:", "The hell are you?", "");
+        entity.specframe[ent4] = 1;
+        entity.specframe[ent4] = 10;
+        stext(0, "Boy:", "I...am Freuden Gilron,",
+            "and THIS...is MY...territory.");
+        entitymove(ent3, "L1");
+        stext(0, "Jack:", "Oh get lost sucker.", "");
+        wait(200);
+        stext(0, "Gilron:", "'D ya hear that boys?", "");
+        stext(0, "The pretty boy's a", "troublemaker.", "");
+        entity.specframe[ent4] = 0;
+        entitymove(ent4, "R1");
+        stext(0, "Gilron:", "THAT...is NOT...healthy.", "");
+        stext(0, "Jack:", "Oh yeah?", "THEN...FUCK...OFF.");
+        wait(100);
+        stext(0, "Gilron:", "Hmph..", "");
+        entitymove(ent4, "R2U1R1");
+        wait(300);
+        stext(0, "Gilron:", "Hey, beauty, what are you",
+            "doing with these loosers?");
+        stext(0, "You need a real man.", "Like me.", "");
+        stext(0, "Tanya:", "Don't try so hard, Freuden.",
+            "You're just a little boy.");
+        stext(0, "Your act is pathetic.", "", "");
+        wait(200);
+        stext(0, "Gilron:", "Hmph...", "");
+        entity.specframe[ent2] = 20;
+        entitymove(ent4, "D1R1");
+        wait(200);
+        stext(0, "Gilron:", "How about this then.",
+            "I bet you still wear dipers.");
+        entitymove(ent3, "L1");
+        entity.specframe[ent3] = 5;
+        wait(100);
+        stext(0, "Jack:", "Alright you son of a bitch.",
+            "I've had enough of ya.");
+        entity.specframe[ent4] = 1;
+        stext(0, "Time for you to go.", "Its up to you whether you leave",
+            "dead or alive.");
+        stext(0, "Gilron:", "If you want trouble so hard,",
+            "I'll be happy to get you some.");
+        musicfade(5);
+        playmusic("sil.s3m");
+        wait(10);
+        whitein(2);
+        wait(20);
+        musicfadein(5);
+        playmusic("boss13.s3m");
+        mongroup = 1;
+        nummon = 3;
+        inbatmon[1] = 6;
+        inbatmon[2] = 5;
+        inbatmon[3] = 6;
+        slums[20] = 2;
+        map("bmap3.map");
+    }
+    if (slums[20] = 0) {
+        ent1 = entityspawn(1, 33, "lell.chr");
+        setplayer(ent1);
+    }
 }
-}
-event//1 to dam1
+event // 1 to dam1
 {
- slums[9]=3;
- musicfade(2);
- playmusic("sil.s3m");
- wait(10);
- mapswitch("sewers.map",0,0,0);
+    slums[9] = 3;
+    musicfade(2);
+    playmusic("sil.s3m");
+    wait(10);
+    mapswitch("sewers.map", 0, 0, 0);
 }
 }

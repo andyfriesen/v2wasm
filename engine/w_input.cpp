@@ -149,6 +149,43 @@ namespace {
         return true;
     }
 
+    EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        Input* input = reinterpret_cast<Input*>(userData);
+
+        input->mousex = mouseEvent->clientX;
+        input->mousey = mouseEvent->clientY;
+        switch (mouseEvent->button) {
+            case 0: input->mouseb |= 1; break;
+            case 1: input->mouseb |= 2; break;
+            case 2: input->mouseb |= 4; break;
+        }
+
+        return true;
+    }
+
+    EM_BOOL onMouseUp(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        Input* input = reinterpret_cast<Input*>(userData);
+
+        input->mousex = mouseEvent->clientX;
+        input->mousey = mouseEvent->clientY;
+        switch (mouseEvent->button) {
+            case 0: input->mouseb &= ~1; break;
+            case 1: input->mouseb &= ~2; break;
+            case 2: input->mouseb &= ~4; break;
+        }
+
+        return true;
+    }
+
+    EM_BOOL onMouseMove(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        Input* input = reinterpret_cast<Input*>(userData);
+        
+        input->mousex = mouseEvent->clientX;
+        input->mousey = mouseEvent->clientY;
+
+        return true;
+    }
+
 }
 
 Input::Input() {}
@@ -187,6 +224,10 @@ int Input::Init() {
 
     emscripten_set_gamepadconnected_callback(0, true, &onGamepadConnected);
     emscripten_set_gamepaddisconnected_callback(0, true, &onGamepadDisonnected);
+
+    emscripten_set_mousedown_callback("vergeCanvas", this, true, &onMouseDown);
+    emscripten_set_mouseup_callback("vergeCanvas", this, true, &onMouseUp);
+    emscripten_set_mousemove_callback("vergeCanvas", this, true, &onMouseMove);
 
     return 1;
 }

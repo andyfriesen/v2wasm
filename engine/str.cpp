@@ -74,3 +74,17 @@ bool string_t::operator>=(const string_t& s) const {
 char string_t::operator[](int offset) const {
     return (char)((offset < 0 || offset >= length()) ? 0 : F_data[offset]);
 }
+
+int stricmp(const char* a, const char* b) {
+    while (*a && *b) {
+        if (!*a) return -1;
+        if (!*b) return 1;
+
+        char aa = tolower(*a);
+        char bb = tolower(*b);
+        if (aa < bb) return -1;
+        if (aa > bb) return 1;
+    }
+
+    return 0;
+}
