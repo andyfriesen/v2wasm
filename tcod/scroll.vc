@@ -96,7 +96,7 @@ int Addlines(string line1,
 
 /* Scrolls text upwards, centered horizontally.  Lines of text are stored in the
 scroll_lines[] array, and are prepared by the Addlines function. */
-void ScrollText(int image, int bgcolour, int font, int del, int can_stop) {
+void ScrollText(int image, int bgcolour, int font, int del_, int can_stop) {
     int j, length;
     int fh, fw, console;
     fh = FontHeight(font);
@@ -117,11 +117,11 @@ void ScrollText(int image, int bgcolour, int font, int del, int can_stop) {
             PrintString(font, scroll_lines[j]);
         }
         ShowPage();
-        if (del > 0) {
-            del_eng(del);
+        if (del_ > 0) {
+            del_eng(del_);
         }
-        if (del < 0) {
-            i += (0 - 1) * del;
+        if (del_ < 0) {
+            i += (0 - 1) * del_;
         }
         i += 1;
         if (can_stop) {

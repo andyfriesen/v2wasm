@@ -6788,25 +6788,21 @@ void battleselections() {
                                 music_volume = 100;
                                 if (spellbasetype[spellused] = 2) {
                                     if (deadmon[target] = 1) {
-                                        entity
-                                            .specframe[battlemonster[target]] =
+                                        entity.specframe[battlemonster[target]] =
                                             0;
                                     }
                                     if (deadmon[target] = 0) {
-                                        entity
-                                            .specframe[battlemonster[target]] =
+                                        entity.specframe[battlemonster[target]] =
                                             7;
                                     }
                                 }
                                 if (spellbasetype[spellused] = 1) {
                                     if (deadchar[playerturn] = 1) {
-                                        entity
-                                            .specframe[battlechar[playerturn]] =
+                                        entity.specframe[battlechar[playerturn]] =
                                             0;
                                     }
                                     if (deadchar[playerturn] = 0) {
-                                        entity
-                                            .specframe[battlechar[playerturn]] =
+                                        entity.specframe[battlechar[playerturn]] =
                                             7;
                                     }
                                 }
@@ -9268,8 +9264,6 @@ void showsels2() {
         }
     }
 }
-}
-}
 
 void monsternames() {
     For(x = 1; x < nummon2; x++) {
@@ -9350,7 +9344,6 @@ void loadbattlestats() {
             batmonstermaxmp[x] = str(monstermaxmp[x]);
         }
     }
-}
 }
 void attack() {
     if (playerturn = 1) {
@@ -12794,7 +12787,7 @@ void enemyattack() {
         }
     }
 }
-}
+
 void enemdamages() {
     For(x = 1; x < nummon2; x++) {
         if (mongroup = 2) {
@@ -14992,8 +14985,6 @@ void statmenu() {
             }
         }
     }
-}
-}
 }
 
 void equipmenu() {
@@ -18510,7 +18501,7 @@ void magicmenu() {
         }
     }
 }
-}
+
 void skillsmenu() {
     loadmenupics();
     while (mmenu = 4) {
@@ -19931,7 +19922,7 @@ void itemmenu() {
         }
     }
 }
-}
+
 void clock() {
     ms++;
     If(ms = 100) {
@@ -20198,7 +20189,7 @@ void statistics(int char) {
         chaws[7] = 85;
     }
 }
-}
+
 void levels() {}
 void experience() {}
 void itemnames() {
@@ -21455,7 +21446,7 @@ void jukeboxmenu() {
         }
     }
 }
-}
+
 void optionmenuparts() {
     Tcopysprite(0, 0, 640, 480, mpic1);
     Tcopysprite(0, 0, 179, 29, mpic3);
