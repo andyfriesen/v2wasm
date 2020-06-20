@@ -31,15 +31,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define RESERVED 4
 #define FUNCTION 5
 
-//extern char *strbuf;
+// extern char *strbuf;
 extern int locate;
 
-extern void log(char* message, ...);
+extern void log(const char* message, ...);
 
-extern char* va(char* format, ...);
-extern void err(char *message, ...);
-extern void vcerr(char *message, ...);
-extern void dprint(char *message, ...);
-extern void vprint(char *message, ...);
+extern char* va(const char* format, ...);
+extern void err(const char* message, ...);
+extern void vcerr(const char* message, ...);
+extern void dprint(const char* message, ...);
+extern void vprint(const char* message, ...);
 
 #endif // __VCC_INC

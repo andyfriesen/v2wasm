@@ -25,56 +25,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 #include <string.h>
 
-class linked_node
-{
-	linked_node* nex;
-	linked_node* pre;
+class linked_node {
+    linked_node* nex;
+    linked_node* pre;
 
-public:
-	linked_node* next() { return nex; }
-	linked_node* prev() { return pre; }
-	void set_next(linked_node* pn) { nex=pn; }
-	void set_prev(linked_node* pn) { pre=pn; }
+  public:
+    linked_node* next() { return nex; }
+    linked_node* prev() { return pre; }
+    void set_next(linked_node* pn) { nex = pn; }
+    void set_prev(linked_node* pn) { pre = pn; }
 
-        virtual int compare(void* c) { c=c; return 0; }      // default is = (equal)
+    virtual int compare(void* c) {
+        c = c;
+        return 0;
+    } // default is = (equal)
 
-	virtual ~linked_node() {}
-	linked_node() { nex=pre=NULL; }
+    virtual ~linked_node() {}
+    linked_node() { nex = pre = NULL; }
 };
 
-class linked_list
-{
-	linked_node* fn;
-	linked_node* cn;
-	int nn;
+class linked_list {
+    linked_node* fn;
+    linked_node* cn;
+    int nn;
 
-public:
-	~linked_list();
-	linked_list(linked_node *first=NULL);
+  public:
+    ~linked_list();
+    linked_list(linked_node* first = NULL);
 
-	void insert_head(linked_node* pn);
-	void insert_tail(linked_node* pn);
-	void insert_before_current(linked_node* pn);
-	void insert_after_current(linked_node* pn);
-	void insert(linked_node* pn);
+    void insert_head(linked_node* pn);
+    void insert_tail(linked_node* pn);
+    void insert_before_current(linked_node* pn);
+    void insert_after_current(linked_node* pn);
+    void insert(linked_node* pn);
 
-	linked_node* current() const { return cn; }
-	linked_node* head() const { return fn; }
-	linked_node* tail() const { return head()->prev(); }
+    linked_node* current() const { return cn; }
+    linked_node* head() const { return fn; }
+    linked_node* tail() const { return head()->prev(); }
 
-	linked_node* get_node(int x);
+    linked_node* get_node(int x);
 
-	void set_current(linked_node* pn) { cn=pn; }
+    void set_current(linked_node* pn) { cn = pn; }
 
-	void go_head() { cn=head(); }
-	void go_tail() { cn=head()->prev(); }
-	void go_next() { cn=current()->next(); }
-	void go_prev() { cn=current()->prev(); }
+    void go_head() { cn = head(); }
+    void go_tail() { cn = head()->prev(); }
+    void go_next() { cn = current()->next(); }
+    void go_prev() { cn = current()->prev(); }
 
-	int number_nodes() const { return nn; }
-	int node_number(linked_node* pn);
+    int number_nodes() const { return nn; }
+    int node_number(linked_node* pn);
 
-	int unlink(linked_node* pn);
+    int unlink(linked_node* pn);
 };
 
 #endif // LINKED_INC

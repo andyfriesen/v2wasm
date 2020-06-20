@@ -28,69 +28,57 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define CHARPTR 2
 #define STRING 3
 
-extern char	xvc_sig[9];
+extern char xvc_sig[9];
 
 // event offset marker
-struct funcmark
-	: public linked_node
-{
-	int mark;
-	funcmark(int x)
-	: mark(x) {}
-	//void mark_the_spot(int x) { mark=x; }
-	int compare(void* c);
+struct funcmark : public linked_node {
+    int mark;
+    funcmark(int x) : mark(x) {}
+    // void mark_the_spot(int x) { mark=x; }
+    int compare(void* c);
 };
 
-struct function_t
-	: public linked_node
-{
-	char fname[40];
-	char argtype[20];
-	int numargs, numlocals;
-	int returntype;
-	int syscodeofs;
+struct function_t : public linked_node {
+    char fname[40];
+    char argtype[20];
+    int numargs, numlocals;
+    int returntype;
+    int syscodeofs;
 
-	function_t()
-	: numargs(0), numlocals(0), returntype(0), syscodeofs(0) {}
+    function_t() : numargs(0), numlocals(0), returntype(0), syscodeofs(0) {}
 
-	int compare(void* o);
-	void write(FILE* fp);
-	void read(FILE* fp);
+    int compare(void* o);
+    void write(FILE* fp);
+    void read(FILE* fp);
 };
 
-struct variable_t
-	: public linked_node
-{
-	char vname[40];
-	int varstartofs;
-	int arraylen;
+struct variable_t : public linked_node {
+    char vname[40];
+    int varstartofs;
+    int arraylen;
 
-	variable_t()
-	: varstartofs(0), arraylen(0) {}
+    variable_t() : varstartofs(0), arraylen(0) {}
 
-	int compare(void* o);
-	void write(FILE* fp);
-	void read(FILE* fp);
+    int compare(void* o);
+    void write(FILE* fp);
+    void read(FILE* fp);
 };
 
-struct string_t
-	: public linked_node
-{
-	char vname[40];
-	int vsofs;
-	int arraylen;
+struct string_t : public linked_node {
+    char vname[40];
+    int vsofs;
+    int arraylen;
 
-	string_t()
-	: vsofs(0), arraylen(0) {}
+    string_t() : vsofs(0), arraylen(0) {}
 
-	int compare(void* o);
-	void write(FILE* fp);
-	void read(FILE* fp);
+    int compare(void* o);
+    void write(FILE* fp);
+    void read(FILE* fp);
 };
 
-extern function_t*	find_fun;
-extern variable_t*	find_var;
-extern string_t*	find_str;
+extern function_t* find_fun;
+extern variable_t* find_var;
+extern string_t* find_str;
 
 extern unsigned char *source, *src;
 extern unsigned char *outbuf, *code;
@@ -105,28 +93,28 @@ extern linked_list functionlist;
 extern linked_list varlist;
 extern linked_list strlist;
 
-//extern int varidx;
-//extern int funcidx;
+// extern int varidx;
+// extern int funcidx;
 
 extern int startsyscript;
 
 #define MAX_LOCALS 20
 extern char larg[MAX_LOCALS][40]; // was [12][40]. blah
-//extern int c;
+// extern int c;
 
-//extern char *functbl[512];
+// extern char *functbl[512];
 extern linked_list functbl;
-//extern int mfuncs;
+// extern int mfuncs;
 
-extern void CompileMAP(char *fname);
+extern void CompileMAP(char* fname);
 extern void CompileSystem();
-extern void Expect(char *str);
+extern void Expect(char* str);
 
 extern void EmitC(char c);
 extern void EmitW(short int w);
 extern void EmitD(int w);
 extern void EmitOperand();
-extern void EmitString(char *str);
+extern void EmitString(char* str);
 extern void HandleString();
 
 #endif // __COMPILE_INC

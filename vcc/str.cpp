@@ -20,86 +20,115 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "str.h" //#include "verge.h"
 
-string_t& string_t::operator =(const string_t& rhs)
-{
-	if (&rhs != this)
-	{
-		F_position = 0;
-		write(rhs.F_data, rhs.F_position);
-	}
-	return *this;
+VCString& VCString::operator=(const VCString& rhs) {
+    if (&rhs != this) {
+        F_position = 0;
+        write(rhs.F_data, rhs.F_position);
+    }
+    return *this;
 }
 
-string_t& string_t::operator+=(const string_t& rhs)
-{
-	F_position--; // backtrack over terminator
-	write(rhs.F_data, rhs.F_position);
-	return *this;
+VCString& VCString::operator+=(const VCString& rhs) {
+    F_position--; // backtrack over terminator
+    write(rhs.F_data, rhs.F_position);
+    return *this;
 }
 
 /*
 // don't want this behavior; expressions such as x=y+z imply x=(y+=z); // blech
-string_t& string_t::operator+ (const string_t& rhs)
+VCString& VCString::operator+ (const VCString& rhs)
 {
-	return *this += rhs;
+        return *this += rhs;
 }
 */
 
-string_t string_t::operator()(long offset, long count) const
-{
-string_t s;
+VCString VCString::operator()(long offset, long count) const {
+    VCString s;
 
-	if (offset >= length() || count < 1)
-		return s;
+    if (offset >= length() || count < 1)
+        return s;
 
-	if (offset < 0)
-	{
-		count += offset;
-		offset = 0;
-	}
-	if (offset + count > length())
-		count = length() - offset;
+    if (offset < 0) {
+        count += offset;
+        offset = 0;
+    }
+    if (offset + count > length())
+        count = length() - offset;
 
-	s.F_position--; // backtrack over terminator
-	s.write(F_data + offset, count);
-	s.write("", 1);
+    s.F_position--; // backtrack over terminator
+    s.write(F_data + offset, count);
+    s.write("", 1);
 
-	return s;
+    return s;
 }
 
-string_t string_t::upper()
-{
-string_t s = *this;
-	strupr((char*)s.F_data);
-	return s;
+VCString VCString::upper() {
+    VCString s = *this;
+    strupr((char*)s.F_data);
+    return s;
 }
 
-string_t string_t::lower()
-{
-string_t s = *this;
-	strlwr((char*)s.F_data);
-	return s;
+VCString VCString::lower() {
+    VCString s = *this;
+    strlwr((char*)s.F_data);
+    return s;
 }
 
-bool string_t::operator !=(const string_t& s) const
-	{ return (const char*)F_data != s; }
+bool VCString::operator!=(const VCString& s) const {
+    return (const char*)F_data != s;
+}
 
-bool string_t::operator==(const string_t& s) const
-	{ return (const char*)F_data == s; }
+bool VCString::operator==(const VCString& s) const {
+    return (const char*)F_data == s;
+}
 
-bool string_t::operator< (const string_t& s) const
-	{ return (const char*)F_data <  s; }
+bool VCString::operator<(const VCString& s) const {
+    return (const char*)F_data < s;
+}
 
-bool string_t::operator<=(const string_t& s) const
-	{ return (const char*)F_data <= s; }
+bool VCString::operator<=(const VCString& s) const {
+    return (const char*)F_data <= s;
+}
 
-bool string_t::operator> (const string_t& s) const
-	{ return (const char*)F_data >  s; }
+bool VCString::operator>(const VCString& s) const {
+    return (const char*)F_data > s;
+}
 
-bool string_t::operator>=(const string_t& s) const
-	{ return (const char*)F_data >= s; }
+bool VCString::operator>=(const VCString& s) const {
+    return (const char*)F_data >= s;
+}
 
-char string_t::operator[](long offset) const
-{
-	return (char)((offset < 0 || offset >= length()) ? 0 : F_data[offset]);
+char VCString::operator[](long offset) const {
+    return (char)((offset < 0 || offset >= length()) ? 0 : F_data[offset]);
+}
+
+void strupr(char* s) {
+    while (*s) {
+        *s = toupper(*s);
+        ++s;
+    }    
+}
+
+void strlwr(char* s) {
+    while (*s) {
+        *s = tolower(*s);
+        ++s;
+    }
+}
+
+int stricmp(const char* a, const char* b) {
+    while (*a && *b) {        
+        if (!*a) return -1;
+        if (!*b) return 1;
+
+        char aa = tolower(*a);
+        char bb = tolower(*b);
+        if (aa < bb) return -1;
+        if (aa > bb) return 1;
+
+        ++a;
+        ++b;
+    }
+
+    return 0;
 }

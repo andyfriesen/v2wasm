@@ -1,0 +1,12 @@
+---
+AlignAfterOpenBracket: DontAlign
+BinPackParameters: 'false'
+IndentCaseLabels: 'false'
+IndentWidth: '4'
+Language: Cpp
+PointerAlignment: Left
+SortIncludes: 'true'
+Standard: Cpp11
+UseTab: Never
+
+...

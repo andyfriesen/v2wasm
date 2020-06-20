@@ -19,161 +19,138 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 /*
-	tokenize.h
-	coded by aen
+        tokenize.h
+        coded by aen
 */
 
 #ifndef TOKENIZE_INC
 #define TOKENIZE_INC
 
 #include "str.h"
-
-class zToken
-{
-public:
-	zToken(string_t nid="", int nline=0)
-		: id(nid), line(nline)
-		{ }
-	string_t id;
-	int line;
-};
-
 #include "vector.h"
 
-class zTokenizer
-{
-private:
-	string_t filename;
+class zToken {
+  public:
+    VCString id;
+    int line;
+};
 
-// valid symbol groupings
-	vector_t<string_t> symbol_key;
+class zTokenizer {
+  private:
+    VCString filename;
 
-// source token accumulation
-	vector_t<zToken> tokens;
-	int curtoken;
+    // valid symbol groupings
+    vector_t<VCString> symbol_key;
 
-// input stream traveller
-	const char* source;
+    // source token accumulation
+    vector_t<zToken> tokens;
+    int curtoken;
 
-// > RECOGNIZERS <
-	bool isWhite(char c);
-	bool isAlpha(char c);
-	bool isBinaryDigit(char c);
-	bool IsOctalDigit(char c);
-	bool isDigit(char c);
-	bool isHexDigit(char c);
-	bool isAlphaNumeric(char c);
-	bool isQuote(char c);
-	bool isValidIdentifier(string_t s);
-	bool isValidInteger(string_t s);
-	bool isValidNumber(string_t s);
+    // input stream traveller
+    const char* source;
 
-// > EATERS <
-	bool atC_Comment();
-	bool atC_CommentEnd();
-	bool atCPP_Comment();
-	void skipC_Comment();
-	void skipCPP_Comment();
-	void skipWhite();
+    // > RECOGNIZERS <
+    bool isWhite(char c);
+    bool isAlpha(char c);
+    bool isBinaryDigit(char c);
+    bool IsOctalDigit(char c);
+    bool isDigit(char c);
+    bool isHexDigit(char c);
+    bool isAlphaNumeric(char c);
+    bool isQuote(char c);
+    bool isValidIdentifier(VCString s);
+    bool isValidInteger(VCString s);
+    bool isValidNumber(VCString s);
 
-// > COLLECTORS <
-	zToken collectIdentifier();
-	zToken collectNumber();
-	string_t accumulateStringLiteral();
-	zToken collectStringLiteral();
-	zToken collectSymbol();
-	zToken collectToken();
+    // > EATERS <
+    bool atC_Comment();
+    bool atC_CommentEnd();
+    bool atCPP_Comment();
+    void skipC_Comment();
+    void skipCPP_Comment();
+    void skipWhite();
 
-	void error(string_t message)
-	{
-		cout << "zTokenizer: error: " << message.c_str() << endl;
-		abort();
-	}
-public:
-	zTokenizer()
-		{ }
-~zTokenizer()
-	{ }
+    // > COLLECTORS <
+    zToken collectIdentifier();
+    zToken collectNumber();
+    VCString accumulateStringLiteral();
+    zToken collectStringLiteral();
+    zToken collectSymbol();
+    zToken collectToken();
 
-// generate symbol table from a NULL-terminated character string array
-	void DefineSymbols(const char* nsymbol_key[])
-	{
-	int n;
-	const char* e;
+    void error(VCString message) {
+        std::cout << "zTokenizer: error: " << message.c_str() << std::endl;
+        abort();
+    }
 
-		e = nsymbol_key[n = 0];
-		while (e)
-		{
-			symbol_key.push_top(e);
-			e = nsymbol_key[++n];
-		}
-	}
-// generate symbol table from a vector_t<string_t> object
-	void DefineSymbols(vector_t<string_t>& nsymbol_key)
-	{
-		symbol_key = nsymbol_key;
-	}
+  public:
+    zTokenizer() {}
+    ~zTokenizer() {}
 
-	void Tokenize(string_t nfilename)
-	{
-	// every time we tokenize a file, save the name
-		filename = nfilename;
+    // generate symbol table from a NULL-terminated character string array
+    void DefineSymbols(const char* nsymbol_key[]) {
+        int n;
+        const char* e;
 
-	memorystream_t in;
+        e = nsymbol_key[n = 0];
+        while (e) {
+            symbol_key.push_top(e);
+            e = nsymbol_key[++n];
+        }
+    }
+    // generate symbol table from a vector_t<VCString> object
+    void DefineSymbols(vector_t<VCString>& nsymbol_key) {
+        symbol_key = nsymbol_key;
+    }
 
-	// load input stream
-		in.loadfromfile(filename.c_str());
-		in.write("", 1);
-	// start source off at beginnning
-		source = (const char*)in.getdata();
+    void Tokenize(VCString nfilename) {
+        // every time we tokenize a file, save the name
+        filename = nfilename;
 
-	// clear token list
-		tokens.clear();
+        memorystream_t in;
 
-	// collect the tokens!
-		skipWhite();
-		while (*source)
-		{
-			tokens.push_top(collectToken());
-			skipWhite();
-		}
-	// we shouldn't access source anywhere outside this routine
-		source = NULL;
+        // load input stream
+        in.loadfromfile(filename.c_str());
+        in.write("", 1);
+        // start source off at beginnning
+        source = (const char*)in.getdata();
 
-		ReSet();
-	}
+        // clear token list
+        tokens.clear();
 
-// validators
-	bool OK()
-		{ return (curtoken >= 0 && curtoken < tokens.size()); }
+        // collect the tokens!
+        skipWhite();
+        while (*source) {
+            tokens.push_top(collectToken());
+            skipWhite();
+        }
+        // we shouldn't access source anywhere outside this routine
+        source = NULL;
 
-// navigators
-	void ReSet()
-		{ curtoken = 0; }
-	void Next()
-		{ ++curtoken; }
-	void Prev()
-		{ --curtoken; }
-	void Move(int count = 0)
-		{ curtoken += count; }
+        ReSet();
+    }
 
-// retrieval
-	string_t Token()
-		{ return OK() ? tokens[0+curtoken].id : ""; }
-	string_t TokenInc()
-		{ return OK() ? tokens[curtoken++].id : ""; }
-	string_t TokenDec()
-		{ return OK() ? tokens[curtoken--].id : ""; }
+    // validators
+    bool OK() { return (curtoken >= 0 && curtoken < tokens.size()); }
 
-	void DumpTokens()
-	{
-	int n;
-		for (n = 0; n < tokens.size(); n++)
-			cout << tokens[n].id.c_str() << '\n';
-	}
+    // navigators
+    void ReSet() { curtoken = 0; }
+    void Next() { ++curtoken; }
+    void Prev() { --curtoken; }
+    void Move(int count = 0) { curtoken += count; }
 
-	int TokenCount()
-		{ return tokens.size(); }
+    // retrieval
+    VCString Token() { return OK() ? tokens[0 + curtoken].id : ""; }
+    VCString TokenInc() { return OK() ? tokens[curtoken++].id : ""; }
+    VCString TokenDec() { return OK() ? tokens[curtoken--].id : ""; }
+
+    void DumpTokens() {
+        int n;
+        for (n = 0; n < tokens.size(); n++)
+            std::cout << tokens[n].id.c_str() << std::endl;
+    }
+
+    int TokenCount() { return tokens.size(); }
 };
 
 #endif // TOKENIZE_INC

@@ -21,13 +21,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #if !defined(__LEXICAL_INC)
 #define __LEXICAL_INC
 
-struct token_t
-{
-	char ident[40+1];
-	int value;
-	int type, subtype;
-	int index;
-	char* ptr;
+struct token_t {
+    char ident[40 + 1];
+    int value;
+    int type, subtype;
+    int index;
+    char* ptr;
 };
 
 extern token_t tok;
@@ -36,31 +35,32 @@ extern void ParseWhitespace();
 extern void GetNumber();
 extern void GetToken();
 extern void InitCompileSystem();
-extern int NextIs(char *str);
+extern int NextIs(const char* str);
 
-//extern void GetString(void);
+// extern void GetString(void);
 extern void GetEmitStringLiteral();
 
-//extern char token[2000];                 // Token buffer
-//extern unsigned int token_nvalue;        // int value of token if it's type DIGIT
-//extern char token_type;                  // type of current token.
-//extern char token_subtype;               // This is just crap.
-extern unsigned char chr_table[256];              // Character type table.
+// extern char token[2000];                 // Token buffer
+// extern unsigned int token_nvalue;        // int value of token if it's type
+// DIGIT
+// extern char token_type;                  // type of current token.
+// extern char token_subtype;               // This is just crap.
+extern unsigned char chr_table[256]; // Character type table.
 extern char returntypes[];
 extern int lines, tlines;
-extern char *source_file;
+extern char* source_file;
 
-extern char TokenIs(char* str);
-extern void Expect(char* str);
+extern char TokenIs(const char* str);
+extern void Expect(const char* str);
 
 extern int numhardfuncs;
-//extern int funcidx;
-//extern int varcategory;
+// extern int funcidx;
+// extern int varcategory;
 extern int numhardvar0;
 extern int numhardvar1;
-extern char *hardfuncs[];
-extern char *hardvar0[];
-extern char *hardvar1[];
+extern const char* hardfuncs[];
+extern const char* hardvar0[];
+extern const char* hardvar1[];
 
 extern void init_hardfuncs();
 

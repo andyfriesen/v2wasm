@@ -21,7 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #if !defined(__PREPROC_INC)
 #define __PREPROC_INC
 
-extern void PreProcess(char *fname);
-extern void Process(char *fname);
+void PreProcess(const char* fname);
+void Process(const char* fname);
 
 #endif // __PREPROC_INC
