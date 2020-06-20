@@ -225,9 +225,9 @@ int Input::Init() {
     emscripten_set_gamepadconnected_callback(0, true, &onGamepadConnected);
     emscripten_set_gamepaddisconnected_callback(0, true, &onGamepadDisonnected);
 
-    emscripten_set_mousedown_callback("vergeCanvas", this, true, &onMouseDown);
-    emscripten_set_mouseup_callback("vergeCanvas", this, true, &onMouseUp);
-    emscripten_set_mousemove_callback("vergeCanvas", this, true, &onMouseMove);
+    emscripten_set_mousedown_callback("#vergeCanvas", this, true, &onMouseDown);
+    emscripten_set_mouseup_callback("#vergeCanvas", this, true, &onMouseUp);
+    emscripten_set_mousemove_callback("#vergeCanvas", this, true, &onMouseMove);
 
     return 1;
 }
