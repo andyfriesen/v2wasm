@@ -29,7 +29,7 @@ template <class T> class vector_t {
             // failure
             return 0;
         // copy existing data into new data buffer
-        for (int n = 0; n < F_size; n++)
+        for (size_t n = 0; n < F_size; n++)
             newdata[n] = F_data[n];
         // free existing data buffer and reassign pointers
         free();
@@ -88,7 +88,7 @@ template <class T> class vector_t {
     // assignment op
     vector_t<T>& operator=(const vector_t<T>& rhs) {
         setsize(rhs.F_size);
-        for (int n = 0; n < rhs.F_size; n++)
+        for (size_t n = 0; n < rhs.F_size; n++)
             F_data[n] = rhs.F_data[n];
         return *this;
     }

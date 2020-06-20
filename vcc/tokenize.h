@@ -44,7 +44,7 @@ class zTokenizer {
 
     // source token accumulation
     vector_t<zToken> tokens;
-    int curtoken;
+    size_t curtoken;
 
     // input stream traveller
     const char* source;
@@ -131,7 +131,7 @@ class zTokenizer {
     }
 
     // validators
-    bool OK() { return (curtoken >= 0 && curtoken < tokens.size()); }
+    bool OK() { return curtoken < tokens.size(); }
 
     // navigators
     void ReSet() { curtoken = 0; }
@@ -145,8 +145,7 @@ class zTokenizer {
     VCString TokenDec() { return OK() ? tokens[curtoken--].id : ""; }
 
     void DumpTokens() {
-        int n;
-        for (n = 0; n < tokens.size(); n++)
+        for (size_t n = 0; n < tokens.size(); n++)
             std::cout << tokens[n].id.c_str() << std::endl;
     }
 

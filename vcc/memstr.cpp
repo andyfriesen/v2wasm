@@ -166,8 +166,6 @@ long memorystream_t::write(char c, long length) {
     return length;
 }
 
-#pragma off(unreferenced);
-
 int memorystream_t::loadfromfile(const char* filename)
 // self-explanatory ^_^
 {

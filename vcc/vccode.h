@@ -18,6 +18,8 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#pragma once
+
 // We never use zero as a tag. This makes it easier to track down misbehaving
 // VC code, since zero is commonly come-by when going off into uncharted
 // depths of memory.
@@ -42,18 +44,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // Operand types.
 
-#define op_IMMEDIATE 1
-#define op_HVAR0 2
-#define op_HVAR1 3
-#define op_UVAR 4
-#define op_UVARRAY 5
-#define op_LVAR 6
-#define op_BFUNC 7
-#define op_UFUNC 8
-#define op_GROUP 9
-#define op_STRING 10
-#define op_SARRAY 11
-#define op_SLOCAL 12
+enum OperandType {
+    op_IMMEDIATE = 1,
+    op_HVAR0 = 2,
+    op_HVAR1 = 3,
+    op_UVAR = 4,
+    op_UVARRAY = 5,
+    op_LVAR = 6,
+    op_BFUNC = 7,
+    op_UFUNC = 8,
+    op_GROUP = 9,
+    op_STRING = 10,
+    op_SARRAY = 11,
+    op_SLOCAL = 12,
+};
 
 // Variable types.
 

@@ -18,13 +18,16 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-#if !defined(__LEXICAL_INC)
-#define __LEXICAL_INC
+#pragma once
+
+#include "vcc.h"
+#include "vccode.h"
 
 struct token_t {
     char ident[40 + 1];
     int value;
-    int type, subtype;
+    TokenType type;
+    OperandType subtype;
     int index;
     char* ptr;
 };
@@ -66,5 +69,3 @@ extern void init_hardfuncs();
 
 extern int GetVarIdx(int found_at);
 extern int GetStringIdx(int found_at);
-
-#endif // __LEXICAL_INC

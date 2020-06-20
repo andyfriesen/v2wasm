@@ -36,7 +36,7 @@ class linked_node {
     void set_prev(linked_node* pn) { pre = pn; }
 
     virtual int compare(void* c) {
-        c = c;
+        (void)c;
         return 0;
     } // default is = (equal)
 

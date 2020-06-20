@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <string.h>
 
 #include "lexical.h"
+#include "vcc.h"
 
 // *****
 #define NEW_LOCALS
@@ -42,10 +43,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // ================================= Data ====================================
 
 // Character types
-
-#define LETTER 1
-#define DIGIT 2
-#define SPECIAL 3
 
 // ---------------
 
@@ -277,7 +274,7 @@ void CheckLibFunc() {
     int n;
 
     tok.value = 0;
-    tok.type = 0;
+    tok.type = TokenType{};
     // token_nvalue=0;
     // token_type=0;
 

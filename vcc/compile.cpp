@@ -335,22 +335,22 @@ void HandleOperand() {
             return;
     }
     */
-    // if (token_type==DIGIT)
+
     if (DIGIT == tok.type) {
         EmitC(op_IMMEDIATE);
         // EmitD(token_nvalue);
         EmitD(tok.value);
         return;
     }
-    // if (token_type==IDENTIFIER)
+
     if (IDENTIFIER == tok.type) {
-        // if (varcategory==op_UVAR)
+
         if (op_UVAR == tok.subtype) {
             EmitC(op_UVAR);
             EmitD(find_var->varstartofs);
             return;
         }
-        // if (varcategory==op_UVARRAY)
+
         if (op_UVARRAY == tok.subtype) {
             EmitC(op_UVARRAY);
             EmitD(find_var->varstartofs);
@@ -359,24 +359,18 @@ void HandleOperand() {
             Expect("]");
             return;
         }
-        // if (varcategory==op_LVAR)
         if (op_LVAR == tok.subtype) {
             EmitC(op_LVAR);
-            // EmitC((char) varidx);
             EmitC((char)tok.index);
             return;
         }
-        // if (varcategory==op_HVAR0)
         if (op_HVAR0 == tok.subtype) {
             EmitC(op_HVAR0);
-            // EmitC((char) varidx);
             EmitC((char)tok.index);
             return;
         }
-        // if (varcategory==op_HVAR1)
         if (op_HVAR1 == tok.subtype) {
             EmitC(op_HVAR1);
-            // EmitC((char) varidx);
             EmitC((char)tok.index);
             Expect("[");
             EmitOperand();
@@ -384,17 +378,14 @@ void HandleOperand() {
             return;
         }
     }
-    // if (token_type==FUNCTION && token_subtype==op_BFUNC)
     if (FUNCTION == tok.type && op_BFUNC == tok.subtype) {
-        // if (!returntypes[funcidx])
         if (returntypes[tok.index] != 1) {
-            vcerr("%s() does not return an integer.", tok.ident); // token);
+            vcerr("%s() does not return an integer.", tok.ident);
         }
         EmitC(op_BFUNC);
         HandleFunction();
         return;
     }
-    // if (token_type==FUNCTION && token_subtype==op_UFUNC)
     if (FUNCTION == tok.type && op_UFUNC == tok.subtype) {
         if (find_fun->returntype != 1) {
             vcerr("%s() does not return an integer.", tok.ident); // token);
@@ -403,7 +394,7 @@ void HandleOperand() {
         HandleUserFunction();
         return;
     }
-    vcerr(va("Unknown token <%s>.", tok.ident)); // token));
+    vcerr(va("Unknown token <%s>.", tok.ident));
 }
 
 void EmitOperand() {
@@ -1319,14 +1310,12 @@ void DumpSystemIdx() {
     FILE* f;
     int n, x;
     char* code;
-    int code_length;
     char buf[8];
 
     f = 0;
     n = 0;
     x = 0;
     code = 0;
-    code_length = 0;
     buf[0] = '\0';
 
     vprint("Dumping index portion of system.xvc.");

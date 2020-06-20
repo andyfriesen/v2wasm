@@ -99,7 +99,7 @@ bool VCString::operator>=(const VCString& s) const {
 }
 
 char VCString::operator[](long offset) const {
-    return (char)((offset < 0 || offset >= length()) ? 0 : F_data[offset]);
+    return (char)((unsigned long)(offset) >= length() ? 0 : F_data[offset]);
 }
 
 void strupr(char* s) {

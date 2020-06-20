@@ -25,11 +25,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define DEFAULT 1
 #define VERBOSE 2
 
-#define CONTROL 1
-#define DIGIT 2
-#define IDENTIFIER 3
-#define RESERVED 4
-#define FUNCTION 5
+enum TokenType {
+    CONTROL = 1,
+    DIGIT = 2,
+    IDENTIFIER = 3,
+    RESERVED = 4,
+    FUNCTION = 5,
+
+    LETTER = 1,
+    SPECIAL = 3,
+};
 
 // extern char *strbuf;
 extern int locate;

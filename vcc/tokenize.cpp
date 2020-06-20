@@ -81,8 +81,7 @@ bool zTokenizer::isValidIdentifier(VCString s)
     if (!isAlpha(s[0]))
         return false;
 
-    int n;
-    n = 0;
+    size_t n = 0;
     while (n < s.length()) {
         if (isAlphaNumeric(s[n]) || '_' == s[n])
             ++n;
@@ -95,8 +94,7 @@ bool zTokenizer::isValidIdentifier(VCString s)
 bool zTokenizer::isValidInteger(VCString s)
 // returns true for non-floating-point numbers
 {
-    int n;
-    n = 0;
+    size_t n = 0;
     while (n < s.length()) {
         if (isDigit(s[n]) && '.' != s[n])
             ++n;
@@ -109,7 +107,7 @@ bool zTokenizer::isValidInteger(VCString s)
 bool zTokenizer::isValidNumber(VCString s)
 // returns true for either integer or floating-point numbers
 {
-    int n, dot;
+    size_t n, dot;
     n = 0, dot = 0;
     while (n < s.length()) {
         if (isDigit(s[n]))
@@ -341,9 +339,8 @@ zToken zTokenizer::collectStringLiteral() {
 
 zToken zTokenizer::collectSymbol() {
     zToken token;
-    int n;
 
-    for (n = 0; n < symbol_key.size(); n++) {
+    for (size_t n = 0; n < symbol_key.size(); n++) {
         if (!strncmp(source, symbol_key[n].c_str(), symbol_key[n].length())) {
             token.id = symbol_key[n];
             source += token.id.length();

@@ -555,7 +555,6 @@ void pp_token_letter() {
 
 void define_check_dup(char* sym) {
     int len;
-    define_t* pdef;
 
     // check for duplicate #defines
     if (!defines.empty()) {
@@ -858,7 +857,6 @@ void pp_get_token() {
 
 void define_check_for_replacement() {
     int len;
-    define_t* pdef;
 
     if (PP_LETTER != pp_toktype)
         return;
