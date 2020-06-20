@@ -1563,9 +1563,9 @@ void CloseVCFile(int index)
 {
     if (vcfiles[index].mode == 1) {
         vclose(vcfiles[index].readp);
-        wasm_syncFileSystem();
     } else if (vcfiles[index].mode == 2) {
         fclose(vcfiles[index].writep);
+        wasm_syncFileSystem();
     }
     vcfiles[index].mode = 0;
 }

@@ -33,15 +33,14 @@ char headertag[] = "VRGPACK\0";
 // ================================= Code ====================================
 
 FILE* _fopen(const char* filename, const char* mode) {
-    // TODO try lowercase first
-    std::string s = gameRoot + "/persist/" + filename;
+    std::string s = "persist/" + gameRoot + filename;
     V_strlwr(const_cast<char*>(s.data()));
     FILE* f = fopen(s.c_str(), mode);
     if (f) {
         return f;
     }
 
-    s = gameRoot + "/persist/" + filename;
+    s = "persist/" + gameRoot + filename;
     f = fopen(s.c_str(), mode);
     if (f) {
         return f;

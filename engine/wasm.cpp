@@ -45,25 +45,30 @@ EM_JS(void, wasm_initFileSystem, (const char* c), {
     let sgr = UTF8ToString(c);
     if (sgr.endsWith('/'))
         sgr = sgr.substr(0, sgr.length - 1);
-    FS.mkdir("/persist");
+    FS.mkdir("persist");
     FS.mkdir(sgr);
-    FS.mkdir("/persist/" + sgr);
+    FS.mkdir("persist/" + sgr);
     // Then mount with IDBFS type
-    FS.mount(IDBFS, {}, sgr);
-    FS.mount(IDBFS, {}, "/persist/" + sgr);
+    FS.mount(IDBFS, {}, "persist/" + sgr);
 
     // Then sync
     FS.syncfs(true, function (err) {
         // Error
-        if (err)
+        if (err) {
             console.error('wasm_initFileSystem failed!', err);
+        } else {
+            console.log("wasm_initFileSystem ok");
+        }
     });
 });
 
 EM_JS(void, wasm_syncFileSystem, (), {
+    console.log("wasm_syncFileSystem");
     FS.syncfs(false, err => {
         if (err) {
             console.error("wasm_syncFileSystem failed!!", err);
+        } else {
+            console.log("wasm_syncFileSystem ok");
         }
     });
 });

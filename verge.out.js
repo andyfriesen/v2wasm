@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548672,
+    STACK_BASE = 6548784,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305792,
-    DYNAMIC_BASE = 6548672,
-    DYNAMICTOP_PTR = 1305616;
+    STACK_MAX = 1305904,
+    DYNAMIC_BASE = 6548784,
+    DYNAMICTOP_PTR = 1305728;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,24 +1819,24 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  16078: function() {window.verge.setLoadingProgress(100);}
+  16185: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
   var args = readAsmConstArgs(sigPtr, argbuf);
   return ASM_CONSTS[code].apply(null, args);
 }function wasm_nextFrame(){ return Asyncify.handleSleep(requestAnimationFrame); }
-function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("/persist"); FS.mkdir(sgr); FS.mkdir("/persist/" + sgr); FS.mount(IDBFS, {}, sgr); FS.mount(IDBFS, {}, "/persist/" + sgr); FS.syncfs(true, function (err) { if (err) console.error('wasm_initFileSystem failed!', err); }); }
+function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("persist"); FS.mkdir(sgr); FS.mkdir("persist/" + sgr); FS.mount(IDBFS, {}, "persist/" + sgr); FS.syncfs(true, function (err) { if (err) { console.error('wasm_initFileSystem failed!', err); } else { console.log("wasm_initFileSystem ok"); } }); }
 function fetchSync(pathPtr,size,data){ return Asyncify.handleSleep(resume => { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; resume(); return; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); HEAP32[size >> 2] = bytes.length; const dataPtr = _malloc(bytes.length); HEAP32[data >> 2] = dataPtr; HEAP8.set(bytes, dataPtr); resume(); }); }); }
 function wasm_vgaresize(width,height){ console.log("wasm_vgaresize", width, height); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
-function wasm_syncFileSystem(){ FS.syncfs(false, err => { if (err) { console.error("wasm_syncFileSystem failed!!", err); } }); }
+function wasm_syncFileSystem(){ console.log("wasm_syncFileSystem"); FS.syncfs(false, err => { if (err) { console.error("wasm_syncFileSystem failed!!", err); } else { console.log("wasm_syncFileSystem ok"); } }); }
 function wasm_vgadump(frameBuffer,frameBufferSize){ const fb = HEAPU8.subarray(frameBuffer, frameBuffer + frameBufferSize); window.vergeImageArray.set(fb); window.vergeContext.putImageData(window.vergeImageData, 0, 0); }
 function downloadAll(manifest,putFile){ return Asyncify.handleSleep(resume => { let promises = []; let count = 0; function download(pathPtr) { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; throw 'fetchSync failed'; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); const dataPtr = _malloc(bytes.length); HEAP8.set(bytes, dataPtr); Module.dynCall_viii(putFile, pathPtr, bytes.length, dataPtr); ++count; verge.setLoadingProgress((100 * count / promises.length) | 0) }); } while (true) { let pathPtr = HEAPU32[manifest >> 2]; if (pathPtr == 0) { break; } manifest += 4; promises.push(download(pathPtr)); } Promise.all(promises).then(() => { resume(); }); }); }
 function wasm_initvga(width,height){ window.vergeCanvas = document.getElementById('vergeCanvas'); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeContext = window.vergeCanvas.getContext('2d'); window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
 
 
 
-// STATICTOP = STATIC_BASE + 1304768;
+// STATICTOP = STATIC_BASE + 1304880;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4813,7 +4813,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 1305616;
+      return 1305728;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
