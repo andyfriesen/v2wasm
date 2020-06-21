@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548864,
+    STACK_BASE = 6548832,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305984,
-    DYNAMIC_BASE = 6548864,
-    DYNAMICTOP_PTR = 1305808;
+    STACK_MAX = 1305952,
+    DYNAMIC_BASE = 6548832,
+    DYNAMICTOP_PTR = 1305776;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,7 +1819,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  16300: function() {window.verge.setLoadingProgress(100);}
+  16268: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
@@ -1836,7 +1836,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
 
 
 
-// STATICTOP = STATIC_BASE + 1304960;
+// STATICTOP = STATIC_BASE + 1304928;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4808,75 +4808,6 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
       clearInterval(id);
     }
 
-  function _emscripten_get_heap_size() {
-      return HEAPU8.length;
-    }
-
-  function _emscripten_get_sbrk_ptr() {
-      return 1305808;
-    }
-
-  function _emscripten_memcpy_big(dest, src, num) {
-      HEAPU8.copyWithin(dest, src, src + num);
-    }
-
-  
-  function emscripten_realloc_buffer(size) {
-      try {
-        // round size grow request up to wasm page size (fixed 64KB per spec)
-        wasmMemory.grow((size - buffer.byteLength + 65535) >> 16); // .grow() takes a delta compared to the previous size
-        updateGlobalBufferAndViews(wasmMemory.buffer);
-        return 1 /*success*/;
-      } catch(e) {
-        console.error('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength  + ' bytes to ' + size + ' bytes, but got error: ' + e);
-      }
-    }function _emscripten_resize_heap(requestedSize) {
-      var oldSize = _emscripten_get_heap_size();
-      // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
-      assert(requestedSize > oldSize);
-  
-  
-      var PAGE_MULTIPLE = 65536;
-  
-      // Memory resize rules:
-      // 1. When resizing, always produce a resized heap that is at least 16MB (to avoid tiny heap sizes receiving lots of repeated resizes at startup)
-      // 2. Always increase heap size to at least the requested size, rounded up to next page multiple.
-      // 3a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap geometrically: increase the heap size according to 
-      //                                         MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%),
-      //                                         At most overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
-      // 3b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap linearly: increase the heap size by at least MEMORY_GROWTH_LINEAR_STEP bytes.
-      // 4. Max size for the heap is capped at 2048MB-PAGE_MULTIPLE, or by MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
-      // 5. If we were unable to allocate as much memory, it may be due to over-eager decision to excessively reserve due to (3) above.
-      //    Hence if an allocation fails, cut down on the amount of excess growth, in an attempt to succeed to perform a smaller allocation.
-  
-      var maxHeapSize = 2147483648 - PAGE_MULTIPLE;
-      if (requestedSize > maxHeapSize) {
-        err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
-        return false;
-      }
-  
-      var minHeapSize = 16777216;
-  
-      // Loop through potential heap size increases. If we attempt a too eager reservation that fails, cut down on the
-      // attempted size and reserve a smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
-      for(var cutDown = 1; cutDown <= 4; cutDown *= 2) {
-        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
-        // but limit overreserving (default to capping at +96MB overgrowth at most)
-        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
-  
-  
-        var newSize = Math.min(maxHeapSize, alignUp(Math.max(minHeapSize, requestedSize, overGrownHeapSize), PAGE_MULTIPLE));
-  
-        var replacement = emscripten_realloc_buffer(newSize);
-        if (replacement) {
-  
-          return true;
-        }
-      }
-      err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
-      return false;
-    }
-
   
   var JSEvents={keyEvent:0,mouseEvent:0,wheelEvent:0,uiEvent:0,focusEvent:0,deviceOrientationEvent:0,deviceMotionEvent:0,fullscreenChangeEvent:0,pointerlockChangeEvent:0,visibilityChangeEvent:0,touchEvent:0,previousFullscreenElement:null,previousScreenX:null,previousScreenY:null,removeEventListenersRegistered:false,removeAllEventListeners:function() {
         for(var i = JSEvents.eventHandlers.length-1; i >= 0; --i) {
@@ -4981,12 +4912,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
         // TODO: If Safari at some point ships with unprefixed version, update the version check above.
         || document.webkitFullscreenEnabled
          ;
-      }};function _emscripten_sample_gamepad_data() {
-      return (JSEvents.lastGamepadState = (navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : null)))
-        ? 0 : -1;
-    }
-
-  
+      }};
   
   function __fillGamepadEventData(eventStruct, e) {
       HEAPF64[((eventStruct)>>3)]=e.timestamp;
@@ -5015,7 +4941,97 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
       HEAP32[(((eventStruct)+(12))>>2)]=e.buttons.length;
       stringToUTF8(e.id, eventStruct + 1304, 64);
       stringToUTF8(e.mapping, eventStruct + 1368, 64);
+    }function _emscripten_get_gamepad_status(index, gamepadState) {
+      if (!JSEvents.lastGamepadState) throw 'emscripten_get_gamepad_status() can only be called after having first called emscripten_sample_gamepad_data() and that function has returned EMSCRIPTEN_RESULT_SUCCESS!';
+  
+      // INVALID_PARAM is returned on a Gamepad index that never was there.
+      if (index < 0 || index >= JSEvents.lastGamepadState.length) return -5;
+  
+      // NO_DATA is returned on a Gamepad index that was removed.
+      // For previously disconnected gamepads there should be an empty slot (null/undefined/false) at the index.
+      // This is because gamepads must keep their original position in the array.
+      // For example, removing the first of two gamepads produces [null/undefined/false, gamepad].
+      if (!JSEvents.lastGamepadState[index]) return -7;
+  
+      __fillGamepadEventData(gamepadState, JSEvents.lastGamepadState[index]);
+      return 0;
     }
+
+  function _emscripten_get_heap_size() {
+      return HEAPU8.length;
+    }
+
+  function _emscripten_get_sbrk_ptr() {
+      return 1305776;
+    }
+
+  function _emscripten_memcpy_big(dest, src, num) {
+      HEAPU8.copyWithin(dest, src, src + num);
+    }
+
+  
+  function emscripten_realloc_buffer(size) {
+      try {
+        // round size grow request up to wasm page size (fixed 64KB per spec)
+        wasmMemory.grow((size - buffer.byteLength + 65535) >> 16); // .grow() takes a delta compared to the previous size
+        updateGlobalBufferAndViews(wasmMemory.buffer);
+        return 1 /*success*/;
+      } catch(e) {
+        console.error('emscripten_realloc_buffer: Attempted to grow heap from ' + buffer.byteLength  + ' bytes to ' + size + ' bytes, but got error: ' + e);
+      }
+    }function _emscripten_resize_heap(requestedSize) {
+      var oldSize = _emscripten_get_heap_size();
+      // With pthreads, races can happen (another thread might increase the size in between), so return a failure, and let the caller retry.
+      assert(requestedSize > oldSize);
+  
+  
+      var PAGE_MULTIPLE = 65536;
+  
+      // Memory resize rules:
+      // 1. When resizing, always produce a resized heap that is at least 16MB (to avoid tiny heap sizes receiving lots of repeated resizes at startup)
+      // 2. Always increase heap size to at least the requested size, rounded up to next page multiple.
+      // 3a. If MEMORY_GROWTH_LINEAR_STEP == -1, excessively resize the heap geometrically: increase the heap size according to 
+      //                                         MEMORY_GROWTH_GEOMETRIC_STEP factor (default +20%),
+      //                                         At most overreserve by MEMORY_GROWTH_GEOMETRIC_CAP bytes (default 96MB).
+      // 3b. If MEMORY_GROWTH_LINEAR_STEP != -1, excessively resize the heap linearly: increase the heap size by at least MEMORY_GROWTH_LINEAR_STEP bytes.
+      // 4. Max size for the heap is capped at 2048MB-PAGE_MULTIPLE, or by MAXIMUM_MEMORY, or by ASAN limit, depending on which is smallest
+      // 5. If we were unable to allocate as much memory, it may be due to over-eager decision to excessively reserve due to (3) above.
+      //    Hence if an allocation fails, cut down on the amount of excess growth, in an attempt to succeed to perform a smaller allocation.
+  
+      var maxHeapSize = 2147483648 - PAGE_MULTIPLE;
+      if (requestedSize > maxHeapSize) {
+        err('Cannot enlarge memory, asked to go up to ' + requestedSize + ' bytes, but the limit is ' + maxHeapSize + ' bytes!');
+        return false;
+      }
+  
+      var minHeapSize = 16777216;
+  
+      // Loop through potential heap size increases. If we attempt a too eager reservation that fails, cut down on the
+      // attempted size and reserve a smaller bump instead. (max 3 times, chosen somewhat arbitrarily)
+      for(var cutDown = 1; cutDown <= 4; cutDown *= 2) {
+        var overGrownHeapSize = oldSize * (1 + 0.2 / cutDown); // ensure geometric growth
+        // but limit overreserving (default to capping at +96MB overgrowth at most)
+        overGrownHeapSize = Math.min(overGrownHeapSize, requestedSize + 100663296 );
+  
+  
+        var newSize = Math.min(maxHeapSize, alignUp(Math.max(minHeapSize, requestedSize, overGrownHeapSize), PAGE_MULTIPLE));
+  
+        var replacement = emscripten_realloc_buffer(newSize);
+        if (replacement) {
+  
+          return true;
+        }
+      }
+      err('Failed to grow the heap from ' + oldSize + ' bytes to ' + newSize + ' bytes, not enough memory!');
+      return false;
+    }
+
+  function _emscripten_sample_gamepad_data() {
+      return (JSEvents.lastGamepadState = (navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : null)))
+        ? 0 : -1;
+    }
+
+  
   
   
   function __maybeCStringToJsString(cString) {
@@ -6809,7 +6825,7 @@ function intArrayToString(array) {
 // ASM_LIBRARY EXTERN PRIMITIVES: Int8Array,Int32Array
 
 var asmGlobalArg = {};
-var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "emscripten_set_mousedown_callback_on_thread": _emscripten_set_mousedown_callback_on_thread, "emscripten_set_mousemove_callback_on_thread": _emscripten_set_mousemove_callback_on_thread, "emscripten_set_mouseup_callback_on_thread": _emscripten_set_mouseup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_syncFileSystem": wasm_syncFileSystem, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
+var asmLibraryArg = { "__cxa_allocate_exception": ___cxa_allocate_exception, "__cxa_atexit": ___cxa_atexit, "__cxa_throw": ___cxa_throw, "__handle_stack_overflow": ___handle_stack_overflow, "__map_file": ___map_file, "__syscall10": ___syscall10, "__syscall221": ___syscall221, "__syscall38": ___syscall38, "__syscall40": ___syscall40, "__syscall5": ___syscall5, "__syscall54": ___syscall54, "__syscall91": ___syscall91, "abort": _abort, "downloadAll": downloadAll, "emscripten_asm_const_iii": _emscripten_asm_const_iii, "emscripten_clear_interval": _emscripten_clear_interval, "emscripten_get_gamepad_status": _emscripten_get_gamepad_status, "emscripten_get_sbrk_ptr": _emscripten_get_sbrk_ptr, "emscripten_memcpy_big": _emscripten_memcpy_big, "emscripten_resize_heap": _emscripten_resize_heap, "emscripten_sample_gamepad_data": _emscripten_sample_gamepad_data, "emscripten_set_gamepadconnected_callback_on_thread": _emscripten_set_gamepadconnected_callback_on_thread, "emscripten_set_gamepaddisconnected_callback_on_thread": _emscripten_set_gamepaddisconnected_callback_on_thread, "emscripten_set_interval": _emscripten_set_interval, "emscripten_set_keydown_callback_on_thread": _emscripten_set_keydown_callback_on_thread, "emscripten_set_keyup_callback_on_thread": _emscripten_set_keyup_callback_on_thread, "emscripten_set_mousedown_callback_on_thread": _emscripten_set_mousedown_callback_on_thread, "emscripten_set_mousemove_callback_on_thread": _emscripten_set_mousemove_callback_on_thread, "emscripten_set_mouseup_callback_on_thread": _emscripten_set_mouseup_callback_on_thread, "environ_get": _environ_get, "environ_sizes_get": _environ_sizes_get, "exit": _exit, "fd_close": _fd_close, "fd_read": _fd_read, "fd_seek": _fd_seek, "fd_write": _fd_write, "fetchSync": fetchSync, "memory": wasmMemory, "setTempRet0": _setTempRet0, "strftime_l": _strftime_l, "table": wasmTable, "wasm_initFileSystem": wasm_initFileSystem, "wasm_initvga": wasm_initvga, "wasm_nextFrame": wasm_nextFrame, "wasm_syncFileSystem": wasm_syncFileSystem, "wasm_vgadump": wasm_vgadump, "wasm_vgaresize": wasm_vgaresize };
 Asyncify.instrumentWasmImports(asmLibraryArg);
 var asm = createWasm();
 Module["asm"] = asm;

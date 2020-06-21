@@ -111,6 +111,8 @@ namespace {
     std::vector<InputEvent> inputEvents;
     std::set<int> connectedGamepads;
 
+    const double GAMEPAD_ANALOG_THRESHHOLD = 0.8;
+
     bool shouldStopPropagation(int keyCode) {
         return DIK_TAB == keyCode;
     }
@@ -150,6 +152,7 @@ namespace {
     }
 
     EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        // printf("onMouseDown %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
         Input* input = reinterpret_cast<Input*>(userData);
 
         input->mousex = mouseEvent->clientX;
@@ -164,6 +167,7 @@ namespace {
     }
 
     EM_BOOL onMouseUp(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        // printf("onMouseUp %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
         Input* input = reinterpret_cast<Input*>(userData);
 
         input->mousex = mouseEvent->clientX;
@@ -178,6 +182,7 @@ namespace {
     }
 
     EM_BOOL onMouseMove(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+        // printf("onMouseMove %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
         Input* input = reinterpret_cast<Input*>(userData);
         
         input->mousex = mouseEvent->clientX;
@@ -269,11 +274,6 @@ void Input::Poll() // updates the key[] array.  This is called in winproc in
                    // TODO: key repeating?
     }
 
-    if (key[DIK_F11]) {
-        Message_Send("Screenshot taken", 100);
-        ScreenShot();
-    }
-
     // -------------mouse-------------
 }
 
@@ -291,6 +291,37 @@ void Input::Update() // updates the direction variables and the virtual buttons
     b2 = key[DIK_LALT] | key[DIK_RALT];
     b3 = key[DIK_ESCAPE];
     b4 = key[DIK_SPACE];
+
+    emscripten_sample_gamepad_data();
+    // int count = emscripten_get_num_gamepads();
+
+    EmscriptenGamepadEvent state;
+
+    for (int i: connectedGamepads) {
+        emscripten_get_gamepad_status(i, &state);
+        b1 |= state.digitalButton[0];
+        b2 |= state.digitalButton[1];
+        b3 |= state.digitalButton[9];
+        b4 |= state.digitalButton[3];
+
+        up |= state.digitalButton[12];
+        down |= state.digitalButton[13];
+        left |= state.digitalButton[14];
+        right |= state.digitalButton[15];
+
+        if (state.axis[0] < -GAMEPAD_ANALOG_THRESHHOLD) {
+            left = 1;
+        }
+        if (state.axis[0] > GAMEPAD_ANALOG_THRESHHOLD) {
+            right = 1;
+        }
+        if (state.axis[1] < -GAMEPAD_ANALOG_THRESHHOLD) {
+            up = 1;
+        }
+        if (state.axis[1] > GAMEPAD_ANALOG_THRESHHOLD) {
+            down = 1;
+        }
+    }
 
     if (unpress[1]) {
         if (b1)
