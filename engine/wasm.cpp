@@ -73,9 +73,7 @@ EM_JS(void, wasm_syncFileSystem, (), {
     });
 });
 
-using DownloadCB = void(*)(char* filename, size_t size, char* data);
-
-EM_JS(void, downloadAll, (const char** manifest, DownloadCB putFile), {
+EM_JS(void, downloadAll, (const char** manifest), {
     return Asyncify.handleSleep(resume => {
         let promises = [];
         let count = 0;
@@ -94,9 +92,8 @@ EM_JS(void, downloadAll, (const char** manifest, DownloadCB putFile), {
                 blob.arrayBuffer()
             ).then(array => {
                 const bytes = new Uint8Array(array);
-                const dataPtr = _malloc(bytes.length);
-                HEAP8.set(bytes, dataPtr);
-                Module.dynCall_viii(putFile, pathPtr, bytes.length, dataPtr);
+                FS.writeFile(path.toLowerCase(), bytes);
+                console.log('Wrote', path.toLowerCase(), '(' + bytes.length + ' bytes)');
 
                 ++count;
                 verge.setLoadingProgress((100 * count / promises.length) | 0)
@@ -119,7 +116,6 @@ EM_JS(void, downloadAll, (const char** manifest, DownloadCB putFile), {
 EM_JS(void, fetchSync, (const char* pathPtr, size_t* size, char** data), {
     return Asyncify.handleSleep(resume => {
         const path = UTF8ToString(pathPtr);
-        // console.log('fetchSync', path);
         return fetch(path).then(response => {
             if (!response.ok) {
                 console.error('fetchSync failed', path);
@@ -175,23 +171,14 @@ void downloadGame() {
         manifest.remove_prefix(pos + 1);
     }
 
-    char** stuff = new char*[files.size() + 1];
-    for (int i = 0; i < files.size(); ++i) {
-        stuff[i] = (char*)files[i].c_str();
+    std::vector<const char*> stuff;
+    stuff.reserve(files.size() + 1);
+    for (const std::string& s: files) {
+        stuff.push_back(s.c_str());
     }
-    stuff[files.size()] = nullptr;
+    stuff.push_back(nullptr);
 
-    downloadAll((const char**)stuff, [](char* filename, size_t size, char* data) {
-        for (char* c = filename; *c; ++c)
-            *c = tolower(*c);
-
-        printf("Writing %s (%zu bytes)\n", filename, size);
-        FILE* outFile = fopen(filename, "wb");
-        fwrite(data, 1, size, outFile);
-        fclose(outFile);
-    });
-
-    delete[] stuff;
+    downloadAll((const char**)stuff.data());
 
     EM_ASM({
         window.verge.setLoadingProgress(100);

@@ -664,8 +664,8 @@ var wasmMemory;
 // In the wasm backend, we polyfill the WebAssembly object,
 // so this creates a (non-native-wasm) table for us.
 var wasmTable = new WebAssembly.Table({
-  'initial': 415,
-  'maximum': 415 + 0,
+  'initial': 414,
+  'maximum': 414 + 0,
   'element': 'anyfunc'
 });
 
@@ -1292,11 +1292,11 @@ function updateGlobalBufferAndViews(buf) {
 }
 
 var STATIC_BASE = 1024,
-    STACK_BASE = 6548816,
+    STACK_BASE = 6548768,
     STACKTOP = STACK_BASE,
-    STACK_MAX = 1305936,
-    DYNAMIC_BASE = 6548816,
-    DYNAMICTOP_PTR = 1305760;
+    STACK_MAX = 1305888,
+    DYNAMIC_BASE = 6548768,
+    DYNAMICTOP_PTR = 1305712;
 
 assert(STACK_BASE % 16 === 0, 'stack must start aligned');
 assert(DYNAMIC_BASE % 16 === 0, 'heap must start aligned');
@@ -1819,7 +1819,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  16227: function() {window.verge.setLoadingProgress(100);}
+  16194: function() {window.verge.setLoadingProgress(100);}
 };
 
 function _emscripten_asm_const_iii(code, sigPtr, argbuf) {
@@ -1831,12 +1831,12 @@ function fetchSync(pathPtr,size,data){ return Asyncify.handleSleep(resume => { c
 function wasm_vgaresize(width,height){ console.log("wasm_vgaresize", width, height); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
 function wasm_syncFileSystem(){ console.log("wasm_syncFileSystem"); FS.syncfs(false, err => { if (err) { console.error("wasm_syncFileSystem failed!!", err); } else { console.log("wasm_syncFileSystem ok"); } }); }
 function wasm_vgadump(frameBuffer,frameBufferSize){ const fb = HEAPU8.subarray(frameBuffer, frameBuffer + frameBufferSize); window.vergeImageArray.set(fb); window.vergeContext.putImageData(window.vergeImageData, 0, 0); }
-function downloadAll(manifest,putFile){ return Asyncify.handleSleep(resume => { let promises = []; let count = 0; function download(pathPtr) { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; throw 'fetchSync failed'; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); const dataPtr = _malloc(bytes.length); HEAP8.set(bytes, dataPtr); Module.dynCall_viii(putFile, pathPtr, bytes.length, dataPtr); ++count; verge.setLoadingProgress((100 * count / promises.length) | 0) }); } while (true) { let pathPtr = HEAPU32[manifest >> 2]; if (pathPtr == 0) { break; } manifest += 4; promises.push(download(pathPtr)); } Promise.all(promises).then(() => { resume(); }); }); }
+function downloadAll(manifest){ return Asyncify.handleSleep(resume => { let promises = []; let count = 0; function download(pathPtr) { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; throw 'fetchSync failed'; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); FS.writeFile(path.toLowerCase(), bytes); console.log('Wrote', path.toLowerCase(), '(' + bytes.length + ' bytes)'); ++count; verge.setLoadingProgress((100 * count / promises.length) | 0) }); } while (true) { let pathPtr = HEAPU32[manifest >> 2]; if (pathPtr == 0) { break; } manifest += 4; promises.push(download(pathPtr)); } Promise.all(promises).then(() => { resume(); }); }); }
 function wasm_initvga(width,height){ window.vergeCanvas = document.getElementById('vergeCanvas'); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeContext = window.vergeCanvas.getContext('2d'); window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
 
 
 
-// STATICTOP = STATIC_BASE + 1304912;
+// STATICTOP = STATIC_BASE + 1304864;
 /* global initializers */  __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 
 
@@ -4813,7 +4813,7 @@ function wasm_initvga(width,height){ window.vergeCanvas = document.getElementByI
     }
 
   function _emscripten_get_sbrk_ptr() {
-      return 1305760;
+      return 1305712;
     }
 
   function _emscripten_memcpy_big(dest, src, num) {
@@ -6930,13 +6930,6 @@ var dynCall_iiii = Module["dynCall_iiii"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["dynCall_iiii"].apply(null, arguments)
-};
-
-/** @type {function(...*):?} */
-var dynCall_viii = Module["dynCall_viii"] = function() {
-  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
-  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
-  return Module["asm"]["dynCall_viii"].apply(null, arguments)
 };
 
 /** @type {function(...*):?} */
