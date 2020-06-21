@@ -126,27 +126,23 @@ event // autoexec
             showpage();
             x = x + 1;
             updatecontrols();
-            if (up) {
+            If(key[80]) {
                 apnt++;
                 del(10, 0, 0, 0);
             }
-            if (down) {
+            if (key[72]) {
                 apnt--;
                 del(10, 0, 0, 0);
             }
-            if (apnt < 1) {
-                apnt = 4;
-            }
-            if (apnt > 4) {
-                apnt = 1;
-            }
+            If(apnt < 1) { apnt = 4; }
+            If(apnt > 4) { apnt = 1; }
             switch (apnt) {
             case 3:
-                if (b1) {
+                if (key[28]) {
                     apnt = 1;
                     menupnt[30] = 1;
                     optionpnt[1] = 1;
-                    UnPress(b1);
+                    UnPress(key[28]);
                     while (dodo = 0) {
                         render();
                         gotoXY(30, 20);
@@ -180,22 +176,18 @@ event // autoexec
 
                         showpage();
                         updatecontrols();
-                        if (up) {
+                        If(key[80]) {
                             menupnt[30]++;
                             del(10, 0, 0, 0);
                         }
-                        if (down) {
+                        if (key[72]) {
                             menupnt[30]--;
                             del(10, 0, 0, 0);
                         }
-                        if (menupnt[30] < 1) {
-                            menupnt[30] = 2;
-                        }
-                        if (menupnt[30] > 2) {
-                            menupnt[30] = 1;
-                        }
-                        if (b1 && menupnt[30] = 1) {
-                            unpress(b1);
+                        If(menupnt[30] < 1) { menupnt[30] = 2; }
+                        If(menupnt[30] > 2) { menupnt[30] = 1; }
+                        if (key[28] && menupnt[30] = 1) {
+                            unpress(key[28]);
                             dodo = 2;
                             while (dodo = 2) {
                                 render();
@@ -233,7 +225,7 @@ event // autoexec
                                 }
                                 showpage();
                                 updatecontrols();
-                                if (key[77]) {
+                                If(key[77]) {
                                     apnt++;
                                     del(10, 0, 0, 0);
                                 }
@@ -241,26 +233,22 @@ event // autoexec
                                     apnt--;
                                     del(10, 0, 0, 0);
                                 }
-                                if (apnt < 1) {
-                                    apnt = 2;
-                                }
-                                if (apnt > 2) {
-                                    apnt = 1;
-                                }
-                                if (b1&& apnt = 1) {
-                                    unpress(b1);
+                                If(apnt < 1) { apnt = 2; }
+                                If(apnt > 2) { apnt = 1; }
+                                if (key[28]&& apnt = 1) {
+                                    unpress(key[28]);
                                     boxes = 0;
                                     dodo = 0;
                                 }
-                                if (b1&& apnt = 2) {
-                                    unpress(b1);
+                                if (key[28]&& apnt = 2) {
+                                    unpress(key[28]);
                                     boxes = 1;
                                     dodo = 0;
                                 }
                             }
                         }
-                        if (b1 && menupnt[30] = 2) {
-                            unpress(b1);
+                        if (key[28] && menupnt[30] = 2) {
+                            unpress(key[28]);
                             dodo = 1;
                             vara[24] = 1;
                             mapswitch("start.map", 0, 0, 0);
@@ -269,15 +257,15 @@ event // autoexec
                 }
 
             case 4:
-                if (b1) {
+                if (key[28]) {
                     musicfade(10);
                     fadeout(50, 50);
                     exit("Thanks for playing TCoD.");
                 }
             case 1:
-                if (b1) {
+                if (key[28]) {
                     apnt = 1;
-                    UnPress(b1);
+                    UnPress(key[28]);
                     while (dodo = 0) {
                         render();
                         photo[1] = 0;
@@ -293,22 +281,18 @@ event // autoexec
                             170, 260 + (35 * apnt), 7, 9, 14, 18, pointer1);
                         showpage();
                         updatecontrols();
-                        if (up) {
+                        If(key[80]) {
                             apnt++;
                             del(10, 0, 0, 0);
                         }
-                        if (down) {
+                        if (key[72]) {
                             apnt--;
                             del(10, 0, 0, 0);
                         }
-                        if (apnt < 1) {
-                            apnt = 3;
-                        }
-                        if (apnt > 3) {
-                            apnt = 1;
-                        }
-                        if (b1&& apnt = 3) {
-                            unpress(b1);
+                        If(apnt < 1) { apnt = 3; }
+                        If(apnt > 3) { apnt = 1; }
+                        if (key[28]&& apnt = 3) {
+                            unpress(key[28]);
                             dodo = 1;
                             vara[24] = 1;
                             mapswitch("start.map", 0, 0, 0);
@@ -316,10 +300,10 @@ event // autoexec
 
                         switch (apnt) {
                         case 1:
-                            if (b1) {
+                            if (key[28]) {
                                 dodo = 0;
                                 charbeginning();
-                                Unpress(b1);
+                                Unpress(key[28]);
                                 im2 = loadimage("sknah2.pcx");
                                 palettemorph(0, 0, 0, 0, 63);
                                 while (dodo = 0) {
@@ -332,7 +316,7 @@ event // autoexec
                                     HLine(185, 194, 290, 130);
                                     showpage();
                                     updatecontrols();
-                                    if (b1) {
+                                    if (key[28]) {
                                         dodo = 1;
                                     }
                                 }
@@ -354,8 +338,8 @@ event // autoexec
                                 map("des.map");
                             }
                         case 2:
-                            if (b1) {
-                                Unpress(b1);
+                            if (key[28]) {
+                                Unpress(key[28]);
                                 im2 = loadimage("sknah2.pcx");
                                 palettemorph(0, 0, 0, 0, 63);
                                 while (dodo = 0) {
@@ -368,7 +352,7 @@ event // autoexec
                                     HLine(185, 194, 290, 130);
                                     showpage();
                                     updatecontrols();
-                                    if (b1) {
+                                    if (key[28]) {
                                         dodo = 1;
                                     }
                                 }
@@ -398,9 +382,9 @@ event // autoexec
                 }
 
             case 2:
-                if (b1) {
+                if (key[28]) {
                     apnt = 1;
-                    unpress(b1);
+                    unpress(key[28]);
                     dodo = 1;
                     while (dodo = 1) {
                         render();
@@ -418,22 +402,18 @@ event // autoexec
                             170, 260 + (35 * apnt), 7, 9, 14, 18, pointer1);
                         showpage();
                         updatecontrols();
-                        if (up) {
+                        If(key[80]) {
                             apnt++;
                             del(10, 0, 0, 0);
                         }
-                        if (down) {
+                        if (key[72]) {
                             apnt--;
                             del(10, 0, 0, 0);
                         }
-                        if (apnt < 1) {
-                            apnt = 4;
-                        }
-                        if (apnt > 4) {
-                            apnt = 1;
-                        }
-                        if (b1) {
-                            unpress(b1);
+                        If(apnt < 1) { apnt = 4; }
+                        If(apnt > 4) { apnt = 1; }
+                        if (key[28]) {
+                            unpress(key[28]);
                             if (apnt = 4) {
                                 dodo = 1;
                                 vara[24] = 1;
@@ -465,5 +445,4 @@ event // autoexec
             }
         }
     }
-}
 }

@@ -1611,6 +1611,7 @@ void HandleStdLib() {
     byte c = 0;
 
     c = GrabC();
+    // printf("HandleStdLib %d\n", c);
     switch (c) {
     case 1:
         vc_Exit_();
@@ -2551,7 +2552,7 @@ void ExecuteVC() {
 
         default:
             Sys_Error(
-                "Internal VC execution error. (%d)", (int)code - (int)basevc);
+                "Internal VC execution error.  Bad opcode %02x at offset %d", c, (int)code - (int)basevc);
         }
 
         if ((int)code != -1)
