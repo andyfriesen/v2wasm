@@ -92,6 +92,13 @@ EM_JS(void, downloadAll, (const char** manifest), {
                 blob.arrayBuffer()
             ).then(array => {
                 const bytes = new Uint8Array(array);
+
+                const idx = path.lastIndexOf('/');
+                if (idx != -1) {
+                    const dir = path.substr(0, idx);
+                    FS.mkdirTree(dir);
+                }
+
                 FS.writeFile(path.toLowerCase(), bytes);
                 console.log('Wrote', path.toLowerCase(), '(' + bytes.length + ' bytes)');
 

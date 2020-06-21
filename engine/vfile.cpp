@@ -30,35 +30,54 @@ byte filesmounted = 0; // Number of VRG files to check.
 // char headertag[]={ 'V','R','G','P','A','C','K',0 };
 char headertag[] = "VRGPACK\0";
 
+#ifdef DEBUG_VFILE
+#define VFILE_PRINTF printf
+#else
+template <typename ...T>
+void VFILE_PRINTF(T...) {}
+#endif
+
 // ================================= Code ====================================
 
 FILE* _fopen(const char* filename, const char* mode) {
-    std::string s = "persist/" + gameRoot + filename;
+    std::string fn{ filename };
+    for (char& c: fn) {
+        if (c == '\\') {
+            c = '/';
+        }
+    }
+
+    std::string s = "persist/" + gameRoot + fn;
     V_strlwr(const_cast<char*>(s.data()));
     FILE* f = fopen(s.c_str(), mode);
     if (f) {
+        VFILE_PRINTF("_fopen %s mode %s\n", s.c_str(), mode);
         return f;
     }
 
-    s = "persist/" + gameRoot + filename;
+    s = "persist/" + gameRoot + fn;
     f = fopen(s.c_str(), mode);
     if (f) {
+        VFILE_PRINTF("_fopen %s mode %s\n", s.c_str(), mode);
         return f;
     }
 
-    s = gameRoot + filename;
+    s = gameRoot + fn;
     V_strlwr(const_cast<char*>(s.data()));
     f = fopen(s.c_str(), mode);
     if (f) {
+        VFILE_PRINTF("_fopen %s mode %s\n", s.c_str(), mode);
         return f;
     }
 
-    s = gameRoot + filename;
+    s = gameRoot + fn;
     f = fopen(s.c_str(), mode);
     if (f) {
+        VFILE_PRINTF("_fopen %s mode %s\n", s.c_str(), mode);
         return f;
     }
 
+    VFILE_PRINTF("_fopen %s mode %s FAIL\n", fn.c_str(), mode);
     return 0;
 }
 
