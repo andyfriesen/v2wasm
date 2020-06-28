@@ -2,6 +2,10 @@ use std::fs::File;
 use std::io::{Read, Seek, SeekFrom};
 use std::mem::size_of;
 
+mod constants;
+
+use constants::*;
+
 trait FromLE
 where
     Self: std::marker::Sized,
@@ -58,8 +62,7 @@ fn read_string(f: &mut File, len: usize) -> std::io::Result<String> {
 }
 
 fn read_vec(f: &mut File, len: usize) -> std::io::Result<Vec<u8>> {
-    let mut result = Vec::new();
-    result.resize(len, 0);
+    let mut result = vec![0; len];
     f.read_exact(result.as_mut_slice())?;
     Ok(result)
 }
@@ -274,586 +277,6 @@ impl<'a> State<'a> {
     }
 }
 
-mod Op {
-    pub const stdlib: u8 = 1;
-    pub const localfunc: u8 = 2;
-    pub const externfunc: u8 = 3;
-    pub const if_: u8 = 4;
-    pub const else_: u8 = 5;
-    pub const goto: u8 = 6;
-    pub const switch: u8 = 7;
-    pub const case: u8 = 8;
-    pub const return_: u8 = 9;
-    pub const assign: u8 = 10;
-    pub const setretval: u8 = 11;
-    pub const setlocalstack: u8 = 12;
-    pub const setretstring: u8 = 13;
-}
-
-mod Operand {
-    pub const IMMEDIATE: u8 = 1;
-    pub const HVAR0: u8 = 2;
-    pub const HVAR1: u8 = 3;
-    pub const UVAR: u8 = 4;
-    pub const UVARRAY: u8 = 5;
-    pub const LVAR: u8 = 6;
-    pub const BFUNC: u8 = 7;
-    pub const UFUNC: u8 = 8;
-    pub const GROUP: u8 = 9;
-    pub const STRING: u8 = 10;
-    pub const SARRAY: u8 = 11;
-    pub const SLOCAL: u8 = 12;
-}
-
-mod Expr {
-    pub const ADD: u8 = 1;
-    pub const SUB: u8 = 2;
-    pub const MULT: u8 = 3;
-    pub const DIV: u8 = 4;
-    pub const MOD: u8 = 5;
-    pub const SHL: u8 = 6;
-    pub const SHR: u8 = 7;
-    pub const AND: u8 = 8;
-    pub const OR: u8 = 9;
-    pub const XOR : u8= 10;
-    pub const END : u8= 11;
-}
-
-mod StdLib {
-    pub enum Arg {
-        Int,
-        Str,
-    }
-
-    const I: Arg = Arg::Int;
-    const S: Arg = Arg::Str;
-
-    pub struct Func {
-        pub name: &'static str,
-        pub args: &'static [Arg],
-    }
-
-    pub const funcs: &'static [Func] = &[
-        Func {
-            name: "$$$ILLEGAL_ZERO$$$",
-            args: &[],
-        },
-        Func {
-            name: "exit",
-            args: &[],
-        },
-        Func {
-            name: "message",
-            args: &[],
-        },
-        Func {
-            name: "malloc",
-            args: &[I],
-        },
-        Func {
-            name: "free",
-            args: &[I],
-        },
-        Func {
-            name: "pow",
-            args: &[I, I],
-        },
-        Func {
-            name: "loadimage",
-            args: &[],
-        },
-        Func {
-            name: "copysprite",
-            args: &[I, I, I, I, I],
-        },
-        Func {
-            name: "tcopysprite",
-            args: &[I, I, I, I, I],
-        },
-        Func {
-            name: "render",
-            args: &[],
-        },
-        Func {
-            name: "showpage",
-            args: &[],
-        },
-        Func {
-            name: "entityspawn",
-            args: &[],
-        },
-        Func {
-            name: "setplayer",
-            args: &[I],
-        },
-        Func {
-            name: "map",
-            args: &[],
-        },
-        Func {
-            name: "loadfont",
-            args: &[],
-        },
-        Func {
-            name: "playfli",
-            args: &[],
-        },
-        // B
-        Func {
-            name: "gotoxy",
-            args: &[I, I],
-        },
-        Func {
-            name: "printstring",
-            args: &[],
-        },
-        Func {
-            name: "loadraw",
-            args: &[],
-        },
-        Func {
-            name: "settile",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "allowconsole",
-            args: &[I],
-        },
-        Func {
-            name: "scalesprite",
-            args: &[I, I, I, I, I, I, I],
-        },
-        Func {
-            name: "processentities",
-            args: &[],
-        },
-        Func {
-            name: "updatecontrols",
-            args: &[],
-        },
-        Func {
-            name: "unpress",
-            args: &[I],
-        },
-        Func {
-            name: "entitymove",
-            args: &[],
-        },
-        Func {
-            name: "hline",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "vline",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "line",
-            args: &[I, I, I, I, I],
-        },
-        Func {
-            name: "circle",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "circlefill",
-            args: &[I, I, I, I],
-        }, // 30
-        // C
-        Func {
-            name: "rect",
-            args: &[I, I, I, I, I],
-        },
-        Func {
-            name: "rectfill",
-            args: &[I, I, I, I, I],
-        },
-        Func {
-            name: "strlen",
-            args: &[],
-        },
-        Func {
-            name: "strcmp",
-            args: &[],
-        },
-        Func {
-            name: "cd_stop",
-            args: &[],
-        },
-        Func {
-            name: "cd_play",
-            args: &[I],
-        },
-        Func {
-            name: "fontwidth",
-            args: &[I],
-        },
-        Func {
-            name: "fontheight",
-            args: &[I],
-        },
-        Func {
-            name: "setpixel",
-            args: &[I, I, I],
-        },
-        Func {
-            name: "getpixel",
-            args: &[I, I],
-        },
-        Func {
-            name: "entityonscreen",
-            args: &[I],
-        },
-        Func {
-            name: "random",
-            args: &[I],
-        },
-        Func {
-            name: "gettile",
-            args: &[I, I, I],
-        },
-        Func {
-            name: "hookretrace",
-            args: &[],
-        },
-        Func {
-            name: "hooktimer",
-            args: &[],
-        },
-        // D
-        Func {
-            name: "setresolution",
-            args: &[I, I],
-        },
-        Func {
-            name: "setrstring",
-            args: &[],
-        },
-        Func {
-            name: "setcliprect",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "setrenderdest",
-            args: &[I, I, I],
-        },
-        Func {
-            name: "restorerendersettings",
-            args: &[],
-        },
-        Func {
-            name: "partymove",
-            args: &[],
-        },
-        Func {
-            name: "sin",
-            args: &[I],
-        },
-        Func {
-            name: "cos",
-            args: &[I],
-        },
-        Func {
-            name: "tan",
-            args: &[I],
-        },
-        Func {
-            name: "readmouse",
-            args: &[],
-        },
-        Func {
-            name: "setclip",
-            args: &[I],
-        },
-        Func {
-            name: "setlucent",
-            args: &[],
-        },
-        Func {
-            name: "wrapblit",
-            args: &[],
-        },
-        Func {
-            name: "twrapblit",
-            args: &[],
-        },
-        Func {
-            name: "setmousepos",
-            args: &[],
-        }, // 60
-        // E
-        Func {
-            name: "hookkey",
-            args: &[],
-        },
-        Func {
-            name: "playmusic",
-            args: &[],
-        },
-        Func {
-            name: "stopmusic",
-            args: &[],
-        },
-        Func {
-            name: "palettemorph",
-            args: &[I, I, I, I],
-        },
-        Func {
-            name: "fopen",
-            args: &[],
-        },
-        Func {
-            name: "fclose",
-            args: &[],
-        },
-        Func {
-            name: "quickread",
-            args: &[],
-        },
-        Func {
-            name: "addfollower",
-            args: &[],
-        },
-        Func {
-            name: "killfollower",
-            args: &[],
-        },
-        Func {
-            name: "killallfollowers",
-            args: &[],
-        },
-        Func {
-            name: "resetfollowers",
-            args: &[],
-        },
-        Func {
-            name: "flatpoly",
-            args: &[],
-        },
-        Func {
-            name: "tmappoly",
-            args: &[],
-        },
-        Func {
-            name: "cachesound",
-            args: &[],
-        },
-        Func {
-            name: "freeallsounds",
-            args: &[],
-        },
-        // F
-        Func {
-            name: "playsound",
-            args: &[],
-        },
-        Func {
-            name: "rotscale",
-            args: &[],
-        },
-        Func {
-            name: "mapline",
-            args: &[],
-        },
-        Func {
-            name: "tmapline",
-            args: &[],
-        },
-        Func {
-            name: "val",
-            args: &[],
-        },
-        Func {
-            name: "tscalesprite",
-            args: &[],
-        },
-        Func {
-            name: "grabregion",
-            args: &[],
-        },
-        Func {
-            name: "log",
-            args: &[],
-        },
-        Func {
-            name: "fseekline",
-            args: &[],
-        },
-        Func {
-            name: "fseekpos",
-            args: &[],
-        },
-        Func {
-            name: "fread",
-            args: &[],
-        },
-        Func {
-            name: "fgetbyte",
-            args: &[],
-        },
-        Func {
-            name: "fgetword",
-            args: &[],
-        },
-        Func {
-            name: "fgetquad",
-            args: &[],
-        },
-        Func {
-            name: "fgetline",
-            args: &[],
-        }, // 90
-        // G
-        Func {
-            name: "fgettoken",
-            args: &[],
-        },
-        Func {
-            name: "fwritestring",
-            args: &[],
-        },
-        Func {
-            name: "fwrite",
-            args: &[],
-        },
-        Func {
-            name: "frename",
-            args: &[],
-        },
-        Func {
-            name: "fdelete",
-            args: &[],
-        },
-        Func {
-            name: "fwopen",
-            args: &[],
-        },
-        Func {
-            name: "fwclose",
-            args: &[],
-        },
-        Func {
-            name: "memcpy",
-            args: &[],
-        },
-        Func {
-            name: "memset",
-            args: &[],
-        },
-        Func {
-            name: "silhouette",
-            args: &[],
-        },
-        Func {
-            name: "initmosaictable",
-            args: &[],
-        },
-        Func {
-            name: "mosaic",
-            args: &[],
-        },
-        Func {
-            name: "writevars",
-            args: &[],
-        },
-        Func {
-            name: "readvars",
-            args: &[],
-        },
-        Func {
-            name: "callevent",
-            args: &[],
-        }, // 105
-        // H
-        Func {
-            name: "asc",
-            args: &[],
-        },
-        Func {
-            name: "callscript",
-            args: &[],
-        },
-        Func {
-            name: "numforscript",
-            args: &[],
-        },
-        Func {
-            name: "filesize",
-            args: &[],
-        },
-        Func {
-            name: "ftell",
-            args: &[],
-        },
-        Func {
-            name: "changechr",
-            args: &[],
-        },
-        Func {
-            name: "rgb",
-            args: &[],
-        },
-        Func {
-            name: "getr",
-            args: &[],
-        },
-        Func {
-            name: "getg",
-            args: &[],
-        },
-        Func {
-            name: "getb",
-            args: &[],
-        },
-        Func {
-            name: "mask",
-            args: &[],
-        },
-        Func {
-            name: "changeall",
-            args: &[],
-        },
-        Func {
-            name: "sqrt",
-            args: &[],
-        },
-        Func {
-            name: "fwritebyte",
-            args: &[],
-        },
-        Func {
-            name: "fwriteword",
-            args: &[],
-        }, // 120
-        // I
-        Func {
-            name: "fwritequad",
-            args: &[],
-        },
-        Func {
-            name: "calclucent",
-            args: &[],
-        },
-        Func {
-            name: "imagesize",
-            args: &[],
-        },
-    ];
-
-    pub fn get(func: u8) -> &'static Func {
-        let func = func as usize;
-        if 0 == func || func >= funcs.len() {
-            panic!("Bad function index {}", func);
-        }
-
-        &funcs[func]
-    }
-
-    pub fn to_string(func: u8) -> &'static str {
-        get(func).name
-    }
-}
-
 fn decode_event(index: &SystemVC, event_idx: usize, code: &MapCode) {
     let event = &code.events[event_idx];
     let mut state = State {
@@ -876,7 +299,10 @@ fn emit(offset: usize, bytes: &[u8], detail: String) {
         s += &format!("{:02X}", b);
     }
 
-    println!("{:04X}:\t{}\t{}", offset, s, detail);
+    const TARGET_COLUMN: usize = 40;
+    let padding = " ".repeat(TARGET_COLUMN - s.len());
+
+    println!("{:04X}:    {bytes}{padding}{detail}", offset, bytes=s, padding=padding, detail=detail);
 }
 
 fn decode_statement(index: &SystemVC, state: &mut State) {
@@ -884,23 +310,22 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
     let op = state.u8();
 
     match op {
-        Op::stdlib => {
+        op::STDLIB => {
             let func_idx = state.u8();
-            let func = StdLib::get(func_idx);
+            let func = std_lib::get(func_idx);
             emit(
                 start_index,
-                &[op, func_idx],
-                format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
+                &[op, func_idx],format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
             );
 
             for arg in func.args {
                 match arg {
-                    StdLib::Arg::Int => decode_int_expression(index, state),
-                    StdLib::Arg::Str => decode_string_expression(index, state),
+                    std_lib::Arg::Int => decode_int_expression(index, state),
+                    std_lib::Arg::Str => decode_string_expression(index, state),
                 }
             }
         }
-        Op::externfunc => {
+        op::EXTERNFUNC => {
             let func_idx = state.u16() as usize;
             if func_idx > index.functions.len() {
                 panic!("Bad extern function index {}", func_idx);
@@ -908,13 +333,16 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
 
             emit(
                 start_index,
-                &[op, (func_idx / 256) as u8, (func_idx & 255) as u8],
+                &state.bytecode[start_index..state.pos],
                 format!(
                     "externfunc {}\t{}",
                     func_idx,
                     index.functions[func_idx].name
                 )
             );
+        }
+        op::IF_ => {
+
         }
         _ => {
             emit(start_index, &[op], "Unknown!!".to_string());
@@ -927,15 +355,9 @@ fn decode_int_operand(index: &SystemVC, state: &mut State) {
     let op = state.u8();
 
     match op {
-        Operand::IMMEDIATE => {
+        operand::IMMEDIATE => {
             let value = state.i32();
-            emit(start_offset, &[
-                    op,
-                    ((value >> 24) & 255) as u8,
-                    ((value >> 16) & 255) as u8,
-                    ((value >> 8) & 255) as u8,
-                    (value & 255) as u8
-                ],
+            emit(start_offset, &state.bytecode[start_offset..state.pos],
                 format!("literal {}", value)
             );
         },
@@ -952,7 +374,7 @@ fn decode_int_expression(index: &SystemVC, state: &mut State) {
     let op = state.u8();
 
     match op {
-        Expr::END =>
+        expr::END =>
             emit(start_offset, &[op], "end expression".to_string()),
         _ =>
             emit(start_offset, &[op], "unknown int expression!".to_string()),
