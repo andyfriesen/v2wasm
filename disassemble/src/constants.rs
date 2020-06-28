@@ -30,6 +30,21 @@ pub mod operand {
     pub const SLOCAL: u8 = 12;
 }
 
+pub mod if_op {
+    pub const ZERO: u8 = 1;
+    pub const NONZERO: u8 = 2;
+    pub const EQUALTO: u8 = 3;
+    pub const NOTEQUAL: u8 = 4;
+    pub const GREATERTHAN: u8 = 5;
+    pub const LESSTHAN: u8 = 6;
+    pub const GREATERTHANOREQUAL: u8 = 7;
+    pub const LESSTHANOREQUAL: u8 = 8;
+    pub const GROUP: u8 = 9;
+    pub const UNGROUP: u8 = 10;
+    pub const AND: u8 = 11;
+    pub const OR: u8 = 12;
+}
+
 pub mod expr {
     pub const ADD: u8 = 1;
     pub const SUB: u8 = 2;

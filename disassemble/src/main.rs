@@ -1,71 +1,10 @@
-use std::fs::File;
-use std::io::{Read, Seek, SeekFrom};
-use std::mem::size_of;
-
 mod constants;
+mod decode;
+
+use std::fs::File;
+use std::io::{Seek, SeekFrom};
 
 use constants::*;
-
-trait FromLE
-where
-    Self: std::marker::Sized,
-{
-    fn from_le(i: Self) -> Self;
-}
-
-impl FromLE for u32 {
-    fn from_le(i: u32) -> u32 {
-        u32::from_le(i)
-    }
-}
-
-impl FromLE for u16 {
-    fn from_le(i: u16) -> u16 {
-        u16::from_le(i)
-    }
-}
-
-impl FromLE for u8 {
-    fn from_le(i: u8) -> u8 {
-        i
-    }
-}
-
-fn read_int<T>(f: &mut File) -> std::io::Result<T>
-where
-    T: std::marker::Sized,
-    T: std::default::Default,
-    T: FromLE,
-{
-    // let mut buf = [0; size_of::<T>()]; // Rust :(
-    let r: T = Default::default();
-
-    unsafe {
-        let buf: *mut u8 = std::mem::transmute(&r);
-        f.read_exact(std::slice::from_raw_parts_mut(buf, size_of::<T>()))?;
-    }
-
-    Ok(FromLE::from_le(r))
-}
-
-fn read_string(f: &mut File, len: usize) -> std::io::Result<String> {
-    let mut buf = vec![0; len];
-    f.read_exact(&mut buf)?;
-
-    for i in 0..len {
-        if buf[i] == 0 {
-            return Ok(String::from_utf8_lossy(&buf[0..i]).to_string())
-        }
-    }
-
-    Ok(String::from_utf8_lossy(&buf).to_string())
-}
-
-fn read_vec(f: &mut File, len: usize) -> std::io::Result<Vec<u8>> {
-    let mut result = vec![0; len];
-    f.read_exact(result.as_mut_slice())?;
-    Ok(result)
-}
 
 struct VCVar {
     name: String,
@@ -97,11 +36,11 @@ struct SystemVC {
 fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
     let f = &mut File::open(index_filename)?;
     let mut variables = Vec::new();
-    let num_vars = read_int::<u32>(f)?;
+    let num_vars = decode::int::<u32>(f)?;
     for _ in 0..num_vars {
-        let name = read_string(f, 40)?;
-        let start_ofs = read_int(f)?;
-        let array_len = read_int(f)?;
+        let name = decode::string(f, 40)?;
+        let start_ofs = decode::int(f)?;
+        let array_len = decode::int(f)?;
         // println!("var int {} array len = {}", name, array_len);
         variables.push(VCVar {
             name,
@@ -110,14 +49,14 @@ fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
         });
     }
     let mut functions = Vec::new();
-    let num_functions = read_int::<u32>(f)?;
+    let num_functions = decode::int::<u32>(f)?;
     for _ in 0..num_functions {
-        let name = read_string(f, 40)?;
-        let arg_type = read_string(f, 20)?;
-        let num_args = read_int(f)?;
-        let num_locals = read_int(f)?;
-        let return_type = read_int(f)?;
-        let sys_code_ofs = read_int(f)?;
+        let name = decode::string(f, 40)?;
+        let arg_type = decode::string(f, 20)?;
+        let num_args = decode::int(f)?;
+        let num_locals = decode::int(f)?;
+        let return_type = decode::int(f)?;
+        let sys_code_ofs = decode::int(f)?;
         // println!("function {} arg count = {}", name, num_args);
         functions.push(VCFunction {
             name,
@@ -129,11 +68,11 @@ fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
         });
     }
     let mut strings = Vec::new();
-    let num_strings = read_int::<u32>(f)?;
+    let num_strings = decode::int::<u32>(f)?;
     for _ in 0..num_strings {
-        let name = read_string(f, 40)?;
-        let start_ofs = read_int(f)?;
-        let array_len = read_int(f)?;
+        let name = decode::string(f, 40)?;
+        let start_ofs = decode::int(f)?;
+        let array_len = decode::int(f)?;
         // println!("var string {} array len = {}", name, array_len);
         strings.push(VCString {
             name,
@@ -163,21 +102,21 @@ fn read_code(name: &str) -> std::io::Result<MapCode> {
 
     f.seek(SeekFrom::Current(6))?; // Skip signature
 
-    let offset = read_int::<u32>(f)? as usize;
+    let offset = decode::int::<u32>(f)? as usize;
 
     println!("Offset is {}", offset);
 
     f.seek(SeekFrom::Start(offset as u64))?;
 
-    let num_map_events = read_int::<u32>(f)? as usize;
+    let num_map_events = decode::int::<u32>(f)? as usize;
     println!("Map events {}", num_map_events);
     let mut event_offsets: Vec<usize> = Vec::with_capacity(num_map_events as usize + 1);
 
     for _ in 0..num_map_events {
-        event_offsets.push(read_int::<u32>(f)? as usize);
+        event_offsets.push(decode::int::<u32>(f)? as usize);
     }
 
-    let code_size = read_int::<u32>(f)? as usize;
+    let code_size = decode::int::<u32>(f)? as usize;
 
     let real_code_start_ofs = f.seek(SeekFrom::Current(0))? as usize;
 
@@ -189,7 +128,7 @@ fn read_code(name: &str) -> std::io::Result<MapCode> {
         let code_ofs = event_offsets[evt];
         let end_ofs = event_offsets[evt + 1];
         let event_code_size = end_ofs - code_ofs;
-        let bytecode = read_vec(f, event_code_size)?;
+        let bytecode = decode::vec(f, event_code_size)?;
 
         println!("Event {} size: {} bytes", evt, event_code_size);
 
@@ -275,6 +214,21 @@ impl<'a> State<'a> {
         self.pos += 4;
         result
     }
+
+    fn emit(&self, offset: usize, detail: String) {
+        let mut s = String::new();
+        for b in offset..self.pos {
+            if !s.is_empty() {
+                s += " ";
+            }
+            s += &format!("{:02X}", self.bytecode[b]);
+        }
+    
+        const TARGET_COLUMN: usize = 40;
+        let padding = " ".repeat(TARGET_COLUMN - s.len());
+    
+        println!("{:04X}:    {bytes}{padding}{detail}", offset + self.file_ofs, bytes=s, padding=padding, detail=detail);    
+    }
 }
 
 fn decode_event(index: &SystemVC, event_idx: usize, code: &MapCode) {
@@ -290,21 +244,6 @@ fn decode_event(index: &SystemVC, event_idx: usize, code: &MapCode) {
     }
 }
 
-fn emit(offset: usize, bytes: &[u8], detail: String) {
-    let mut s = String::new();
-    for b in bytes {
-        if !s.is_empty() {
-            s += " ";
-        }
-        s += &format!("{:02X}", b);
-    }
-
-    const TARGET_COLUMN: usize = 40;
-    let padding = " ".repeat(TARGET_COLUMN - s.len());
-
-    println!("{:04X}:    {bytes}{padding}{detail}", offset, bytes=s, padding=padding, detail=detail);
-}
-
 fn decode_statement(index: &SystemVC, state: &mut State) {
     let start_index = state.pos;
     let op = state.u8();
@@ -313,14 +252,14 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
         op::STDLIB => {
             let func_idx = state.u8();
             let func = std_lib::get(func_idx);
-            emit(
+            state.emit(
                 start_index,
-                &[op, func_idx],format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
+                format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
             );
 
             for arg in func.args {
                 match arg {
-                    std_lib::Arg::Int => decode_int_expression(index, state),
+                    std_lib::Arg::Int => decode_int_expression(state),
                     std_lib::Arg::Str => decode_string_expression(index, state),
                 }
             }
@@ -331,9 +270,8 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
                 panic!("Bad extern function index {}", func_idx);
             }
 
-            emit(
+            state.emit(
                 start_index,
-                &state.bytecode[start_index..state.pos],
                 format!(
                     "externfunc {}\t{}",
                     func_idx,
@@ -342,42 +280,72 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
             );
         }
         op::IF_ => {
+            state.emit(
+                start_index,
+                "begin if statement".to_string()
+            );
 
+            decode_if_expression(index, state);
+
+            let pos = state.pos;
+            let jump_dest = state.u32();
+            state.emit(
+                pos,
+                format!("jump dest {:08X}", jump_dest)
+            );
         }
         _ => {
-            emit(start_index, &[op], "Unknown!!".to_string());
+            panic!("Unknown statement op {:02X}", op);
         }
     }
 }
 
-fn decode_int_operand(index: &SystemVC, state: &mut State) {
+fn decode_if_expression(index: &SystemVC, state: &mut State) {
+    decode_int_operand(state);
+
+    let pos = state.pos;
+    let op = state.u8();
+    match op {
+        if_op::ZERO =>
+            state.emit(
+                pos,
+                "nonzero".to_string()
+            ),
+
+        _ =>
+            panic!("Unknown if op {:02X}", op)
+    }
+}
+
+// ResolveOperand
+fn decode_int_operand(state: &mut State) {
     let start_offset = state.pos;
     let op = state.u8();
 
     match op {
         operand::IMMEDIATE => {
             let value = state.i32();
-            emit(start_offset, &state.bytecode[start_offset..state.pos],
+            state.emit(start_offset,
                 format!("literal {}", value)
             );
         },
         _ =>
-            emit(start_offset, &[op], "UNKNOWN!".to_string())
+            state.emit(start_offset, "UNKNOWN!".to_string())
     }
 }
 
-fn decode_int_expression(index: &SystemVC, state: &mut State) {
+fn decode_int_expression(state: &mut State) {
     let start_offset = state.pos;
 
-    decode_int_operand(index, state);
+    decode_int_operand(state);
 
     let op = state.u8();
 
     match op {
         expr::END =>
-            emit(start_offset, &[op], "end expression".to_string()),
+            state.emit(start_offset, "end expression".to_string()),
         _ =>
-            emit(start_offset, &[op], "unknown int expression!".to_string()),
+            state.emit(start_offset, "unknown int expression!".to_string()),
     }
 }
 
