@@ -86,17 +86,19 @@ struct SystemVC {
 
 fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
     let f = &mut File::open(index_filename)?;
-    
     let mut variables = Vec::new();
-    let num_vars = read_int::<u32>(f)?;    
+    let num_vars = read_int::<u32>(f)?;
     for _ in 0..num_vars {
         let name = read_string(f, 40)?;
         let start_ofs = read_int(f)?;
         let array_len = read_int(f)?;
         // println!("var int {} array len = {}", name, array_len);
-        variables.push(VCVar{ name, start_ofs, array_len});
+        variables.push(VCVar {
+            name,
+            start_ofs,
+            array_len,
+        });
     }
-    
     let mut functions = Vec::new();
     let num_functions = read_int::<u32>(f)?;
     for _ in 0..num_functions {
@@ -107,9 +109,15 @@ fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
         let return_type = read_int(f)?;
         let sys_code_ofs = read_int(f)?;
         // println!("function {} arg count = {}", name, num_args);
-        functions.push(VCFunction{name, arg_type, num_args, num_locals, return_type, sys_code_ofs});
+        functions.push(VCFunction {
+            name,
+            arg_type,
+            num_args,
+            num_locals,
+            return_type,
+            sys_code_ofs,
+        });
     }
-    
     let mut strings = Vec::new();
     let num_strings = read_int::<u32>(f)?;
     for _ in 0..num_strings {
@@ -117,10 +125,18 @@ fn read_system_vc_index(index_filename: &str) -> std::io::Result<SystemVC> {
         let start_ofs = read_int(f)?;
         let array_len = read_int(f)?;
         // println!("var string {} array len = {}", name, array_len);
-        strings.push(VCString{name, start_ofs, array_len});
+        strings.push(VCString {
+            name,
+            start_ofs,
+            array_len,
+        });
     }
 
-    Ok(SystemVC { variables, functions, strings })
+    Ok(SystemVC {
+        variables,
+        functions,
+        strings,
+    })
 }
 
 struct MapEvent {
@@ -167,7 +183,10 @@ fn read_code(name: &str) -> std::io::Result<MapCode> {
 
         println!("Event {} size: {} bytes", evt, event_code_size);
 
-        map_events.push(MapEvent{bytecode, code_ofs: real_code_start_ofs + code_ofs});
+        map_events.push(MapEvent {
+            bytecode,
+            code_ofs: real_code_start_ofs + code_ofs,
+        });
     }
 
     let pos = f.seek(SeekFrom::Current(0))? as usize;
@@ -184,7 +203,7 @@ fn read_code(name: &str) -> std::io::Result<MapCode> {
         );
     }
 
-    Ok(MapCode{events: map_events})
+    Ok(MapCode { events: map_events })
 }
 
 struct State<'a> {
@@ -230,6 +249,22 @@ impl<'a> State<'a> {
         self.pos += 4;
         result
     }
+
+    fn i32(&mut self) -> i32 {
+        if self.pos + 4 > self.bytecode.len() {
+            panic!("Unexpected EOF reading u32");
+        }
+
+        let b = [
+            self.bytecode[self.pos],
+            self.bytecode[self.pos + 1],
+            self.bytecode[self.pos + 2],
+            self.bytecode[self.pos + 3],
+        ];
+        let result = i32::from_le_bytes(b);
+        self.pos += 4;
+        result
+    }
 }
 
 mod Op {
@@ -248,10 +283,39 @@ mod Op {
     pub const setretstring: u8 = 13;
 }
 
+mod Operand {
+    pub const IMMEDIATE: u8 = 1;
+    pub const HVAR0: u8 = 2;
+    pub const HVAR1: u8 = 3;
+    pub const UVAR: u8 = 4;
+    pub const UVARRAY: u8 = 5;
+    pub const LVAR: u8 = 6;
+    pub const BFUNC: u8 = 7;
+    pub const UFUNC: u8 = 8;
+    pub const GROUP: u8 = 9;
+    pub const STRING: u8 = 10;
+    pub const SARRAY: u8 = 11;
+    pub const SLOCAL: u8 = 12;
+}
+
+mod Expr {
+    pub const ADD: u8 = 1;
+    pub const SUB: u8 = 2;
+    pub const MULT: u8 = 3;
+    pub const DIV: u8 = 4;
+    pub const MOD: u8 = 5;
+    pub const SHL: u8 = 6;
+    pub const SHR: u8 = 7;
+    pub const AND: u8 = 8;
+    pub const OR: u8 = 9;
+    pub const XOR : u8= 10;
+    pub const END : u8= 11;
+}
+
 mod StdLib {
     pub enum Arg {
         Int,
-        Str
+        Str,
     }
 
     const I: Arg = Arg::Int;
@@ -259,142 +323,514 @@ mod StdLib {
 
     pub struct Func {
         pub name: &'static str,
-        pub args: &'static [Arg]
+        pub args: &'static [Arg],
     }
 
     pub const funcs: &'static [Func] = &[
-        Func{name: "$$$ILLEGAL_ZERO$$$", args: &[]},
-        Func{name: "exit", args: &[]},
-        Func{name: "message", args: &[]},
-        Func{name: "malloc", args: &[I]},
-        Func{name: "free", args: &[I]},
-        Func{name: "pow", args: &[I, I]},
-        Func{name: "loadimage", args: &[]},
-        Func{name: "copysprite", args: &[I, I, I, I, I]},
-        Func{name: "tcopysprite", args: &[I, I, I, I, I]},
-        Func{name: "render", args: &[]},
-        Func{name: "showpage", args: &[]},
-        Func{name: "entityspawn", args: &[]},
-        Func{name: "setplayer", args: &[I]},
-        Func{name: "map", args: &[]},
-        Func{name: "loadfont", args: &[]},
-        Func{name: "playfli", args: &[]},
+        Func {
+            name: "$$$ILLEGAL_ZERO$$$",
+            args: &[],
+        },
+        Func {
+            name: "exit",
+            args: &[],
+        },
+        Func {
+            name: "message",
+            args: &[],
+        },
+        Func {
+            name: "malloc",
+            args: &[I],
+        },
+        Func {
+            name: "free",
+            args: &[I],
+        },
+        Func {
+            name: "pow",
+            args: &[I, I],
+        },
+        Func {
+            name: "loadimage",
+            args: &[],
+        },
+        Func {
+            name: "copysprite",
+            args: &[I, I, I, I, I],
+        },
+        Func {
+            name: "tcopysprite",
+            args: &[I, I, I, I, I],
+        },
+        Func {
+            name: "render",
+            args: &[],
+        },
+        Func {
+            name: "showpage",
+            args: &[],
+        },
+        Func {
+            name: "entityspawn",
+            args: &[],
+        },
+        Func {
+            name: "setplayer",
+            args: &[I],
+        },
+        Func {
+            name: "map",
+            args: &[],
+        },
+        Func {
+            name: "loadfont",
+            args: &[],
+        },
+        Func {
+            name: "playfli",
+            args: &[],
+        },
         // B
-        Func{name: "gotoxy", args: &[I, I]},
-        Func{name: "printstring", args: &[]},
-        Func{name: "loadraw", args: &[]},
-        Func{name: "settile", args: &[I, I, I, I]},
-        Func{name: "allowconsole", args: &[I]},
-        Func{name: "scalesprite", args: &[I, I, I, I, I, I, I]},
-        Func{name: "processentities", args: &[]},
-        Func{name: "updatecontrols", args: &[]},
-        Func{name: "unpress", args: &[I]},
-        Func{name: "entitymove", args: &[]},
-        Func{name: "hline", args: &[I, I, I, I]},
-        Func{name: "vline", args: &[I, I, I, I]},
-        Func{name: "line", args: &[I, I, I, I, I]},
-        Func{name: "circle", args: &[I, I, I, I]},
-        Func{name: "circlefill", args: &[I, I, I, I]}, // 30
+        Func {
+            name: "gotoxy",
+            args: &[I, I],
+        },
+        Func {
+            name: "printstring",
+            args: &[],
+        },
+        Func {
+            name: "loadraw",
+            args: &[],
+        },
+        Func {
+            name: "settile",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "allowconsole",
+            args: &[I],
+        },
+        Func {
+            name: "scalesprite",
+            args: &[I, I, I, I, I, I, I],
+        },
+        Func {
+            name: "processentities",
+            args: &[],
+        },
+        Func {
+            name: "updatecontrols",
+            args: &[],
+        },
+        Func {
+            name: "unpress",
+            args: &[I],
+        },
+        Func {
+            name: "entitymove",
+            args: &[],
+        },
+        Func {
+            name: "hline",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "vline",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "line",
+            args: &[I, I, I, I, I],
+        },
+        Func {
+            name: "circle",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "circlefill",
+            args: &[I, I, I, I],
+        }, // 30
         // C
-        Func{name: "rect", args: &[I, I, I, I, I]},
-        Func{name: "rectfill", args: &[I, I, I, I, I]},
-        Func{name: "strlen", args: &[]},
-        Func{name: "strcmp", args: &[]},
-        Func{name: "cd_stop", args: &[]},
-        Func{name: "cd_play", args: &[I]},
-        Func{name: "fontwidth", args: &[I]},
-        Func{name: "fontheight", args: &[I]},
-        Func{name: "setpixel", args: &[I, I, I]},
-        Func{name: "getpixel", args: &[I, I]},
-        Func{name: "entityonscreen", args: &[I]},
-        Func{name: "random", args: &[I]},
-        Func{name: "gettile", args: &[I, I, I]},
-        Func{name: "hookretrace", args: &[]},
-        Func{name: "hooktimer", args: &[]},
+        Func {
+            name: "rect",
+            args: &[I, I, I, I, I],
+        },
+        Func {
+            name: "rectfill",
+            args: &[I, I, I, I, I],
+        },
+        Func {
+            name: "strlen",
+            args: &[],
+        },
+        Func {
+            name: "strcmp",
+            args: &[],
+        },
+        Func {
+            name: "cd_stop",
+            args: &[],
+        },
+        Func {
+            name: "cd_play",
+            args: &[I],
+        },
+        Func {
+            name: "fontwidth",
+            args: &[I],
+        },
+        Func {
+            name: "fontheight",
+            args: &[I],
+        },
+        Func {
+            name: "setpixel",
+            args: &[I, I, I],
+        },
+        Func {
+            name: "getpixel",
+            args: &[I, I],
+        },
+        Func {
+            name: "entityonscreen",
+            args: &[I],
+        },
+        Func {
+            name: "random",
+            args: &[I],
+        },
+        Func {
+            name: "gettile",
+            args: &[I, I, I],
+        },
+        Func {
+            name: "hookretrace",
+            args: &[],
+        },
+        Func {
+            name: "hooktimer",
+            args: &[],
+        },
         // D
-        Func{name: "setresolution", args: &[I, I]},
-        Func{name: "setrstring", args: &[]},
-        Func{name: "setcliprect", args: &[I, I, I, I]},
-        Func{name: "setrenderdest", args: &[I, I, I]},
-        Func{name: "restorerendersettings", args: &[]},
-        Func{name: "partymove", args: &[]},
-        Func{name: "sin", args: &[I]},
-        Func{name: "cos", args: &[I]},
-        Func{name: "tan", args: &[I]},
-        Func{name: "readmouse", args: &[]},
-        Func{name: "setclip", args: &[I]},
-        Func{name: "setlucent", args: &[]},
-        Func{name: "wrapblit", args: &[]},
-        Func{name: "twrapblit", args: &[]},
-        Func{name: "setmousepos", args: &[]}, // 60
+        Func {
+            name: "setresolution",
+            args: &[I, I],
+        },
+        Func {
+            name: "setrstring",
+            args: &[],
+        },
+        Func {
+            name: "setcliprect",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "setrenderdest",
+            args: &[I, I, I],
+        },
+        Func {
+            name: "restorerendersettings",
+            args: &[],
+        },
+        Func {
+            name: "partymove",
+            args: &[],
+        },
+        Func {
+            name: "sin",
+            args: &[I],
+        },
+        Func {
+            name: "cos",
+            args: &[I],
+        },
+        Func {
+            name: "tan",
+            args: &[I],
+        },
+        Func {
+            name: "readmouse",
+            args: &[],
+        },
+        Func {
+            name: "setclip",
+            args: &[I],
+        },
+        Func {
+            name: "setlucent",
+            args: &[],
+        },
+        Func {
+            name: "wrapblit",
+            args: &[],
+        },
+        Func {
+            name: "twrapblit",
+            args: &[],
+        },
+        Func {
+            name: "setmousepos",
+            args: &[],
+        }, // 60
         // E
-        Func{name: "hookkey", args: &[]},
-        Func{name: "playmusic", args: &[]},
-        Func{name: "stopmusic", args: &[]},
-        Func{name: "palettemorph", args: &[]},
-        Func{name: "fopen", args: &[]},
-        Func{name: "fclose", args: &[]},
-        Func{name: "quickread", args: &[]},
-        Func{name: "addfollower", args: &[]},
-        Func{name: "killfollower", args: &[]},
-        Func{name: "killallfollowers", args: &[]},
-        Func{name: "resetfollowers", args: &[]},
-        Func{name: "flatpoly", args: &[]},
-        Func{name: "tmappoly", args: &[]},
-        Func{name: "cachesound", args: &[]},
-        Func{name: "freeallsounds", args: &[]},
+        Func {
+            name: "hookkey",
+            args: &[],
+        },
+        Func {
+            name: "playmusic",
+            args: &[],
+        },
+        Func {
+            name: "stopmusic",
+            args: &[],
+        },
+        Func {
+            name: "palettemorph",
+            args: &[I, I, I, I],
+        },
+        Func {
+            name: "fopen",
+            args: &[],
+        },
+        Func {
+            name: "fclose",
+            args: &[],
+        },
+        Func {
+            name: "quickread",
+            args: &[],
+        },
+        Func {
+            name: "addfollower",
+            args: &[],
+        },
+        Func {
+            name: "killfollower",
+            args: &[],
+        },
+        Func {
+            name: "killallfollowers",
+            args: &[],
+        },
+        Func {
+            name: "resetfollowers",
+            args: &[],
+        },
+        Func {
+            name: "flatpoly",
+            args: &[],
+        },
+        Func {
+            name: "tmappoly",
+            args: &[],
+        },
+        Func {
+            name: "cachesound",
+            args: &[],
+        },
+        Func {
+            name: "freeallsounds",
+            args: &[],
+        },
         // F
-        Func{name: "playsound", args: &[]},
-        Func{name: "rotscale", args: &[]},
-        Func{name: "mapline", args: &[]},
-        Func{name: "tmapline", args: &[]},
-        Func{name: "val", args: &[]},
-        Func{name: "tscalesprite", args: &[]},
-        Func{name: "grabregion", args: &[]},
-        Func{name: "log", args: &[]},
-        Func{name: "fseekline", args: &[]},
-        Func{name: "fseekpos", args: &[]},
-        Func{name: "fread", args: &[]},
-        Func{name: "fgetbyte", args: &[]},
-        Func{name: "fgetword", args: &[]},
-        Func{name: "fgetquad", args: &[]},
-        Func{name: "fgetline", args: &[]}, // 90
+        Func {
+            name: "playsound",
+            args: &[],
+        },
+        Func {
+            name: "rotscale",
+            args: &[],
+        },
+        Func {
+            name: "mapline",
+            args: &[],
+        },
+        Func {
+            name: "tmapline",
+            args: &[],
+        },
+        Func {
+            name: "val",
+            args: &[],
+        },
+        Func {
+            name: "tscalesprite",
+            args: &[],
+        },
+        Func {
+            name: "grabregion",
+            args: &[],
+        },
+        Func {
+            name: "log",
+            args: &[],
+        },
+        Func {
+            name: "fseekline",
+            args: &[],
+        },
+        Func {
+            name: "fseekpos",
+            args: &[],
+        },
+        Func {
+            name: "fread",
+            args: &[],
+        },
+        Func {
+            name: "fgetbyte",
+            args: &[],
+        },
+        Func {
+            name: "fgetword",
+            args: &[],
+        },
+        Func {
+            name: "fgetquad",
+            args: &[],
+        },
+        Func {
+            name: "fgetline",
+            args: &[],
+        }, // 90
         // G
-        Func{name: "fgettoken", args: &[]},
-        Func{name: "fwritestring", args: &[]},
-        Func{name: "fwrite", args: &[]},
-        Func{name: "frename", args: &[]},
-        Func{name: "fdelete", args: &[]},
-        Func{name: "fwopen", args: &[]},
-        Func{name: "fwclose", args: &[]},
-        Func{name: "memcpy", args: &[]},
-        Func{name: "memset", args: &[]},
-        Func{name: "silhouette", args: &[]},
-        Func{name: "initmosaictable", args: &[]},
-        Func{name: "mosaic", args: &[]},
-        Func{name: "writevars", args: &[]},
-        Func{name: "readvars", args: &[]},
-        Func{name: "callevent", args: &[]}, // 105
+        Func {
+            name: "fgettoken",
+            args: &[],
+        },
+        Func {
+            name: "fwritestring",
+            args: &[],
+        },
+        Func {
+            name: "fwrite",
+            args: &[],
+        },
+        Func {
+            name: "frename",
+            args: &[],
+        },
+        Func {
+            name: "fdelete",
+            args: &[],
+        },
+        Func {
+            name: "fwopen",
+            args: &[],
+        },
+        Func {
+            name: "fwclose",
+            args: &[],
+        },
+        Func {
+            name: "memcpy",
+            args: &[],
+        },
+        Func {
+            name: "memset",
+            args: &[],
+        },
+        Func {
+            name: "silhouette",
+            args: &[],
+        },
+        Func {
+            name: "initmosaictable",
+            args: &[],
+        },
+        Func {
+            name: "mosaic",
+            args: &[],
+        },
+        Func {
+            name: "writevars",
+            args: &[],
+        },
+        Func {
+            name: "readvars",
+            args: &[],
+        },
+        Func {
+            name: "callevent",
+            args: &[],
+        }, // 105
         // H
-        Func{name: "asc", args: &[]},
-        Func{name: "callscript", args: &[]},
-        Func{name: "numforscript", args: &[]},
-        Func{name: "filesize", args: &[]},
-        Func{name: "ftell", args: &[]},
-        Func{name: "changechr", args: &[]},
-        Func{name: "rgb", args: &[]},
-        Func{name: "getr", args: &[]},
-        Func{name: "getg", args: &[]},
-        Func{name: "getb", args: &[]},
-        Func{name: "mask", args: &[]},
-        Func{name: "changeall", args: &[]},
-        Func{name: "sqrt", args: &[]},
-        Func{name: "fwritebyte", args: &[]},
-        Func{name: "fwriteword",  args: &[]}, // 120
+        Func {
+            name: "asc",
+            args: &[],
+        },
+        Func {
+            name: "callscript",
+            args: &[],
+        },
+        Func {
+            name: "numforscript",
+            args: &[],
+        },
+        Func {
+            name: "filesize",
+            args: &[],
+        },
+        Func {
+            name: "ftell",
+            args: &[],
+        },
+        Func {
+            name: "changechr",
+            args: &[],
+        },
+        Func {
+            name: "rgb",
+            args: &[],
+        },
+        Func {
+            name: "getr",
+            args: &[],
+        },
+        Func {
+            name: "getg",
+            args: &[],
+        },
+        Func {
+            name: "getb",
+            args: &[],
+        },
+        Func {
+            name: "mask",
+            args: &[],
+        },
+        Func {
+            name: "changeall",
+            args: &[],
+        },
+        Func {
+            name: "sqrt",
+            args: &[],
+        },
+        Func {
+            name: "fwritebyte",
+            args: &[],
+        },
+        Func {
+            name: "fwriteword",
+            args: &[],
+        }, // 120
         // I
-        Func{name: "fwritequad", args: &[]},
-        Func{name: "calclucent", args: &[]},
-        Func{name: "imagesize", args: &[]},
+        Func {
+            name: "fwritequad",
+            args: &[],
+        },
+        Func {
+            name: "calclucent",
+            args: &[],
+        },
+        Func {
+            name: "imagesize",
+            args: &[],
+        },
     ];
 
     pub fn get(func: u8) -> &'static Func {
@@ -413,27 +849,49 @@ mod StdLib {
 
 fn decode_event(index: &SystemVC, event_idx: usize, code: &MapCode) {
     let event = &code.events[event_idx];
-    let mut state = State { bytecode: &event.bytecode, file_ofs: event.code_ofs, pos: 0 };
+    let mut state = State {
+        bytecode: &event.bytecode,
+        file_ofs: event.code_ofs,
+        pos: 0,
+    };
 
     while state.pos < state.bytecode.len() {
         decode_statement(index, &mut state);
     }
 }
 
+fn emit(offset: usize, bytes: &[u8], detail: String) {
+    let mut s = String::new();
+    for b in bytes {
+        if !s.is_empty() {
+            s += " ";
+        }
+        s += &format!("{:02X}", b);
+    }
+
+    println!("{:04X}:\t{}\t{}", offset, s, detail);
+}
+
 fn decode_statement(index: &SystemVC, state: &mut State) {
     let start_index = state.pos;
     let op = state.u8();
 
-    let a = match op {
+    match op {
         Op::stdlib => {
             let func_idx = state.u8();
             let func = StdLib::get(func_idx);
-            format!(
-                "{:X}\tstdlib    \t{} (argcount={})",
-                func_idx,
-                func.name,
-                func.args.len()
-            )
+            emit(
+                start_index,
+                &[op, func_idx],
+                format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
+            );
+
+            for arg in func.args {
+                match arg {
+                    StdLib::Arg::Int => decode_int_expression(index, state),
+                    StdLib::Arg::Str => decode_string_expression(index, state),
+                }
+            }
         }
         Op::externfunc => {
             let func_idx = state.u16() as usize;
@@ -441,14 +899,61 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
                 panic!("Bad extern function index {}", func_idx);
             }
 
-            format!("{:02X} {:02X}\texternfunc {}\t{}", func_idx / 256, func_idx & 255, func_idx, index.functions[func_idx].name)
+            emit(
+                start_index,
+                &[op, (func_idx / 256) as u8, (func_idx & 255) as u8],
+                format!(
+                    "externfunc {}\t{}",
+                    func_idx,
+                    index.functions[func_idx].name
+                )
+            );
         }
         _ => {
-            format!("\tUNKNOWN!")
+            emit(start_index, &[op], "Unknown!!".to_string());
         }
-    };
+    }
+}
 
-    println!("{:04X}:\t{:02X} {}", start_index + state.file_ofs, op, a);
+fn decode_int_operand(index: &SystemVC, state: &mut State) {
+    let start_offset = state.pos;
+    let op = state.u8();
+
+    match op {
+        Operand::IMMEDIATE => {
+            let value = state.i32();
+            emit(start_offset, &[
+                    op,
+                    ((value >> 24) & 255) as u8,
+                    ((value >> 16) & 255) as u8,
+                    ((value >> 8) & 255) as u8,
+                    (value & 255) as u8
+                ],
+                format!("literal {}", value)
+            );
+        },
+        _ =>
+            emit(start_offset, &[op], "UNKNOWN!".to_string())
+    }
+}
+
+fn decode_int_expression(index: &SystemVC, state: &mut State) {
+    let start_offset = state.pos;
+
+    decode_int_operand(index, state);
+
+    let op = state.u8();
+
+    match op {
+        Expr::END =>
+            emit(start_offset, &[op], "end expression".to_string()),
+        _ =>
+            emit(start_offset, &[op], "unknown int expression!".to_string()),
+    }
+}
+
+fn decode_string_expression(index: &SystemVC, state: &mut State) {
+
 }
 
 fn main() -> Result<(), std::io::Error> {
