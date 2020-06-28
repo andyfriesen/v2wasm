@@ -47,7 +47,8 @@ def EmscriptenEnvironment():
     debug = int(ARGUMENTS.get('debug', 0))
     asan = ARGUMENTS.get('asan', 0)
     ubsan = ARGUMENTS.get('ubsan', 0)
-
+    cyberdwarf = ARGUMENTS.get('cyberdwarf', 0)
+    
     if debug > 0:
         env.Append(CPPDEFINES=[
             'DEBUG_LOCALS',
@@ -69,7 +70,7 @@ def EmscriptenEnvironment():
         cflags.append('-g')
 
         env.Append(LINKFLAGS=[
-            '-g',
+            '-g4',
             '--source-map-base', 'http://localhost/',
         ])
 
@@ -78,6 +79,11 @@ def EmscriptenEnvironment():
             '-s', 'ASYNCIFY_STACK_SIZE=32768',
         ]
         cflags.append('-O3')
+
+    if cyberdwarf:
+        env.Append(LINKFLAGS=[
+            '-s', 'CYBERDWARF=1'
+        ])
 
     if asmjs:
         env.Append(LINKFLAGS=[

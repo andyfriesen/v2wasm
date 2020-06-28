@@ -96,6 +96,14 @@ static const std::unordered_map<int, int> scanMap = {
     { VK_TILDE, DIK_GRAVE },
 };
 
+
+#ifdef DEBUG_INPUT
+#define INPUT_PRINTF printf
+#else
+template <typename ...T>
+void INPUT_PRINTF(T...) {}
+#endif
+
 namespace {
     enum class EventType {
         None,
@@ -123,7 +131,7 @@ namespace {
         if (it != scanMap.end())
             code = it->second;
 
-        printf("Key down %d %s\n", code, e->key);
+        INPUT_PRINTF("Key down %d %s\n", code, e->key);
         inputEvents.push_back(InputEvent{ EventType::KeyDown, code });
         return shouldStopPropagation(code);
     }
@@ -134,25 +142,25 @@ namespace {
         if (it != scanMap.end())
             code = it->second;
 
-        printf("Key up %d %s\n", code, e->key);
+        INPUT_PRINTF("Key up %d %s\n", code, e->key);
         inputEvents.push_back(InputEvent{ EventType::KeyUp, code });
         return shouldStopPropagation(code);
     }
 
     EM_BOOL onGamepadConnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
-        printf("Gamepad connected idx='%s' mapping='%s' index=%ld\n", gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
+        INPUT_PRINTF("Gamepad connected idx='%s' mapping='%s' index=%ld\n", gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
         connectedGamepads.insert(gamepadEvent->index);
         return true;
     }
 
     EM_BOOL onGamepadDisonnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
-        printf("Gamepad disconnected\n");
+        INPUT_PRINTF("Gamepad disconnected\n");
         connectedGamepads.erase(gamepadEvent->index);
         return true;
     }
 
     EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
-        // printf("onMouseDown %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
+        // INPUT_PRINTF("onMouseDown %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
         Input* input = reinterpret_cast<Input*>(userData);
 
         input->mousex = mouseEvent->clientX;

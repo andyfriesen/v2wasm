@@ -100,7 +100,7 @@ EM_JS(void, downloadAll, (const char** manifest), {
                 }
 
                 FS.writeFile(path.toLowerCase(), bytes);
-                console.log('Wrote', path.toLowerCase(), '(' + bytes.length + ' bytes)');
+                // console.log('Wrote', path.toLowerCase(), '(' + bytes.length + ' bytes)');
 
                 ++count;
                 verge.setLoadingProgress((100 * count / promises.length) | 0)
