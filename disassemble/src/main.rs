@@ -47,6 +47,13 @@ where
 fn read_string(f: &mut File, len: usize) -> std::io::Result<String> {
     let mut buf = vec![0; len];
     f.read_exact(&mut buf)?;
+
+    for i in 0..len {
+        if buf[i] == 0 {
+            return Ok(String::from_utf8_lossy(&buf[0..i]).to_string())
+        }
+    }
+
     Ok(String::from_utf8_lossy(&buf).to_string())
 }
 
