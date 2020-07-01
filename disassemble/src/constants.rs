@@ -328,7 +328,7 @@ pub mod std_lib {
         },
         Func {
             name: "playmusic",
-            args: &[],
+            args: &[S],
         },
         Func {
             name: "stopmusic",
@@ -336,7 +336,7 @@ pub mod std_lib {
         },
         Func {
             name: "palettemorph",
-            args: &[I, I, I, I],
+            args: &[I, I, I, I, I],
         },
         Func {
             name: "fopen",
@@ -592,4 +592,33 @@ pub mod std_lib {
     pub fn to_string(func: u8) -> &'static str {
         get(func).name
     }
+}
+
+pub mod hardvar0 {
+    pub const VARS: &'static [&'static str] = &[
+        "xwin", "ywin", "cameratracking", "timer", "up", "down", "left", "right",
+        "b1", "b2", "b3", "b4", "screenx", "screeny",
+        "player", // 15
+
+        "numentsonscreen", "tracker", "mx", "my", "mb", "vctrace", "image_width",
+        "image_height", "music_volume", "vsp", "lastent", "last_pressed",
+        "map_width", "map_height", "vsync", "numents", "mask_color",
+        "bitdepth" // 30
+    ];
+}
+
+pub mod hardvar1 {
+    pub const VARS: &'static [&'static str] = &[
+        "screen", "entity.x", "entity.y", "entity.tx", "entity.ty", "entity.facing",
+        "entity.moving", "entity.specframe", "entity.speed", "entity.movecode",
+        "entsonscreen", "key", "layer.hline", "byte",
+        "word", // 15
+
+        "quad", "pal", "sbyte", "sword", "squad", "entity.isob", "entity.canob",
+        "entity.autoface", "entity.visible", "entity.on", "chr_data",
+        "entity.width", "entity.height", "entity.chrindex",
+        "zone.event", // 30
+
+        "zone.chance",
+    ];
 }

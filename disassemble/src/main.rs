@@ -156,6 +156,7 @@ fn read_code(name: &str) -> std::io::Result<MapCode> {
 }
 
 struct State<'a> {
+    index: &'a SystemVC,
     bytecode: &'a Vec<u8>,
     file_ofs: usize,
     pos: usize,
@@ -215,7 +216,7 @@ impl<'a> State<'a> {
         result
     }
 
-    fn emit(&self, offset: usize, detail: String) {
+    fn emit(&self, offset: usize, detail: &str) {
         let mut s = String::new();
         for b in offset..self.pos {
             if !s.is_empty() {
@@ -237,14 +238,15 @@ fn decode_event(index: &SystemVC, event_idx: usize, code: &MapCode) {
         bytecode: &event.bytecode,
         file_ofs: event.code_ofs,
         pos: 0,
+        index,
     };
 
     while state.pos < state.bytecode.len() {
-        decode_statement(index, &mut state);
+        decode_statement(&mut state);
     }
 }
 
-fn decode_statement(index: &SystemVC, state: &mut State) {
+fn decode_statement(state: &mut State) {
     let start_index = state.pos;
     let op = state.u8();
 
@@ -254,44 +256,44 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
             let func = std_lib::get(func_idx);
             state.emit(
                 start_index,
-                format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
+                &format!("stdlib    \t{} (argcount={})", func.name, func.args.len()),
             );
 
             for arg in func.args {
                 match arg {
-                    std_lib::Arg::Int => decode_int_expression(state),
-                    std_lib::Arg::Str => decode_string_expression(index, state),
+                    std_lib::Arg::Int => resolve_operand(state),
+                    std_lib::Arg::Str => decode_string_expression(state),
                 }
             }
         }
         op::EXTERNFUNC => {
             let func_idx = state.u16() as usize;
-            if func_idx > index.functions.len() {
+            if func_idx > state.index.functions.len() {
                 panic!("Bad extern function index {}", func_idx);
             }
 
             state.emit(
                 start_index,
-                format!(
+                &format!(
                     "externfunc {}\t{}",
                     func_idx,
-                    index.functions[func_idx].name
+                    state.index.functions[func_idx].name
                 )
             );
         }
         op::IF_ => {
             state.emit(
                 start_index,
-                "begin if statement".to_string()
+                "begin if statement"
             );
 
-            decode_if_expression(index, state);
+            process_if(state);
 
             let pos = state.pos;
             let jump_dest = state.u32();
             state.emit(
                 pos,
-                format!("jump dest {:08X}", jump_dest)
+                &format!("jump dest {:08X}", jump_dest)
             );
         }
         _ => {
@@ -300,25 +302,76 @@ fn decode_statement(index: &SystemVC, state: &mut State) {
     }
 }
 
-fn decode_if_expression(index: &SystemVC, state: &mut State) {
-    decode_int_operand(state);
+// ProcessIf
+fn process_if(state: &mut State) {
+    process_if_operand(state);
+
+    loop {
+        let pos = state.pos;
+        let c = state.u8();
+        match c {
+            if_op::AND => {
+                state.emit(pos, "AND");
+                process_if_operand(state);
+            }
+            if_op::OR => {
+                state.emit(pos, "OR");
+                process_if_operand(state);
+            }
+            if_op::UNGROUP => {
+                state.emit(pos, "UNGROUP");
+                break;
+            }
+            _ =>
+                panic!("Unknown if op {:02X}", c)
+        }
+    }
+}
+
+fn process_if_operand(state: &mut State) {
+    resolve_operand(state);
 
     let pos = state.pos;
     let op = state.u8();
     match op {
-        if_op::ZERO =>
-            state.emit(
-                pos,
-                "nonzero".to_string()
-            ),
+        if_op::ZERO    => state.emit(pos, "nonzero"),
+        if_op::NONZERO => state.emit(pos, "zero"),
+        if_op::EQUALTO => {
+            state.emit(pos, "equal to");
+            resolve_operand(state);
+        },
+        if_op::NOTEQUAL => {
+            state.emit(pos, "not equal to");
+            resolve_operand(state);
+        },
+        if_op::GREATERTHAN => {
+            state.emit(pos, "greater than");
+            resolve_operand(state);
+        },
+        if_op::LESSTHAN => {
+            state.emit(pos, "less than");
+            resolve_operand(state);
+        },
+        if_op::GREATERTHANOREQUAL => {
+            state.emit(pos, "greater or equal to");
+            resolve_operand(state);
+        },
+        if_op::LESSTHANOREQUAL => {
+            state.emit(pos, "less than or equal");
+            resolve_operand(state);
+        },
+        if_op::GROUP => {
+            state.emit(pos, "group");
+            process_if(state);
+        },
 
         _ =>
-            panic!("Unknown if op {:02X}", op)
+            panic!("Unknown if expr op {:02X}", op)
     }
 }
 
-// ResolveOperand
-fn decode_int_operand(state: &mut State) {
+// ProcessOperand
+fn process_operand(state: &mut State) {
     let start_offset = state.pos;
     let op = state.u8();
 
@@ -326,31 +379,91 @@ fn decode_int_operand(state: &mut State) {
         operand::IMMEDIATE => {
             let value = state.i32();
             state.emit(start_offset,
-                format!("literal {}", value)
+                &format!("literal {}", value)
             );
         },
+        operand::HVAR0 => {
+            let which = state.u8() as usize;
+            if which > hardvar0::VARS.len() {
+                panic!("Bad hardvar0 index {:02X}", which);
+            }
+            state.emit(start_offset, &format!("hvar0 {:02X} ({})", which, hardvar0::VARS[which]));
+        },
+        operand::HVAR1 => {
+            let which = state.u8() as usize;
+            if which > hardvar1::VARS.len() {
+                panic!("Bad hardvar1 index {:02X}", which);
+            }
+            state.emit(start_offset, &format!("hvar1 {:02X} ({})", which, hardvar1::VARS[which]));
+            resolve_operand(state);
+        },
+        operand::UVAR => {
+
+        },
+        operand::UVARRAY => {
+            let var = state.u32() as usize;
+            state.emit(start_offset, &format!("read uvarray {:04X}", var));
+            // let var_name = &state.index.variables[var].name;
+            // state.emit(start_offset, &format!("read uvarray {:04X} ({})", var, var_name));
+            resolve_operand(state);
+        },
         _ =>
-            state.emit(start_offset, "UNKNOWN!".to_string())
+            state.emit(start_offset, "UNKNOWN!")
     }
 }
 
-fn decode_int_expression(state: &mut State) {
+// ResolveOperand
+fn resolve_operand(state: &mut State) {
+    process_operand(state);
+
     let start_offset = state.pos;
-
-    decode_int_operand(state);
-
     let op = state.u8();
 
     match op {
         expr::END =>
-            state.emit(start_offset, "end expression".to_string()),
+            state.emit(start_offset, "end expression"),
         _ =>
-            state.emit(start_offset, "unknown int expression!".to_string()),
+            state.emit(start_offset, "unknown int expression!"),
     }
 }
 
-fn decode_string_expression(index: &SystemVC, state: &mut State) {
+// HandleStringOperand
+fn handle_string_operand(state: &mut State) {
+    let pos = state.pos;
+    let op = state.u8();
+    match op {
+        operand::IMMEDIATE => {
+            let mut s = String::new();
+            
+            loop {
+                let c = state.u8();
+                if c != 0 {
+                    s.push(c.into());
+                } else {
+                    break;
+                }
+            }
 
+            state.emit(pos, &format!("string literal \"{}\"", s));
+        }
+        _ =>
+            panic!("unknown string operand {:02X}", op)
+    }
+}
+
+// ResolveString
+fn decode_string_expression(state: &mut State) {
+    handle_string_operand(state);
+
+    let pos = state.pos;
+    let c = state.u8();
+    match c {
+        11 => {
+            state.emit(pos, "end string expression");
+        }
+        _ =>
+            panic!("Unknown string operand {:02X}", c)
+    }
 }
 
 fn main() -> Result<(), std::io::Error> {
