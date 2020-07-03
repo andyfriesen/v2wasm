@@ -26,15 +26,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
         21	December	1999	Created.
 */
 
-#ifndef types_inc
-#define types_inc
+#pragma once
 
-typedef unsigned char u8;
-typedef signed char s8;
-typedef unsigned short u16;
-typedef signed short s16;
-typedef unsigned long u32;
-typedef signed long s32;
+#include <stdint.h>
+
+typedef uint8_t u8;
+typedef int8_t s8;
+typedef uint16_t u16;
+typedef int16_t s16;
+typedef uint32_t u32;
+typedef int32_t s32;
 
 class rangenum {
     s32 lo, hi;
@@ -60,5 +61,3 @@ class rangenum {
     s32 get_lo() const { return lo; }
     s32 get_hi() const { return hi; }
 };
-
-#endif // types_inc
