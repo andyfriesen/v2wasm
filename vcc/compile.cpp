@@ -194,8 +194,8 @@ void EmitD(int d) {
         vcerr("Located.");
 
     if (code + 4 - 1 < 1024 * 1024 + outbuf) {
+        *(uint32_t*)(code) = d;
         code += 4;
-        *(long*)(code - 4) = d;
     } else {
         err("EmitD: out of bounds");
     }
