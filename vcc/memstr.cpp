@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "memstr.h"
 #include "str.h"
 
-using std::ostream;
 using std::endl;
+using std::ostream;
 
 int memorystream_t::setcapacity(unsigned long capacity) {
     // special case for 0 capacity

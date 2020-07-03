@@ -146,14 +146,36 @@ const char* hardvar0[] = {
 };
 
 const char* hardvar1[] = {
-    "screen", "entity.x", "entity.y", "entity.tx", "entity.ty", "entity.facing",
-    "entity.moving", "entity.specframe", "entity.speed", "entity.movecode",
-    "entsonscreen", "key", "layer.hline", "byte",
+    "screen",
+    "entity.x",
+    "entity.y",
+    "entity.tx",
+    "entity.ty",
+    "entity.facing",
+    "entity.moving",
+    "entity.specframe",
+    "entity.speed",
+    "entity.movecode",
+    "entsonscreen",
+    "key",
+    "layer.hline",
+    "byte",
     "word", // 15
 
-    "quad", "pal", "sbyte", "sword", "squad", "entity.isob", "entity.canob",
-    "entity.autoface", "entity.visible", "entity.on", "chr_data",
-    "entity.width", "entity.height", "entity.chrindex",
+    "quad",
+    "pal",
+    "sbyte",
+    "sword",
+    "squad",
+    "entity.isob",
+    "entity.canob",
+    "entity.autoface",
+    "entity.visible",
+    "entity.on",
+    "chr_data",
+    "entity.width",
+    "entity.height",
+    "entity.chrindex",
     "zone.event", // 30
 
     "zone.chance",
@@ -168,9 +190,7 @@ int numhardvar1 = 31;
 
 // ================================= Code ====================================
 
-int streq(const char* a, const char* b) {
-    return 0 == strcmp(a, b);
-}
+int streq(const char* a, const char* b) { return 0 == strcmp(a, b); }
 
 char TokenIs(const char* str) {
     return (char)streq(str, tok.ident); // token);

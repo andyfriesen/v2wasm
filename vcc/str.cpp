@@ -106,7 +106,7 @@ void strupr(char* s) {
     while (*s) {
         *s = toupper(*s);
         ++s;
-    }    
+    }
 }
 
 void strlwr(char* s) {
@@ -117,14 +117,18 @@ void strlwr(char* s) {
 }
 
 int stricmp(const char* a, const char* b) {
-    while (*a && *b) {        
-        if (!*a) return -1;
-        if (!*b) return 1;
+    while (*a && *b) {
+        if (!*a)
+            return -1;
+        if (!*b)
+            return 1;
 
         char aa = tolower(*a);
         char bb = tolower(*b);
-        if (aa < bb) return -1;
-        if (aa > bb) return 1;
+        if (aa < bb)
+            return -1;
+        if (aa > bb)
+            return 1;
 
         ++a;
         ++b;

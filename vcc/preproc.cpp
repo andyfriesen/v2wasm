@@ -42,13 +42,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdlib.h>
 #include <string.h>
 
+#include <algorithm>
 #include <string>
 #include <vector>
-#include <algorithm>
 
+#include "lexical.h"
 #include "preproc.h"
 #include "str.h"
-#include "lexical.h"
 #include "vcc.h"
 
 #define SYM_MAX_LEN 39
@@ -326,19 +326,19 @@ void pp_line_error(const char* error, ...) {
 }
 
 void pp_def_add(char* sym, char* resolve) {
-    defines.push_back(new define_t{ sym, resolve });
+    defines.push_back(new define_t{sym, resolve});
 }
 
 void push_file(const char* filename) {
     if (!includes.empty()) {
-        for (include_t* inc: includes) {
+        for (include_t* inc : includes) {
             if (inc->filename == pp_tok) {
                 pp_error("circular dependencies");
             }
         }
     }
 
-    pfile = new include_t{ filename };
+    pfile = new include_t{filename};
 
     // add the include to the list
     includes.emplace_back(pfile);
@@ -361,7 +361,8 @@ void pop_file() {
     // for (include_t* i: includes) {
     //     putc(' ', stdout);
     // }
-    // printf("pop %s (%d lines)\n", pfile->filename.c_str(), pfile->line_count);
+    // printf("pop %s (%d lines)\n", pfile->filename.c_str(),
+    // pfile->line_count);
 
     if (pfile->filename == "system.vc") {
         // dprint("> total lines: %d", pp_total_lines);
@@ -382,7 +383,7 @@ void pop_file() {
         pp_file_marker();
         pp_line_marker();
     }
-    
+
     delete pfile;
 
     pfile = includes.empty() ? nullptr : includes.back();
@@ -560,7 +561,7 @@ void define_check_dup(char* sym) {
     if (!defines.empty()) {
         len = strlen(sym);
 
-        for (define_t* pdef: defines) {
+        for (define_t* pdef : defines) {
             if (len == pdef->sym_len) {
                 if (!stricmp(pdef->sym, sym))
                     pp_line_error("duplicate #define symbol found: %s", sym);
@@ -867,7 +868,7 @@ void define_check_for_replacement() {
     len = strlen(pp_tok);
 
     // scan symbols in define list
-    for (define_t* pdef: defines) {
+    for (define_t* pdef : defines) {
         // test further if symbol lengths match
         if (pdef->sym_len == len) {
             // lengths match; are the symbols equal?
