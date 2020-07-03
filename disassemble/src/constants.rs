@@ -59,6 +59,22 @@ pub mod expr {
     pub const END : u8= 11;
 }
 
+pub mod string_expr {
+    pub const IMMEDIATE: u8 = 1;
+    pub const GLOBAL: u8 = 2;
+    pub const ARRAY: u8 = 3;
+    pub const NUMSTR: u8 = 4;
+    pub const LEFT: u8 = 5;
+    pub const RIGHT: u8 = 6;
+    pub const MID: u8 = 7;
+    pub const LOCAL: u8 = 8;
+    pub const ADD: u8 = 9;
+    pub const CHR: u8 = 10;
+    pub const END: u8 = 11;
+    pub const UFUNC: u8 = 12;
+    pub const BFUNC: u8 = 13;
+}
+
 pub mod std_lib {
     pub enum Arg {
         Int,

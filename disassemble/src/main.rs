@@ -290,10 +290,10 @@ fn decode_statement(state: &mut State) {
             process_if(state);
 
             let pos = state.pos;
-            let jump_dest = state.u32();
+            let jump_dest = state.u32() as usize;
             state.emit(
                 pos,
-                &format!("jump dest {:08X}", jump_dest)
+                &format!("jump dest {:08X} (file offset {:08X})", jump_dest, jump_dest + state.file_ofs)
             );
         }
         _ => {
@@ -366,7 +366,7 @@ fn process_if_operand(state: &mut State) {
         },
 
         _ =>
-            panic!("Unknown if expr op {:02X}", op)
+            state.emit(pos, &format!("Unknown if expr op {:02X}", op))
     }
 }
 
@@ -432,7 +432,7 @@ fn handle_string_operand(state: &mut State) {
     let pos = state.pos;
     let op = state.u8();
     match op {
-        operand::IMMEDIATE => {
+        string_expr::IMMEDIATE => {
             let mut s = String::new();
             
             loop {
@@ -446,6 +446,11 @@ fn handle_string_operand(state: &mut State) {
 
             state.emit(pos, &format!("string literal \"{}\"", s));
         }
+        string_expr::GLOBAL => {
+            let which = state.u16() as usize;
+            let name = &state.index.strings[which].name;
+            state.emit(pos, &format!("global string {:04x} \"{}\"", which, name));
+        }
         _ =>
             panic!("unknown string operand {:02X}", op)
     }
@@ -458,7 +463,11 @@ fn decode_string_expression(state: &mut State) {
     let pos = state.pos;
     let c = state.u8();
     match c {
-        11 => {
+        string_expr::ADD => {
+            state.emit(pos, "string concat");
+            handle_string_operand(state);
+        }
+        string_expr::END => {
             state.emit(pos, "end string expression");
         }
         _ =>
