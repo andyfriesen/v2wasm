@@ -184,7 +184,7 @@
             The game root dir is a relative path to a manifest.txt.  This file describes all the stuff
             needed to run the game.
 
-            Once you have done all of this, include verge.out.js with a script tag.
+            Once you have done all of this, include verge2.out.js with a script tag.
         -->
         <script>
             window.verge = {};
@@ -198,10 +198,11 @@
                 }
             };
 
+            const u = new URLSearchParams(window.location.search);
             let game = u.get('game') || 'tcod';
             window.Module = {arguments: [game + '/']};
 
         </script>
-        <script async type="text/javascript" src="verge.out.js"></script>
+        <script async type="text/javascript" src="verge2.out.js"></script>
 </body>
 </html>

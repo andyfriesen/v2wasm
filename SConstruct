@@ -153,4 +153,4 @@ env.Append(
     ],
 )
 
-verge = env.Program('verge.out.js', sources, PROGSUFFIX='.js')
+verge = env.Program('verge2.out.js', sources, PROGSUFFIX='.js')
