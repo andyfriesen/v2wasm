@@ -985,32 +985,6 @@ void ProcessIf() {
         elseofs = code;
         EmitD(0);
     }
-    /*
-    if (!NextIs("{") && !TokenIs("\""))
-    {
-            DoSomething();
-
-            if (NextIs("else"))
-            {
-                    EmitC(opGOTO);
-                    elseofs=code;
-                    EmitD(0);
-            }
-    }
-    else
-    {
-            Expect("{");
-            while (!NextIs("}") && !TokenIs("\"")) DoSomething();
-
-            Expect("}");
-            if (NextIs("else"))
-            {
-                    EmitC(opGOTO);
-                    elseofs=code;
-                    EmitD(0);
-            }
-    }
-    */
 
     b = code; // Put correct false-execution offset thingy.
     code = falseofs;
@@ -1020,18 +994,6 @@ void ProcessIf() {
     if (e) {
         GetToken();
         Block();
-        /*
-        if (!NextIs("{") && !TokenIs("\""))
-        {
-                DoSomething();
-        }
-        else
-        {
-                Expect("{");
-                while (!NextIs("}")) DoSomething();
-                Expect("}");
-        }
-        */
 
         b = code; // Put correct else-execution offset thingy.
         code = elseofs;
@@ -1055,23 +1017,6 @@ void ProcessWhile() {
 
     EmitC(opGOTO);
     EmitD(top - outbuf);
-    /*
-    if (!NextIs("{") && !TokenIs("\""))
-    {
-            DoSomething();
-
-            EmitC(opGOTO);
-            EmitD((int) top - (int) outbuf);
-    }
-    else
-    {
-            Expect("{");
-            while (!NextIs("}")) DoSomething();
-            Expect("}");
-            EmitC(opGOTO);
-            EmitD((int) top - (int) outbuf);
-    }
-    */
 
     b = code; // Put correct false-execution offset thingy.
     code = falseofs;

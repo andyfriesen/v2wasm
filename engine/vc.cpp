@@ -1530,6 +1530,8 @@ int OpenVCFile(const char* fname)
         if (vcfiles[i].mode == 0) {
             vcfiles[i].readp = vopen(fname);
 
+            printf("vopen %s result %p\n", fname, vcfiles[i].readp);
+
             if (!vcfiles[i].readp)
                 return 0; // file ain't there?
 
@@ -1577,7 +1579,7 @@ VFILE* GetReadFilePtr(int idx)
         Sys_Error(va("GetReadFilePtr: Invalid file handle %i", idx));
     switch (vcfiles[idx].mode) {
     case 0:
-        Sys_Error("GetReadFilePtr: Attempt to read from a closed file.");
+        Sys_Error("GetReadFilePtr: Attempt to read from closed file %d", idx);
     case 2:
         Sys_Error(
             "GetReadFilePtr: Attempt to read from a file opened for writing.");
