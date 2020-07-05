@@ -108,6 +108,8 @@ int numstr = 0;
 vardecl* vars = 0;
 int numvars = 0;
 
+const int BREAK_INTERVAL = 100;
+
 // LOCAL FUNC VARS
 
 // *****
@@ -2238,7 +2240,7 @@ inline void ClearLocal(lvars* dest) {
 
 static int routine_depth = 0;
 
-#ifdef DEBUG_LOCALS
+#ifdef DEBUG_FUNCTIONS
 std::string indent;
 #endif
 
@@ -2259,7 +2261,7 @@ void HandleExternFunc() {
     slb = str_last_base;
     PushBase(int_last_base, str_last_base);
 
-#ifdef DEBUG_LOCALS
+#ifdef DEBUG_FUNCTIONS
     Log(va("%s HandleExternFunc %s", indent.c_str(), pfunc->fname));
     indent += ' ';
 #endif
@@ -2360,7 +2362,7 @@ void HandleExternFunc() {
             }
         }
     }
-#ifdef DEBUG_LOCALS
+#ifdef DEBUG_FUNCTIONS
     indent.pop_back();
     Log(va("%s <<< HandleExternFunc", indent.c_str()));
 #endif
@@ -2500,7 +2502,6 @@ void HandleSwitch() {
 void ExecuteVC() {
     byte c = 0;
     
-    static const int BREAK_INTERVAL = 50;
     static int breakTime;
     breakTime = BREAK_INTERVAL;
 
@@ -2567,7 +2568,6 @@ void ExecuteVC() {
 void ExecuteBlock() {
     byte c = 0;
 
-    static const int BREAK_INTERVAL = 50;
     static int breakTime;
     breakTime = BREAK_INTERVAL;
 
@@ -2632,7 +2632,6 @@ void ExecuteBlock() {
 void ExecuteSection() {
     byte c = 0;
 
-    static const int BREAK_INTERVAL = 50;
     static int breakTime;
     breakTime = BREAK_INTERVAL;
 

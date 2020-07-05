@@ -164,7 +164,6 @@ int VMain() {
 
     while (true) {
         vmainloop();
-        wasm_nextFrame();
     }
 
     return 0;
