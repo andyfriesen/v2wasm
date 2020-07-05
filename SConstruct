@@ -48,8 +48,13 @@ def EmscriptenEnvironment():
     asan = ARGUMENTS.get('asan', 0)
     ubsan = ARGUMENTS.get('ubsan', 0)
     cyberdwarf = ARGUMENTS.get('cyberdwarf', 0)
+
+    if ARGUMENTS.get('debug_functions', 0):
+        env.Append(CPPDEFINES=[
+            'DEBUG_FUNCTIONS',
+        ])
     
-    if debug > 0:
+    if ARGUMENTS.get('debug_locals', 0) > 0:
         env.Append(CPPDEFINES=[
             'DEBUG_LOCALS',
         ])
