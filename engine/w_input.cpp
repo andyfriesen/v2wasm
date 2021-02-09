@@ -94,6 +94,17 @@ static const std::unordered_map<int, int> scanMap = {
     // { VK_F23, DIK_F23 },
     // { VK_F24, DIK_F24 },
     { VK_TILDE, DIK_GRAVE },
+
+    { VK_0, DIK_0 },
+    { VK_1, DIK_1 },
+    { VK_2, DIK_2 },
+    { VK_3, DIK_3 },
+    { VK_4, DIK_4 },
+    { VK_5, DIK_5 },
+    { VK_6, DIK_6 },
+    { VK_7, DIK_7 },
+    { VK_8, DIK_8 },
+    { VK_9, DIK_9 },
 };
 
 
@@ -253,7 +264,8 @@ void Input::Poll() // updates the key[] array.  This is called in winproc in
 {
     unsigned int i, k; // loop counter, key index
     bool kdown;        // is the key down?
-    for (const InputEvent& evt: inputEvents) {
+    auto events = std::move(inputEvents);
+    for (const InputEvent& evt: events) {
         k = evt.keyCode;
         kdown = evt.type == EventType::KeyDown;
 
