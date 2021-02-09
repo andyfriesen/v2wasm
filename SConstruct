@@ -59,6 +59,11 @@ def EmscriptenEnvironment():
             'DEBUG_LOCALS',
         ])
 
+    if ARGUMENTS.get('debug_input', 0) > 0:
+        env.Append(CPPDEFINES=[
+            'DEBUG_INPUT',
+        ])
+
     if debug > 1:
         if not asan:
             emscriptenOpts += [
