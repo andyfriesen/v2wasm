@@ -45,7 +45,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // + added vc_SilhouetteScale, vc_Tint, & vc_TintScale (unimplemented)
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-//#define VC_H
+#include <algorithm>
+#include <string.h>
 #include <math.h>
 
 #include "verge.h"
@@ -56,6 +57,111 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "wasm.h"
 
 #define USERFUNC_MARKER 10000
+
+static const char* functionNames[] = {
+    // A
+    "exit", "message", "malloc", "free", "pow", "loadimage", "copysprite",
+    "tcopysprite", "render", "showpage", "entityspawn", "setplayer", "map",
+    "loadfont", "playfli",
+
+    // B
+    "gotoxy", "printstring", "loadraw", "settile", "allowconsole",
+    "scalesprite", "processentities", "updatecontrols", "unpress", "entitymove",
+    "hline", "vline", "line", "circle", "circlefill", // 30
+
+    // C
+    "rect", "rectfill", "strlen", "strcmp", "cd_stop", "cd_play", "fontwidth",
+    "fontheight", "setpixel", "getpixel", "entityonscreen", "random", "gettile",
+    "hookretrace", "hooktimer",
+
+    // D
+    "setresolution", "setrstring", "setcliprect", "setrenderdest",
+    "restorerendersettings", "partymove", "sin", "cos", "tan", "readmouse",
+    "setclip", "setlucent", "wrapblit", "twrapblit", "setmousepos", // 60
+
+    // E
+    "hookkey", "playmusic", "stopmusic", "palettemorph", "fopen", "fclose",
+    "quickread", "addfollower", "killfollower", "killallfollowers",
+    "resetfollowers", "flatpoly", "tmappoly", "cachesound", "freeallsounds",
+
+    // F
+    "playsound", "rotscale", "mapline", "tmapline", "val", "tscalesprite",
+    "grabregion", "log", "fseekline", "fseekpos", "fread", "fgetbyte",
+    "fgetword", "fgetquad", "fgetline", // 90
+
+    // G
+    "fgettoken", "fwritestring", "fwrite", "frename", "fdelete", "fwopen",
+    "fwclose", "memcpy", "memset", "silhouette", "initmosaictable", "mosaic",
+    "writevars", "readvars", "callevent", // 105
+
+    // H
+    "asc", "callscript", "numforscript", "filesize", "ftell", "changechr",
+    "rgb", "getr", "getg", "getb", "mask", "changeall", "sqrt", "fwritebyte",
+    "fwriteword", // 120
+
+    // I
+    "fwritequad", "calclucent", "imagesize"};
+
+namespace vcdebug {
+#ifdef DEBUG_VC
+    const char* spaces = "                                        ";
+    int indentLevel = 0;
+
+    void indent() {
+        indentLevel = std::min((int)sizeof(spaces), indentLevel + 4);
+    }
+
+    void dedent() {
+        indentLevel = std::max(0, indentLevel - 4);
+    }
+
+    void vprintf(const char* format, va_list& argptr) {
+        ::printf("%.*s", indentLevel, spaces);
+
+        ::vprintf(format, argptr);
+
+        ::putc('\n', stdout);
+
+        fflush(stdout);
+    }
+
+    void printf(const char* format, ...)
+    {
+        va_list argptr;
+        va_start(argptr, format);
+        vcdebug::vprintf(format, argptr);
+        va_end(argptr);
+    }
+
+#else
+    void indent() {}
+    void dedent() {}
+    void vprintf(const char*, va_list&) {}
+    void printf(const char*, ...) {}
+#endif
+
+    void begin(const char* format, ...) {
+        va_list argptr;
+        va_start(argptr, format);
+        vprintf(format, argptr);
+        va_end(argptr);
+
+        vcdebug::indent();
+    }
+
+    void end(const char* format, ...) {
+        vcdebug::dedent();
+
+        va_list argptr;
+        va_start(argptr, format);
+        vprintf(format, argptr);
+        va_end(argptr);
+    }
+
+    void end() {
+        vcdebug::dedent();
+    }
+}
 
 // prototypes
 void CheckHookTimer();
@@ -108,7 +214,7 @@ int numstr = 0;
 vardecl* vars = 0;
 int numvars = 0;
 
-const int BREAK_INTERVAL = 100;
+const int BREAK_INTERVAL = 1000;
 
 // LOCAL FUNC VARS
 
@@ -538,6 +644,7 @@ int ReadInt(char category, int loc, int ofs) {
         case 2:
             return cameratracking;
         case 3:
+            vcdebug::printf("fetching vctimer %d", vctimer);
             return vctimer;
         case 4:
             return input.up;
@@ -1615,7 +1722,7 @@ void HandleStdLib() {
     byte c = 0;
 
     c = GrabC();
-    // printf("HandleStdLib %d\n", c);
+
     switch (c) {
     case 1:
         vc_Exit_();
@@ -2245,7 +2352,6 @@ std::string indent;
 #endif
 
 void HandleExternFunc() {
-    funcdecl* pfunc;
     int n;
     int ilb = 0, slb = 0;
 
@@ -2254,7 +2360,7 @@ void HandleExternFunc() {
         Sys_Error("HandleExternFunc: VC sys script out of bounds (%d/%d)", n,
             numfuncs);
     }
-    pfunc = funcs + n;
+    const funcdecl* pfunc = funcs + n;
 
 #ifdef NEW_LOCALS // *****
     ilb = int_last_base;
@@ -2694,6 +2800,8 @@ void ExecuteSection() {
 }
 
 void ExecuteEvent(int ev) {
+    vcdebug::begin(">>> ExecuteEvent %d", ev);
+
     if (ev < 0 || ev >= mapevents) {
         Sys_Error("ExecuteEvent: VC event out of bounds (%d)", ev);
     }
@@ -2715,6 +2823,8 @@ void ExecuteEvent(int ev) {
     --invc;
 
     // timer_count=0;
+
+    vcdebug::end("<<< ExecuteEvent %d", ev);
 }
 
 void ExecuteUserFunc(int ufunc) {
@@ -2727,9 +2837,6 @@ void ExecuteUserFunc(int ufunc) {
     pfunc = funcs + ufunc;
 
 #ifdef NEW_LOCALS // *****
-#ifdef DEBUG_LOCALS
-    Log(">>> ExecuteUserFunc");
-#endif
 
     // straight push of the current stack pointers
     ilb = int_last_base;
@@ -2792,9 +2899,6 @@ void ExecuteUserFunc(int ufunc) {
             }
         }
     }
-#ifdef DEBUG_LOCALS
-    Log("<<< ExecuteUserFunc");
-#endif
 #else  // OLD LOCALS
     // restore lvar
     CopyLocal(&lvar, &temp);

@@ -78,6 +78,8 @@ void GrDriver::ShowPage() {
     quad srcinc, destinc; // incrememt values for the copy loop
     int yl;
 
+    printf("showpage\n");
+
     RenderGUI(); // gah! --tSB
 
     cpubyte = PFLIP;

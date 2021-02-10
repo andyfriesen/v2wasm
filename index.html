@@ -123,10 +123,10 @@
             </dl>
             <div id='no-audio-worklet'>
                 Your browser does not support AudioWorklet.  We cannot play any music.  Sorry!<br />
-                Try Chrome or Brave!
+                Try upgrading your browser!  The latest versions of Chrome and Firefox are known to work.
             </div>
         </div>
-        <footer>Last Updated 5 July 2020</footer>
+        <footer>Last Updated 9 Feb 2021</footer>
     </div>
 
     <script>
@@ -187,6 +187,11 @@
             Once you have done all of this, include verge2.out.js with a script tag.
         -->
         <script>
+            window.onerror = (err) => {
+                console.log("error!", err);
+                debugger;
+            };
+
             window.verge = {};
             const verge = window.verge;
 
@@ -201,7 +206,6 @@
             const u = new URLSearchParams(window.location.search);
             let game = u.get('game') || 'tcod';
             window.Module = {arguments: [game + '/']};
-
         </script>
         <script async type="text/javascript" src="verge2.out.js"></script>
 </body>

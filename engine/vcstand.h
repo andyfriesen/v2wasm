@@ -150,6 +150,7 @@ void vc_Map() {
     kill = 1;
 
     startmap = ResolveString();
+    printf("vc_Map %s\n", startmap.c_str());
 }
 
 void vc_LoadFont() {

@@ -41,7 +41,7 @@ def EmscriptenEnvironment():
         '-s', 'ALLOW_MEMORY_GROWTH=1',
     ]
 
-    cflags = ['-fcolor-diagnostics']
+    cflags = ['-fcolor-diagnostics', '-fno-rtti', '-fno-exceptions']
 
     asmjs = ARGUMENTS.get('asmjs', 0)
     debug = int(ARGUMENTS.get('debug', 0))
@@ -49,22 +49,21 @@ def EmscriptenEnvironment():
     ubsan = ARGUMENTS.get('ubsan', 0)
     cyberdwarf = ARGUMENTS.get('cyberdwarf', 0)
 
-    if ARGUMENTS.get('debug_functions', 0):
-        env.Append(CPPDEFINES=[
-            'DEBUG_FUNCTIONS',
-        ])
+    debug_flags = {
+        'debug_functions',
+        'debug_locals',
+        'debug_input',
+        'debug_vc',
+        'profile_vc'
+    }
     
-    if ARGUMENTS.get('debug_locals', 0) > 0:
-        env.Append(CPPDEFINES=[
-            'DEBUG_LOCALS',
-        ])
+    for flag in debug_flags:
+        if ARGUMENTS.get(flag, 0) > 0:
+            env.Append(CPPDEFINES=[
+                flag.upper()
+            ])
 
-    if ARGUMENTS.get('debug_input', 0) > 0:
-        env.Append(CPPDEFINES=[
-            'DEBUG_INPUT',
-        ])
-
-    if debug > 1:
+    if debug:
         if not asan:
             emscriptenOpts += [
                 '-s', 'SAFE_HEAP=1',
@@ -81,7 +80,7 @@ def EmscriptenEnvironment():
 
         env.Append(LINKFLAGS=[
             '-g4',
-            '--source-map-base', 'http://localhost/',
+            '--source-map-base', 'http://localhost:8000/',
         ])
 
     else:
@@ -89,6 +88,8 @@ def EmscriptenEnvironment():
             '-s', 'ASYNCIFY_STACK_SIZE=32768',
         ]
         cflags.append('-O3')
+        cflags.append('-flto')
+        env.Append(LINKFLAGS=['-flto'])
 
     if cyberdwarf:
         env.Append(LINKFLAGS=[
