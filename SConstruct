@@ -88,8 +88,8 @@ def EmscriptenEnvironment():
             '-s', 'ASYNCIFY_STACK_SIZE=32768',
         ]
         cflags.append('-O3')
-        cflags.append('-flto')
-        env.Append(LINKFLAGS=['-flto'])
+        # cflags.append('-flto')
+        # env.Append(LINKFLAGS=['-flto'])
 
     if cyberdwarf:
         env.Append(LINKFLAGS=[
