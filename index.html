@@ -126,7 +126,7 @@
                 Try upgrading your browser!  The latest versions of Chrome and Firefox are known to work.
             </div>
         </div>
-        <footer>Last Updated 10 Feb 2021</footer>
+        <footer id="build-date"></footer>
     </div>
 
     <script>
@@ -165,9 +165,7 @@
 
             ctx.fillStyle = 'white';
             ctx.textAlign = 'center';
-            ctx.fillText('Loading! :D', 160, 100);
-
-
+            ctx.fillText('Loading', 160, 100);
         })();
         </script>
 
@@ -187,13 +185,12 @@
             Once you have done all of this, include verge2.out.js with a script tag.
         -->
         <script>
-            window.onerror = (err) => {
-                console.log("error!", err);
-                debugger;
-            };
-
             window.verge = {};
             const verge = window.verge;
+
+            verge.setBuildDate = function(date) {
+                document.getElementById('build-date').innerText = `Last Updated ${date}`;
+            };
 
             verge.setLoadingProgress = function(percent) {
                 const div = document.querySelector('#loadingProgress div');

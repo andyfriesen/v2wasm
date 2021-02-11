@@ -1685,10 +1685,11 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  18006: function() {window.verge.setLoadingProgress(100);}
+  18102: function() {window.verge.setLoadingProgress(100);}
 };
 function downloadAll(manifest){ return Asyncify.handleSleep(resume => { let promises = []; let count = 0; function download(pathPtr) { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; throw 'fetchSync failed'; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); const idx = path.lastIndexOf('/'); if (idx != -1) { const dir = path.substr(0, idx); FS.mkdirTree(dir); } FS.writeFile(path.toLowerCase(), bytes); ++count; verge.setLoadingProgress((100 * count / promises.length) | 0) }); } while (true) { let pathPtr = HEAPU32[manifest >> 2]; if (pathPtr == 0) { break; } manifest += 4; promises.push(download(pathPtr)); } Promise.all(promises).then(() => { resume(); }); }); }
 function fetchSync(pathPtr,size,data){ return Asyncify.handleSleep(resume => { const path = UTF8ToString(pathPtr); return fetch(path).then(response => { if (!response.ok) { console.error('fetchSync failed', path); HEAP32[size >> 2] = 0; HEAP32[data >> 2] = 0; resume(); return; } return response.blob(); }).then(blob => blob.arrayBuffer() ).then(array => { const bytes = new Uint8Array(array); HEAP32[size >> 2] = bytes.length; const dataPtr = _malloc(bytes.length); HEAP32[data >> 2] = dataPtr; HEAP8.set(bytes, dataPtr); resume(); }); }); }
+function setBuildDate(date){ if (verge.setBuildDate) verge.setBuildDate(UTF8ToString(date)); }
 function wasm_initFileSystem(c){ let sgr = UTF8ToString(c); if (sgr.endsWith('/')) sgr = sgr.substr(0, sgr.length - 1); FS.mkdir("persist"); FS.mkdir(sgr); FS.mkdir("persist/" + sgr); FS.mount(IDBFS, {}, "persist/" + sgr); FS.syncfs(true, function (err) { if (err) { console.error('wasm_initFileSystem failed!', err); } else { console.log("wasm_initFileSystem ok"); } }); }
 function wasm_initSound(){ const ctx = new AudioContext(); const gainNode = ctx.createGain(); gainNode.connect(ctx.destination); window.verge.audioContext = ctx; window.verge.gainNode = gainNode; window.verge.sounds = {}; if (ctx.audioWorklet) { window.verge.mptInited = ctx.audioWorklet.addModule('mpt-worklet.js').then(() => { console.log('mpt-worklet initialized'); window.verge.mptNode = new AudioWorkletNode(ctx, 'libopenmpt-processor', { numberOfInputs: 0, numberOfOutputs: 1, outputChannelCount: [2], }); window.verge.mptNode.connect(gainNode); }); } else { console.warn("AudioWorklet is not supported in this browser.  No music.  Sorry!"); window.verge.mptInited = Promise.resolve(); } }
 function wasm_initvga(width,height){ window.vergeCanvas = document.getElementById('vergeCanvas'); window.vergeCanvas.width = width; window.vergeCanvas.height = height; window.vergeContext = window.vergeCanvas.getContext('2d'); window.vergeImageData = new ImageData(width, height); window.vergeImageArray = window.vergeImageData.data; }
@@ -5809,6 +5810,7 @@ var asmLibraryArg = {
   "fd_seek": _fd_seek,
   "fd_write": _fd_write,
   "fetchSync": fetchSync,
+  "setBuildDate": setBuildDate,
   "setTempRet0": _setTempRet0,
   "strftime_l": _strftime_l,
   "wasm_initFileSystem": wasm_initFileSystem,

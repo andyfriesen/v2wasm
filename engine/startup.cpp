@@ -29,6 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <stdarg.h> // va_*()
 #include <stdlib.h>
 #include <time.h>
+#include <emscripten.h>
 
 #include "verge.h"
 #include "wasm.h"
@@ -119,6 +120,13 @@ int vidyres = 240;
 char nocdaudio = 0; // do not use CD audio
 
 string_k startmap; // start map
+
+namespace verge {
+    EM_JS(void, setBuildDate, (const char* date), {
+        if (verge.setBuildDate)
+            verge.setBuildDate(UTF8ToString(date));
+    });
+}
 
 // ================================= Code ====================================
 
@@ -526,6 +534,9 @@ void InitSystems() {
 
 int main(int argc, char** argv) {
     const char* gameRoot = argv[1];
+
+    verge::setBuildDate(__DATE__);
+
     initFileSystem(gameRoot);
 
     InitLog();
