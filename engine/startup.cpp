@@ -112,6 +112,10 @@ static unsigned char vergepal[] = {0x00, 0x00, 0x00, 0x02, 0x02, 0x02, 0x03,
 
 int hicolour = 0; // bleh --tSB
 
+// Compatibility option.
+// Some verge games require the ability to use Render() within HookRetrace code.
+bool enable_recursive_render = false;
+
 char* strbuf = 0; // Universal temporary string buffer. :)
 
 int vidxres = 320;
@@ -424,6 +428,36 @@ void ParseStartupFiles() {
 
             continue;
         }
+        else if (parse_match("xres")) {
+            vidxres = V_atoi(parse_cfg_token(user_cfg_file));
+
+            continue;
+        }
+        else if (parse_match("yres")) {
+            vidyres = V_atoi(parse_cfg_token(user_cfg_file));
+
+            continue;
+        }
+        else if (parse_match("appname")) {
+            vgets(parse_str, 256, user_cfg_file);
+
+            continue;
+        }
+        else if (parse_match("windowmode")) {
+            parse_cfg_token(user_cfg_file);
+
+            continue;
+        }        
+        else if (parse_match("eagle")) {
+            parse_cfg_token(user_cfg_file);
+
+            continue;
+        }
+        else if (parse_match("nosound")) {
+            parse_cfg_token(user_cfg_file);
+
+            continue;
+        }
         // log to VERGE.LOG
         else if (parse_match("log")) {
             logoutput = 1;
@@ -469,6 +503,9 @@ void ParseStartupFiles() {
             continue;
         } else if (parse_match("vsync")) {
             gfx.VSync(true);
+            continue;
+        } else if (parse_match("recursive_render")) {
+            enable_recursive_render = true;
             continue;
         }
 

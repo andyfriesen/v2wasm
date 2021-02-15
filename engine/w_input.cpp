@@ -149,7 +149,6 @@ static const std::unordered_map<int, int> scanMap = {
 };
 
 
-#define DEBUG_INPUT
 #ifdef DEBUG_INPUT
 #define INPUT_PRINTF printf
 #else
