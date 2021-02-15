@@ -105,9 +105,51 @@ static const std::unordered_map<int, int> scanMap = {
     { VK_7, DIK_7 },
     { VK_8, DIK_8 },
     { VK_9, DIK_9 },
+    
+    { VK_A, DIK_A },
+    { VK_B, DIK_B },
+    { VK_C, DIK_C },
+    { VK_D, DIK_D },
+    { VK_E, DIK_E },
+    { VK_F, DIK_F },
+    { VK_G, DIK_G },
+    { VK_H, DIK_H },
+    { VK_I, DIK_I },
+    { VK_J, DIK_J },
+    { VK_K, DIK_K },
+    { VK_L, DIK_L },
+    { VK_M, DIK_M },
+    { VK_N, DIK_N },
+    { VK_O, DIK_O },
+    { VK_P, DIK_P },
+    { VK_Q, DIK_Q },
+    { VK_R, DIK_R },
+    { VK_S, DIK_S },
+    { VK_T, DIK_T },
+    { VK_U, DIK_U },
+    { VK_V, DIK_V },
+    { VK_W, DIK_W },
+    { VK_X, DIK_X },
+    { VK_Y, DIK_Y },
+    { VK_Z, DIK_Z },
+    // ,./ keys.
+    { VK_OEM_COMMA, DIK_COMMA },
+    { VK_OEM_PERIOD, DIK_PERIOD },
+    { VK_OEM_2, DIK_SLASH },
+    // ;' keys.
+    { VK_OEM_1, DIK_SEMICOLON },
+    { VK_OEM_7, DIK_APOSTROPHE },
+    // []\ keys.
+    { VK_OEM_4, DIK_LBRACKET },
+    { VK_OEM_6, DIK_RBRACKET },
+    { VK_OEM_5, DIK_BACKSLASH },
+    // -= keys.
+    { VK_OEM_MINUS, DIK_MINUS },
+    { VK_OEM_PLUS, DIK_EQUALS }
 };
 
 
+#define DEBUG_INPUT
 #ifdef DEBUG_INPUT
 #define INPUT_PRINTF printf
 #else
@@ -140,7 +182,10 @@ namespace {
         int code = e->keyCode;
         auto it = scanMap.find(code);
         if (it != scanMap.end())
+        {
+            INPUT_PRINTF("onKeyDown: scanMap %d -> %d\n", code, it->second);
             code = it->second;
+        }
 
         INPUT_PRINTF("Key down %d %s\n", code, e->key);
         inputEvents.push_back(InputEvent{ EventType::KeyDown, code });
@@ -151,7 +196,10 @@ namespace {
         int code = e->keyCode;
         auto it = scanMap.find(code);
         if (it != scanMap.end())
+        {
+            INPUT_PRINTF("onKeyUp: scanMap %d -> %d\n", code, it->second);
             code = it->second;
+        }            
 
         INPUT_PRINTF("Key up %d %s\n", code, e->key);
         inputEvents.push_back(InputEvent{ EventType::KeyUp, code });

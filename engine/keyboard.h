@@ -16,8 +16,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #pragma once
 
 
-/* Constants for keyboard scan-codes */
+/* Constants for keyboard scan-codes. */
 
+// See: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 enum DOMScanCode {
     VK_UNDEFINED = 0x0,
     VK_RIGHT_ALT = 0x12,
@@ -56,6 +57,45 @@ enum DOMScanCode {
     VK_7 = '7',
     VK_8 = '8',
     VK_9 = '9',
+    VK_A = 'A',
+    VK_B = 'B',
+    VK_C = 'C',
+    VK_D = 'D',
+    VK_E = 'E',
+    VK_F = 'F',
+    VK_G = 'G',
+    VK_H = 'H',
+    VK_I = 'I',
+    VK_J = 'J',
+    VK_K = 'K',
+    VK_L = 'L',
+    VK_M = 'M',
+    VK_N = 'N',
+    VK_O = 'O',
+    VK_P = 'P',
+    VK_Q = 'Q',
+    VK_R = 'R',
+    VK_S = 'S',
+    VK_T = 'T',
+    VK_U = 'U',
+    VK_V = 'V',
+    VK_W = 'W',
+    VK_X = 'X',
+    VK_Y = 'Y',
+    VK_Z = 'Z',
+    VK_OEM_1 = 0xBA,
+    VK_OEM_PLUS = 0xBB,
+    VK_OEM_COMMA = 0xBC,
+    VK_OEM_MINUS = 0xBD,
+    VK_OEM_PERIOD = 0xBE,
+    VK_OEM_2 = 0xBF,
+    VK_OEM_3 = 0xC0,
+    VK_OEM_4 = 0xDB,
+    VK_OEM_5 = 0xDC,
+    VK_OEM_6 = 0xDD,
+    VK_OEM_7 = 0xDE,
+    VK_OEM_8 = 0xDF,
+
     VK_F1 = 0x70,
     VK_F2 = 0x71,
     VK_F3 = 0x72,
@@ -81,7 +121,7 @@ enum DOMScanCode {
     VK_F23 = 0xF00A,
     VK_F24 = 0xF00B,
 
-    VK_TILDE = 0xC0,
+    VK_TILDE = VK_OEM_3,
 };
 
 // Constants for keyboard scan-codes -- copied from dinput.h
