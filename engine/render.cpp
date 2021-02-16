@@ -459,7 +459,7 @@ void Render() {
     // for twerps who call Render() in a HookRetrace or HookTimer
     /* Tweaked.  Now the 'R' part of the renderstring is simply
        ignored if this is in a hooked script :) */
-    if (inside)
+    if (!enable_recursive_render && inside)
         return;
     //        inside = 1;
 

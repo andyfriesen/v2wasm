@@ -68,6 +68,8 @@ extern bool bActive;
 
 extern int hicolor;
 
+extern bool enable_recursive_render;
+
 extern char* strbuf;
 
 extern void V_memset(void* dest, int fill, int count);
