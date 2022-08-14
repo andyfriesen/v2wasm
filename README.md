@@ -8,7 +8,7 @@ This is a WASM port of Verge v2.  Verge was a DOS (and then Windows) based 2D ga
 
 So far I have only done this with WSL.  These directions should be mostly the same on Linux or MacOS.
 
-Install Emscripten and SCons.
+Install Emscripten 3.1.18 or newer and SCons.
 
 ```shell
 $ scons

@@ -156,6 +156,8 @@ static const std::unordered_map<int, int> scanMap = {
     {VK_OEM_MINUS, DIK_MINUS},
     {VK_OEM_PLUS, DIK_EQUALS}};
 
+#define DEBUG_INPUT
+
 #ifdef DEBUG_INPUT
 #define INPUT_PRINTF printf
 #else
@@ -292,10 +294,10 @@ int Input::Init() {
 
     EMSCRIPTEN_RESULT result;
     result = emscripten_set_keydown_callback("body", nullptr, true, &onKeyDown);
-    // TEST_RESULT(result);
+    INPUT_PRINTF("Set keyDown callback? %d\t%d\n", result == EMSCRIPTEN_RESULT_SUCCESS, result);
 
     result = emscripten_set_keyup_callback("body", nullptr, true, &onKeyUp);
-    // TEST_RESULT(result);
+    INPUT_PRINTF("Set keyUp callback? %d\t%d\n", result == EMSCRIPTEN_RESULT_SUCCESS, result);
 
     auto res = emscripten_sample_gamepad_data();
     if (res == EMSCRIPTEN_RESULT_NOT_SUPPORTED) {

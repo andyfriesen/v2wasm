@@ -214,7 +214,6 @@ enum {
     DIK_F11 = 0x57,
     DIK_F12 = 0x58,
 
-// TODO fill these in
 #if defined(HACK_TO_MAKE_TCOD_PLAYABLE)
     // TCoD has some oddness in its programming.  The game is coded to require
     // you to use the numpad instead of the cursor keys for some reason.

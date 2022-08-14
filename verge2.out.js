@@ -1169,7 +1169,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  47235: () => { window.verge.setLoadingProgress(100); }
+  47459: () => { window.verge.setLoadingProgress(100); }
 };
 function setBuildDate(date) { if (verge.setBuildDate) verge.setBuildDate(UTF8ToString(date)); }
 function wasm_initSound() { const ctx = new AudioContext(); const gainNode = ctx.createGain(); gainNode.connect(ctx.destination); window.verge.audioContext = ctx; window.verge.gainNode = gainNode; window.verge.sounds = {}; if (ctx.audioWorklet) { window.verge.mptInited = ctx.audioWorklet.addModule('mpt-worklet.js').then(() => { console.log('mpt-worklet initialized'); window.verge.mptNode = new AudioWorkletNode(ctx, 'libopenmpt-processor', { numberOfInputs: 0, numberOfOutputs: 1, outputChannelCount: [2], }); window.verge.mptNode.connect(gainNode); }); } else { console.warn("AudioWorklet is not supported in this browser.  No music.  Sorry!"); window.verge.mptInited = Promise.resolve(); } }

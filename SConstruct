@@ -79,7 +79,7 @@ def EmscriptenEnvironment():
         cflags.append('-g')
 
         env.Append(LINKFLAGS=[
-            '-g4',
+            '-gsource-map',
             '--source-map-base', 'http://localhost:8000/',
         ])
 
@@ -115,8 +115,6 @@ def EmscriptenEnvironment():
         '-Wno-dangling-else',
         '-Wno-writable-strings',
     ])
-
-    cflags.extend(emscriptenOpts)
 
     env.Append(CFLAGS=cflags)
     env.Append(CXXFLAGS=cflags)
