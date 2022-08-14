@@ -15,10 +15,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #pragma once
 
-
 /* Constants for keyboard scan-codes. */
 
-// See: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+// See:
+// https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
 enum DOMScanCode {
     VK_UNDEFINED = 0x0,
     VK_RIGHT_ALT = 0x12,
@@ -214,7 +214,11 @@ enum {
     DIK_F11 = 0x57,
     DIK_F12 = 0x58,
 
-    // TODO fill these in
+// TODO fill these in
+#if defined(HACK_TO_MAKE_TCOD_PLAYABLE)
+    // TCoD has some oddness in its programming.  The game is coded to require
+    // you to use the numpad instead of the cursor keys for some reason.
+    // Documenting this hack just for posterity.
     DIK_HOME = 0x59,
     DIK_END = 0x5a,
     DIK_PRIOR = 0x5b,
@@ -227,6 +231,27 @@ enum {
     DIK_NEXT = 0x62,
     DIK_ESCAPE = 0x63,
     DIK_RCONTROL = 0x64,
+#else
+    DIK_HOME = 0xC7,
+    DIK_UP = 0xC8,
+    DIK_PRIOR = 0xC9,
+    DIK_LEFT = 0xCB,
+    DIK_RIGHT = 0xCC,
+    DIK_END = 0xCF,
+    DIK_DOWN = 0xD0,
+    DIK_DIVIDE = 0x60,
+    DIK_RMENU = 0x61,
+    DIK_NEXT = 0x62,
+    DIK_ESCAPE = 0x63,
+    DIK_RCONTROL = 0x64,
+    DIK_INSERT = 0xD2,
+    DIK_DELETE = 0xD3,
+    DIK_LWIN = 0xDB,
+    DIK_RWIN = 0xDC,
+    DIK_APPS = 0xDD,
+    DIK_POWER = 0xDE,
+    DIK_SLEEP = 0xDF,
+#endif
 
     DIK_BACKSPACE = DIK_BACK,       /* backspace */
     DIK_NUMPADSTAR = DIK_MULTIPLY,  /* * on numeric keypad */

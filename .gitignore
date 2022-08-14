@@ -2,3 +2,5 @@
 *.d
 .sconsign.dblite
 .vscode
+disassemble/target/
+disassemble/Cargo.lock

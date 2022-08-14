@@ -26,6 +26,15 @@
 #include "keyboard.h"
 #include "verge.h" // for log :P
 
+static const int kup = DIK_UP;
+static const int kdown = DIK_DOWN;
+static const int kleft = DIK_LEFT;
+static const int kright = DIK_RIGHT;
+static const int kb1 = DIK_ENTER;
+static const int kb2 = DIK_LALT;
+static const int kb3 = DIK_ESCAPE;
+static const int kb4 = DIK_SPACE;
+
 static byte key_ascii_tbl[128] = {0, 0, '1', '2', '3', '4', '5', '6', '7', '8',
     '9', '0', '-', '=', 8, 9, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
     '[', ']', 13, 0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 39, '`',
@@ -152,110 +161,111 @@ static const std::unordered_map<int, int> scanMap = {
 #ifdef DEBUG_INPUT
 #define INPUT_PRINTF printf
 #else
-template <typename ...T>
-void INPUT_PRINTF(T...) {}
+template <typename... T> void INPUT_PRINTF(T...) {}
 #endif
 
 namespace {
-    enum class EventType {
-        None,
-        KeyUp,
-        KeyDown,
-    };
+enum class EventType {
+    None,
+    KeyUp,
+    KeyDown,
+};
 
-    struct InputEvent {
-        EventType type;
-        int keyCode;
-    };
+struct InputEvent {
+    EventType type;
+    int keyCode;
+};
 
-    std::vector<InputEvent> inputEvents;
-    std::set<int> connectedGamepads;
+std::vector<InputEvent> inputEvents;
+std::set<int> connectedGamepads;
 
-    const double GAMEPAD_ANALOG_THRESHHOLD = 0.8;
+const double GAMEPAD_ANALOG_THRESHHOLD = 0.8;
 
-    bool shouldStopPropagation(int keyCode) {
-        return DIK_TAB == keyCode;
+bool shouldStopPropagation(int keyCode) {
+    return DIK_TAB == keyCode;
+}
+
+EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
+    int code = e->keyCode;
+    auto it = scanMap.find(code);
+    if (it != scanMap.end()) {
+        INPUT_PRINTF("onKeyDown: scanMap %d -> %d\n", code, it->second);
+        code = it->second;
     }
 
-    EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
-        int code = e->keyCode;
-        auto it = scanMap.find(code);
-        if (it != scanMap.end())
-        {
-            INPUT_PRINTF("onKeyDown: scanMap %d -> %d\n", code, it->second);
-            code = it->second;
-        }
+    INPUT_PRINTF("Key down %d %s\n", code, e->key);
+    inputEvents.push_back(InputEvent{EventType::KeyDown, code});
+    return shouldStopPropagation(code);
+}
 
-        INPUT_PRINTF("Key down %d %s\n", code, e->key);
-        inputEvents.push_back(InputEvent{ EventType::KeyDown, code });
-        return shouldStopPropagation(code);
+EM_BOOL onKeyUp(
+    int eventType, const EmscriptenKeyboardEvent* e, void* userData) {
+    int code = e->keyCode;
+    auto it = scanMap.find(code);
+    if (it != scanMap.end()) {
+        INPUT_PRINTF("onKeyUp: scanMap %d -> %d\n", code, it->second);
+        code = it->second;
     }
 
-    EM_BOOL onKeyUp(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
-        int code = e->keyCode;
-        auto it = scanMap.find(code);
-        if (it != scanMap.end())
-        {
-            INPUT_PRINTF("onKeyUp: scanMap %d -> %d\n", code, it->second);
-            code = it->second;
-        }            
+    INPUT_PRINTF("Key up %d %s\n", code, e->key);
+    inputEvents.push_back(InputEvent{EventType::KeyUp, code});
+    return shouldStopPropagation(code);
+}
 
-        INPUT_PRINTF("Key up %d %s\n", code, e->key);
-        inputEvents.push_back(InputEvent{ EventType::KeyUp, code });
-        return shouldStopPropagation(code);
+EM_BOOL onGamepadConnected(
+    int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+    INPUT_PRINTF("Gamepad connected idx='%s' mapping='%s' index=%ld\n",
+        gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
+    connectedGamepads.insert(gamepadEvent->index);
+    return true;
+}
+
+EM_BOOL onGamepadDisonnected(
+    int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+    INPUT_PRINTF("Gamepad disconnected\n");
+    connectedGamepads.erase(gamepadEvent->index);
+    return true;
+}
+
+EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+    // INPUT_PRINTF("onMouseDown %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
+    Input* input = reinterpret_cast<Input*>(userData);
+
+    input->mousex = mouseEvent->clientX;
+    input->mousey = mouseEvent->clientY;
+    switch (mouseEvent->button) {
+        case 0: input->mouseb |= 1; break;
+        case 1: input->mouseb |= 2; break;
+        case 2: input->mouseb |= 4; break;
     }
 
-    EM_BOOL onGamepadConnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
-        INPUT_PRINTF("Gamepad connected idx='%s' mapping='%s' index=%ld\n", gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
-        connectedGamepads.insert(gamepadEvent->index);
-        return true;
+    return true;
+}
+
+EM_BOOL onMouseUp(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+    // printf("onMouseUp %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
+    Input* input = reinterpret_cast<Input*>(userData);
+
+    input->mousex = mouseEvent->clientX;
+    input->mousey = mouseEvent->clientY;
+    switch (mouseEvent->button) {
+    case 0: input->mouseb &= ~1; break;
+    case 1: input->mouseb &= ~2; break;
+    case 2: input->mouseb &= ~4; break;
     }
 
-    EM_BOOL onGamepadDisonnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
-        INPUT_PRINTF("Gamepad disconnected\n");
-        connectedGamepads.erase(gamepadEvent->index);
-        return true;
-    }
+    return true;
+}
 
-    EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
-        // INPUT_PRINTF("onMouseDown %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
-        Input* input = reinterpret_cast<Input*>(userData);
+EM_BOOL onMouseMove(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
+    // printf("onMouseMove %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
+    Input* input = reinterpret_cast<Input*>(userData);
 
-        input->mousex = mouseEvent->clientX;
-        input->mousey = mouseEvent->clientY;
-        switch (mouseEvent->button) {
-            case 0: input->mouseb |= 1; break;
-            case 1: input->mouseb |= 2; break;
-            case 2: input->mouseb |= 4; break;
-        }
+    input->mousex = mouseEvent->clientX;
+    input->mousey = mouseEvent->clientY;
 
-        return true;
-    }
-
-    EM_BOOL onMouseUp(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
-        // printf("onMouseUp %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
-        Input* input = reinterpret_cast<Input*>(userData);
-
-        input->mousex = mouseEvent->clientX;
-        input->mousey = mouseEvent->clientY;
-        switch (mouseEvent->button) {
-            case 0: input->mouseb &= ~1; break;
-            case 1: input->mouseb &= ~2; break;
-            case 2: input->mouseb &= ~4; break;
-        }
-
-        return true;
-    }
-
-    EM_BOOL onMouseMove(int eventType, const EmscriptenMouseEvent* mouseEvent, void* userData) {
-        // printf("onMouseMove %ld %ld %d\n", mouseEvent->clientX, mouseEvent->clientY, mouseEvent->button);
-        Input* input = reinterpret_cast<Input*>(userData);
-        
-        input->mousex = mouseEvent->clientX;
-        input->mousey = mouseEvent->clientY;
-
-        return true;
-    }
+    return true;
+}
 
 }
 
@@ -271,20 +281,10 @@ int Input::Init() {
     // mclip.bottom = 200;
 
     EMSCRIPTEN_RESULT result;
-    result = emscripten_set_keydown_callback(
-        "body",
-        nullptr,
-        true,
-        &onKeyDown
-    );
+    result = emscripten_set_keydown_callback("body", nullptr, true, &onKeyDown);
     // TEST_RESULT(result);
 
-    result = emscripten_set_keyup_callback(
-        "body",
-        nullptr,
-        true,
-        &onKeyUp
-    );
+    result = emscripten_set_keyup_callback("body", nullptr, true, &onKeyUp);
     // TEST_RESULT(result);
 
     auto res = emscripten_sample_gamepad_data();
@@ -303,8 +303,7 @@ int Input::Init() {
     return 1;
 }
 
-void Input::ShutDown() {
-}
+void Input::ShutDown() {}
 
 void Input::Poll() // updates the key[] array.  This is called in winproc in
                    // response to WM_KEYDOWN and WM_KEYUP
@@ -312,7 +311,7 @@ void Input::Poll() // updates the key[] array.  This is called in winproc in
     unsigned int i, k; // loop counter, key index
     bool kdown;        // is the key down?
     auto events = std::move(inputEvents);
-    for (const InputEvent& evt: events) {
+    for (const InputEvent& evt : events) {
         k = evt.keyCode;
         kdown = evt.type == EventType::KeyDown;
 
@@ -349,22 +348,22 @@ void Input::Update() // updates the direction variables and the virtual buttons
 {
     Poll();
 
-    up = key[DIK_UP];
-    down = key[DIK_DOWN];
-    left = key[DIK_LEFT];
-    right = key[DIK_RIGHT];
+    up = key[kup];
+    down = key[kdown];
+    left = key[kleft];
+    right = key[kright];
 
-    b1 = key[DIK_ENTER]; // TODO: make these customizable
-    b2 = key[DIK_LALT] | key[DIK_RALT];
-    b3 = key[DIK_ESCAPE];
-    b4 = key[DIK_SPACE];
+    b1 = key[kb1];                 // TODO: make these customizable
+    b2 = key[kb2] | key[DIK_RALT]; // hack
+    b3 = key[kb3];
+    b4 = key[kb4];
 
     emscripten_sample_gamepad_data();
     // int count = emscripten_get_num_gamepads();
 
     EmscriptenGamepadEvent state;
 
-    for (int i: connectedGamepads) {
+    for (int i : connectedGamepads) {
         emscripten_get_gamepad_status(i, &state);
         b1 |= state.digitalButton[0];
         b2 |= state.digitalButton[1];
@@ -459,68 +458,49 @@ void Input::ClearKeys()
 }
 
 void Input::UnPress(int control) {
+    auto u = [&](int c, char& k, int keycode) {
+        if (k) {
+            unpress[c] = 1;
+            k = 0;
+            key[keycode] = 0;
+        }
+    };
+
     switch (control) {
     // GROSS!
     case 0:
-        if (b1)
-            unpress[1] = 1;
-        if (b2)
-            unpress[2] = 1;
-        if (b3)
-            unpress[3] = 1;
-        if (b4)
-            unpress[4] = 1;
-
-        if (up)
-            unpress[5] = 1;
-        if (down)
-            unpress[6] = 1;
-        if (left)
-            unpress[7] = 1;
-        if (right)
-            unpress[8] = 1;
+        for (int i = 1; i <= 8; ++i)
+            UnPress(i);
         break;
     case 1:
-        if (b1) {
-            unpress[1] = 1;
-            b1 = 0;
-        }
+        u(control, b1, kb1);
         break;
     case 2:
-        if (b2) {
-            unpress[2] = 1;
-            b2 = 0;
-        }
+        u(control, b2, kb2);
         break;
     case 3:
-        if (b3) {
-            unpress[3] = 1;
-            b3 = 0;
-        }
+        u(control, b3, kb3);
         break;
     case 4:
-        if (b4) {
-            unpress[4] = 1;
-            b4 = 0;
-        }
+        u(control, b4, kb4);
         break;
 
     case 5:
-        if (up)
-            unpress[5] = 1;
+        u(control, up, kup);
         break;
     case 6:
-        if (down)
-            unpress[6] = 1;
+        u(control, down, kdown);
         break;
     case 7:
-        if (left)
-            unpress[7] = 1;
+        u(control, left, kleft);
         break;
     case 8:
-        if (right)
-            unpress[8] = 1;
+        u(control, right, kright);
         break;
+
+        // default:
+        //     u[control] = 1;
+        //     break;
     }
 }
 

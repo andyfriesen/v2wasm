@@ -1,22 +1,22 @@
-#!/usr/bin/env python
-try:
-    import http.server as SimpleHTTPServer
-except:
-    import SimpleHTTPServer
+#!/usr/bin/env python3
 
-try:
-    import socketserver as SocketServer
-except:
-    import SocketServer
+import sys
+
+if sys.version_info < (3, 0):
+    print('Upgrade to Python 3.x already!!!')
+    sys.exit(1)
+
+import http.server
+import socketserver
 
 PORT = 8000
 
-class Handler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class Handler(http.server.SimpleHTTPRequestHandler):
     pass
 
 Handler.extensions_map['.wasm'] = 'application/wasm'
 
-httpd = SocketServer.TCPServer(("", PORT), Handler)
+httpd = socketserver.TCPServer(("", PORT), Handler)
 
 print("serving at port {0}".format(PORT))
 httpd.serve_forever()
