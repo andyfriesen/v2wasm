@@ -16,10 +16,10 @@
 // + <tSB> 12.05.00 - Mouse code rehashed, using DInput again.
 
 #include <cstdint>
-#include <vector>
-#include <unordered_map>
-#include <set>
 #include <emscripten/html5.h>
+#include <set>
+#include <unordered_map>
+#include <vector>
 
 #include "w_input.h"
 
@@ -35,61 +35,61 @@ static const int kb2 = DIK_LALT;
 static const int kb3 = DIK_ESCAPE;
 static const int kb4 = DIK_SPACE;
 
-static byte key_ascii_tbl[128] = {0, 0, '1', '2', '3', '4', '5', '6', '7', '8',
-    '9', '0', '-', '=', 8, 9, 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
-    '[', ']', 13, 0, 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 39, '`',
-    0, 92, 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0, '*', 0, ' ', 0,
-    3, 3, 3, 3, 8, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, '-', 0, 0, 0, '+', 0, 0, 0, 0,
-    127, 0, 0, 92, 3, 3, 0, 0, 0, 0, 0, 0, 0, 13, 0, '/', 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '/', 0, 0, 0, 0, 0};
+static byte key_ascii_tbl[128] = {
+    0,   0,   '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 8,   9,   'q', 'w', 'e', 'r', 't', 'y',
+    'u', 'i', 'o', 'p', '[', ']', 13,  0,   'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', 39,  '`', 0,   92,
+    'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', 0,   '*', 0,   ' ', 0,   3,   3,   3,   3,   8,   3,   3,
+    3,   3,   3,   0,   0,   0,   0,   0,   '-', 0,   0,   0,   '+', 0,   0,   0,   0,   127, 0,   0,   92,  3,
+    3,   0,   0,   0,   0,   0,   0,   0,   13,  0,   '/', 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   127, 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   '/', 0,   0,   0,   0,   0};
 
-static byte key_shift_tbl[128] = {0, 0, '!', '@', '#', '$', '%', '^', '&', '*',
-    '(', ')', '_', '+', 126, 126, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O',
-    'P', '{', '}', 126, 0, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', 34,
-    '~', 0, '|', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 0, '*', 0, 1,
-    0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, '-', 0, 0, 0, '+', 0, 0, 0,
-    1, 127, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 13, 0, '/', 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 127, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, '/', 0, 0, 0, 0, 0};
+static byte key_shift_tbl[128] = {
+    0,   0,   '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+', 126, 126, 'Q', 'W', 'E', 'R', 'T', 'Y',
+    'U', 'I', 'O', 'P', '{', '}', 126, 0,   'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':', 34,  '~', 0,   '|',
+    'Z', 'X', 'C', 'V', 'B', 'N', 'M', '<', '>', '?', 0,   '*', 0,   1,   0,   1,   1,   1,   1,   1,   1,   1,
+    1,   1,   1,   0,   0,   0,   0,   0,   '-', 0,   0,   0,   '+', 0,   0,   0,   1,   127, 0,   0,   0,   1,
+    1,   0,   0,   0,   0,   0,   0,   0,   13,  0,   '/', 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+    0,   127, 0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   '/', 0,   0,   0,   0,   0};
 
 static const std::unordered_map<int, int> scanMap = {
-    { VK_RIGHT_ALT, DIK_RMENU },
-    { VK_LEFT_ALT, DIK_LMENU },
-    { VK_LEFT_CONTROL, DIK_LCONTROL },
-    { VK_RIGHT_CONTROL, DIK_RCONTROL },
-    { VK_LEFT_SHIFT, DIK_LSHIFT },
-    { VK_RIGHT_SHIFT, DIK_RSHIFT },
+    {VK_RIGHT_ALT, DIK_RMENU},
+    {VK_LEFT_ALT, DIK_LMENU},
+    {VK_LEFT_CONTROL, DIK_LCONTROL},
+    {VK_RIGHT_CONTROL, DIK_RCONTROL},
+    {VK_LEFT_SHIFT, DIK_LSHIFT},
+    {VK_RIGHT_SHIFT, DIK_RSHIFT},
     // { VK_META, DIK_META },
-    { VK_BACK_SPACE, DIK_BACK },
-    { VK_CAPS_LOCK, DIK_CAPSLOCK },
+    {VK_BACK_SPACE, DIK_BACK},
+    {VK_CAPS_LOCK, DIK_CAPSLOCK},
     // { VK_DELETE, DIK_DELETE },
-    { VK_END, DIK_END },
-    { VK_ENTER, DIK_ENTER },
-    { VK_ESCAPE, DIK_ESCAPE },
-    { VK_HOME, DIK_HOME },
+    {VK_END, DIK_END},
+    {VK_ENTER, DIK_ENTER},
+    {VK_ESCAPE, DIK_ESCAPE},
+    {VK_HOME, DIK_HOME},
     // { VK_NUM_LOCK, DIK_NUM_LOCK },
     // { VK_PAUSE, DIK_PAUSE },
     // { VK_PRINTSCREEN, DIK_PRINTSCREEN },
     // { VK_SCROLL_LOCK, DIK_SCROLL_LOCK },
-    { VK_SPACE, DIK_SPACE },
-    { VK_TAB, DIK_TAB },
-    { VK_LEFT, DIK_LEFT },
-    { VK_RIGHT, DIK_RIGHT },
-    { VK_UP, DIK_UP },
-    { VK_DOWN, DIK_DOWN },
-    { VK_PAGE_DOWN, DIK_PGDN },
-    { VK_PAGE_UP, DIK_PGUP },
-    { VK_F1, DIK_F1 },
-    { VK_F2, DIK_F2 },
-    { VK_F3, DIK_F3 },
-    { VK_F4, DIK_F4 },
-    { VK_F5, DIK_F5 },
-    { VK_F6, DIK_F6 },
-    { VK_F7, DIK_F7 },
-    { VK_F8, DIK_F8 },
-    { VK_F9, DIK_F9 },
-    { VK_F10, DIK_F10 },
-    { VK_F11, DIK_F11 },
-    { VK_F12, DIK_F12 },
+    {VK_SPACE, DIK_SPACE},
+    {VK_TAB, DIK_TAB},
+    {VK_LEFT, DIK_LEFT},
+    {VK_RIGHT, DIK_RIGHT},
+    {VK_UP, DIK_UP},
+    {VK_DOWN, DIK_DOWN},
+    {VK_PAGE_DOWN, DIK_PGDN},
+    {VK_PAGE_UP, DIK_PGUP},
+    {VK_F1, DIK_F1},
+    {VK_F2, DIK_F2},
+    {VK_F3, DIK_F3},
+    {VK_F4, DIK_F4},
+    {VK_F5, DIK_F5},
+    {VK_F6, DIK_F6},
+    {VK_F7, DIK_F7},
+    {VK_F8, DIK_F8},
+    {VK_F9, DIK_F9},
+    {VK_F10, DIK_F10},
+    {VK_F11, DIK_F11},
+    {VK_F12, DIK_F12},
     // { VK_F13, DIK_F13 },
     // { VK_F14, DIK_F14 },
     // { VK_F15, DIK_F15 },
@@ -102,66 +102,65 @@ static const std::unordered_map<int, int> scanMap = {
     // { VK_F22, DIK_F22 },
     // { VK_F23, DIK_F23 },
     // { VK_F24, DIK_F24 },
-    { VK_TILDE, DIK_GRAVE },
+    {VK_TILDE, DIK_GRAVE},
 
-    { VK_0, DIK_0 },
-    { VK_1, DIK_1 },
-    { VK_2, DIK_2 },
-    { VK_3, DIK_3 },
-    { VK_4, DIK_4 },
-    { VK_5, DIK_5 },
-    { VK_6, DIK_6 },
-    { VK_7, DIK_7 },
-    { VK_8, DIK_8 },
-    { VK_9, DIK_9 },
-    
-    { VK_A, DIK_A },
-    { VK_B, DIK_B },
-    { VK_C, DIK_C },
-    { VK_D, DIK_D },
-    { VK_E, DIK_E },
-    { VK_F, DIK_F },
-    { VK_G, DIK_G },
-    { VK_H, DIK_H },
-    { VK_I, DIK_I },
-    { VK_J, DIK_J },
-    { VK_K, DIK_K },
-    { VK_L, DIK_L },
-    { VK_M, DIK_M },
-    { VK_N, DIK_N },
-    { VK_O, DIK_O },
-    { VK_P, DIK_P },
-    { VK_Q, DIK_Q },
-    { VK_R, DIK_R },
-    { VK_S, DIK_S },
-    { VK_T, DIK_T },
-    { VK_U, DIK_U },
-    { VK_V, DIK_V },
-    { VK_W, DIK_W },
-    { VK_X, DIK_X },
-    { VK_Y, DIK_Y },
-    { VK_Z, DIK_Z },
+    {VK_0, DIK_0},
+    {VK_1, DIK_1},
+    {VK_2, DIK_2},
+    {VK_3, DIK_3},
+    {VK_4, DIK_4},
+    {VK_5, DIK_5},
+    {VK_6, DIK_6},
+    {VK_7, DIK_7},
+    {VK_8, DIK_8},
+    {VK_9, DIK_9},
+
+    {VK_A, DIK_A},
+    {VK_B, DIK_B},
+    {VK_C, DIK_C},
+    {VK_D, DIK_D},
+    {VK_E, DIK_E},
+    {VK_F, DIK_F},
+    {VK_G, DIK_G},
+    {VK_H, DIK_H},
+    {VK_I, DIK_I},
+    {VK_J, DIK_J},
+    {VK_K, DIK_K},
+    {VK_L, DIK_L},
+    {VK_M, DIK_M},
+    {VK_N, DIK_N},
+    {VK_O, DIK_O},
+    {VK_P, DIK_P},
+    {VK_Q, DIK_Q},
+    {VK_R, DIK_R},
+    {VK_S, DIK_S},
+    {VK_T, DIK_T},
+    {VK_U, DIK_U},
+    {VK_V, DIK_V},
+    {VK_W, DIK_W},
+    {VK_X, DIK_X},
+    {VK_Y, DIK_Y},
+    {VK_Z, DIK_Z},
     // ,./ keys.
-    { VK_OEM_COMMA, DIK_COMMA },
-    { VK_OEM_PERIOD, DIK_PERIOD },
-    { VK_OEM_2, DIK_SLASH },
+    {VK_OEM_COMMA, DIK_COMMA},
+    {VK_OEM_PERIOD, DIK_PERIOD},
+    {VK_OEM_2, DIK_SLASH},
     // ;' keys.
-    { VK_OEM_1, DIK_SEMICOLON },
-    { VK_OEM_7, DIK_APOSTROPHE },
+    {VK_OEM_1, DIK_SEMICOLON},
+    {VK_OEM_7, DIK_APOSTROPHE},
     // []\ keys.
-    { VK_OEM_4, DIK_LBRACKET },
-    { VK_OEM_6, DIK_RBRACKET },
-    { VK_OEM_5, DIK_BACKSLASH },
+    {VK_OEM_4, DIK_LBRACKET},
+    {VK_OEM_6, DIK_RBRACKET},
+    {VK_OEM_5, DIK_BACKSLASH},
     // -= keys.
-    { VK_OEM_MINUS, DIK_MINUS },
-    { VK_OEM_PLUS, DIK_EQUALS }
-};
-
+    {VK_OEM_MINUS, DIK_MINUS},
+    {VK_OEM_PLUS, DIK_EQUALS}};
 
 #ifdef DEBUG_INPUT
 #define INPUT_PRINTF printf
 #else
-template <typename... T> void INPUT_PRINTF(T...) {}
+template <typename... T>
+void INPUT_PRINTF(T...) {}
 #endif
 
 namespace {
@@ -181,11 +180,9 @@ std::set<int> connectedGamepads;
 
 const double GAMEPAD_ANALOG_THRESHHOLD = 0.8;
 
-bool shouldStopPropagation(int keyCode) {
-    return DIK_TAB == keyCode;
-}
+bool shouldStopPropagation(int keyCode) { return DIK_TAB == keyCode; }
 
-EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userData) {
+EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent* e, void* userData) {
     int code = e->keyCode;
     auto it = scanMap.find(code);
     if (it != scanMap.end()) {
@@ -198,8 +195,7 @@ EM_BOOL onKeyDown(int eventType, const EmscriptenKeyboardEvent *e, void *userDat
     return shouldStopPropagation(code);
 }
 
-EM_BOOL onKeyUp(
-    int eventType, const EmscriptenKeyboardEvent* e, void* userData) {
+EM_BOOL onKeyUp(int eventType, const EmscriptenKeyboardEvent* e, void* userData) {
     int code = e->keyCode;
     auto it = scanMap.find(code);
     if (it != scanMap.end()) {
@@ -212,16 +208,18 @@ EM_BOOL onKeyUp(
     return shouldStopPropagation(code);
 }
 
-EM_BOOL onGamepadConnected(
-    int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
-    INPUT_PRINTF("Gamepad connected idx='%s' mapping='%s' index=%ld\n",
-        gamepadEvent->id, gamepadEvent->mapping, gamepadEvent->index);
+EM_BOOL onGamepadConnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+    INPUT_PRINTF(
+        "Gamepad connected idx='%s' mapping='%s' index=%ld\n",
+        gamepadEvent->id,
+        gamepadEvent->mapping,
+        gamepadEvent->index
+    );
     connectedGamepads.insert(gamepadEvent->index);
     return true;
 }
 
-EM_BOOL onGamepadDisonnected(
-    int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
+EM_BOOL onGamepadDisonnected(int eventType, const EmscriptenGamepadEvent* gamepadEvent, void* userData) {
     INPUT_PRINTF("Gamepad disconnected\n");
     connectedGamepads.erase(gamepadEvent->index);
     return true;
@@ -234,9 +232,15 @@ EM_BOOL onMouseDown(int eventType, const EmscriptenMouseEvent* mouseEvent, void*
     input->mousex = mouseEvent->clientX;
     input->mousey = mouseEvent->clientY;
     switch (mouseEvent->button) {
-        case 0: input->mouseb |= 1; break;
-        case 1: input->mouseb |= 2; break;
-        case 2: input->mouseb |= 4; break;
+        case 0:
+            input->mouseb |= 1;
+            break;
+        case 1:
+            input->mouseb |= 2;
+            break;
+        case 2:
+            input->mouseb |= 4;
+            break;
     }
 
     return true;
@@ -249,9 +253,15 @@ EM_BOOL onMouseUp(int eventType, const EmscriptenMouseEvent* mouseEvent, void* u
     input->mousex = mouseEvent->clientX;
     input->mousey = mouseEvent->clientY;
     switch (mouseEvent->button) {
-    case 0: input->mouseb &= ~1; break;
-    case 1: input->mouseb &= ~2; break;
-    case 2: input->mouseb &= ~4; break;
+        case 0:
+            input->mouseb &= ~1;
+            break;
+        case 1:
+            input->mouseb &= ~2;
+            break;
+        case 2:
+            input->mouseb &= ~4;
+            break;
     }
 
     return true;
@@ -267,7 +277,7 @@ EM_BOOL onMouseMove(int eventType, const EmscriptenMouseEvent* mouseEvent, void*
     return true;
 }
 
-}
+} // namespace
 
 Input::Input() {}
 
@@ -335,9 +345,8 @@ void Input::Poll() // updates the key[] array.  This is called in winproc in
         last_pressed = k;       // this is kinda handy
 
         if (kdown && kb_end != kb_start + 1) // only if the buffer isn't full
-            key_buffer[kb_end++] =
-                k; // add it to the queue, if the key was pushed
-                   // TODO: key repeating?
+            key_buffer[kb_end++] = k;        // add it to the queue, if the key was pushed
+                                             // TODO: key repeating?
     }
 
     // -------------mouse-------------
@@ -467,40 +476,40 @@ void Input::UnPress(int control) {
     };
 
     switch (control) {
-    // GROSS!
-    case 0:
-        for (int i = 1; i <= 8; ++i)
-            UnPress(i);
-        break;
-    case 1:
-        u(control, b1, kb1);
-        break;
-    case 2:
-        u(control, b2, kb2);
-        break;
-    case 3:
-        u(control, b3, kb3);
-        break;
-    case 4:
-        u(control, b4, kb4);
-        break;
+        // GROSS!
+        case 0:
+            for (int i = 1; i <= 8; ++i)
+                UnPress(i);
+            break;
+        case 1:
+            u(control, b1, kb1);
+            break;
+        case 2:
+            u(control, b2, kb2);
+            break;
+        case 3:
+            u(control, b3, kb3);
+            break;
+        case 4:
+            u(control, b4, kb4);
+            break;
 
-    case 5:
-        u(control, up, kup);
-        break;
-    case 6:
-        u(control, down, kdown);
-        break;
-    case 7:
-        u(control, left, kleft);
-        break;
-    case 8:
-        u(control, right, kright);
-        break;
+        case 5:
+            u(control, up, kup);
+            break;
+        case 6:
+            u(control, down, kdown);
+            break;
+        case 7:
+            u(control, left, kleft);
+            break;
+        case 8:
+            u(control, right, kright);
+            break;
 
-        // default:
-        //     u[control] = 1;
-        //     break;
+            // default:
+            //     u[control] = 1;
+            //     break;
     }
 }
 

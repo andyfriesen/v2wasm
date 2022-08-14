@@ -1,12 +1,18 @@
----
-AlignAfterOpenBracket: DontAlign
-BinPackParameters: 'false'
-IndentCaseLabels: 'false'
-IndentWidth: '4'
-Language: Cpp
-PointerAlignment: Left
-SortIncludes: 'true'
-Standard: Cpp11
-UseTab: Never
+IndentWidth: 4
+ColumnLimit: 120
 
-...
+AllowAllArgumentsOnNextLine: true
+AlignAfterOpenBracket: BlockIndent
+BinPackArguments: false
+BinPackParameters: false
+IndentCaseLabels: true
+# InsertBraces: true
+InsertTrailingCommas: Wrapped
+PointerAlignment: Left
+
+AlwaysBreakAfterReturnType: None
+PenaltyReturnTypeOnItsOwnLine: 900000
+BreakConstructorInitializers: BeforeComma
+
+SpaceAfterTemplateKeyword: true
+AlwaysBreakTemplateDeclarations: Yes
