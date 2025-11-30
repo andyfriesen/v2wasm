@@ -21,7 +21,7 @@ def EmscriptenEnvironment():
             'path': os.environ['PATH']
         }
 
-        for key in ['HOME', 'USERPROFILE', 'EM_CONFIG']:
+        for key in ['HOME', 'USERPROFILE', 'EM_CONFIG', 'EMSDK_PYTHON', 'EMSDK_NODE']:
             value = os.environ.get(key)
             if value is not None:
                 env_dict[key] = value
@@ -73,12 +73,14 @@ def EmscriptenEnvironment():
             '-s', 'ASSERTIONS=1',
             '-s', 'STACK_OVERFLOW_CHECK=1',
             '-s', 'DEMANGLE_SUPPORT=1',
+            '-s', 'STACK_SIZE=5MB',
         ]
 
         cflags.append('-g')
 
         env.Append(LINKFLAGS=[
-            '-g',
+            '-gsource-map',
+            '--source-map-base', 'http://localhost:8000/',
         ])
 
     else:
