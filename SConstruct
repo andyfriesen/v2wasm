@@ -73,12 +73,14 @@ def EmscriptenEnvironment():
             '-s', 'ASSERTIONS=1',
             '-s', 'STACK_OVERFLOW_CHECK=1',
             '-s', 'DEMANGLE_SUPPORT=1',
+            '-s', 'STACK_SIZE=5MB',
         ]
 
         cflags.append('-g')
 
         env.Append(LINKFLAGS=[
-            '-g',
+            '-gsource-map',
+            '--source-map-base', 'http://localhost:8000/',
         ])
 
     else:
